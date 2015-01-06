@@ -1,4 +1,4 @@
 eclipse-extras
 ==============
 
-Small but useful enhancements for the Eclipse IDE
+Small extensions for the Eclipse IDE

@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: All Eclipse Extras Tests
+Bundle-SymbolicName: com.codeaffine.extras.test.all;singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Bundle-Vendor: codeaffine.com
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: com.codeaffine.extras.jdt;bundle-version="[0.1.0,1.0.0)",
+ org.junit;bundle-version="[4.11.0,5.0.0)",
+ com.codeaffine.osgi.testsuite;bundle-version="[1.1.0,2.0.0)"

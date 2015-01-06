@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <name>Git+</name>
+
+  <groupId>com.codeaffine.extras</groupId>
+  <artifactId>com.codeaffine.extras.parent</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <properties>
+    <tycho-version>0.21.0</tycho-version>
+    <tycho-extras-version>0.21.0</tycho-extras-version>
+    <target-platform-classifier>eclipse-3.8</target-platform-classifier>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <prerequisites>
+    <maven>3.0</maven>
+  </prerequisites>
+
+  <modules>
+    <module>com.codeaffine.extras.jdt</module>
+    <module>com.codeaffine.extras.jdt.test</module>
+    <module>com.codeaffine.extras.jdt.feature</module>
+    <module>com.codeaffine.extras.license.feature</module>
+    <module>com.codeaffine.extras.repository</module>
+    <module>com.codeaffine.extras.target</module>
+  </modules>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>repo.eclipse.org</id>
+      <url>https://repo.eclipse.org/content/groups/releases/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <build>
+    <plugins>
+
+			<plugin>
+			   <groupId>org.eclipse.tycho</groupId>
+			   <artifactId>target-platform-configuration</artifactId>
+			   <version>${tycho-version}</version>
+			   <configuration>
+			      <target>
+			         <artifact>
+			            <groupId>com.codeaffine.extras</groupId>
+			            <artifactId>com.codeaffine.extras.target</artifactId>
+                  <version>0.1.0-SNAPSHOT</version>
+                  <classifier>${target-platform-classifier}</classifier>
+			         </artifact>
+          	</target>
+            <includePackedArtifacts>true</includePackedArtifacts>
+			   </configuration>
+			</plugin>
+			
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <extensions>true</extensions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-packaging-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <format>yyyyMMdd-HHmm</format>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-source-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <executions>
+          <execution>
+            <id>plugin-source</id>
+            <goals>
+              <goal>plugin-source</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-surefire-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <argLine>-Xmx512m -XX:MaxPermSize=128M</argLine>
+          <useUIHarness>true</useUIHarness>
+          <appArgLine>-nl en -consolelog</appArgLine>
+          <includes>
+            <include>**/*Test.class</include>
+          </includes>
+          <dependencies>
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.eclipse.equinox.ds</artifactId>
+            </dependency>
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.eclipse.equinox.event</artifactId>
+            </dependency>
+          </dependencies>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho.extras</groupId>
+        <artifactId>tycho-pack200b-plugin</artifactId>
+        <version>${tycho-extras-version}</version>
+        <executions>
+          <execution>
+            <id>pack200-pack</id>
+            <goals>
+              <goal>pack</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!-- Alter p2-metadata to make .pack.gz artifacts visible from other modules -->
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <executions>
+          <execution>
+            <id>p2-metadata</id>
+            <goals>
+              <goal>p2-metadata</goal>
+            </goals>
+            <phase>package</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <defaultP2Metadata>false</defaultP2Metadata>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>animal-sniffer-maven-plugin</artifactId>
+        <version>1.11</version>
+        <configuration>
+          <signature>
+            <groupId>org.codehaus.mojo.signature</groupId>
+            <artifactId>java16</artifactId>
+            <version>1.1</version>
+          </signature>
+        </configuration>
+        <executions>
+          <execution>
+            <id>ensure-java-1.6-class-library</id>
+            <phase>test</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>
