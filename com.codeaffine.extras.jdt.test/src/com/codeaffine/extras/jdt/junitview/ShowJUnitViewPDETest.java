@@ -1,4 +1,4 @@
-package com.codeaffine.extras.platform.junitview;
+package com.codeaffine.extras.jdt.junitview;
 
 import static com.google.common.collect.Iterables.getFirst;
 import static org.assertj.core.api.Assertions.assertThat;
