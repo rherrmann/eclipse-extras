@@ -21,7 +21,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; th
   # clean the repository directory, then copy the build result into it
   git rm -rf repository
   mkdir -p repository 
-  cp -rf com.codeaffine.extras.repository/target/repository/* ./repository
+  cp -rf ../com.codeaffine.extras.repository/target/repository/* ./repository
   
   # add, commit and push files
   git add -f .
