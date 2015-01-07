@@ -2,6 +2,11 @@
 
 Small extensions for the Eclipse IDE
 
+## Current Features
+
+### Key Binding for the JUnit View
+The key sequence <kbd>Alt+Shift+Q U</kbd> is assigned to open the JUnit view in the current perspective.
+
 ## Installation
 Eclipse Software Site: http://rherrmann.github.io/eclipse-extras/repository/
 
