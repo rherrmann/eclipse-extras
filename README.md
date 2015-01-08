@@ -11,7 +11,9 @@ The key sequence <kbd>Alt+Shift+Q U</kbd> is assigned to open the JUnit view in 
 The key sequence <kbd>Shift+F3</kbd> can be used to show the _Open With_ menu for the selected file. The menu provides a list of alternative editors to open the file in.
 
 ## Installation
-Eclipse Software Site: http://rherrmann.github.io/eclipse-extras/repository/
+You can install Eclipse Extras directly from this software site: http://rherrmann.github.io/eclipse-extras/repository/
+
+In the Eclipse main menu, click _Help > Install New Software…_. Then enter the URL above and select Eclipse Extras
 
 ## Contributing
 Please see the [contributing guidelines](CONTRIBUTING.md).
