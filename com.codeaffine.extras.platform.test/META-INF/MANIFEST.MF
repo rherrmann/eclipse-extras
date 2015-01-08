@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Eclipse Java Tools Extras Tests
-Bundle-SymbolicName: com.codeaffine.extras.jdt.test;singleton:=true
+Bundle-Name: Eclipse Platform Extras Tests
+Bundle-SymbolicName: com.codeaffine.extras.platform.test;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-Vendor: codeaffine.com
-Fragment-Host: com.codeaffine.extras.jdt
+Fragment-Host: com.codeaffine.extras.platform
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: com.codeaffine.eclipse.core.runtime.test.util,
  com.codeaffine.eclipse.swt.test.util;version="[0.1.0,1.0.0)",

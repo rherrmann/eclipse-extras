@@ -10,16 +10,19 @@ import com.codeaffine.eclipse.core.runtime.Predicate;
 import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
 
 
-public class ShowJUnitViewPDETest {
+public class ShowJUnitViewKeyBindingPDETest {
 
   private static final String BINDINGS_EP = "org.eclipse.ui.bindings";
   private static final String ID = "id";
   private static final String VALUE = "value";
   private static final String SCHEME_ID = "schemeId";
+  private static final String COMMAND_ID = "commandId";
+  private static final String CONTEXT_ID = "contextId";
   private static final String PARAMETER = "parameter";
   private static final String VIEW_PARAMETER_NAME = "org.eclipse.ui.views.showView.viewId";
   private static final String JUNIT_VIEW_ID = "org.eclipse.jdt.junit.ResultView";
   private static final String DEFAULT_SCHEME_ID = "org.eclipse.ui.defaultAcceleratorConfiguration";
+  private static final String SHOW_VIEW_COMMAND_ID = "org.eclipse.ui.views.showView";
 
   private static final String PLATFORM = "platform";
   private static final String SEQUENCE = "sequence";
@@ -27,9 +30,11 @@ public class ShowJUnitViewPDETest {
 
   @Test
   public void testGeneralKeyBinding() {
-    Extension extension = readKeyBindingExtension(new GeneralKeyBindingPredicate());
+    Extension extension = readKeyBindingExtension( new GeneralKeyBindingPredicate() );
 
     assertThat( extension.getAttribute( SCHEME_ID ) ).isEqualTo( DEFAULT_SCHEME_ID );
+    assertThat( extension.getAttribute( COMMAND_ID ) ).isEqualTo( SHOW_VIEW_COMMAND_ID );
+    assertThat( extension.getAttribute( CONTEXT_ID ) ).isNull();
     assertThat( extension.getChildren( PARAMETER ) ).hasSize( 1 );
     Extension parameter = getFirst( extension.getChildren( PARAMETER ), null );
     assertThat( parameter.getAttribute( ID ) ).isEqualTo( VIEW_PARAMETER_NAME );

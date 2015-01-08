@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="org.eclipse.ui.category.file"
+            defaultHandler="com.codeaffine.extras.platform.internal.openwith.OpenWithQuickMenuHandler"
+            description="Show the &apos;Open With...&apos; quick menu"
+            id="com.codeaffine.extras.platform.internal.OpenWithQuickMenu"
+            name="Open With">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="com.codeaffine.extras.platform.internal.OpenWithQuickMenu"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M2+F3">
+      </key>
+      <key
+            platform="carbon"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M2+F3">
+      </key>
+   </extension>
+</plugin>
