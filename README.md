@@ -7,6 +7,9 @@ Small extensions for the Eclipse IDE
 ### Key Binding for the JUnit View
 The key sequence <kbd>Alt+Shift+Q U</kbd> is assigned to open the JUnit view in the current perspective.
 
+### Key Binding for the Open With... menu
+The key sequence <kbd>Shift+F3</kbd> can be used to show the _Open With_ menu for the selected file. The menu provides a list of alternative editors to open the file in.
+
 ## Installation
 Eclipse Software Site: http://rherrmann.github.io/eclipse-extras/repository/
 
