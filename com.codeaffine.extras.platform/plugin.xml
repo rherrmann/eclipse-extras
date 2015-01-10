@@ -10,6 +10,13 @@
             id="com.codeaffine.extras.platform.internal.OpenWithQuickMenu"
             name="Open With">
       </command>
+      <command
+            categoryId="org.eclipse.ui.category.file"
+            defaultHandler="com.codeaffine.extras.platform.internal.delete.DeleteEditorFileHandler"
+            description="Delete the File currently opened in the active Editor"
+            id="com.codeaffine.extras.platform.internal.DeleteEditorFileCommand"
+            name="Delete File in Editor">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -22,6 +29,16 @@
             platform="carbon"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M2+F3">
+      </key>
+      <key
+            commandId="com.codeaffine.extras.platform.internal.DeleteEditorFileCommand"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+Del">
+      </key>
+      <key
+            platform="carbon"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+Del">
       </key>
    </extension>
 </plugin>
