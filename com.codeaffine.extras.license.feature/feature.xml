@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="com.codeaffine.extras.license.feature"
-      label="Shared Eclipse Extras License Feature"
       version="0.1.0.qualifier"
       provider-name="codeaffine.com">
-
-   <description>
-      %description
-   </description>
 
    <copyright>
       %copyright
