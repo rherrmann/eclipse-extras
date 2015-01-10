@@ -31,6 +31,20 @@ public class OpenWithQuickMenuPDETest {
   private OpenWithQuickMenuHandler handler;
 
   @Test
+  public void testEnablementWithNullEvaluationContext() {
+    handler.setEnabled( new Object() );
+
+    assertThat( handler.isEnabled() ).isFalse();
+  }
+
+  @Test
+  public void testEnablementWithIrregularEvaluationContext() {
+    handler.setEnabled( new Object() );
+
+    assertThat( handler.isEnabled() ).isFalse();
+  }
+
+  @Test
   public void testEnablementWithSingleFile() throws CoreException {
     IFile file = projectHelper.createFile( "file.txt", "content" );
 
