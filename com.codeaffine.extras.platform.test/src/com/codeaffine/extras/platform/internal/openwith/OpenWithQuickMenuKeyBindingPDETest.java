@@ -30,6 +30,7 @@ public class OpenWithQuickMenuKeyBindingPDETest {
     assertThat( extension.getAttribute( SCHEME_ID ) ).isEqualTo( DEFAULT_SCHEME_ID );
     assertThat( extension.getAttribute( COMMAND_ID ) ).isEqualTo( OpenWithQuickMenuHandler.COMMAND_ID );
     assertThat( extension.getAttribute( CONTEXT_ID ) ).isNull();
+    assertThat( extension.getAttribute( PLATFORM ) ).isNull();
   }
 
   @Test
