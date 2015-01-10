@@ -9,9 +9,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.actions.OpenWithMenu;
 import org.eclipse.ui.actions.QuickMenuCreator;
+
+import com.codeaffine.eclipse.swt.util.UIThreadSynchronizer;
 
 
 public class OpenWithQuickMenu {
@@ -39,8 +42,12 @@ public class OpenWithQuickMenu {
     OpenWithMenu openWithMenu = new OpenWithMenu( workbenchPage, file );
     openWithMenu.fill( quickMenu, 0 );
     quickMenu.setLocation( location );
-    quickMenu.addListener( SWT.Hide, new MenuCloseListener( openWithMenu ) );
+    quickMenu.addListener( SWT.Hide, createMenuCloseListener( openWithMenu ) );
     quickMenu.setVisible( true );
+  }
+
+  private MenuCloseListener createMenuCloseListener( OpenWithMenu openWithMenu ) {
+    return new MenuCloseListener( workbenchPage.getWorkbenchWindow().getShell(), openWithMenu );
   }
 
   private Control getFocusControl() {
@@ -55,15 +62,17 @@ public class OpenWithQuickMenu {
   }
 
   private static class MenuCloseListener implements Listener {
+    private final Shell shell;
     private final OpenWithMenu openWithMenu;
 
-    private MenuCloseListener( OpenWithMenu openWithMenu ) {
+    private MenuCloseListener( Shell shell, OpenWithMenu openWithMenu ) {
+      this.shell = shell;
       this.openWithMenu = openWithMenu;
     }
 
     @Override
     public void handleEvent( Event event ) {
-      event.display.asyncExec( new Runnable() {
+      new UIThreadSynchronizer().asyncExec( shell, new Runnable() {
         @Override
         public void run() {
           openWithMenu.dispose();
