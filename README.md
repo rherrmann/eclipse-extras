@@ -7,10 +7,10 @@ Small extensions for the Eclipse IDE
 ### Key Binding for the JUnit View
 The key sequence <kbd>Alt+Shift+Q U</kbd> is assigned to open the JUnit view in the current perspective.
 
-### Key Binding for the Open With... menu
+### Key Binding for the Open With... Menu
 The key sequence <kbd>Shift+F3</kbd> can be used to show the _Open With_ menu for the selected file. The menu provides a list of alternative editors to open the file in.
 
-### Key Binding to Delete the Currently Edited File
+### Key Binding to Delete File of Active Editor
 If the currently active editor shows a file from the workspace, the key sequence <kbd>Alt+Del</kbd> can be used to delete this file and close the corresponding editor. The command invokes the regular delete operation so that the behavior is the same as if the edited file was deleted from one of the navigation views.
 
 ## Installation
