@@ -35,4 +35,5 @@ after_success:
   - ./.travis-deploy.sh
 
 after_failure:
+  - com.codeaffine.extras.jdt.test/target/surefire-reports/*.txt
   - cat com.codeaffine.extras.platform.test/target/surefire-reports/*.txt

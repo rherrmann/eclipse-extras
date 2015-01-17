@@ -11,14 +11,20 @@ import org.eclipse.debug.core.ILaunchManager;
 
 public class LaunchManagerHelper {
 
+  private static final String TEST_LAUNCH_CONFIG_TYPE
+    = "com.codeaffine.extras.platform.test.TestLaunchConfigurationType";
+
   public static ILaunchConfigurationWorkingCopy createLaunchConfig() throws CoreException {
-    ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-    ILaunchConfigurationType launchConfigType = launchManager.getLaunchConfigurationTypes()[ 0 ];
-    return launchConfigType.newInstance( null, "LC" + new Object().hashCode() );
+    ILaunchConfigurationType type = getTestLaunchConfigType();
+    return type.newInstance( null, "LC" + new Object().hashCode() );
   }
 
   public static String getDebugModeLabel() {
-    ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-    return launchManager.getLaunchMode( DEBUG_MODE ).getLabel();
+    return DebugPlugin.getDefault().getLaunchManager().getLaunchMode( DEBUG_MODE ).getLabel();
+  }
+
+  private static ILaunchConfigurationType getTestLaunchConfigType() {
+    ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+    return manager.getLaunchConfigurationType( TEST_LAUNCH_CONFIG_TYPE );
   }
 }
