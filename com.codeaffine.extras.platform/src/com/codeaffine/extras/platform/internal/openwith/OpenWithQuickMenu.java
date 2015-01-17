@@ -5,7 +5,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
@@ -51,9 +50,7 @@ public class OpenWithQuickMenu {
   }
 
   private Control getFocusControl() {
-    Display display = workbenchPage.getWorkbenchWindow().getShell().getDisplay();
-    Control focusControl = display.getFocusControl();
-    return focusControl;
+    return workbenchPage.getWorkbenchWindow().getShell().getDisplay().getFocusControl();
   }
 
   private static Point computeMenuLocation( Control focusControl ) {
@@ -65,7 +62,7 @@ public class OpenWithQuickMenu {
     private final Shell shell;
     private final OpenWithMenu openWithMenu;
 
-    private MenuCloseListener( Shell shell, OpenWithMenu openWithMenu ) {
+    MenuCloseListener( Shell shell, OpenWithMenu openWithMenu ) {
       this.shell = shell;
       this.openWithMenu = openWithMenu;
     }
@@ -86,6 +83,7 @@ public class OpenWithQuickMenu {
     protected void fillMenu( IMenuManager menu ) {
       throw new UnsupportedOperationException();
     }
+
     @Override
     public Point computeMenuLocation( Control focusControl ) {
       return super.computeMenuLocation( focusControl );

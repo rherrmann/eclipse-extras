@@ -30,8 +30,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.part.FileEditorInput;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import com.codeaffine.extras.platform.test.ProjectHelper;
@@ -39,8 +39,10 @@ import com.codeaffine.extras.platform.test.ProjectHelper;
 
 public class DeleteEditorFileHandlerPDETest {
 
+  @Rule
+  public ProjectHelper projectHelper = new ProjectHelper();
+
   private IWorkbenchPage workbenchPage;
-  private ProjectHelper projectHelper;
   private DeleteEditorFileHandler handler;
 
   @Test
@@ -133,14 +135,8 @@ public class DeleteEditorFileHandlerPDETest {
   @Before
   public void setUp() {
     workbenchPage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-    projectHelper = new ProjectHelper();
     handler = spy( new DeleteEditorFileHandler() );
     doNothing().when( handler ).deleteFile( any( IShellProvider.class ), any( IFile.class ) );
-  }
-
-  @After
-  public void tearDown() throws CoreException {
-    projectHelper.dispose();
   }
 
   private ExecutionEvent createExecutionEvent( IEvaluationContext evaluationContext ) {

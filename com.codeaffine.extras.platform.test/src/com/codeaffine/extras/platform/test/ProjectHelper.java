@@ -7,7 +7,6 @@ import static org.eclipse.core.resources.IResource.ALWAYS_DELETE_PROJECT_CONTENT
 import static org.eclipse.core.resources.IResource.FORCE;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,10 +26,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.ui.ide.undo.CreateProjectOperation;
+import org.junit.rules.ExternalResource;
 
 import com.google.common.base.Charsets;
 
-public class ProjectHelper {
+public class ProjectHelper extends ExternalResource {
 
   private static int uniqueId = 0;
   private static List<ProjectHelper> projects = new LinkedList<ProjectHelper>();
@@ -51,20 +51,6 @@ public class ProjectHelper {
   public ProjectHelper() {
     this.projectName = uniqueProjectName();
     this.projectLocation = null;
-  }
-
-  public ProjectHelper( File baseLocation ) {
-    this.projectName = uniqueProjectName();
-    this.projectLocation = baseLocation == null ? null : concat( baseLocation, projectName );
-  }
-
-  public ProjectHelper( IPath projectLocation ) {
-    this( projectLocation, uniqueProjectName() );
-  }
-
-  public ProjectHelper( IPath projectLocation, String projectName ) {
-    this.projectName = projectName;
-    this.projectLocation = projectLocation;
   }
 
   public String getName() {
@@ -109,7 +95,8 @@ public class ProjectHelper {
     return result;
   }
 
-  public void dispose() throws CoreException {
+  @Override
+  protected void after() {
     if( isProjectCreated() ) {
       projects.remove( this );
       delete( project );
@@ -155,11 +142,7 @@ public class ProjectHelper {
     return result;
   }
 
-  private static IPath concat( File baseLocation, String projectName ) {
-    return new Path( baseLocation.getAbsolutePath() ).append( projectName );
-  }
-
-  private static void delete( IResource resource ) throws CoreException {
+  private static void delete( IResource resource ) {
     int numAttempts = 0;
     boolean success = false;
     while( !success ) {
@@ -169,7 +152,7 @@ public class ProjectHelper {
         numAttempts++;
       } catch( CoreException ce ) {
         if( numAttempts > 4 ) {
-          throw ce;
+          throw new RuntimeException( "Failed to delete resource: " + resource, ce );
         }
         System.gc();
         sleepUninterruptibly( 500, MILLISECONDS );

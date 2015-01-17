@@ -35,6 +35,10 @@ public class OpenWithQuickMenuHandler extends AbstractHandler {
     }
   }
 
+  protected void showMenu( IWorkbenchPage workbenchPage, IFile file ) {
+    new OpenWithQuickMenu( workbenchPage, file ).show();
+  }
+
   private void setEnabled( IEvaluationContext evaluationContext ) {
     ISelection selection = getSelection( evaluationContext );
     setBaseEnabled( isEnabled( selection ) );
@@ -63,9 +67,5 @@ public class OpenWithQuickMenuHandler extends AbstractHandler {
       }
     }
     return result;
-  }
-
-  private static void showMenu( IWorkbenchPage workbenchPage, IFile file ) {
-    new OpenWithQuickMenu( workbenchPage, file ).show();
   }
 }

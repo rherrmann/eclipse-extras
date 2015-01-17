@@ -17,6 +17,11 @@
             id="com.codeaffine.extras.platform.internal.DeleteEditorFileCommand"
             name="Delete File in Editor">
       </command>
+      <command
+            defaultHandler="com.codeaffine.extras.platform.internal.launch.LaunchHandler"
+            id="com.codeaffine.extras.platform.internal.LaunchCommand"
+            name="name">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -39,6 +44,16 @@
             platform="carbon"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+Del">
+      </key>
+      <key
+            commandId="com.codeaffine.extras.platform.internal.LaunchCommand"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+F11">
+      </key>
+      <key
+            platform="carbon"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+F11">
       </key>
    </extension>
 </plugin>

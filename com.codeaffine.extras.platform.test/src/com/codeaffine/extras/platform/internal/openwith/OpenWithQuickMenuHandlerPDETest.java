@@ -2,7 +2,11 @@ package com.codeaffine.extras.platform.internal.openwith;
 
 import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -14,20 +18,23 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import com.codeaffine.extras.platform.test.ProjectHelper;
 
 
-public class OpenWithQuickMenuPDETest {
+public class OpenWithQuickMenuHandlerPDETest {
+
+  @Rule
+  public ProjectHelper projectHelper = new ProjectHelper();
 
   private IWorkbench workbench;
-  private ProjectHelper projectHelper;
   private OpenWithQuickMenuHandler handler;
 
   @Test
@@ -79,6 +86,8 @@ public class OpenWithQuickMenuPDETest {
 
   @Test
   public void testExecute() throws CoreException {
+    handler = spy( handler );
+    doNothing().when( handler ).showMenu( any( IWorkbenchPage.class ), any( IFile.class ) );
     IFile file = projectHelper.createFile( "file.txt", "content" );
     Command command = getOpenWithQuickMenuCommand();
     IEvaluationContext evaluationContext = createEvaluationContext( file );
@@ -87,18 +96,13 @@ public class OpenWithQuickMenuPDETest {
     Object executionResult = handler.execute( event );
 
     assertThat( executionResult ).isNull();
+    verify( handler ).showMenu( workbench.getActiveWorkbenchWindow().getActivePage(), file );
   }
 
   @Before
   public void setUp() {
     workbench = PlatformUI.getWorkbench();
-    projectHelper = new ProjectHelper();
     handler = new OpenWithQuickMenuHandler();
-  }
-
-  @After
-  public void tearDown() throws CoreException {
-    projectHelper.dispose();
   }
 
   private Command getOpenWithQuickMenuCommand() {

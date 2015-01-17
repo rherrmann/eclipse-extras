@@ -12,6 +12,8 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.7.0,4.0.0)",
  org.eclipse.core.commands;bundle-version="[3.6.0,4.0.0)",
  org.eclipse.core.resources;bundle-version="[3.7.0,4.0.0)",
  org.eclipse.ui;bundle-version="[3.7.0,4.0.0)",
+ org.eclipse.debug.core;bundle-version="[3.7.0,4.0.0)",
+ org.eclipse.debug.ui;bundle-version="[3.7.0,4.0.0)",
  org.eclipse.ui.ide;bundle-version="[3.7.0,4.0.0)",
  org.eclipse.ui.views;bundle-version="[3.6.0,4.0.0)",
  com.codeaffine.eclipse.ui;bundle-version="[0.1.0,1.0.0)",
@@ -21,3 +23,4 @@ Import-Package: com.google.common.base;version="[12.0.0,13.0.0)",
  com.google.common.cache;version="[12.0.0,13.0.0)",
  com.google.common.collect;version="[12.0.0,13.0.0)",
  com.google.common.io;version="[12.0.0,13.0.0)"
+Bundle-Activator: com.codeaffine.extras.platform.internal.PlatformExtrasPlugin
