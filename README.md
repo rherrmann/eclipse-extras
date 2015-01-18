@@ -13,6 +13,11 @@ The key sequence <kbd>Shift+F3</kbd> can be used to show the _Open With_ menu fo
 ### Key Binding to Delete File of Active Editor
 If the currently active editor shows a file from the workspace, the key sequence <kbd>Alt+Del</kbd> can be used to delete this file and close the corresponding editor. The command invokes the regular delete operation so that the behavior is the same as if the edited file was deleted from one of the navigation views.
 
+### Launch Configuration Selection Dialog
+Much like the _Open Type_ or _Open Resource_ dialog, this dialog lists the available launch configurations and allows to start the selected one. Which launch mode (debug, run, profile, etc) is to be changed through the Default Launch Mode drop menu menu.
+
+The key binding to open this dialog is <kbd>Alt+F11</kbd>
+
 ## Installation
 You can install Eclipse Extras directly from this software site: http://rherrmann.github.io/eclipse-extras/repository/
 
