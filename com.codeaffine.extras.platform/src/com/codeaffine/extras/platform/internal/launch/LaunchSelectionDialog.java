@@ -28,6 +28,7 @@ import com.codeaffine.extras.platform.internal.launch.LaunchConfigLabelProvider.
 
 public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
 
+
   private final ILaunchManager launchManager;
 
   public LaunchSelectionDialog( Shell shell ) {
@@ -37,6 +38,7 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     setMessage( "&Select a configuration to launch (? = any character, * = any string)" );
     setListLabelProvider( createLaunchConfigLabelProvider( shell, LabelMode.LIST ) );
     setDetailsLabelProvider( createLaunchConfigLabelProvider( shell, LabelMode.DETAIL ) );
+    setSelectionHistory( new LaunchConfigSelectionHistory( launchManager ) );
   }
 
   public String getLaunchModeId() {
@@ -121,6 +123,9 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
       okButton.setText( launchMode.getLabel() );
       okButton.getParent().layout();
     }
+  }
+
+  public abstract static class AccessibleSelectionHistory extends SelectionHistory {
   }
 
   private class LaunchConfigItemsFilter extends ItemsFilter {
