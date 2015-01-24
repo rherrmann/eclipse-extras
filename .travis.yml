@@ -20,8 +20,8 @@ branches:
     - master
 
 script: 
-  - mvn clean verify -Dtarget-platform-classifier=eclipse-3.8
-  - mvn clean verify -Dtarget-platform-classifier=eclipse-4.4
+  - mvn -q clean verify -Dtarget-platform-classifier=eclipse-3.8
+  - mvn -q clean verify -Dtarget-platform-classifier=eclipse-4.4
 
 before_script:
   - "export DISPLAY=:99.0"
