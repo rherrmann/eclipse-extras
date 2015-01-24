@@ -12,6 +12,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class LaunchHandler extends AbstractHandler {
 
+  public static final String COMMAND_ID = "com.codeaffine.extras.platform.internal.LaunchCommand";
+
   @Override
   public Object execute( ExecutionEvent event ) throws ExecutionException {
     Shell shell = HandlerUtil.getActiveWorkbenchWindow( event ).getShell();
