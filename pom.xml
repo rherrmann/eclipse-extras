@@ -26,9 +26,9 @@
     <module>com.codeaffine.extras.jdt</module>
     <module>com.codeaffine.extras.jdt.test</module>
     <module>com.codeaffine.extras.jdt.feature</module>
-    <module>com.codeaffine.extras.platform</module>
-    <module>com.codeaffine.extras.platform.test</module>
-    <module>com.codeaffine.extras.platform.feature</module>
+    <module>com.codeaffine.extras.ide</module>
+    <module>com.codeaffine.extras.ide.test</module>
+    <module>com.codeaffine.extras.ide.feature</module>
     <module>com.codeaffine.extras.license.feature</module>
     <module>com.codeaffine.extras.repository</module>
     <module>com.codeaffine.extras.target</module>
