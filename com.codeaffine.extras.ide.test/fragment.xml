@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin
->
-   <extension
-         point="org.eclipse.debug.core.launchConfigurationTypes">
+<plugin>
+   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
             delegate="com.codeaffine.extras.ide.test.TestLaunchDelegate"
             id="com.codeaffine.extras.ide.test.TestLaunchConfigurationType"
@@ -12,12 +10,28 @@
             public="true">
       </launchConfigurationType>
    </extension>
-   <extension
-         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+   <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
             configTypeID="com.codeaffine.extras.ide.test.TestLaunchConfigurationType"
             icon="icons/obj16/test-launch-config-type.png"
             id="com.codeaffine.extras.ide.test.TestLaunchConfigurationTypeImage">
       </launchConfigurationTypeImage>
+   </extension>
+      <extension point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            class="com.codeaffine.extras.ide.test.TestViewPart"
+            id="com.codeaffine.extras.platform.test.internal.TestViewPart"
+            name="Test View"
+            restorable="true">
+      </view>
+   </extension>
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            class="com.codeaffine.extras.ide.test.TestEditorPart"
+            default="false"
+            id="com.codeaffine.extras.platform.test.internal.TestEditorPart"
+            name="Test Editor">
+      </editor>
    </extension>
 </plugin>

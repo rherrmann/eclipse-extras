@@ -24,6 +24,13 @@
             id="com.codeaffine.extras.ide.internal.LaunchCommand"
             name="Open Launch Dialog">
       </command>
+      <command
+            categoryId="org.eclipse.ui.category.views"
+            defaultHandler="com.codeaffine.extras.ide.internal.closeview.CloseViewHandler"
+            description="Close the currently active view"
+            id="com.codeaffine.extras.platform.internal.CloseViewCommand"
+            name="Close View">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -56,6 +63,16 @@
             platform="carbon"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+F11">
+      </key>
+      <key
+            commandId="com.codeaffine.extras.platform.internal.CloseViewCommand"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M2+Q">
+      </key>
+      <key
+            platform="carbon"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M2+Q">
       </key>
    </extension>
    <extension
