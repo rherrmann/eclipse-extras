@@ -26,6 +26,17 @@ The key binding to open this dialog is <kbd>Alt+F11</kbd>
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/launch-config-dialog.png)
 
+### Extended Export/Import Preferences Wizards
+Eclipse Extras provides extensions to the Export/Import wizards to transfer general workbench preferences. This allows to transfer settings for:
+* General Editor
+* Text Editor
+* Workbench Appearance
+* Workspace
+* Search
+
+![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/export-preferences-wizard.png)
+
+
 ## Installation
 You can install Eclipse Extras directly from this software site: http://rherrmann.github.io/eclipse-extras/repository/
 
