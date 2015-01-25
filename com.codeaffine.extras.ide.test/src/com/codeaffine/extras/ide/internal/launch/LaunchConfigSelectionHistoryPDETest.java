@@ -1,7 +1,7 @@
 package com.codeaffine.extras.ide.internal.launch;
 
-import static com.codeaffine.extras.platform.test.LaunchManagerHelper.createLaunchConfig;
-import static com.codeaffine.extras.platform.test.LaunchManagerHelper.deleteLaunchConfig;
+import static com.codeaffine.extras.ide.test.LaunchManagerHelper.createLaunchConfig;
+import static com.codeaffine.extras.ide.test.LaunchManagerHelper.deleteLaunchConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.eclipse.core.runtime.CoreException;
@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.codeaffine.extras.ide.internal.launch.LaunchConfigSelectionHistory;
-import com.codeaffine.extras.platform.test.LaunchManagerHelper;
+import com.codeaffine.extras.ide.test.LaunchManagerHelper;
 
 public class LaunchConfigSelectionHistoryPDETest {
 

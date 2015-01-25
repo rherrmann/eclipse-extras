@@ -1,4 +1,4 @@
-package com.codeaffine.extras.platform.test;
+package com.codeaffine.extras.ide.test;
 
 import static com.google.common.util.concurrent.Uninterruptibles.sleepUninterruptibly;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;

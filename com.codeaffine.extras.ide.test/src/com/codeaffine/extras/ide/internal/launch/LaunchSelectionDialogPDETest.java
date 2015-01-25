@@ -1,7 +1,7 @@
 package com.codeaffine.extras.ide.internal.launch;
 
-import static com.codeaffine.extras.platform.test.LaunchManagerHelper.createLaunchConfig;
-import static com.codeaffine.extras.platform.test.LaunchManagerHelper.getDebugModeLabel;
+import static com.codeaffine.extras.ide.test.LaunchManagerHelper.createLaunchConfig;
+import static com.codeaffine.extras.ide.test.LaunchManagerHelper.getDebugModeLabel;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Comparator;

@@ -1,4 +1,4 @@
-package com.codeaffine.extras.platform.test;
+package com.codeaffine.extras.ide.test;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

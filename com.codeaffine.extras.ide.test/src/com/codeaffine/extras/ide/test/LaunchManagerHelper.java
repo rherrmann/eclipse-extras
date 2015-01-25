@@ -1,4 +1,4 @@
-package com.codeaffine.extras.platform.test;
+package com.codeaffine.extras.ide.test;
 
 import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
 
@@ -13,7 +13,7 @@ import org.eclipse.debug.core.ILaunchManager;
 public class LaunchManagerHelper {
 
   private static final String TEST_LAUNCH_CONFIG_TYPE
-    = "com.codeaffine.extras.platform.test.TestLaunchConfigurationType";
+    = "com.codeaffine.extras.ide.test.TestLaunchConfigurationType";
 
   public static ILaunchConfigurationWorkingCopy createLaunchConfig() throws CoreException {
     ILaunchConfigurationType type = getTestLaunchConfigType();

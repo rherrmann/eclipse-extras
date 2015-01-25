@@ -7,7 +7,7 @@ import com.codeaffine.osgi.testuite.BundleTestSuite.TestBundles;
 
 @RunWith(BundleTestSuite.class)
 @TestBundles( {
-  "com.codeaffine.extras.platform",
+  "com.codeaffine.extras.ide",
   "com.codeaffine.extras.jdt",
 } )
 public class AllTests {

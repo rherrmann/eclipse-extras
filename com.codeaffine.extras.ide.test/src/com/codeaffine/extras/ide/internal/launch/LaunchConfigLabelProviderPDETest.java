@@ -2,7 +2,7 @@ package com.codeaffine.extras.ide.internal.launch;
 
 import static com.codeaffine.extras.ide.internal.launch.LaunchConfigLabelProvider.LabelMode.DETAIL;
 import static com.codeaffine.extras.ide.internal.launch.LaunchConfigLabelProvider.LabelMode.LIST;
-import static com.codeaffine.extras.platform.test.LaunchManagerHelper.createLaunchConfig;
+import static com.codeaffine.extras.ide.test.LaunchManagerHelper.createLaunchConfig;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
 

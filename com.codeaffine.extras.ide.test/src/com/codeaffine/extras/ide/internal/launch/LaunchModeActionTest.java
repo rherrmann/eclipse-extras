@@ -1,6 +1,6 @@
 package com.codeaffine.extras.ide.internal.launch;
 
-import static com.codeaffine.extras.platform.test.LaunchModeHelper.createLaunchMode;
+import static com.codeaffine.extras.ide.test.LaunchModeHelper.createLaunchMode;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
 import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import com.codeaffine.extras.ide.internal.launch.LaunchModeAction;
 import com.codeaffine.extras.ide.internal.launch.LaunchModeSetting;
-import com.codeaffine.extras.platform.test.LaunchModeHelper;
+import com.codeaffine.extras.ide.test.LaunchModeHelper;
 
 public class LaunchModeActionTest {
 

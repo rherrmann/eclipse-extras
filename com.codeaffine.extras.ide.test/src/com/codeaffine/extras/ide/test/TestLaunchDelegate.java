@@ -1,6 +1,5 @@
-package com.codeaffine.extras.platform.test;
+package com.codeaffine.extras.ide.test;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -14,7 +13,6 @@ public class TestLaunchDelegate implements ILaunchConfigurationDelegate {
                       String mode,
                       ILaunch launch,
                       IProgressMonitor monitor )
-    throws CoreException
   {
   }
 }

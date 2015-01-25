@@ -1,6 +1,6 @@
 package com.codeaffine.extras.ide.internal.launch;
 
-import static com.codeaffine.extras.platform.test.LaunchModeHelper.createLaunchMode;
+import static com.codeaffine.extras.ide.test.LaunchModeHelper.createLaunchMode;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
