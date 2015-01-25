@@ -16,12 +16,13 @@
       <import plugin="org.eclipse.core.expressions" version="3.4.300" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.7.0" match="compatible"/>
       <import plugin="org.eclipse.ui.ide" version="3.7.0" match="compatible"/>
-      <import plugin="com.google.guava"/>
+      <import plugin="org.eclipse.ui.views" version="3.6.0" match="compatible"/>
+      <import plugin="com.google.guava" version="12.0.0" match="compatible"/>
       <import plugin="org.eclipse.core.commands" version="3.6.0" match="compatible"/>
       <import plugin="com.codeaffine.eclipse.core.runtime" version="0.1.0" match="compatible"/>
       <import plugin="com.codeaffine.eclipse.swt" version="0.1.0" match="compatible"/>
       <import plugin="com.codeaffine.eclipse.ui" version="0.1.0" match="compatible"/>
-      <import plugin="org.eclipse.jdt.junit"/>
+      <import plugin="org.eclipse.jdt.junit" version="3.7.0" match="compatible"/>
    </requires>
 
    <plugin
