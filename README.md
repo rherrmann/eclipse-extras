@@ -19,6 +19,9 @@ If the currently active editor shows a file from the workspace, the key sequence
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/delete-editor-resource.png)
 
+### Key Binding to Close the Active View
+The key binding <kbd>Ctrl+Shift+Q</kbd> closes the currently active view. Just like <kbd>Ctrl+W</kbd> closes the active editor, there is now also a key binding to close the active view. 
+
 ### Launch Configuration Selection Dialog
 Much like the _Open Type_ or _Open Resource_ dialog, this dialog lists the available launch configurations and allows to start the selected one. Which launch mode (debug, run, profile, etc) is to be changed through the Default Launch Mode drop menu menu.
 
