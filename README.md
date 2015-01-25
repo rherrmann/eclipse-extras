@@ -42,6 +42,9 @@ You can install Eclipse Extras directly from this software site: http://rherrman
 
 In the Eclipse main menu, click _Help > Install New Software…_. Then enter the URL above and select Eclipse Extras
 
+## Requirements
+Works with all Eclipse versions back to 3.8 (Juno).
+
 ## Contributing
 Please see the [contributing guidelines](CONTRIBUTING.md).
 
