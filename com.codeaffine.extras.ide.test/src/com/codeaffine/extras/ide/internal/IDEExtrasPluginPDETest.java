@@ -8,7 +8,7 @@ import org.osgi.framework.Bundle;
 
 import com.codeaffine.extras.ide.internal.IDEExtrasPlugin;
 
-public class IDEExtrasPluginTest {
+public class IDEExtrasPluginPDETest {
 
   @Test
   public void testPluginId() {

@@ -29,6 +29,7 @@
     <module>com.codeaffine.extras.ide</module>
     <module>com.codeaffine.extras.ide.test</module>
     <module>com.codeaffine.extras.ide.feature</module>
+    <module>com.codeaffine.extras.test.util</module>
     <module>com.codeaffine.extras.license.feature</module>
     <module>com.codeaffine.extras.repository</module>
     <module>com.codeaffine.extras.target</module>

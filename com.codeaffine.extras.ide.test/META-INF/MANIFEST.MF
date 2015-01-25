@@ -9,6 +9,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: com.codeaffine.eclipse.core.runtime;version="[0.1.0,1.0.0)",
  com.codeaffine.eclipse.core.runtime.test.util;version="[0.1.0,1.0.0)",
  com.codeaffine.eclipse.swt.test.util;version="[0.1.0,1.0.0)",
+ com.codeaffine.extras.test.util;version="[0.1.0,1.0.0)",
  com.codeaffine.osgi.testuite;version="[1.0.0,2.0.0)",
  com.codeaffine.test.util.junit;version="[0.1.0,1.0.0)",
  com.codeaffine.test.util.lang;version="[0.1.0,1.0.0)",
