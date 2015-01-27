@@ -36,6 +36,7 @@ Eclipse Extras provides extensions to the Export/Import wizards to transfer gene
 * Workbench Appearance
 * Workspace
 * Search
+* Run/Debug
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/export-preferences-wizard.png)
 
