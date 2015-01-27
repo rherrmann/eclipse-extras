@@ -236,6 +236,9 @@
                <key
                      name="IMPORT_FILES_AND_FOLDERS_VIRTUAL_FOLDER_MODE">
                </key>
+               <key
+                     name="MAX_RECENT_WORKSPACES">
+               </key>
             </entry>
          </mapping>
          <description>
