@@ -361,5 +361,46 @@
             General > Search
          </description>
       </transfer>
+      <transfer
+            icon="icons/elcl16/run-debug-prefs.png"
+            id="com.codeaffine.extras.ide.transfer1"
+            name="Run/Debug Preferences">
+         <mapping
+               scope="instance">
+            <entry
+                  node="org.eclipse.debug.ui">
+               <key
+                     match="prefix"
+                     name="org.eclipse.debug.ui.">
+               </key>
+               <key
+                     match="prefix"
+                     name="Console.">
+               </key>
+               <key
+                     match="prefix"
+                     name="DEBUG.">
+               </key>
+            </entry>
+            <entry
+                  node="org.eclipse.core.variables">
+               <key
+                     name="org.eclipse.core.variables.valueVariables">
+               </key>
+            </entry>
+            <entry
+                  node="org.eclipse.ui.externaltools">
+               <key
+                     name="externaltools.builders.promptForProjectMigration">
+               </key>
+               <key
+                     name="externaltools.builders.promptForMigration">
+               </key>
+            </entry>
+         </mapping>
+         <description>
+            Run/Debug and all sub preference pages
+         </description>
+      </transfer>
    </extension>
 </plugin>
