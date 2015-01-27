@@ -4,7 +4,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
 
@@ -13,15 +12,17 @@ public class TestEditorPart extends EditorPart {
   public static final String ID = "com.codeaffine.extras.platform.test.internal.TestEditorPart";
 
   @Override
-  public void createPartControl( Composite parent ) {
-    // TODO Auto-generated method stub
+  public void init( IEditorSite site, IEditorInput input ) {
+    setSite( site );
+    setInput( input );
+  }
 
+  @Override
+  public void createPartControl( Composite parent ) {
   }
 
   @Override
   public void setFocus() {
-    // TODO Auto-generated method stub
-
   }
 
   @Override
@@ -30,10 +31,6 @@ public class TestEditorPart extends EditorPart {
 
   @Override
   public void doSaveAs() {
-  }
-
-  @Override
-  public void init( IEditorSite site, IEditorInput input ) throws PartInitException {
   }
 
   @Override
