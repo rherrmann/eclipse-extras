@@ -18,4 +18,19 @@
             sequence="M2+M3+Q U">
       </key>
   </extension>
+  <extension
+        point="org.eclipse.ui.menus">
+     <menuContribution
+           allPopups="false"
+           locationURI="toolbar:org.eclipse.ui.trim.status">
+        <toolbar
+            id="com.codeaffine.extras.jdt.internal.JUnitStatusToolBar"
+            label="JUnit">
+            <control
+                class="com.codeaffine.extras.jdt.internal.junitstatus.JUnitStatusContributionItem"
+                id="com.codeaffine.extras.jdt.internal.JUnitStatusContributionItem">
+            </control>
+        </toolbar>
+     </menuContribution>
+  </extension>
 </plugin>

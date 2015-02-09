@@ -29,4 +29,5 @@ Import-Package: com.codeaffine.eclipse.core.runtime;version="[0.1.0,1.0.0)",
  org.mockito.invocation;version="[1.9.0,2.0.0)",
  org.mockito.runners;version="[1.9.0,2.0.0)",
  org.mockito.stubbing;version="[1.9.0,2.0.0)"
-Require-Bundle: org.eclipse.jface;bundle-version="[3.6.0,4.0.0)"
+Require-Bundle: org.eclipse.jface;bundle-version="[3.6.0,4.0.0)",
+ org.eclipse.jdt.core;bundle-version="[3.7.0,4.0.0)"
