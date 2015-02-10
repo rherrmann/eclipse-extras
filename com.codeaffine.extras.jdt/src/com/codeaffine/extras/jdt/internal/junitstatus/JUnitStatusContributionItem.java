@@ -14,6 +14,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Widget;
@@ -31,6 +32,7 @@ public class JUnitStatusContributionItem extends WorkbenchWindowControlContribut
   private TestRunListener testRunListener;
   private ToolItem junitViewButton;
   private JUnitProgressBar progressBar;
+  private Label spacingLabel;
 
   @Override
   protected Control createControl( Composite parent ) {
@@ -56,14 +58,16 @@ public class JUnitStatusContributionItem extends WorkbenchWindowControlContribut
     junitViewButton.setToolTipText( "Show JUnit View" );
     junitViewButton.setImage( getJUnitImage() );
     progressBar = new JUnitProgressBar( result );
+    spacingLabel = new Label( result, SWT.NONE );
     testRunListener = new JUnitTestRunListener( resourceManager, new JUnitProgressUI() );
     return result;
   }
 
   private void layoutControls( Composite composite ) {
-    composite.setLayout( GridLayoutFactory.fillDefaults().numColumns( 2 ).create() );
+    composite.setLayout( GridLayoutFactory.fillDefaults().numColumns( 3 ).create() );
     junitViewButton.getParent().setLayoutData( new GridData( SWT.BEGINNING, SWT.FILL, false, false ) );
     progressBar.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+    spacingLabel.setLayoutData( new GridData() );
   }
 
   private void attachListeners() {
