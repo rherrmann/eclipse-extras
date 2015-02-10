@@ -134,12 +134,27 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
   }
 
   private void drawBar( GC gc ) {
+    gc.setAlpha( 200 );
     Rectangle rect = getClientArea();
     if( barColor != null ) {
       gc.setBackground( barColor );
     }
     int barWidth = Math.min( rect.width - 2, getBarWidth() );
     gc.fillRectangle( 1, 1, barWidth, rect.height - 2 );
+  }
+
+  private void drawText( GC gc ) {
+    gc.setAlpha( 255 );
+    Rectangle rect = getClientArea();
+    Rectangle clientArea = new Rectangle( 1, 1, rect.width - 2, rect.height - 2 );
+    Point textSize = gc.textExtent( text );
+    int x = 3;
+    if( textAlignment == SWT.CENTER ) {
+      x = ( clientArea.width - textSize.x ) / 2;
+    }
+    int y = ( clientArea.height - textSize.y ) / 2 + 1;
+    gc.setForeground( getDisplay().getSystemColor( SWT.COLOR_WIDGET_FOREGROUND ) );
+    gc.drawText( textAnimation.getAnimatedText(), x, y, SWT.DRAW_TRANSPARENT );
   }
 
   int getBarWidth() {
@@ -153,19 +168,6 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
       result = 0;
     }
     return Math.min( clientArea.width - 2, result );
-  }
-
-  private void drawText( GC gc ) {
-    Rectangle rect = getClientArea();
-    Rectangle clientArea = new Rectangle( 1, 1, rect.width - 2, rect.height - 2 );
-    Point textSize = gc.textExtent( text );
-    int x = 3;
-    if( textAlignment == SWT.CENTER ) {
-      x = ( clientArea.width - textSize.x ) / 2;
-    }
-    int y = ( clientArea.height - textSize.y ) / 2 + 1;
-    gc.setForeground( getDisplay().getSystemColor( SWT.COLOR_WIDGET_FOREGROUND ) );
-    gc.drawText( textAnimation.getAnimatedText(), x, y, SWT.DRAW_TRANSPARENT );
   }
 
 }
