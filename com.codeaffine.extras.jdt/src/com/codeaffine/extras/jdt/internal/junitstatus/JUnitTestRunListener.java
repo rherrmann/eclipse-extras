@@ -1,8 +1,11 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
+import static java.lang.Integer.valueOf;
 import static org.eclipse.jdt.junit.model.ITestElement.ProgressState.STOPPED;
 import static org.eclipse.jdt.junit.model.ITestElement.Result.ERROR;
 import static org.eclipse.jdt.junit.model.ITestElement.Result.FAILURE;
+
+import java.text.MessageFormat;
 
 import org.eclipse.jdt.junit.TestRunListener;
 import org.eclipse.jdt.junit.model.ITestCaseElement;
@@ -95,7 +98,7 @@ public class JUnitTestRunListener extends TestRunListener {
   }
 
   private void updateProgressUI( ITestRunSession testRunSession, int currentTest, int testCount ) {
-    String text = currentTest + " / " + testCount;
+    String text = MessageFormat.format( "{0} / {1}", valueOf( currentTest ), valueOf( testCount ) );
     Color barColor = getProgressBarColor( testRunSession );
     progressUI.update( text, SWT.CENTER, barColor, currentTest, testCount );
   }

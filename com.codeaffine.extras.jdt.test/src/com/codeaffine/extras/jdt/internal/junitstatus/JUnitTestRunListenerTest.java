@@ -66,7 +66,7 @@ public class JUnitTestRunListenerTest {
 
   @Test
   public void testStoppedSessionFinished() {
-    ITestCaseElement testCaseElement = createTestCaseElement( OK );
+    ITestCaseElement testCaseElement = mockTestCaseElement( OK );
     testRunListener.sessionLaunched( testCaseElement.getTestRunSession() );
     testRunListener.sessionStarted( testCaseElement.getTestRunSession() );
     DisplayHelper.flushPendingEvents();
@@ -80,7 +80,7 @@ public class JUnitTestRunListenerTest {
 
   @Test
   public void testStoppedSessionFinishedWithFailingTest() {
-    ITestCaseElement testCaseElement = createTestCaseElement( ERROR );
+    ITestCaseElement testCaseElement = mockTestCaseElement( ERROR );
     testRunListener.sessionLaunched( testCaseElement.getTestRunSession() );
     testRunListener.sessionStarted( testCaseElement.getTestRunSession() );
     DisplayHelper.flushPendingEvents();
@@ -132,7 +132,7 @@ public class JUnitTestRunListenerTest {
 
   @Test
   public void testTestCaseFinished() {
-    ITestCaseElement testCaseElement = createTestCaseElement( OK );
+    ITestCaseElement testCaseElement = mockTestCaseElement( OK );
     testRunListener.sessionLaunched( testCaseElement.getTestRunSession() );
     testRunListener.sessionStarted( testCaseElement.getTestRunSession() );
 
@@ -144,7 +144,7 @@ public class JUnitTestRunListenerTest {
 
   @Test
   public void testFailedTestCaseFinished() {
-    ITestCaseElement testCaseElement = createTestCaseElement( FAILURE );
+    ITestCaseElement testCaseElement = mockTestCaseElement( FAILURE );
     testRunListener.sessionLaunched( testCaseElement.getTestRunSession() );
     testRunListener.sessionStarted( testCaseElement.getTestRunSession() );
 
@@ -156,7 +156,7 @@ public class JUnitTestRunListenerTest {
 
   @Test
   public void testErroredTestCaseFinished() {
-    ITestCaseElement testCaseElement = createTestCaseElement( ERROR );
+    ITestCaseElement testCaseElement = mockTestCaseElement( ERROR );
     testRunListener.sessionLaunched( testCaseElement.getTestRunSession() );
     testRunListener.sessionStarted( testCaseElement.getTestRunSession() );
 
@@ -215,6 +215,7 @@ public class JUnitTestRunListenerTest {
     order.verifyNoMoreInteractions();
   }
 
+
   @Before
   public void setUp() {
     resourceManager = new LocalResourceManager( getResources( displayHelper.getDisplay() ) );
@@ -244,7 +245,7 @@ public class JUnitTestRunListenerTest {
     return result;
   }
 
-  private static ITestCaseElement createTestCaseElement( Result testResult ) {
+  private static ITestCaseElement mockTestCaseElement( Result testResult ) {
     ITestCaseElement result = mock( ITestCaseElement.class );
     ITestRunSession testRunSession = mockTestRunSession( testResult, result );
     when( result.getTestRunSession() ).thenReturn( testRunSession );
