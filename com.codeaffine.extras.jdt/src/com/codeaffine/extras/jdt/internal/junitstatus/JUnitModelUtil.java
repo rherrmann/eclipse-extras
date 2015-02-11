@@ -12,8 +12,7 @@ class JUnitModelUtil {
     ITestElement[] children = testElementContainer.getChildren();
     for( ITestElement child : children ) {
       if( child instanceof ITestElementContainer ) {
-        ITestElementContainer container = ( ITestElementContainer )child;
-        result += countTestCases( container );
+        result += countTestCases( ( ITestElementContainer )child );
       }
       if( child instanceof ITestCaseElement ) {
         result++;

@@ -1,5 +1,7 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
+import static com.codeaffine.extras.jdt.internal.prefs.PreferencePropertyTester.PROP_IS_TRUE;
+import static com.codeaffine.extras.jdt.internal.prefs.WorkspaceScopePreferences.PREF_SHOW_JUNIT_STATUS_BAR;
 import static com.google.common.collect.Iterables.getFirst;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,11 +25,18 @@ public class JUnitStatusContributionItemPDETest {
 
     Extension toolbarElement = getToolBarElement( extension );
     Extension controlElement = getControlElement( extension );
+    Extension visibleWhenElement = getVisibleWhenElement( extension );
+    Extension visibleTestElement = getVisibleTestElement( extension );
     assertThat( extension.getChildren( "toolbar" ) ).hasSize( 1 );
     assertThat( toolbarElement.getChildren( "control" ) ).hasSize( 1 );
     assertThat( toolbarElement.getAttribute( "label" ) ).isEqualTo( "JUnit" );
     assertThat( controlElement.getAttribute( "id" ) ).isNotNull();
     assertThat( controlElement.createExecutableExtension( JUnitStatusContributionItem.class ) ).isNotNull();
+    assertThat( visibleWhenElement.getAttribute( "checkEnabled" ) ).isEqualTo( "false" );
+    assertThat( visibleTestElement.getAttribute( "args" ) ).isEqualTo( PREF_SHOW_JUNIT_STATUS_BAR );
+    assertThat( visibleTestElement.getAttribute( "forcePluginActivation" ) ).isEqualTo( "true" );
+    assertThat( visibleTestElement.getAttribute( "property" ) ).isEqualTo( PROP_IS_TRUE );
+    assertThat( visibleTestElement.getAttribute( "value" ) ).isEqualTo( "true" );
   }
 
   private static Extension getControlElement( Extension extension ) {
@@ -36,6 +45,15 @@ public class JUnitStatusContributionItemPDETest {
 
   private static Extension getToolBarElement( Extension extension ) {
     return getFirst( extension.getChildren( "toolbar" ), null );
+  }
+
+  private static Extension getVisibleWhenElement( Extension extension ) {
+    return getFirst( getControlElement( extension ).getChildren( "visibleWhen" ), null );
+  }
+
+  private static Extension getVisibleTestElement( Extension extension ) {
+    Extension withElement = getFirst( getVisibleWhenElement( extension ).getChildren( "with" ), null );
+    return getFirst( withElement.getChildren( "test" ), null );
   }
 
   private static class LocationUriPredicate implements Predicate {

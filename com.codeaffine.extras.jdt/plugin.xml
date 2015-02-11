@@ -18,6 +18,16 @@
             sequence="M2+M3+Q U">
       </key>
   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="com.codeaffine.extras.jdt.internal.prefs.PreferencePropertyTester"
+            id="com.codeaffine.extras.jdt.internal.PreferencePropertyTester"
+            namespace="com.codeaffine.extras.jdt.internal.PreferenceStore"
+            properties="isTrue"
+            type="org.eclipse.ui.services.IServiceLocator">
+      </propertyTester>
+   </extension>
   <extension
         point="org.eclipse.ui.menus">
      <menuContribution
@@ -29,8 +39,38 @@
             <control
                 class="com.codeaffine.extras.jdt.internal.junitstatus.JUnitStatusContributionItem"
                 id="com.codeaffine.extras.jdt.internal.JUnitStatusContributionItem">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="activeWorkbenchWindow">
+                     <test
+                           args="show_junit_status_bar"
+                           forcePluginActivation="true"
+                           property="com.codeaffine.extras.jdt.internal.PreferenceStore.isTrue"
+                           value="true">
+                     </test>
+                  </with>
+               </visibleWhen>
             </control>
         </toolbar>
      </menuContribution>
+  </extension>
+  <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           category="org.eclipse.jdt.junit.preferences"
+           class="com.codeaffine.extras.jdt.internal.junitstatus.JUnitStatusBarPreferencePage"
+           id="com.codeaffine.extras.jdt.internal.JUnitStatusBarPreferencePage"
+           name="JUnit Status Bar">
+        <keywordReference
+              id="org.eclipse.jdt.junit.JUnit">
+        </keywordReference>
+     </page>
+  </extension>
+  <extension
+        point="org.eclipse.core.runtime.preferences">
+     <initializer
+           class="com.codeaffine.extras.jdt.internal.prefs.WorkspaceScopePreferenceInitializer">
+     </initializer>
   </extension>
 </plugin>
