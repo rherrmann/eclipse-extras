@@ -5,7 +5,7 @@ Small extensions for the Eclipse IDE
 ## Current Features
 
 ### JUnit Status Bar
-A small contribution to the status bar shows the status of the current or most recent JUnit run. The progress bar is colored green or red depending on how the test results are. Click the button to the left of the bar to show the JUnit view.
+A small contribution to the status bar shows the status of the current or most recent JUnit run. The progress bar is colored green or red depending on how the test results are. The button to the left of the bar opens the JUnit view. Use the _Java &gt; JUnit &gt; JUnit Status Bar_ preference page to show or hide the JUnit Status Bar.
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/junit-status-bar.png)
 
