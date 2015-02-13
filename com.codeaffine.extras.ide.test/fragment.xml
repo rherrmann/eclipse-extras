@@ -17,6 +17,22 @@
             id="com.codeaffine.extras.ide.test.TestLaunchConfigurationTypeImage">
       </launchConfigurationTypeImage>
    </extension>
+   <extension
+         point="org.eclipse.debug.core.launchModes">
+      <launchMode
+            label="Test Launch Mode"
+            launchAsLabel="Test Launch As"
+            mode="com.codeaffine.extras.ide.test.TestLaunchMode">
+      </launchMode>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchModes">
+      <launchMode
+            label="Test Launch Mode"
+            launchAsLabel="As Test Launch Mode"
+            mode="com.codeaffine.extras.ide.test.TestLaunchMode">
+      </launchMode>
+   </extension>
       <extension point="org.eclipse.ui.views">
       <view
             allowMultiple="false"

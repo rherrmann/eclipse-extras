@@ -1,5 +1,7 @@
 package com.codeaffine.extras.ide.internal.launch;
 
+import static com.codeaffine.extras.ide.internal.IDEExtrasPlugin.PLUGIN_ID;
+import static java.text.MessageFormat.format;
 import static org.eclipse.debug.ui.DebugUITools.openLaunchConfigurationDialog;
 import static org.eclipse.jface.dialogs.IDialogConstants.CANCEL_ID;
 import static org.eclipse.jface.dialogs.IDialogConstants.CANCEL_LABEL;
@@ -75,6 +77,7 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
       @Override
       public void propertyChange( PropertyChangeEvent event ) {
         updateOkButtonLabel();
+        updateStatus();
       }
     } );
     menuManager.add( action );
@@ -122,7 +125,15 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
 
   @Override
   protected IStatus validateItem( Object item ) {
-    return Status.OK_STATUS;
+    IStatus result = new Status( IStatus.OK, PLUGIN_ID, "" );
+    ILaunchConfiguration launchConfig = ( ILaunchConfiguration )item;
+    ILaunchMode launchMode = new LaunchModeSetting( launchManager, getDialogSettings() ).getLaunchMode();
+    if( !supportsLaunchMode( launchConfig, launchMode ) ) {
+      String label = launchMode.getLabel().replace( "&", "" );
+      String message = format( "Selection cannot be launched in ''{0}'' mode", label );
+      result = new Status( IStatus.ERROR, PLUGIN_ID, message );
+    }
+    return result;
   }
 
   @Override
@@ -198,6 +209,26 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     if( okButton != null && launchMode != null ) {
       okButton.setText( launchMode.getLabel() );
       okButton.getParent().layout();
+    }
+  }
+
+  private void updateStatus() {
+    StructuredSelection selection = getSelectedItems();
+    IStatus totalStatus = Status.OK_STATUS;
+    for( Object item : selection.toArray() ) {
+      IStatus itemStatus = validateItem( item );
+      if( !itemStatus.isOK() ) {
+        totalStatus = itemStatus;
+      }
+    }
+    updateStatus( totalStatus );
+  }
+
+  private static boolean supportsLaunchMode( ILaunchConfiguration launchConfig, ILaunchMode launchMode ) {
+    try {
+      return launchConfig.supportsMode( launchMode.getIdentifier() );
+    } catch( CoreException ce ) {
+      return false;
     }
   }
 

@@ -8,8 +8,10 @@ import java.util.Comparator;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jface.dialogs.DialogSettings;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.widgets.Button;
@@ -19,6 +21,8 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
+import com.codeaffine.extras.ide.test.LaunchManagerHelper;
+import com.codeaffine.extras.ide.test.LaunchModeHelper;
 
 public class LaunchSelectionDialogPDETest {
 
@@ -28,10 +32,23 @@ public class LaunchSelectionDialogPDETest {
   private TestableLaunchSelectionDialog dialog;
 
   @Test
-  public void testValidateItem() {
-    IStatus status = dialog.validateItem( null );
+  public void testValidateItemWithSupportedLaunchMode() throws CoreException {
+    ILaunchConfigurationWorkingCopy launchConfig = LaunchManagerHelper.createLaunchConfig();
+
+    IStatus status = dialog.validateItem( launchConfig );
 
     assertThat( status.isOK() ).isTrue();
+  }
+
+  @Test
+  public void testValidateItemWithUnsupportedLaunchMode() throws CoreException {
+    LaunchModeSetting launchModeSetting = getLaunchModeSettings();
+    launchModeSetting.setLaunchModeId( LaunchModeHelper.TEST_LAUNCH_MODE );
+    ILaunchConfigurationWorkingCopy launchConfig = LaunchManagerHelper.createLaunchConfig();
+
+    IStatus status = dialog.validateItem( launchConfig );
+
+    assertThat( status.getSeverity() ).isEqualTo( IStatus.ERROR );
   }
 
   @Test
@@ -102,9 +119,18 @@ public class LaunchSelectionDialogPDETest {
     dialog.setBlockOnOpen( false );;
   }
 
+  private LaunchModeSetting getLaunchModeSettings() {
+    ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+    IDialogSettings dialogSettings = dialog.getDialogSettings();
+    return new LaunchModeSetting( launchManager, dialogSettings );
+  }
+
   public static class TestableLaunchSelectionDialog extends LaunchSelectionDialog {
+    private final DialogSettings dialogSettings;
+
     public TestableLaunchSelectionDialog( Shell shell ) {
       super( shell );
+      dialogSettings = new DialogSettings( "TestableLaunchSelectionDialog" );
     }
 
     @Override
@@ -115,6 +141,11 @@ public class LaunchSelectionDialogPDETest {
     @Override
     protected Button getButton( int id ) {
       return super.getButton( id );
+    }
+
+    @Override
+    protected IDialogSettings getDialogSettings() {
+      return dialogSettings;
     }
   }
 }

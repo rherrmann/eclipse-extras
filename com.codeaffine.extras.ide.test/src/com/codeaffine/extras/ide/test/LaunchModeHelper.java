@@ -8,6 +8,8 @@ import org.eclipse.debug.core.ILaunchMode;
 
 public class LaunchModeHelper {
 
+  public static final String TEST_LAUNCH_MODE = "com.codeaffine.extras.ide.test.TestLaunchMode";
+
   public static ILaunchMode createLaunchMode( String identifier ) {
     return createLaunchMode( identifier, "Label of " + identifier );
   }
