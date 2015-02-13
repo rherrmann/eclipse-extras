@@ -28,7 +28,7 @@ If the currently active editor shows a file from the workspace, the key sequence
 The key binding <kbd>Ctrl+Shift+Q</kbd> closes the currently active view. Just like <kbd>Ctrl+W</kbd> closes the active editor, there is now also a key binding to close the active view. 
 
 ### Launch Configuration Selection Dialog
-Much like the _Open Type_ or _Open Resource_ dialog, the <kbd>Alt+F11</kbd> key binding opens a dialog that lists all launch configurations. The selected launch configuration(s) can be started or edited prior to starting. The launch mode (debug, run, profile, etc) to used can be changed through the Default Launch Mode drop menu menu.
+Much like the _Open Type_ or _Open Resource_ dialog, the <kbd>Alt+F11</kbd> key binding opens a dialog that lists all launch configurations. The selected launch configuration(s) can be started or edited prior to starting. The launch mode (debug, run, profile, etc) to be used can be changed through the Default Launch Mode drop menu menu.
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/launch-config-dialog.png)
 
