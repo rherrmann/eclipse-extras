@@ -26,6 +26,7 @@ public class JUnitStatusBarPreferencePage
 
   public JUnitStatusBarPreferencePage() {
     super( "JUnit Status Bar", FieldEditorPreferencePage.GRID );
+    noDefaultAndApplyButton();
   }
 
   @Override
