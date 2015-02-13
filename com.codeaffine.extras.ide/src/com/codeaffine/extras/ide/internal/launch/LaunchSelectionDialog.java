@@ -96,12 +96,10 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
 
   @Override
   protected void buttonPressed( int buttonId ) {
-    switch( buttonId ) {
-      case EDIT_ID:
-        editSelectedLaunchConfig();
-      break;
-      default:
-        super.buttonPressed( buttonId );
+    if( buttonId == EDIT_ID ) {
+      editSelectedLaunchConfig();
+    } else {
+      super.buttonPressed( buttonId );
     }
   }
 
