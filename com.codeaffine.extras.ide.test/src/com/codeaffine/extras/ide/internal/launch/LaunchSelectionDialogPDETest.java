@@ -19,8 +19,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
-import com.codeaffine.extras.ide.internal.launch.LaunchConfigComparator;
-import com.codeaffine.extras.ide.internal.launch.LaunchSelectionDialog;
 
 public class LaunchSelectionDialogPDETest {
 

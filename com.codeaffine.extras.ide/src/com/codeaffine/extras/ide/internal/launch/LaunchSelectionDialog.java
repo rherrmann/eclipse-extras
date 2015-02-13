@@ -1,5 +1,11 @@
 package com.codeaffine.extras.ide.internal.launch;
 
+import static org.eclipse.debug.ui.DebugUITools.openLaunchConfigurationDialog;
+import static org.eclipse.jface.dialogs.IDialogConstants.CANCEL_ID;
+import static org.eclipse.jface.dialogs.IDialogConstants.CANCEL_LABEL;
+import static org.eclipse.jface.dialogs.IDialogConstants.OK_ID;
+import static org.eclipse.jface.dialogs.IDialogConstants.OK_LABEL;
+
 import java.util.Comparator;
 
 import org.eclipse.core.runtime.CoreException;
@@ -10,15 +16,23 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchMode;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.debug.ui.ILaunchGroup;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.dialogs.DialogSettings;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
 
@@ -28,6 +42,7 @@ import com.codeaffine.extras.ide.internal.launch.LaunchConfigLabelProvider.Label
 
 public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
 
+  static final int EDIT_ID = IDialogConstants.CLIENT_ID + 2;
 
   private final ILaunchManager launchManager;
 
@@ -67,8 +82,27 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
 
   @Override
   protected void createButtonsForButtonBar( Composite parent ) {
-    super.createButtonsForButtonBar( parent );
+    GridLayout parentLayout = ( GridLayout )parent.getLayout();
+    parentLayout.makeColumnsEqualWidth = false;
+    Button editButton = createButton( parent, EDIT_ID, "&Edit...", false );
+    setButtonLayoutData( editButton );
+    new Label( parent, SWT.NONE ).setLayoutData( new GridData( 5, 0 ) );
+    parentLayout.numColumns++;
+    createButton( parent, OK_ID, OK_LABEL, true );
+    createButton( parent, CANCEL_ID, CANCEL_LABEL, false );
     updateOkButtonLabel();
+    updateEditButtonEnablement( StructuredSelection.EMPTY );
+  }
+
+  @Override
+  protected void buttonPressed( int buttonId ) {
+    switch( buttonId ) {
+      case EDIT_ID:
+        editSelectedLaunchConfig();
+      break;
+      default:
+        super.buttonPressed( buttonId );
+    }
   }
 
   @Override
@@ -80,6 +114,12 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
   protected IDialogSettings getDialogSettings() {
     IDialogSettings dialogSettings = IDEExtrasPlugin.getInstance().getDialogSettings();
     return DialogSettings.getOrCreateSection( dialogSettings, "LaunchSelectionDialog" );
+  }
+
+  @Override
+  protected void handleSelected( StructuredSelection selection ) {
+    super.handleSelected( selection );
+    updateEditButtonEnablement( selection );
   }
 
   @Override
@@ -115,8 +155,46 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     return new LaunchConfigLabelProvider( shell.getDisplay(), this, labelMode );
   }
 
+  private void editSelectedLaunchConfig() {
+    StructuredSelection selection = getSelectedItems();
+    ILaunchConfiguration launchConfig = ( ILaunchConfiguration )selection.getFirstElement();
+    if( editLaunchConfig( launchConfig ) ) {
+      setReturnCode( Window.CANCEL );
+      close();
+    } else {
+      refresh();
+    }
+  }
+
+  private boolean editLaunchConfig( ILaunchConfiguration launchConfig ) {
+    Shell shell = getShell();
+    String launchGroup = getLaunchGroupIdentifier();
+    return openLaunchConfigurationDialog( shell, launchConfig, launchGroup, null ) == Window.OK;
+  }
+
+  private String getLaunchGroupIdentifier() {
+    String result = null;
+    String launchModeId = getLaunchModeId();
+    ILaunchGroup[] launchGroups = DebugUITools.getLaunchGroups();
+    for( int i = 0; result == null && i < launchGroups.length; i++ ) {
+      ILaunchGroup launchGroup = launchGroups[ i ];
+      if( launchGroup.getMode().equals( launchModeId ) && launchGroup.getCategory() == null ) {
+        result = launchGroup.getIdentifier();
+      }
+    }
+    return result;
+  }
+
+  private void updateEditButtonEnablement( StructuredSelection selection ) {
+    Button editButton = getButton( EDIT_ID );
+    if( editButton != null ) {
+      boolean enabled = selection.size() == 1 && selection.getFirstElement() instanceof ILaunchConfiguration;
+      editButton.setEnabled( enabled );
+    }
+  }
+
   private void updateOkButtonLabel() {
-    Button okButton = getButton( IDialogConstants.OK_ID );
+    Button okButton = getButton( OK_ID );
     LaunchModeSetting launchModeSetting = new LaunchModeSetting( launchManager, getDialogSettings() );
     ILaunchMode launchMode = launchModeSetting.getLaunchMode();
     if( okButton != null && launchMode != null ) {
