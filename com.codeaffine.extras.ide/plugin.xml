@@ -363,7 +363,7 @@
       </transfer>
       <transfer
             icon="icons/elcl16/run-debug-prefs.png"
-            id="com.codeaffine.extras.ide.transfer1"
+            id="com.codeaffine.extras.ide.internal.DebugTransfer"
             name="Run/Debug Preferences">
          <mapping
                scope="instance">
@@ -400,6 +400,67 @@
          </mapping>
          <description>
             Run/Debug and all sub preference pages
+         </description>
+      </transfer>
+      <transfer
+            icon="icons/elcl16/xml-editor-prefs.gif"
+            id="com.codeaffine.extras.ide.internal.XmlEditorTransfer"
+            name="XML Editor">
+         <mapping scope="instance">
+            <entry node="org.eclipse.wst.xml.core">
+               <key name="outputCodeset"></key>
+               <key name="lineWidth"></key>
+               <key name="splitMultiAttrs"></key>
+               <key name="alignEndBracket"></key>
+               <key name="preserveCDATAContent"></key>
+               <key name="clearAllBlankLines"></key>
+               <key name="formatCommentText"></key>
+               <key name="formatCommentJoinLines"></key>
+               <key name="spaceBeforeEmptyCloseTag"></key>
+               <key name="indentationChar"></key>
+               <key name="indentationSize"></key>
+               <key name="useInferredGrammar"></key>
+            </entry>
+            <entry node="org.eclipse.wst.xml.ui">
+               <key name="suggestionStrategy"></key>
+               <key name="autoPropose"></key>
+               <key name="autoProposeCode"></key>
+               <key name="autoProposeDelay"></key>
+               <key name="insertSingleSuggestion"></key>
+               <key match="prefix" name="xml_content_assist_"></key>
+               <key name="org.eclipse.wst.sse.ui.custom_templates"></key>
+               <key name="removeEndTags"></key>
+               <key name="closeBrackets"></key>
+               <key name="closeStrings"></key>
+               <key name="completeComments"></key>
+               <key name="completeEndTags"></key>
+               <key name="completeElements"></key>
+            </entry>
+            <!-- Syntax Coloring -->
+            <entry node="org.eclipse.wst.xml.ui">
+               <key name="tagAttributeName"></key>
+               <key name="tagAttributeEquals"></key>
+               <key name="tagAttributeValue"></key>
+               <key name="cdataText"></key>
+               <key name="cdataBorder"></key>
+               <key name="commentText"></key>
+               <key name="commentBorder"></key>
+               <key name="xmlContent"></key>
+               <key name="declBorder"></key>
+               <key name="doctypeName"></key>
+               <key name="doctypeExternalPubref"></key>
+               <key name="doctypeExternalSysref"></key>
+               <key name="doctypeExternalId"></key>
+               <key name="entityReference"></key>
+               <key name="piContent"></key>
+               <key name="piBorder"></key>
+               <key name="tagName"></key>
+               <key name="tagBorder"></key>
+            </entry>
+            
+         </mapping>
+         <description>
+            XML editor preferences
          </description>
       </transfer>
    </extension>
