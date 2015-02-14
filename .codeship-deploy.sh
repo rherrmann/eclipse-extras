@@ -24,7 +24,7 @@ cp -rf ../com.codeaffine.extras.repository/target/repository/* ./repository
 
 # add, commit and push files
 git add -f .
-git commit -m "[ci skip] Deploy Travis build $TRAVIS_BUILD_NUMBER to gh-pages"
+git commit -m "[ci skip][skip ci] Deploy Codeship build $CI_BUILD_NUMBER to gh-pages"
 git push -fq origin gh-pages > /dev/null 2>&1 || error_exit "Error uploading the build result to gh-pages"
 
 # go back to the directory where we started
