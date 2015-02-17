@@ -36,6 +36,7 @@ Much like the _Open Type_ or _Open Resource_ dialog, the <kbd>Alt+F11</kbd> key 
 Eclipse Extras provides extensions to the Export/Import wizards to transfer general workbench preferences. This allows to transfer settings for:
 * General Editor
 * Text Editor
+* XML Editor
 * Workbench Appearance
 * Workspace
 * Search
