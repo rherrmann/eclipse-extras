@@ -236,6 +236,10 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
   }
 
   private class LaunchConfigItemsFilter extends ItemsFilter {
+    LaunchConfigItemsFilter() {
+      super( new LaunchConfigSearchPattern() );
+    }
+
     @Override
     public boolean matchItem( Object item ) {
       boolean result = false;
