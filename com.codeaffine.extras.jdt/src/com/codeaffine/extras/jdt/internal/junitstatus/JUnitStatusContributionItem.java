@@ -1,7 +1,6 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
 import org.eclipse.jdt.junit.JUnitCore;
-import org.eclipse.jdt.junit.TestRunListener;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
@@ -9,7 +8,6 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -17,7 +15,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.menus.WorkbenchWindowControlContribution;
 import org.eclipse.ui.views.IViewDescriptor;
@@ -29,7 +26,7 @@ public class JUnitStatusContributionItem extends WorkbenchWindowControlContribut
   private static final String JUNIT_VIEW_ID = "org.eclipse.jdt.junit.ResultView";
 
   private ResourceManager resourceManager;
-  private TestRunListener testRunListener;
+  private JUnitTestRunListener testRunListener;
   private ToolItem junitViewButton;
   private JUnitProgressBar progressBar;
   private Label spacingLabel;
@@ -47,7 +44,7 @@ public class JUnitStatusContributionItem extends WorkbenchWindowControlContribut
   @Override
   public void dispose() {
     detachTestRunListener();
-    disposeResourcemanager();
+    disposeResourceManager();
     super.dispose();
   }
 
@@ -59,7 +56,7 @@ public class JUnitStatusContributionItem extends WorkbenchWindowControlContribut
     junitViewButton.setImage( getJUnitImage() );
     progressBar = new JUnitProgressBar( result );
     spacingLabel = new Label( result, SWT.NONE );
-    testRunListener = new JUnitTestRunListener( resourceManager, new JUnitProgressUI() );
+    testRunListener = new JUnitTestRunListener( resourceManager, new JUnitProgressUI( progressBar ) );
     return result;
   }
 
@@ -99,26 +96,15 @@ public class JUnitStatusContributionItem extends WorkbenchWindowControlContribut
   private void detachTestRunListener() {
     if( testRunListener != null ) {
       JUnitCore.removeTestRunListener( testRunListener );
+      testRunListener.dispose();
       testRunListener = null;
     }
   }
 
-  private void disposeResourcemanager() {
+  private void disposeResourceManager() {
     if( resourceManager != null ) {
       resourceManager.dispose();
       resourceManager = null;
-    }
-  }
-
-  private class JUnitProgressUI implements ProgressUI {
-    @Override
-    public void update( String text, int textAlignment, Color barColor, int selection, int maximum ) {
-      progressBar.setValues( text, textAlignment, barColor, selection, maximum );
-    }
-
-    @Override
-    public Widget getWidget() {
-      return progressBar;
     }
   }
 }

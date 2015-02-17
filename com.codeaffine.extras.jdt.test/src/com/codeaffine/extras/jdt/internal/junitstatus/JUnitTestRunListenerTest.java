@@ -11,6 +11,7 @@ import static org.eclipse.jface.resource.JFaceResources.getResources;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -18,6 +19,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.ILaunchesListener2;
 import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestElement;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
@@ -31,6 +39,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InOrder;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
 
@@ -40,6 +50,8 @@ public class JUnitTestRunListenerTest {
   public final DisplayHelper displayHelper = new DisplayHelper();
 
   private ResourceManager resourceManager;
+  private ILaunchManager launchManager;
+  private List<ILaunchesListener2> launchesListeners;
   private ProgressUI progressUI;
   private JUnitTestRunListener testRunListener;
 
@@ -116,6 +128,35 @@ public class JUnitTestRunListenerTest {
     order.verify( progressUI).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
     order.verify( progressUI, times( 2 ) ).update( "2 / 2", SWT.CENTER, successColor(), 2, 2 );
     order.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void testLaunchTerminatedBeforeSessionStarted() {
+    ITestRunSession testRunSession = mockTestRunSession( OK, mock( ITestCaseElement.class ) );
+    testRunListener.sessionLaunched( testRunSession );
+
+    ILaunch launch = mockLaunch( testRunSession.getTestRunName() );
+    fireLaunchTerminated( launch );
+    DisplayHelper.flushPendingEvents();
+
+    InOrder order = inOrder( progressUI );
+    order.verify( progressUI ).update( "Starting...", SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).update( "", SWT.LEFT, null, 0, 0 );
+  }
+
+  @Test
+  public void testLaunchTerminatedAfterSessionStarted() {
+    ITestRunSession testRunSession = mockTestRunSession( OK, mock( ITestCaseElement.class ) );
+    testRunListener.sessionLaunched( testRunSession );
+    testRunListener.sessionStarted( testRunSession );
+
+    ILaunch launch = mockLaunch( testRunSession.getTestRunName() );
+    fireLaunchTerminated( launch );
+    DisplayHelper.flushPendingEvents();
+
+    InOrder order = inOrder( progressUI );
+    order.verify( progressUI ).update( "Starting...", SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI, times( 2 ) ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
   }
 
   @Test
@@ -215,12 +256,13 @@ public class JUnitTestRunListenerTest {
     order.verifyNoMoreInteractions();
   }
 
-
   @Before
   public void setUp() {
+    launchesListeners = new ArrayList<ILaunchesListener2>();
+    launchManager = mockLaunchManager();
     resourceManager = new LocalResourceManager( getResources( displayHelper.getDisplay() ) );
     progressUI = createProgressUI();
-    testRunListener = new JUnitTestRunListener( resourceManager, progressUI );
+    testRunListener = new JUnitTestRunListener( launchManager, resourceManager, progressUI );
   }
 
   @After
@@ -234,9 +276,30 @@ public class JUnitTestRunListenerTest {
     return result;
   }
 
+  private ILaunchManager mockLaunchManager() {
+    ILaunchManager result = mock( ILaunchManager.class );
+    doAnswer( new Answer<Object>() {
+      @Override
+      public Object answer( InvocationOnMock invocation ) {
+        launchesListeners.add( ( ILaunchesListener2 )invocation.getArguments()[ 0 ] );
+        return null;
+      }
+    } ).when( result ).addLaunchListener( any( ILaunchesListener2.class ) );
+    return result;
+  }
+
+  private static ILaunch mockLaunch( String launchConfigName ) {
+    ILaunch result = mock( ILaunch.class );
+    ILaunchConfiguration launchConfig = mock( ILaunchConfiguration.class );
+    when( launchConfig.getName() ).thenReturn( launchConfigName );
+    when( result.getLaunchConfiguration() ).thenReturn( launchConfig );
+    return result;
+  }
+
   private static ITestRunSession mockTestRunSession( Result testResult, ITestElement... children )
   {
     ITestRunSession result = mock( ITestRunSession.class );
+    when( result.getTestRunName() ).thenReturn( "test-run-name" );
     when( result.getTestResult( true ) ).thenReturn( testResult );
     when( result.getChildren() ).thenReturn( children );
     for( ITestElement child : children ) {
@@ -250,6 +313,12 @@ public class JUnitTestRunListenerTest {
     ITestRunSession testRunSession = mockTestRunSession( testResult, result );
     when( result.getTestRunSession() ).thenReturn( testRunSession );
     return result;
+  }
+
+  private void fireLaunchTerminated( ILaunch launch ) {
+    for( ILaunchesListener2 launchesListener : launchesListeners ) {
+      launchesListener.launchesTerminated( new ILaunch[] { launch } );
+    }
   }
 
   private Color successColor() {

@@ -7,6 +7,10 @@ import static org.eclipse.jdt.junit.model.ITestElement.Result.FAILURE;
 
 import java.text.MessageFormat;
 
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.junit.TestRunListener;
 import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
@@ -18,6 +22,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 
 import com.codeaffine.eclipse.swt.util.UIThreadSynchronizer;
+import com.google.common.base.Objects;
 
 public class JUnitTestRunListener extends TestRunListener {
 
@@ -26,6 +31,8 @@ public class JUnitTestRunListener extends TestRunListener {
   static final RGB STOPPED_RGB = new RGB( 120, 120, 120 );
   static final String STARTING = "Starting...";
 
+  private final LaunchesAdapter launchListener;
+  private final ILaunchManager launchManager;
   private final ResourceManager resourceManager;
   private final ProgressUI progressUI;
   private volatile ITestRunSession currentSession;
@@ -33,8 +40,22 @@ public class JUnitTestRunListener extends TestRunListener {
   private int currentTest;
 
   public JUnitTestRunListener( ResourceManager resourceManager, ProgressUI progressUI ) {
+    this( DebugPlugin.getDefault().getLaunchManager(), resourceManager, progressUI );
+  }
+
+  public JUnitTestRunListener( ILaunchManager launchManager,
+                               ResourceManager resourceManager,
+                               ProgressUI progressUI )
+  {
+    this.launchListener = new LaunchTerminatedListener();
     this.resourceManager = resourceManager;
     this.progressUI = progressUI;
+    this.launchManager = launchManager;
+    this.launchManager.addLaunchListener( launchListener );
+  }
+
+  public void dispose() {
+    launchManager.removeLaunchListener( launchListener );
   }
 
   @Override
@@ -74,7 +95,11 @@ public class JUnitTestRunListener extends TestRunListener {
     asyncExec( new Runnable() {
       @Override
       public void run() {
-        updateProgressUI( testRunSession, currentTest, testCount );
+        if( testCount == 0 ) {
+          updateProgressUI( "" );
+        } else {
+          updateProgressUI( testRunSession, currentTest, testCount );
+        }
       }
     } );
   }
@@ -118,6 +143,27 @@ public class JUnitTestRunListener extends TestRunListener {
       rgb = SUCCESS_RGB;
     }
     return resourceManager.createColor( ColorDescriptor.createFrom( rgb ) );
+  }
+
+  private class LaunchTerminatedListener extends LaunchesAdapter {
+    @Override
+    public void launchesTerminated( ILaunch[] launches ) {
+      for( ILaunch launch : launches ) {
+        launchTerminated( launch );
+      }
+    }
+
+    private void launchTerminated( ILaunch launch ) {
+      if( matchesCurrentSession( launch.getLaunchConfiguration() ) ) {
+        sessionFinished( currentSession );
+      }
+    }
+
+    private boolean matchesCurrentSession( ILaunchConfiguration launchConfiguration ) {
+      return launchConfiguration != null
+          && currentSession != null
+          && Objects.equal( launchConfiguration.getName(), currentSession.getTestRunName() );
+    }
   }
 
 }
