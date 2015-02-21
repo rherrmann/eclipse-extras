@@ -16,6 +16,11 @@ public class JUnitProgressUI implements ProgressUI {
   }
 
   @Override
+  public void setToolTipText( String toolTipText ) {
+    progressBar.setToolTipText( toolTipText );
+  }
+
+  @Override
   public Widget getWidget() {
     return progressBar;
   }

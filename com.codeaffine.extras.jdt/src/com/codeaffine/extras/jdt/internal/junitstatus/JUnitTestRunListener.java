@@ -66,7 +66,7 @@ public class JUnitTestRunListener extends TestRunListener {
       public void run() {
         testCount = 0;
         currentTest = 0;
-        updateProgressUI( STARTING );
+        updateProgressUI( STARTING, testRunSession.getTestRunName() );
       }
     } );
   }
@@ -96,7 +96,7 @@ public class JUnitTestRunListener extends TestRunListener {
       @Override
       public void run() {
         if( testCount == 0 ) {
-          updateProgressUI( "" );
+          updateProgressUI( "", testRunSession.getTestRunName() );
         } else {
           updateProgressUI( testRunSession, currentTest, testCount );
         }
@@ -128,8 +128,9 @@ public class JUnitTestRunListener extends TestRunListener {
     progressUI.update( text, SWT.CENTER, barColor, currentTest, testCount );
   }
 
-  private  void updateProgressUI( String text ) {
+  private  void updateProgressUI( String text, String toolTipText ) {
     progressUI.update( text, SWT.LEFT, null, 0, 0 );
+    progressUI.setToolTipText( toolTipText );
   }
 
   private Color getProgressBarColor( ITestRunSession testRunSession ) {
