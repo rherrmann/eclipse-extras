@@ -26,7 +26,7 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
 	private Color barColor;
 
   public JUnitProgressBar( Composite parent ) {
-    super( parent, SWT.NONE );
+    super( parent, SWT.NO_BACKGROUND | SWT.DOUBLE_BUFFERED | SWT.NO_FOCUS );
     text = "";
     textAlignment = SWT.LEFT;
     textAnimation = new TextAnimation( this, this );

@@ -30,6 +30,13 @@ public class JUnitProgressBarTest {
   }
 
   @Test
+  public void testStyle() {
+    assertThat( progressBar.getStyle() & SWT.NO_BACKGROUND ).isNotZero();
+    assertThat( progressBar.getStyle() & SWT.DOUBLE_BUFFERED ).isNotZero();
+    assertThat( progressBar.getStyle() & SWT.NO_FOCUS ).isNotZero();
+  }
+
+  @Test
   public void testSetText() {
     String expected = "text";
     progressBar.setText( expected );
