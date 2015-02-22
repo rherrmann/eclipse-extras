@@ -30,9 +30,17 @@ public class JUnitProgressBarTest {
   }
 
   @Test
-  public void testStyle() {
+  public void testStyleNoBackground() {
     assertThat( progressBar.getStyle() & SWT.NO_BACKGROUND ).isNotZero();
+  }
+
+  @Test
+  public void testStyleDoubleBuffered() {
     assertThat( progressBar.getStyle() & SWT.DOUBLE_BUFFERED ).isNotZero();
+  }
+
+  @Test
+  public void testStyleNoFocus() {
     assertThat( progressBar.getStyle() & SWT.NO_FOCUS ).isNotZero();
   }
 
