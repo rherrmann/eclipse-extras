@@ -19,6 +19,7 @@ public class JUnitProgressBarTest {
 
   @Rule
   public final DisplayHelper displayHelper = new DisplayHelper();
+  @Rule
   public final ConditionalIgnoreRule ignoreRule = new ConditionalIgnoreRule();
 
   private JUnitProgressBar progressBar;
