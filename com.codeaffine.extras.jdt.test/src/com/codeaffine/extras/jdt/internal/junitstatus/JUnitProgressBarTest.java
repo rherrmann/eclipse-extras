@@ -10,13 +10,16 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
-
+import com.codeaffine.eclipse.swt.test.util.SWTIgnoreConditions.NonWindowsPlatform;
+import com.codeaffine.test.util.junit.ConditionalIgnoreRule;
+import com.codeaffine.test.util.junit.ConditionalIgnoreRule.ConditionalIgnore;
 
 
 public class JUnitProgressBarTest {
 
   @Rule
   public final DisplayHelper displayHelper = new DisplayHelper();
+  public final ConditionalIgnoreRule ignoreRule = new ConditionalIgnoreRule();
 
   private JUnitProgressBar progressBar;
 
@@ -29,6 +32,7 @@ public class JUnitProgressBarTest {
     assertThat( progressBar.getMaximum() ).isEqualTo( 0 );
   }
 
+  @ConditionalIgnore(condition=NonWindowsPlatform.class)
   @Test
   public void testStyleNoBackground() {
     assertThat( progressBar.getStyle() & SWT.NO_BACKGROUND ).isNotZero();
