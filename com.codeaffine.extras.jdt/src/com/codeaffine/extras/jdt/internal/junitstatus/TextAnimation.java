@@ -22,7 +22,7 @@ public class TextAnimation implements Runnable {
   private String text;
   private int dotCount;
 
-  public TextAnimation( Widget widget , TextAnimationPainter textAnimationPainter  ) {
+  public TextAnimation( Widget widget, TextAnimationPainter textAnimationPainter  ) {
     this( widget, textAnimationPainter, DEFAULT_ANIMATION_INTERVAL );
   }
 

@@ -1,6 +1,8 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -106,6 +108,21 @@ public class JUnitProgressBarTest {
     assertThat( progressBar.getBarColor() ).isEqualTo( barColor );
     assertThat( progressBar.getSelection() ).isEqualTo( selection );
     assertThat( progressBar.getMaximum() ).isEqualTo( maximum );
+  }
+
+  @Test
+  public void testSetValueWithUnchangedArguments() {
+    progressBar = spy( progressBar );
+    String text = "text";
+    int textAlignment = SWT.CENTER;
+    Color barColor = displayHelper.getDisplay().getSystemColor( SWT.COLOR_RED );
+    int selection = 1;
+    int maximum = 100;
+    progressBar.setValues( text, textAlignment, barColor, selection, maximum );
+
+    progressBar.setValues( text, textAlignment, barColor, selection, maximum );
+
+    verify( progressBar ).redraw();
   }
 
   @Test

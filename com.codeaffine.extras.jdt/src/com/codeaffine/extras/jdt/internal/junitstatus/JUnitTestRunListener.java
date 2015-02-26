@@ -1,11 +1,10 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
 import static java.lang.Integer.valueOf;
+import static java.text.MessageFormat.format;
 import static org.eclipse.jdt.junit.model.ITestElement.ProgressState.STOPPED;
 import static org.eclipse.jdt.junit.model.ITestElement.Result.ERROR;
 import static org.eclipse.jdt.junit.model.ITestElement.Result.FAILURE;
-
-import java.text.MessageFormat;
 
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -13,6 +12,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.junit.TestRunListener;
 import org.eclipse.jdt.junit.model.ITestCaseElement;
+import org.eclipse.jdt.junit.model.ITestElement;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.eclipse.jface.resource.ColorDescriptor;
@@ -21,7 +21,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 
-import com.codeaffine.eclipse.swt.util.UIThreadSynchronizer;
 import com.google.common.base.Objects;
 
 public class JUnitTestRunListener extends TestRunListener {
@@ -36,8 +35,8 @@ public class JUnitTestRunListener extends TestRunListener {
   private final ResourceManager resourceManager;
   private final ProgressUI progressUI;
   private volatile ITestRunSession currentSession;
-  private int testCount;
-  private int currentTest;
+  private volatile int testCount;
+  private volatile int currentTest;
 
   public JUnitTestRunListener( ResourceManager resourceManager, ProgressUI progressUI ) {
     this( DebugPlugin.getDefault().getLaunchManager(), resourceManager, progressUI );
@@ -61,69 +60,48 @@ public class JUnitTestRunListener extends TestRunListener {
   @Override
   public void sessionLaunched( final ITestRunSession testRunSession ) {
     currentSession = testRunSession;
-    asyncExec( new Runnable() {
-      @Override
-      public void run() {
-        testCount = 0;
-        currentTest = 0;
-        updateProgressUI( STARTING, testRunSession.getTestRunName() );
-      }
-    } );
+    testCount = 0;
+    currentTest = 0;
+    updateProgressUI( STARTING, testRunSession.getTestRunName() );
   }
 
   @Override
-  public void sessionStarted( final ITestRunSession testRunSession ) {
-    if( currentSession != testRunSession ) {
-      return;
+  public void sessionStarted( ITestRunSession testRunSession ) {
+    if( belongsToCurrentSession( testRunSession ) ) {
+      testCount = JUnitModelUtil.countTestCases( testRunSession );
+      currentTest = 0;
+      updateProgressUI( testRunSession );
     }
-    asyncExec( new Runnable() {
-      @Override
-      public void run() {
-        testCount = JUnitModelUtil.countTestCases( testRunSession );
-        currentTest = 0;
-        updateProgressUI( testRunSession, currentTest, testCount );
-      }
-    } );
   }
 
   @Override
-  public void sessionFinished( final ITestRunSession testRunSession ) {
-    if( currentSession != testRunSession ) {
-      return;
-    }
-    currentSession = null;
-    asyncExec( new Runnable() {
-      @Override
-      public void run() {
-        if( testCount == 0 ) {
-          updateProgressUI( "", testRunSession.getTestRunName() );
-        } else {
-          updateProgressUI( testRunSession, currentTest, testCount );
-        }
+  public void sessionFinished( ITestRunSession testRunSession ) {
+    if( belongsToCurrentSession( testRunSession ) ) {
+      currentSession = null;
+      if( testCount == 0 ) {
+        updateProgressUI( "", testRunSession.getTestRunName() );
+      } else {
+        updateProgressUI( testRunSession );
       }
-    } );
+    }
   }
 
   @Override
-  public void testCaseFinished( final ITestCaseElement testCaseElement ) {
-    if( currentSession != testCaseElement.getTestRunSession() ) {
-      return;
+  public void testCaseFinished( ITestCaseElement testCaseElement ) {
+    if( belongsToCurrentSession( testCaseElement ) ) {
+      int temp = currentTest;
+      temp++;
+      currentTest = temp;
+      updateProgressUI( testCaseElement.getTestRunSession() );
     }
-    asyncExec( new Runnable() {
-      @Override
-      public void run() {
-        currentTest++;
-        updateProgressUI( testCaseElement.getTestRunSession(), currentTest, testCount );
-      }
-    } );
   }
 
-  private void asyncExec( Runnable runnable ) {
-    new UIThreadSynchronizer().asyncExec( progressUI.getWidget(), runnable );
+  private boolean belongsToCurrentSession( ITestElement testElement ) {
+    return currentSession == testElement.getTestRunSession();
   }
 
-  private void updateProgressUI( ITestRunSession testRunSession, int currentTest, int testCount ) {
-    String text = MessageFormat.format( "{0} / {1}", valueOf( currentTest ), valueOf( testCount ) );
+  private void updateProgressUI( ITestRunSession testRunSession  ) {
+    String text = format( "{0} / {1}", valueOf( currentTest ), valueOf( testCount ) );
     Color barColor = getProgressBarColor( testRunSession );
     progressUI.update( text, SWT.CENTER, barColor, currentTest, testCount );
   }

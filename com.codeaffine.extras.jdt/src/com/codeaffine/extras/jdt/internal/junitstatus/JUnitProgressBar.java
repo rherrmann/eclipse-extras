@@ -1,5 +1,7 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
+import static com.google.common.base.Objects.equal;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
@@ -30,28 +32,19 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
     text = "";
     textAlignment = SWT.LEFT;
     textAnimation = new TextAnimation( this, this );
-    addControlListener( new ControlAdapter() {
-      @Override
-      public void controlResized( ControlEvent event ) {
-        redraw();
-      }
-    } );
-    addPaintListener( new PaintListener() {
-      @Override
-      public void paintControl( PaintEvent event ) {
-        paint( event.gc );
-      }
-    } );
+    registerListeners();
 	}
 
   public void setValues( String text, int textAlignment, Color barColor, int selection, int maximum ) {
-    this.text = text;
-    this.textAnimation.setText( text );
-    this.textAlignment = textAlignment;
-    this.barColor = barColor;
-    this.selection = selection;
-    this.maximum = maximum;
-    redraw();
+    if( valuesChanged( text, textAlignment, barColor, selection, maximum ) ) {
+      this.text = text;
+      this.textAnimation.setText( text );
+      this.textAlignment = textAlignment;
+      this.barColor = barColor;
+      this.selection = selection;
+      this.maximum = maximum;
+      redraw();
+    }
   }
 
   public void setMaximum( int maximum ) {
@@ -112,6 +105,21 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
     return result;
   }
 
+  private void registerListeners() {
+    addControlListener( new ControlAdapter() {
+      @Override
+      public void controlResized( ControlEvent event ) {
+        redraw();
+      }
+    } );
+    addPaintListener( new PaintListener() {
+      @Override
+      public void paintControl( PaintEvent event ) {
+        paint( event.gc );
+      }
+    } );
+  }
+
   private void paint( GC gc ) {
     gc.fillRectangle( getClientArea() );
     drawBevelRect( gc );
@@ -168,6 +176,19 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
       result = 0;
     }
     return Math.min( clientArea.width - 2, result );
+  }
+
+  private boolean valuesChanged( String text,
+                                 int textAlignment,
+                                 Color barColor,
+                                 int selection,
+                                 int maximum )
+  {
+    return !equal( this.text, text )
+        || this.textAlignment != textAlignment
+        || !equal( this.barColor, barColor )
+        || this.selection != selection
+        || this.maximum != maximum;
   }
 
 }

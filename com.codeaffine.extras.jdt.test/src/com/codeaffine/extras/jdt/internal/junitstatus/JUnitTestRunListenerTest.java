@@ -1,6 +1,7 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
 import static com.codeaffine.extras.jdt.internal.junitstatus.JUnitTestRunListener.ERROR_RGB;
+import static com.codeaffine.extras.jdt.internal.junitstatus.JUnitTestRunListener.STARTING;
 import static com.codeaffine.extras.jdt.internal.junitstatus.JUnitTestRunListener.STOPPED_RGB;
 import static com.codeaffine.extras.jdt.internal.junitstatus.JUnitTestRunListener.SUCCESS_RGB;
 import static org.eclipse.jdt.junit.model.ITestElement.ProgressState.STOPPED;
@@ -60,9 +61,8 @@ public class JUnitTestRunListenerTest {
     ITestRunSession testRunSession = mockTestRunSession( OK );
 
     testRunListener.sessionLaunched( testRunSession );
-    DisplayHelper.flushPendingEvents();
 
-    verify( progressUI ).update( JUnitTestRunListener.STARTING, SWT.LEFT, null, 0, 0 );
+    verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
   }
 
   @Test
@@ -71,7 +71,6 @@ public class JUnitTestRunListenerTest {
     testRunListener.sessionLaunched( testRunSession );
 
     testRunListener.sessionStarted( testRunSession );
-    DisplayHelper.flushPendingEvents();
 
     verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
   }
@@ -81,11 +80,9 @@ public class JUnitTestRunListenerTest {
     ITestCaseElement testCaseElement = mockTestCaseElement( OK );
     testRunListener.sessionLaunched( testCaseElement.getTestRunSession() );
     testRunListener.sessionStarted( testCaseElement.getTestRunSession() );
-    DisplayHelper.flushPendingEvents();
     when( testCaseElement.getTestRunSession().getProgressState() ).thenReturn( STOPPED );
 
     testRunListener.sessionFinished( testCaseElement.getTestRunSession() );
-    DisplayHelper.flushPendingEvents();
 
     verify( progressUI ).update( "0 / 1", SWT.CENTER, stoppedColor(), 0, 1 );
   }
@@ -95,11 +92,9 @@ public class JUnitTestRunListenerTest {
     ITestCaseElement testCaseElement = mockTestCaseElement( ERROR );
     testRunListener.sessionLaunched( testCaseElement.getTestRunSession() );
     testRunListener.sessionStarted( testCaseElement.getTestRunSession() );
-    DisplayHelper.flushPendingEvents();
     when( testCaseElement.getTestRunSession().getProgressState() ).thenReturn( STOPPED );
 
     testRunListener.sessionFinished( testCaseElement.getTestRunSession() );
-    DisplayHelper.flushPendingEvents();
 
     verify( progressUI ).update( "0 / 1", SWT.CENTER, stoppedColor(), 0, 1 );
   }
@@ -117,13 +112,13 @@ public class JUnitTestRunListenerTest {
     testRunListener.sessionFinished( testRunSession1 );
     testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession2.getChildren()[ 0 ] );
     testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession2.getChildren()[ 1 ] );
+
     testRunListener.sessionFinished( testRunSession2 );
-    DisplayHelper.flushPendingEvents();
 
     InOrder order = inOrder( progressUI );
-    order.verify( progressUI ).update( "Starting...", SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
     order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
-    order.verify( progressUI ).update( "Starting...", SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
     order.verify( progressUI).update( "0 / 2", SWT.CENTER, successColor(), 0, 2 );
     order.verify( progressUI).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
     order.verify( progressUI, times( 2 ) ).update( "2 / 2", SWT.CENTER, successColor(), 2, 2 );
@@ -137,10 +132,9 @@ public class JUnitTestRunListenerTest {
 
     ILaunch launch = mockLaunch( testRunSession.getTestRunName() );
     fireLaunchTerminated( launch );
-    DisplayHelper.flushPendingEvents();
 
     InOrder order = inOrder( progressUI );
-    order.verify( progressUI ).update( "Starting...", SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
     order.verify( progressUI ).update( "", SWT.LEFT, null, 0, 0 );
   }
 
@@ -152,10 +146,9 @@ public class JUnitTestRunListenerTest {
 
     ILaunch launch = mockLaunch( testRunSession.getTestRunName() );
     fireLaunchTerminated( launch );
-    DisplayHelper.flushPendingEvents();
 
     InOrder order = inOrder( progressUI );
-    order.verify( progressUI ).update( "Starting...", SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
     order.verify( progressUI, times( 2 ) ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
   }
 
@@ -165,7 +158,6 @@ public class JUnitTestRunListenerTest {
     mockTestRunSession( OK, testCaseElement );
 
     testRunListener.testCaseStarted( testCaseElement );
-    DisplayHelper.flushPendingEvents();
 
     verify( progressUI, never() )
       .update( anyString(), anyInt(), any( Color.class ), anyInt(), anyInt() );
@@ -178,7 +170,6 @@ public class JUnitTestRunListenerTest {
     testRunListener.sessionStarted( testCaseElement.getTestRunSession() );
 
     testRunListener.testCaseFinished( testCaseElement );
-    DisplayHelper.flushPendingEvents();
 
     verify( progressUI ).update( "1 / 1", SWT.CENTER, successColor(), 1, 1 );
   }
@@ -190,7 +181,6 @@ public class JUnitTestRunListenerTest {
     testRunListener.sessionStarted( testCaseElement.getTestRunSession() );
 
     testRunListener.testCaseFinished( testCaseElement );
-    DisplayHelper.flushPendingEvents();
 
     verify( progressUI ).update( "1 / 1", SWT.CENTER, errorColor(), 1, 1 );
   }
@@ -202,7 +192,6 @@ public class JUnitTestRunListenerTest {
     testRunListener.sessionStarted( testCaseElement.getTestRunSession() );
 
     testRunListener.testCaseFinished( testCaseElement );
-    DisplayHelper.flushPendingEvents();
 
     verify( progressUI ).update( "1 / 1", SWT.CENTER, errorColor(), 1, 1 );
   }
@@ -218,12 +207,11 @@ public class JUnitTestRunListenerTest {
     testRunListener.sessionStarted( testRunSession2 );
     testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession1.getChildren()[ 0 ] );
     testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession2.getChildren()[ 0 ] );
-    DisplayHelper.flushPendingEvents();
 
     InOrder order = inOrder( progressUI );
-    order.verify( progressUI ).update( "Starting...", SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
     order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
-    order.verify( progressUI ).update( "Starting...", SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
     order.verify( progressUI ).update( "0 / 2", SWT.CENTER, successColor(), 0, 2 );
     order.verify( progressUI ).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
     order.verifyNoMoreInteractions();
@@ -243,13 +231,12 @@ public class JUnitTestRunListenerTest {
     testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession2.getChildren()[ 0 ] );
     testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession2.getChildren()[ 1 ] );
     testRunListener.sessionFinished( testRunSession2 );
-    DisplayHelper.flushPendingEvents();
 
     InOrder order = inOrder( progressUI );
-    order.verify( progressUI ).update( "Starting...", SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
     order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
     order.verify( progressUI, times( 2 ) ).update( "1 / 1", SWT.CENTER, successColor(), 1, 1 );
-    order.verify( progressUI ).update( "Starting...", SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
     order.verify( progressUI ).update( "0 / 2", SWT.CENTER, successColor(), 0, 2 );
     order.verify( progressUI ).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
     order.verify( progressUI, times( 2 ) ).update( "2 / 2", SWT.CENTER, successColor(), 2, 2 );
@@ -261,19 +248,13 @@ public class JUnitTestRunListenerTest {
     launchesListeners = new ArrayList<ILaunchesListener2>();
     launchManager = mockLaunchManager();
     resourceManager = new LocalResourceManager( getResources( displayHelper.getDisplay() ) );
-    progressUI = createProgressUI();
+    progressUI = mock( ProgressUI.class );
     testRunListener = new JUnitTestRunListener( launchManager, resourceManager, progressUI );
   }
 
   @After
   public void tearDown() {
     resourceManager.dispose();
-  }
-
-  private ProgressUI createProgressUI() {
-    ProgressUI result = mock( ProgressUI.class );
-    when( result.getWidget() ).thenReturn( displayHelper.createShell() );
-    return result;
   }
 
   private ILaunchManager mockLaunchManager() {
@@ -299,6 +280,7 @@ public class JUnitTestRunListenerTest {
   private static ITestRunSession mockTestRunSession( Result testResult, ITestElement... children )
   {
     ITestRunSession result = mock( ITestRunSession.class );
+    when( result.getTestRunSession() ).thenReturn( result );
     when( result.getTestRunName() ).thenReturn( "test-run-name" );
     when( result.getTestResult( true ) ).thenReturn( testResult );
     when( result.getChildren() ).thenReturn( children );
