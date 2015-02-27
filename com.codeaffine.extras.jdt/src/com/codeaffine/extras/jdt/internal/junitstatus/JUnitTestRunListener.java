@@ -1,5 +1,6 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
+import static com.google.common.base.Objects.equal;
 import static java.lang.Integer.valueOf;
 import static java.text.MessageFormat.format;
 import static org.eclipse.jdt.junit.model.ITestElement.ProgressState.STOPPED;
@@ -21,8 +22,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 
-import com.google.common.base.Objects;
-
 public class JUnitTestRunListener extends TestRunListener {
 
   static final RGB ERROR_RGB = new RGB( 159, 63, 63 );
@@ -34,7 +33,8 @@ public class JUnitTestRunListener extends TestRunListener {
   private final ILaunchManager launchManager;
   private final ResourceManager resourceManager;
   private final ProgressUI progressUI;
-  private volatile ITestRunSession currentSession;
+  private volatile int currentSessionHashCode;
+  private volatile String currentTestRunName;
   private volatile int testCount;
   private volatile int currentTest;
 
@@ -59,10 +59,12 @@ public class JUnitTestRunListener extends TestRunListener {
 
   @Override
   public void sessionLaunched( final ITestRunSession testRunSession ) {
-    currentSession = testRunSession;
+    currentSessionHashCode = testRunSession.hashCode();
+    currentTestRunName = testRunSession.getTestRunName();
     testCount = 0;
     currentTest = 0;
-    updateProgressUI( STARTING, testRunSession.getTestRunName() );
+    updateProgressUI( STARTING );
+    progressUI.setToolTipText( testRunSession.getTestRunName() );
   }
 
   @Override
@@ -77,12 +79,7 @@ public class JUnitTestRunListener extends TestRunListener {
   @Override
   public void sessionFinished( ITestRunSession testRunSession ) {
     if( belongsToCurrentSession( testRunSession ) ) {
-      currentSession = null;
-      if( testCount == 0 ) {
-        updateProgressUI( "", testRunSession.getTestRunName() );
-      } else {
-        updateProgressUI( testRunSession );
-      }
+      finishSession();
     }
   }
 
@@ -97,7 +94,13 @@ public class JUnitTestRunListener extends TestRunListener {
   }
 
   private boolean belongsToCurrentSession( ITestElement testElement ) {
-    return currentSession == testElement.getTestRunSession();
+    return currentSessionHashCode == testElement.getTestRunSession().hashCode();
+  }
+
+  private void finishSession() {
+    if( testCount == 0 ) {
+      updateProgressUI( "" );
+    }
   }
 
   private void updateProgressUI( ITestRunSession testRunSession  ) {
@@ -106,9 +109,8 @@ public class JUnitTestRunListener extends TestRunListener {
     progressUI.update( text, SWT.CENTER, barColor, currentTest, testCount );
   }
 
-  private  void updateProgressUI( String text, String toolTipText ) {
+  private  void updateProgressUI( String text ) {
     progressUI.update( text, SWT.LEFT, null, 0, 0 );
-    progressUI.setToolTipText( toolTipText );
   }
 
   private Color getProgressBarColor( ITestRunSession testRunSession ) {
@@ -121,6 +123,10 @@ public class JUnitTestRunListener extends TestRunListener {
     } else {
       rgb = SUCCESS_RGB;
     }
+    return getColor( rgb );
+  }
+
+  private Color getColor( RGB rgb ) {
     return resourceManager.createColor( ColorDescriptor.createFrom( rgb ) );
   }
 
@@ -134,14 +140,12 @@ public class JUnitTestRunListener extends TestRunListener {
 
     private void launchTerminated( ILaunch launch ) {
       if( matchesCurrentSession( launch.getLaunchConfiguration() ) ) {
-        sessionFinished( currentSession );
+        finishSession();
       }
     }
 
-    private boolean matchesCurrentSession( ILaunchConfiguration launchConfiguration ) {
-      return launchConfiguration != null
-          && currentSession != null
-          && Objects.equal( launchConfiguration.getName(), currentSession.getTestRunName() );
+    private boolean matchesCurrentSession( ILaunchConfiguration launchConfig ) {
+      return launchConfig != null && equal( launchConfig.getName(), currentTestRunName );
     }
   }
 

@@ -2,7 +2,6 @@ package com.codeaffine.extras.jdt.internal.junitstatus;
 
 import static com.codeaffine.extras.jdt.internal.junitstatus.JUnitTestRunListener.ERROR_RGB;
 import static com.codeaffine.extras.jdt.internal.junitstatus.JUnitTestRunListener.STARTING;
-import static com.codeaffine.extras.jdt.internal.junitstatus.JUnitTestRunListener.STOPPED_RGB;
 import static com.codeaffine.extras.jdt.internal.junitstatus.JUnitTestRunListener.SUCCESS_RGB;
 import static org.eclipse.jdt.junit.model.ITestElement.ProgressState.STOPPED;
 import static org.eclipse.jdt.junit.model.ITestElement.Result.ERROR;
@@ -16,7 +15,6 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -77,14 +75,17 @@ public class JUnitTestRunListenerTest {
 
   @Test
   public void testStoppedSessionFinished() {
-    ITestCaseElement testCaseElement = mockTestCaseElement( OK );
-    testRunListener.sessionLaunched( testCaseElement.getTestRunSession() );
-    testRunListener.sessionStarted( testCaseElement.getTestRunSession() );
-    when( testCaseElement.getTestRunSession().getProgressState() ).thenReturn( STOPPED );
+    ITestRunSession testRunSession = mockTestRunSession( OK, mock( ITestCaseElement.class ) );
+    ITestCaseElement testCaseElement = ( ITestCaseElement )testRunSession.getChildren()[ 0 ];
+    testRunListener.sessionLaunched( testRunSession );
+    testRunListener.sessionStarted( testRunSession );
+    when( testRunSession.getProgressState() ).thenReturn( STOPPED );
 
     testRunListener.sessionFinished( testCaseElement.getTestRunSession() );
 
-    verify( progressUI ).update( "0 / 1", SWT.CENTER, stoppedColor(), 0, 1 );
+    InOrder order = inOrder( progressUI );
+    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
   }
 
   @Test
@@ -96,7 +97,9 @@ public class JUnitTestRunListenerTest {
 
     testRunListener.sessionFinished( testCaseElement.getTestRunSession() );
 
-    verify( progressUI ).update( "0 / 1", SWT.CENTER, stoppedColor(), 0, 1 );
+    InOrder order = inOrder( progressUI );
+    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).update( "0 / 1", SWT.CENTER, errorColor(), 0, 1 );
   }
 
   @Test
@@ -121,7 +124,7 @@ public class JUnitTestRunListenerTest {
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
     order.verify( progressUI).update( "0 / 2", SWT.CENTER, successColor(), 0, 2 );
     order.verify( progressUI).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
-    order.verify( progressUI, times( 2 ) ).update( "2 / 2", SWT.CENTER, successColor(), 2, 2 );
+    order.verify( progressUI ).update( "2 / 2", SWT.CENTER, successColor(), 2, 2 );
     order.verifyNoMoreInteractions();
   }
 
@@ -149,7 +152,7 @@ public class JUnitTestRunListenerTest {
 
     InOrder order = inOrder( progressUI );
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
-    order.verify( progressUI, times( 2 ) ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
+    order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
   }
 
   @Test
@@ -235,11 +238,30 @@ public class JUnitTestRunListenerTest {
     InOrder order = inOrder( progressUI );
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
     order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
-    order.verify( progressUI, times( 2 ) ).update( "1 / 1", SWT.CENTER, successColor(), 1, 1 );
+    order.verify( progressUI ).update( "1 / 1", SWT.CENTER, successColor(), 1, 1 );
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
     order.verify( progressUI ).update( "0 / 2", SWT.CENTER, successColor(), 0, 2 );
     order.verify( progressUI ).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
-    order.verify( progressUI, times( 2 ) ).update( "2 / 2", SWT.CENTER, successColor(), 2, 2 );
+    order.verify( progressUI ).update( "2 / 2", SWT.CENTER, successColor(), 2, 2 );
+    order.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void testOutOfOrderEvents() {
+    ITestRunSession testRunSession
+      = mockTestRunSession( OK, mock( ITestCaseElement.class ), mock( ITestCaseElement.class ) );
+    testRunListener.sessionLaunched( testRunSession );
+    testRunListener.sessionStarted( testRunSession );
+    testRunListener.sessionFinished( testRunSession );
+    testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession.getChildren()[ 0 ] );
+    testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession.getChildren()[ 1 ] );
+    testRunListener.sessionFinished( testRunSession );
+
+    InOrder order = inOrder( progressUI );
+    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).update( "0 / 2", SWT.CENTER, successColor(), 0, 2 );
+    order.verify( progressUI ).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
+    order.verify( progressUI ).update( "2 / 2", SWT.CENTER, successColor(), 2, 2 );
     order.verifyNoMoreInteractions();
   }
 
@@ -310,9 +332,4 @@ public class JUnitTestRunListenerTest {
   private Color errorColor() {
     return resourceManager.createColor( ERROR_RGB );
   }
-
-  private Color stoppedColor() {
-    return resourceManager.createColor( STOPPED_RGB );
-  }
-
 }
