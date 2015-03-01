@@ -11,7 +11,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class CloseViewHandler extends AbstractHandler {
 
-  public static final String COMMAND_ID = "com.codeaffine.extras.platform.internal.CloseViewCommand";
+  public static final String COMMAND_ID = "com.codeaffine.extras.ide.internal.CloseViewCommand";
 
   @Override
   public Object execute( ExecutionEvent event ) {

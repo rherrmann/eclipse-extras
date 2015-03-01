@@ -28,7 +28,7 @@
             categoryId="org.eclipse.ui.category.views"
             defaultHandler="com.codeaffine.extras.ide.internal.closeview.CloseViewHandler"
             description="Close the currently active view"
-            id="com.codeaffine.extras.platform.internal.CloseViewCommand"
+            id="com.codeaffine.extras.ide.internal.CloseViewCommand"
             name="Close View">
       </command>
    </extension>
@@ -65,7 +65,7 @@
             sequence="M3+F11">
       </key>
       <key
-            commandId="com.codeaffine.extras.platform.internal.CloseViewCommand"
+            commandId="com.codeaffine.extras.ide.internal.CloseViewCommand"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+M2+Q">
       </key>
