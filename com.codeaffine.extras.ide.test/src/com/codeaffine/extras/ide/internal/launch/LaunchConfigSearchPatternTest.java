@@ -41,4 +41,46 @@ public class LaunchConfigSearchPatternTest {
 
     assertThat( searchPattern.getPattern() ).isEqualTo( "*" );
   }
+
+  @Test
+  public void testMatchEmptyPattern() {
+    searchPattern.setPattern( "" );
+
+    assertThat( searchPattern.matches( "foo" ) ).isFalse();
+  }
+
+  @Test
+  public void testMatchPrefixPattern() {
+    searchPattern.setPattern( "pref" );
+
+    assertThat( searchPattern.matches( "prefix" ) ).isTrue();
+  }
+
+  @Test
+  public void testMatchSuffixPattern() {
+    searchPattern.setPattern( "fix" );
+
+    assertThat( searchPattern.matches( "prefix" ) ).isTrue();
+  }
+
+  @Test
+  public void testMatchAsteriskWildcardPattern() {
+    searchPattern.setPattern( "f*o" );
+
+    assertThat( searchPattern.matches( "fooo" ) ).isTrue();
+  }
+
+  @Test
+  public void testMatchQuestionMarkWildcardPattern() {
+    searchPattern.setPattern( "f?o" );
+
+    assertThat( searchPattern.matches( "foo" ) ).isTrue();
+  }
+
+  @Test
+  public void testMatchCamelCasePattern() {
+    searchPattern.setPattern( "CC" );
+
+    assertThat( searchPattern.matches( "CamelCase" ) ).isTrue();
+  }
 }

@@ -52,7 +52,7 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     super( shell, true );
     this.launchManager = DebugPlugin.getDefault().getLaunchManager();
     setTitle( "Start Launch Configuration" );
-    setMessage( "&Select a configuration to launch (? = any character, * = any string)" );
+    setMessage( "&Enter a name pattern (? = any character, * = any string, CamelCase)" );
     setListLabelProvider( createLaunchConfigLabelProvider( shell, LabelMode.LIST ) );
     setDetailsLabelProvider( createLaunchConfigLabelProvider( shell, LabelMode.DETAIL ) );
     setSelectionHistory( new LaunchConfigSelectionHistory( launchManager ) );
