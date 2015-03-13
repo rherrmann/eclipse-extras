@@ -142,7 +142,7 @@ public class ProjectHelper extends ExternalResource {
     return result;
   }
 
-  private static void delete( IResource resource ) {
+  public static void delete( IResource resource ) {
     int numAttempts = 0;
     boolean success = false;
     while( !success ) {

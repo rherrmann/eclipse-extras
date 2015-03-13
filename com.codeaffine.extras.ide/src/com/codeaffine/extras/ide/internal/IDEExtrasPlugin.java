@@ -1,5 +1,6 @@
 package com.codeaffine.extras.ide.internal;
 
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -24,4 +25,10 @@ public class IDEExtrasPlugin extends AbstractUIPlugin {
     instance = null;
     super.stop( context );
   }
+
+  @Override
+  protected void initializeImageRegistry( ImageRegistry registry ) {
+    Images.registerImages( registry );
+  }
+
 }
