@@ -75,20 +75,13 @@ public class DynamicWorkingSetUpdater
 
   @Override
   public void propertyChange( PropertyChangeEvent event ) {
-    if( TRUE.equals( inPropertyChange.get() ) ) {
-      return;
-    }
-    inPropertyChange.set( TRUE );
-    try {
-      if( isWorkingSetAddEvent( event ) ) {
-        add( getWorkingSet( event ) );
-      } else if( isWorkingSetNameChangeEvent( event ) || isWorkingSetContentChangeEvent( event ) ) {
-        update( getWorkingSet( event ) );
-      } else if( isWorkingSetRemoveEvent( event ) ) {
-        remove( getWorkingSet( event ) );
+    if( inPropertyChange.get() != null ) {
+      inPropertyChange.set( TRUE );
+      try {
+        handlePropertyChange( event );
+      } finally {
+        inPropertyChange.remove();
       }
-    } finally {
-      inPropertyChange.remove();
     }
   }
 
@@ -98,6 +91,16 @@ public class DynamicWorkingSetUpdater
       if( isUpdateNeeded( event ) ) {
         update();
       }
+    }
+  }
+
+  private void handlePropertyChange( PropertyChangeEvent event ) {
+    if( isWorkingSetAddEvent( event ) ) {
+      add( getWorkingSet( event ) );
+    } else if( isWorkingSetNameChangeEvent( event ) || isWorkingSetContentChangeEvent( event ) ) {
+      update( getWorkingSet( event ) );
+    } else if( isWorkingSetRemoveEvent( event ) ) {
+      remove( getWorkingSet( event ) );
     }
   }
 
