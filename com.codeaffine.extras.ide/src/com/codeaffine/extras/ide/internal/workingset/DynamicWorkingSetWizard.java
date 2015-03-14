@@ -1,6 +1,7 @@
 package com.codeaffine.extras.ide.internal.workingset;
 
 import static com.codeaffine.extras.ide.internal.Images.WORKING_SET_WIZBAN;
+import static com.codeaffine.extras.ide.internal.Images.getImageDescriptor;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -10,7 +11,6 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkingSet;
 
 import com.codeaffine.extras.ide.internal.IDEExtrasPlugin;
-import com.codeaffine.extras.ide.internal.Images;
 
 public class DynamicWorkingSetWizard extends Wizard implements INewWizard {
 
@@ -20,9 +20,9 @@ public class DynamicWorkingSetWizard extends Wizard implements INewWizard {
   private DynamicWorkingSetPage page;
 
   public DynamicWorkingSetWizard() {
-    setDefaultPageImageDescriptor( Images.getDescriptor( WORKING_SET_WIZBAN ) );
+    setDefaultPageImageDescriptor( getImageDescriptor( WORKING_SET_WIZBAN ) );
     setDialogSettings( IDEExtrasPlugin.getInstance().getDialogSettings() );
-    setWindowTitle( DynamicWorkingSetPage.TITLE );
+    setWindowTitle( "New Dynamic Project Working Set" );
   }
 
   @Override

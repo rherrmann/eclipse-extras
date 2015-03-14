@@ -21,7 +21,7 @@ import com.codeaffine.eclipse.swt.test.util.SWTIgnoreConditions.NonWindowsPlatfo
 import com.codeaffine.test.util.junit.ConditionalIgnoreRule;
 import com.codeaffine.test.util.junit.ConditionalIgnoreRule.ConditionalIgnore;
 
-public class DynamicWorkingSetPageTest {
+public class DynamicWorkingSetPagePDETest {
 
   @Rule
   public final DisplayHelper displayHelper  = new DisplayHelper();
@@ -100,6 +100,17 @@ public class DynamicWorkingSetPageTest {
   }
 
   @Test
+  public void testCreateControlDoesNotUpdateMessage() {
+    IWorkingSet workingSet = createWorkingSet( "name", "pattern" );
+    page.setSelection( workingSet );
+
+    page.createControl( displayHelper.createShell() );
+
+    assertThat( page.getMessage() ).isNull();
+    assertThat( page.getErrorMessage() ).isNull();
+  }
+
+  @Test
   public void testFinish() {
     IWorkingSet workingSet = createWorkingSet();
     page.setSelection( workingSet );
@@ -117,6 +128,7 @@ public class DynamicWorkingSetPageTest {
   public void testEnterName() {
     page.setSelection( createWorkingSet() );
     page.createControl( displayHelper.createShell() );
+    page.setVisible( true );
 
     page.nameText.setText( "name" );
 
@@ -129,6 +141,7 @@ public class DynamicWorkingSetPageTest {
   public void testEnterPattern() {
     page.setSelection( createWorkingSet() );
     page.createControl( displayHelper.createShell() );
+    page.setVisible( true );
 
     page.patternText.setText( "pattern" );
 
@@ -144,9 +157,8 @@ public class DynamicWorkingSetPageTest {
     page.setSelection( workingSet );
     page.createControl( displayHelper.createShell() );
     page.setVisible( true );
-    assertThat( page.isPageComplete() ).isFalse();
 
-    page.patternText.setText( "other name" );
+    page.nameText.setText( "other name" );
 
     assertThat( page.isPageComplete() ).isTrue();
   }

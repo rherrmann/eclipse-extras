@@ -15,7 +15,7 @@ public class Images {
 
   public static final String WORKING_SET_WIZBAN = "icons/wizban/working-set.png";
 
-  public static ImageDescriptor getDescriptor( String name ) {
+  public static ImageDescriptor getImageDescriptor( String name ) {
     ImageDescriptor result = null;
     ImageRegistry imageRegistry = getImageRegistry();
     if( imageRegistry != null ) {

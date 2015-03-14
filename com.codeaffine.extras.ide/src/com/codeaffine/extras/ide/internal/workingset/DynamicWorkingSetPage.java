@@ -32,11 +32,9 @@ import com.codeaffine.extras.ide.internal.workingset.ValidationStatus.Severity;
 
 public class DynamicWorkingSetPage extends WizardPage implements  IWorkingSetPage {
 
-  static final String TITLE = "New Dynamic Project Working Set";
-
   private final ProjectsProvider projectsProvider;
   private final Validator validator;
-  private boolean firstTimeShown;
+  private boolean visible;
   private IWorkingSet workingSet;
   Composite composite;
   Text nameText;
@@ -53,10 +51,9 @@ public class DynamicWorkingSetPage extends WizardPage implements  IWorkingSetPag
     super( "DynamicWorkingSetWizardPage" );
     this.projectsProvider = projectsProvider;
     this.validator = new Validator( projectsProvider, jdtFeature );
-    this.firstTimeShown = true;
-    setTitle( TITLE );
+    setTitle( "Dynamic Project Working Set" );
     setDescription( "Enter a pattern to include matching projects in this working set" );
-    setImageDescriptor( Images.getDescriptor( WORKING_SET_WIZBAN ) );
+    setImageDescriptor( Images.getImageDescriptor( WORKING_SET_WIZBAN ) );
   }
 
   @Override
@@ -74,12 +71,9 @@ public class DynamicWorkingSetPage extends WizardPage implements  IWorkingSetPag
   public void setVisible( boolean visible ) {
     super.setVisible( visible );
     if( visible ) {
-      if( firstTimeShown ) {
-        firstTimeShown = false;
-        nameText.setFocus();
-      }
+      updateVisibleState();
       updateStatusMessage( new ValidationStatus( Severity.NONE, "" ) );
-      setPageComplete( validate() == null );
+      setPageComplete( false );
     }
   }
 
@@ -160,22 +154,31 @@ public class DynamicWorkingSetPage extends WizardPage implements  IWorkingSetPag
     return validator.validate( workingSet, getNameText(), getPatternText() );
   }
 
+  private void updateVisibleState() {
+    if( !this.visible ) {
+      this.visible = true;
+      nameText.setFocus();
+    }
+  }
+
   @SuppressWarnings("incomplete-switch")
   private void updateStatusMessage( ValidationStatus validationStatus ) {
-    int messageType = IMessageProvider.NONE;
-    String message = null;
-    switch( validationStatus.getSeverity() ) {
-      case ERROR:
-        messageType = IMessageProvider.ERROR;
-        message = validationStatus.getMessage();
-      break;
-      case WARNING:
-        messageType = IMessageProvider.WARNING;
-        message = validationStatus.getMessage();
-      break;
+    if( visible ) {
+      int messageType = IMessageProvider.NONE;
+      String message = null;
+      switch( validationStatus.getSeverity() ) {
+        case ERROR:
+          messageType = IMessageProvider.ERROR;
+          message = validationStatus.getMessage();
+          break;
+        case WARNING:
+          messageType = IMessageProvider.WARNING;
+          message = validationStatus.getMessage();
+          break;
+      }
+      setMessage( message, messageType );
+      setPageComplete( validationStatus.getSeverity() != Severity.ERROR );
     }
-    setMessage( message, messageType );
-    setPageComplete( validationStatus.getSeverity() != Severity.ERROR );
   }
 
   private void updatePreview() {

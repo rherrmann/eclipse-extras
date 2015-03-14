@@ -20,7 +20,7 @@ public class ImagesPDETest {
   }
 
   private static void checkImageDescriptor( String constantValue ) {
-    ImageDescriptor descriptor = Images.getDescriptor( constantValue );
+    ImageDescriptor descriptor = Images.getImageDescriptor( constantValue );
     assertNotNull( "No image descriptor registered for: " + constantValue, descriptor );
     Image image = descriptor.createImage( false );
     assertNotNull( "Image descriptor does not return image: " + constantValue, image );
