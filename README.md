@@ -32,6 +32,13 @@ Much like the _Open Type_ or _Open Resource_ dialog, the <kbd>Alt+F11</kbd> key 
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/launch-config-dialog.png)
 
+### Dynamic Project Working Set
+A new type of working set allows to group projects by naming patterns. Rather than manually adding and removing resources, the working set maintains its contents dynamically. When created it is given a regular expression pattern and all projects whose name match that pattern are contained. The content is updated whenever matching projects are created, deleted or change their name.
+
+Dynamic Project Working Sets can be created with the _New Wizard_ (File &gt; New &gt; Other &gt; General &gt; Dynamic Project Working Set) or with the working set configuration dialogs of the respective navigation views like _Package Explorer_ or _Project Explorer_.
+
+![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/dynamic-working-sets.png)
+
 ### Extended Export/Import Preferences Wizards
 Eclipse Extras provides extensions to the Export/Import wizards to transfer general workbench preferences. This allows to transfer settings for:
 * General Editor
