@@ -6,7 +6,7 @@ import org.eclipse.ui.dialogs.SearchPattern;
 public class LaunchConfigSearchPattern extends SearchPattern {
 
   public LaunchConfigSearchPattern() {
-    super( RULE_PATTERN_MATCH | RULE_CAMELCASE_MATCH );
+    super( RULE_BLANK_MATCH | RULE_PATTERN_MATCH | RULE_CAMELCASE_MATCH );
   }
 
   @Override

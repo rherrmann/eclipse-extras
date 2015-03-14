@@ -46,7 +46,7 @@ public class LaunchConfigSearchPatternTest {
   public void testMatchEmptyPattern() {
     searchPattern.setPattern( "" );
 
-    assertThat( searchPattern.matches( "foo" ) ).isFalse();
+    assertThat( searchPattern.matches( "foo" ) ).isTrue();
   }
 
   @Test
