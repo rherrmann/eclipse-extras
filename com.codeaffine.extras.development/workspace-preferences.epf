@@ -1,0 +1,57 @@
+#Sat Mar 14 17:03:02 CET 2015
+/instance/org.eclipse.wst.xml.ui/tagName=\#3f7f7f | null | false | false | false | false
+/instance/org.eclipse.core.runtime/line.separator=\n
+/instance/org.eclipse.core.resources/encoding=UTF-8
+/instance/org.eclipse.wst.xml.ui/tagAttributeName=\#7f007f | null | false | false | false | false
+/instance/org.eclipse.debug.ui/org.eclipse.debug.ui.changedDebugElement=255,0,0
+/instance/org.eclipse.debug.ui/org.eclipse.debug.ui.PREF_LAUNCH_PERSPECTIVES=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<launchPerspectives/>\r\n
+/instance/org.eclipse.debug.ui/org.eclipse.debug.ui.switch_perspective_on_suspend=never
+file_export_version=3.0
+/instance/org.eclipse.wst.xml.core/indentationChar=space
+@org.eclipse.wst.xml.core=1.1.902.v201501211904
+@org.eclipse.jdt.ui=3.10.2.v20141014-1419
+/instance/org.eclipse.debug.ui/Console.console_tab_width=4
+/instance/org.eclipse.ui/SHOW_MEMORY_MONITOR=true
+/instance/org.eclipse.wst.xml.ui/cdataBorder=\#008080 | null | false | false | false | false
+/instance/org.eclipse.wst.xml.ui/piBorder=\#008080 | null | false | false | false | false
+/instance/org.eclipse.debug.ui/org.eclipse.debug.ui.UseContextualLaunch=false
+/instance/org.eclipse.debug.ui/org.eclipse.debug.ui.outColor=0,0,0
+@org.eclipse.wst.xml.ui=1.1.501.v201501212057
+/instance/org.eclipse.wst.xml.ui/doctypeExternalPubref=\#008080 | null | false | false | false | false
+/instance/org.eclipse.wst.xml.ui/tagAttributeValue=\#2a00ff | null | false | false | false | false
+/instance/org.eclipse.wst.xml.core/lineWidth=80
+@org.eclipse.core.runtime=3.10.0.v20140318-2214
+/instance/org.eclipse.ui.ide/org.eclipse.ui.internal.views.markers.CachedMarkerBuilderorg.eclipse.ui.views.ProblemView=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<filterGroups andFilters\="false" markerLimit\="100" markerLimitEnabled\="true">\r\n<filterGroup IMemento.internal.id\="All Errors" enabled\="false" filterLimit\="-1" scope\="0" workingSet\="Aggregate for window 1420556466295">\r\n<fieldFilter IMemento.internal.id\="org.eclipse.ui.ide.severityAndDescriptionField" containsModifier\="CONTAINS" containsText\="" selectedSeverities\="4"/>\r\n<fieldFilter IMemento.internal.id\="org.eclipse.ui.ide.markerType"/>\r\n</filterGroup>\r\n<filterGroup IMemento.internal.id\="Warnings on Selection" enabled\="false" filterLimit\="-1" scope\="2" workingSet\="Aggregate for window 1420556466295">\r\n<fieldFilter IMemento.internal.id\="org.eclipse.ui.ide.severityAndDescriptionField" containsModifier\="CONTAINS" containsText\="" selectedSeverities\="2"/>\r\n<fieldFilter IMemento.internal.id\="org.eclipse.ui.ide.markerType"/>\r\n</filterGroup>\r\n<filterGroup IMemento.internal.id\="Errors/Warnings on Selection" enabled\="false" filterLimit\="-1" scope\="2" workingSet\="Aggregate for window 1420556466295">\r\n<fieldFilter IMemento.internal.id\="org.eclipse.ui.ide.severityAndDescriptionField" containsModifier\="CONTAINS" containsText\="" selectedSeverities\="6"/>\r\n<fieldFilter IMemento.internal.id\="org.eclipse.ui.ide.markerType"/>\r\n</filterGroup>\r\n<filterGroup IMemento.internal.id\="Errors/Warnings on Project" enabled\="true" filterLimit\="-1" scope\="3" workingSet\="Aggregate for window 1420556466295">\r\n<fieldFilter IMemento.internal.id\="org.eclipse.ui.ide.severityAndDescriptionField" containsModifier\="CONTAINS" containsText\="" selectedSeverities\="6"/>\r\n<fieldFilter IMemento.internal.id\="org.eclipse.ui.ide.markerType"/>\r\n</filterGroup>\r\n</filterGroups>
+/instance/org.eclipse.wst.xml.ui/commentBorder=\#3f5fbf | null | false | false | false | false
+/instance/org.eclipse.wst.xml.core/clearAllBlankLines=true
+@org.eclipse.debug.ui=3.10.2.v20141014-1039
+/instance/org.eclipse.ui/showIntro=false
+/instance/org.eclipse.wst.xml.ui/doctypeName=\#008080 | null | false | false | false | false
+/instance/org.eclipse.wst.xml.ui/tagAttributeEquals=null | null | false | false | false | false
+/instance/org.eclipse.ui.ide/SWITCH_PERSPECTIVE_ON_PROJECT_CREATION=never
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.typefilter.enabled=com.sun.*;java.awt.*;javax.swing.*;
+@org.eclipse.ui.ide=3.10.2.v20141118-1227
+/instance/org.eclipse.wst.xml.core/indentationSize=2
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.pkgNameAbbreviationPatternForPackagesView=com.codeaffine.extras\=[extras]
+/instance/org.eclipse.wst.xml.ui/entityReference=\#2a00ff | null | false | false | false | false
+/instance/org.eclipse.core.variables/org.eclipse.core.variables.valueVariables=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<valueVariables>\r\n<valueVariable description\="c" name\="a" readOnly\="false" value\="b"/>\r\n</valueVariables>\r\n
+@org.eclipse.core.resources=3.9.1.v20140825-1431
+@org.eclipse.ui=3.106.1.v20141002-1150
+/instance/org.eclipse.wst.xml.ui/cdataText=\#000000 | null | false | false | false | false
+@org.eclipse.ui.workbench=3.106.2.v20150204-1030
+/instance/org.eclipse.wst.xml.ui/tagBorder=\#008080 | null | false | false | false | false
+/instance/org.eclipse.wst.xml.ui/xmlContent=null | null | false | false | false | false
+/instance/org.eclipse.debug.ui/DEBUG.consoleOpenOnOut=false
+\!/=
+@org.eclipse.core.variables=3.2.800.v20130819-1716
+/instance/org.eclipse.ui.workbench/ENABLED_DECORATORS=org.eclipse.m2e.core.mavenVersionDecorator\:false,com.codeaffine.gitplus.ui.internal.decorator.StandardDecorator\:true,com.codeaffine.gitplus.ui.internal.decorator.ResourceEditorDecorator\:true,org.eclipse.egit.ui.internal.decorators.GitLightweightDecorator\:true,org.eclipse.jdt.ui.override.decorator\:true,org.eclipse.jdt.ui.interface.decorator\:false,org.eclipse.jdt.ui.buildpath.decorator\:true,org.eclipse.m2e.core.maven2decorator\:true,org.eclipse.pde.ui.binaryProjectDecorator\:false,org.eclipse.team.cvs.ui.decorator\:true,org.eclipse.ui.LinkedResourceDecorator\:true,org.eclipse.ui.SymlinkDecorator\:true,org.eclipse.ui.VirtualResourceDecorator\:true,org.eclipse.ui.ContentTypeDecorator\:true,org.eclipse.ui.ResourceFilterDecorator\:false,org.moreunit.testdecorator\:true,org.moreunit.core.decorators.testedFileDecorator\:true,
+/instance/org.eclipse.wst.xml.ui/piContent=null | null | false | false | false | false
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.abbreviatepackagenames=true
+@org.eclipse.search=3.9.100.v20140226-1637
+/instance/org.eclipse.search/org.eclipse.search.defaultPerspective=org.eclipse.search.defaultPerspective.none
+/instance/org.eclipse.wst.xml.ui/commentText=\#3f5fbf | null | false | false | false | false
+/instance/org.eclipse.debug.ui/DEBUG.consoleOpenOnErr=false
+/instance/org.eclipse.ui.workbench/org.eclipse.jface.textfont=1|Courier New|9.75|0|WINDOWS|1|-13|0|0|0|400|0|0|0|0|3|2|1|49|Courier New;
+/instance/org.eclipse.debug.ui/Console.highWaterMark=88000
+/instance/org.eclipse.wst.xml.ui/doctypeExternalId=\#808080 | null | false | false | false | false
+/instance/org.eclipse.wst.xml.core/spaceBeforeEmptyCloseTag=false
