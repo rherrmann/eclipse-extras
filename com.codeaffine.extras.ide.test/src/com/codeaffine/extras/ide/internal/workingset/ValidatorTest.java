@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.ui.IWorkingSet;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,41 +14,74 @@ import com.codeaffine.extras.ide.internal.workingset.ValidationStatus.Severity;
 
 public class ValidatorTest {
 
+  private WorkingSetsProvider workingSetsProvider;
   private TestProjectsProvider projectsProvider;
   private JdtFeature jdtFeature;
   private Validator validator;
 
   @Before
   public void setUp() {
+    workingSetsProvider = mock( WorkingSetsProvider.class );
+    when( workingSetsProvider.getWorkingSets() ).thenReturn( new IWorkingSet[ 0 ] );
     projectsProvider = new TestProjectsProvider();
     jdtFeature = mock( JdtFeature.class );
-    validator = new Validator( projectsProvider, jdtFeature );
+    validator = new Validator( workingSetsProvider, projectsProvider, jdtFeature );
   }
 
   @Test
   public void testValidateEmptyName() {
-    ValidationStatus validationStatus = validator.validate( "", "pattern" );
+    ValidationStatus validationStatus = validator.validate( null, "", "pattern" );
 
-    assertMessageIsError( validationStatus, Validator.MSG_NAME_EMPTY );
+    assertStatusIsError( validationStatus, Validator.MSG_NAME_EMPTY );
+  }
+
+  @Test
+  public void testValidateExistingName() {
+    IWorkingSet workingSet = createWorkingSet( "name" );
+    when( workingSetsProvider.getWorkingSets() ).thenReturn( new IWorkingSet[] { workingSet } );
+
+    ValidationStatus validationStatus = validator.validate( null, workingSet.getLabel(), "pattern" );
+
+    assertStatusIsWarning( validationStatus, Validator.MSG_NAME_EXISTS );
+  }
+
+  @Test
+  public void testValidateNonExistingName() {
+    IWorkingSet workingSet = createWorkingSet( "name" );
+    when( workingSetsProvider.getWorkingSets() ).thenReturn( new IWorkingSet[] { workingSet } );
+
+    ValidationStatus validationStatus = validator.validate( null, "ther-name", "pattern" );
+
+    assertStatusIsOk( validationStatus );
+  }
+
+  @Test
+  public void testValidateUnchangedName() {
+    IWorkingSet workingSet = createWorkingSet( "label" );
+    when( workingSetsProvider.getWorkingSets() ).thenReturn( new IWorkingSet[] { workingSet } );
+
+    ValidationStatus validationStatus = validator.validate( workingSet, workingSet.getLabel(), "pattern" );
+
+    assertStatusIsOk( validationStatus );
   }
 
   @Test
   public void testValidateEmptyPattern() {
-    ValidationStatus validationStatus = validator.validate( "name", "" );
+    ValidationStatus validationStatus = validator.validate( null, "name", "" );
 
-    assertMessageIsError( validationStatus, Validator.MSG_PATTERN_EMPTY );
+    assertStatusIsError( validationStatus, Validator.MSG_PATTERN_EMPTY );
   }
 
   @Test
   public void testValidateInvalidPattern() {
-    ValidationStatus validationStatus = validator.validate( "name", "*" );
+    ValidationStatus validationStatus = validator.validate( null, "name", "*" );
 
-    assertMessageIsError( validationStatus, Validator.MSG_PATTERN_INVALID );
+    assertStatusIsError( validationStatus, Validator.MSG_PATTERN_INVALID );
   }
 
   @Test
   public void testValidateWithNameAndPattern() {
-    ValidationStatus validationStatus = validator.validate( "name", "pattern" );
+    ValidationStatus validationStatus = validator.validate( null, "name", "pattern" );
 
     assertStatusIsOk( validationStatus );
   }
@@ -56,7 +90,7 @@ public class ValidatorTest {
   public void testValidateNonMatchingPatternWhenJdtInstalled() {
     installJdt();
     createProject( "name" );
-    ValidationStatus validationStatus = validator.validate( "name", "matches-nothing" );
+    ValidationStatus validationStatus = validator.validate( null, "name", "matches-nothing" );
 
     assertStatusIsWarning( validationStatus, Validator.MSG_JDT_RESTRICTION );
   }
@@ -65,7 +99,7 @@ public class ValidatorTest {
   public void testValidateMatchingPatternWhenJdtInstalled() {
     installJdt();
     createProject( "name" );
-    ValidationStatus validationStatus = validator.validate( "name", ANYTHING );
+    ValidationStatus validationStatus = validator.validate( null, "name", ANYTHING );
 
     assertStatusIsOk( validationStatus );
   }
@@ -73,9 +107,18 @@ public class ValidatorTest {
   @Test
   public void testValidateNonMatchingPatternWhenJdtNotInstalled() {
     createProject( "name" );
-    ValidationStatus validationStatus = validator.validate( "name", "matches-nothing" );
+    ValidationStatus validationStatus = validator.validate( null, "name", "matches-nothing" );
 
     assertStatusIsOk( validationStatus );
+  }
+
+  @Test
+  public void testValidationErrorIsNotObscuredByWarning() {
+    installJdt();
+    createProject( "name" );
+    ValidationStatus validationStatus = validator.validate( null, "", "matches-nothing" );
+
+    assertStatusIsError( validationStatus, Validator.MSG_NAME_EMPTY );
   }
 
   private static void assertStatusIsOk( ValidationStatus validationStatus ) {
@@ -88,7 +131,7 @@ public class ValidatorTest {
     assertThat( validationStatus.getMessage() ).isEqualTo( message );
   }
 
-  private static void assertMessageIsError( ValidationStatus validationStatus, String message ) {
+  private static void assertStatusIsError( ValidationStatus validationStatus, String message ) {
     assertThat( validationStatus.getSeverity() ).isEqualTo( Severity.ERROR );
     assertThat( validationStatus.getMessage() ).isEqualTo( message );
   }
@@ -97,6 +140,12 @@ public class ValidatorTest {
     IProject result = mock( IProject.class );
     when( result.getName() ).thenReturn( name );
     projectsProvider.addProject( result );
+  }
+
+  private static IWorkingSet createWorkingSet( String label ) {
+    IWorkingSet result = mock( IWorkingSet.class );
+    when( result.getLabel() ).thenReturn( label );
+    return result;
   }
 
   private void installJdt() {

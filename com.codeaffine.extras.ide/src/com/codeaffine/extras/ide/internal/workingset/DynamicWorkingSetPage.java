@@ -157,7 +157,7 @@ public class DynamicWorkingSetPage extends WizardPage implements  IWorkingSetPag
   }
 
   private ValidationStatus validate() {
-    return validator.validate( getNameText(), getPatternText() );
+    return validator.validate( workingSet, getNameText(), getPatternText() );
   }
 
   @SuppressWarnings("incomplete-switch")
