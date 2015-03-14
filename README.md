@@ -5,7 +5,7 @@ Small extensions for the Eclipse IDE
 ## Current Features
 
 ### JUnit Status Bar
-A small contribution to the status bar shows the status of the current or most recent JUnit run. The progress bar is colored green or red depending on how the test results are. The button to the left of the bar opens the JUnit view. Use the _Java &gt; JUnit &gt; JUnit Status Bar_ preference page to show or hide the JUnit Status Bar.
+A small contribution to the status bar shows the status of the current or most recent JUnit run. The progress bar is colored green or red depending on how the test results are. The button to the left of the bar opens the [JUnit view](http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fviews%2Fref-view-junit.htm). Use the _Java &gt; JUnit &gt; JUnit Status Bar_ preference page to show or hide the JUnit Status Bar.
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/junit-status-bar.png)
 
@@ -35,7 +35,7 @@ Much like the _Open Type_ or _Open Resource_ dialog, the <kbd>Alt+F11</kbd> key 
 ### Dynamic Project Working Set
 A new type of working set allows to group projects by naming patterns. Rather than manually adding and removing resources, the working set maintains its contents dynamically. When created it is given a regular expression pattern and all projects whose name match that pattern are contained. The content is updated whenever matching projects are created, deleted or change their name.
 
-Dynamic Project Working Sets can be created with the _New Wizard_ (File &gt; New &gt; Other &gt; General &gt; Dynamic Project Working Set) or with the working set configuration dialogs of the respective navigation views like _Package Explorer_ or _Project Explorer_.
+Dynamic Project Working Sets can be created with the _New Wizard_ (_File &gt; New &gt; Other &gt; General &gt; Dynamic Project Working Set_) or with the working set configuration dialogs of the respective navigation views like _Package Explorer_ or _Project Explorer_.
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/dynamic-working-sets.png)
 
