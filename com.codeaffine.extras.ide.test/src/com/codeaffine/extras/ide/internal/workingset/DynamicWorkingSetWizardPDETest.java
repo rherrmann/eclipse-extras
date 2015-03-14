@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.PlatformUI;
 import org.junit.After;
 import org.junit.Before;
@@ -57,6 +58,23 @@ public class DynamicWorkingSetWizardPDETest {
     assertThat( wizard.getPages() ).hasSize( 1 );
     assertThat( wizard.getPages()[ 0 ] ).isInstanceOf( DynamicWorkingSetPage.class );
     assertThat( wizard.getStartingPage() ).isEqualTo( wizard.getPages()[ 0 ] );
+  }
+
+  @Test
+  public void testCreateWorkingSet() {
+    wizard.init( PlatformUI.getWorkbench(), null );
+    wizard.addPages();
+    DynamicWorkingSetPage startingPage = ( DynamicWorkingSetPage )wizard.getStartingPage();
+
+    IWorkingSet workingSet = startingPage.getSelection();
+
+    assertThat( workingSet.getName() ).isEmpty();
+    assertThat( workingSet.getElements() ).isEmpty();
+    assertThat( workingSet.isSelfUpdating() ).isTrue();
+    assertThat( workingSet.isAggregateWorkingSet() ).isFalse();
+    assertThat( workingSet.getId() ).isEqualTo( DynamicWorkingSet.ID );
+    assertThat( workingSet.getLabel() ).isEmpty();
+    assertThat( workingSet.getImageDescriptor() ).isNotNull();
   }
 
 }

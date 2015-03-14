@@ -109,7 +109,6 @@ public class DynamicWorkingSetPageTest {
 
     page.finish();
 
-    verify( workingSet ).setId( DynamicWorkingSet.ID );
     verify( workingSet ).setLabel( "name" );
     verify( workingSet ).setName( "pattern" );
   }

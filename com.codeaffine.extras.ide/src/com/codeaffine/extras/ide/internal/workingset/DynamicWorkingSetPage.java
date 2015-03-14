@@ -85,7 +85,6 @@ public class DynamicWorkingSetPage extends WizardPage implements  IWorkingSetPag
 
   @Override
   public void finish() {
-    workingSet.setId( DynamicWorkingSet.ID );
     workingSet.setName( getPatternText() );
     workingSet.setLabel( getNameText() );
   }

@@ -45,6 +45,8 @@ public class DynamicWorkingSetWizard extends Wizard implements INewWizard {
   }
 
   private IWorkingSet createWorkingSet() {
-    return workbench.getWorkingSetManager().createWorkingSet( "", new IAdaptable[ 0 ] );
+    IWorkingSet result = workbench.getWorkingSetManager().createWorkingSet( "", new IAdaptable[ 0 ] );
+    result.setId( DynamicWorkingSet.ID );
+    return result;
   }
 }

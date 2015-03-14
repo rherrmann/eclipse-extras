@@ -38,14 +38,18 @@ public class DynamicWorkingSetUpdater
 
   private final IWorkingSetManager workingSetManager;
   private final IWorkspace workspace;
-  private final Set<IWorkingSet> workingSets;
   private final ThreadLocal<Boolean> inPropertyChange;
+  private final Set<IWorkingSet> workingSets;
 
   public DynamicWorkingSetUpdater() {
     workingSetManager = PlatformUI.getWorkbench().getWorkingSetManager();
     workspace = ResourcesPlugin.getWorkspace();
     inPropertyChange = new ThreadLocal<Boolean>();
     workingSets = synchronizedSet( new HashSet<IWorkingSet>() );
+    initialize();
+  }
+
+  private void initialize() {
     workingSetManager.addPropertyChangeListener( this );
     workspace.addResourceChangeListener( this, POST_CHANGE );
   }
@@ -75,7 +79,7 @@ public class DynamicWorkingSetUpdater
 
   @Override
   public void propertyChange( PropertyChangeEvent event ) {
-    if( inPropertyChange.get() != null ) {
+    if( inPropertyChange.get() == null ) {
       inPropertyChange.set( TRUE );
       try {
         handlePropertyChange( event );
