@@ -14,7 +14,7 @@ import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
 public class EarlyStartupExtensionPDETest {
 
   @Test
-  public void testKeywordExtension() {
+  public void testStartupExtension() {
     Extension extension = getEarlyStartup();
 
     IStartup startup = extension.createExecutableExtension( "class", IStartup.class );
