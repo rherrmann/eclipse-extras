@@ -8,7 +8,6 @@ import static org.eclipse.core.resources.IResourceDelta.ADDED;
 import static org.eclipse.core.resources.IResourceDelta.CHANGED;
 import static org.eclipse.core.resources.IResourceDelta.REMOVED;
 import static org.eclipse.ui.IWorkingSetManager.CHANGE_WORKING_SET_ADD;
-import static org.eclipse.ui.IWorkingSetManager.CHANGE_WORKING_SET_CONTENT_CHANGE;
 import static org.eclipse.ui.IWorkingSetManager.CHANGE_WORKING_SET_NAME_CHANGE;
 import static org.eclipse.ui.IWorkingSetManager.CHANGE_WORKING_SET_REMOVE;
 
@@ -101,7 +100,7 @@ public class DynamicWorkingSetUpdater
   private void handlePropertyChange( PropertyChangeEvent event ) {
     if( isWorkingSetAddEvent( event ) ) {
       add( getWorkingSet( event ) );
-    } else if( isWorkingSetNameChangeEvent( event ) || isWorkingSetContentChangeEvent( event ) ) {
+    } else if( isWorkingSetNameChangeEvent( event ) ) {
       update( getWorkingSet( event ) );
     } else if( isWorkingSetRemoveEvent( event ) ) {
       remove( getWorkingSet( event ) );
@@ -138,10 +137,6 @@ public class DynamicWorkingSetUpdater
 
   private static boolean isWorkingSetNameChangeEvent( PropertyChangeEvent event ) {
     return CHANGE_WORKING_SET_NAME_CHANGE.equals( event.getProperty() ) && isDynamicWorkingSet( event );
-  }
-
-  private static boolean isWorkingSetContentChangeEvent( PropertyChangeEvent event ) {
-    return CHANGE_WORKING_SET_CONTENT_CHANGE.equals( event.getProperty() ) && isDynamicWorkingSet( event );
   }
 
   private static boolean isDynamicWorkingSet( PropertyChangeEvent event ) {

@@ -166,6 +166,15 @@ public class DynamicWorkingSetUpdaterPDETest {
     assertThat( workingSet.getElements() ).containsOnly( project );
   }
 
+  /*
+   * Ensure that it is possible to manually add non-matching projects. Otherwise dragging a project
+   * from the 'Other Projects' WS to a dynamic WS may cause the project to vanish: it is removed
+   * from the 'Other Projects' but never added to the dynamic WS if its name does not match the
+   * pattern.
+   * Therefore it is safer to accept the _manual_ addition even though the project will be removed
+   * when _something else_ (e.g. view re-open, workbench restart, pattern change) causes the dynamic
+   * WS to be updated.
+   */
   @Test
   public void testAddNonMatchingProjectToWorkingSet() {
     setWorkingSetPattern( "very-special-projects-.*" );
@@ -174,7 +183,7 @@ public class DynamicWorkingSetUpdaterPDETest {
 
     workingSet.setElements( new IAdaptable[] { project } );
 
-    assertThat( workingSet.getElements() ).isEmpty();
+    assertThat( workingSet.getElements() ).containsOnly( project );
   }
 
   @Test
@@ -192,11 +201,11 @@ public class DynamicWorkingSetUpdaterPDETest {
   public void testRemoveMatchingProjectFromWorkingSet() {
     setWorkingSetPattern( ANYTHING );
     workingSetManager.addWorkingSet( workingSet );
-    IProject project = projectHelper.getProject();
+    projectHelper.getProject();
 
     workingSet.setElements( new IAdaptable[ 0 ] );
 
-    assertThat( workingSet.getElements() ).containsOnly( project );
+    assertThat( workingSet.getElements() ).isEmpty();
   }
 
   private void setWorkingSetPattern( String pattern ) {
