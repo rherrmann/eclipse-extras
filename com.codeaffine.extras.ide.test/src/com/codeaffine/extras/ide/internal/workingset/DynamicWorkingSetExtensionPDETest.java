@@ -2,6 +2,7 @@ package com.codeaffine.extras.ide.internal.workingset;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.eclipse.ui.IWorkingSetElementAdapter;
 import org.eclipse.ui.IWorkingSetUpdater;
 import org.eclipse.ui.dialogs.IWorkingSetPage;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class DynamicWorkingSetExtensionPDETest {
     assertThat( extension.getAttribute( "icon" ) ).isEqualTo( "icons/obj16/working-set.png" );
     assertThat( getPageClass( extension ) ).isInstanceOf( DynamicWorkingSetPage.class );
     assertThat( getUpdaterClass( extension ) ).isInstanceOf( DynamicWorkingSetUpdater.class );
-    assertThat( extension.getAttribute( "elementAdapterClass" ) ).isNull();
+    assertThat( getAdapterClass( extension ) ).isInstanceOf( DynamicWorkingSetElementAdapter.class );
   }
 
   private static Extension getDynamicWorkingSetExtension() {
@@ -38,5 +39,9 @@ public class DynamicWorkingSetExtensionPDETest {
 
   private static IWorkingSetUpdater getUpdaterClass( Extension extension ) {
     return extension.createExecutableExtension( "updaterClass", IWorkingSetUpdater.class );
+  }
+
+  private static IWorkingSetElementAdapter getAdapterClass( Extension extension ) {
+    return extension.createExecutableExtension( "elementAdapterClass", IWorkingSetElementAdapter.class );
   }
 }

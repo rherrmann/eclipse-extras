@@ -468,6 +468,7 @@
          point="org.eclipse.ui.workingSets">
       <workingSet
             description="Working Set containing all projects that match a specified pattern"
+            elementAdapterClass="com.codeaffine.extras.ide.internal.workingset.DynamicWorkingSetElementAdapter"
             icon="icons/obj16/working-set.png"
             id="com.codeaffine.extras.ide.internal.DynamicWorkingSet"
             name="Dynamic Project Working Set"

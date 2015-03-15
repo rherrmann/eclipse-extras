@@ -72,6 +72,7 @@ public class DynamicWorkingSetWizardPDETest {
     assertThat( workingSet.getElements() ).isEmpty();
     assertThat( workingSet.isSelfUpdating() ).isTrue();
     assertThat( workingSet.isAggregateWorkingSet() ).isFalse();
+    assertThat( workingSet.isEditable() ).isTrue();
     assertThat( workingSet.getId() ).isEqualTo( DynamicWorkingSet.ID );
     assertThat( workingSet.getLabel() ).isEmpty();
     assertThat( workingSet.getImageDescriptor() ).isNotNull();
