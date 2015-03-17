@@ -17,6 +17,8 @@ import org.eclipse.swt.widgets.Composite;
 import com.codeaffine.extras.jdt.internal.junitstatus.TextAnimation.TextAnimationPainter;
 
 public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
+
+  private static final int ARC_SIZE = 3;
   private static final int DEFAULT_WIDTH = 160;
 	private static final int DEFAULT_HEIGHT = 18;
 
@@ -33,7 +35,7 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
     textAlignment = SWT.LEFT;
     textAnimation = new TextAnimation( this, this );
     registerListeners();
-	}
+  }
 
   public void setValues( String text, int textAlignment, Color barColor, int selection, int maximum ) {
     if( valuesChanged( text, textAlignment, barColor, selection, maximum ) ) {
@@ -122,33 +124,32 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
 
   private void paint( GC gc ) {
     gc.fillRectangle( getClientArea() );
-    drawBevelRect( gc );
+    drawRectangle( gc );
     drawBar( gc );
     drawText( gc );
   }
 
-  private void drawBevelRect( GC gc ) {
-    Rectangle clientArea = getClientArea();
-    int x = clientArea.x;
-    int y = clientArea.y;
-    int width = clientArea.width - 1;
-    int height = clientArea.height - 1;
-    gc.setForeground( getDisplay().getSystemColor( SWT.COLOR_WIDGET_NORMAL_SHADOW ) );
-    gc.drawLine( x, y, x + width - 1, y );
-    gc.drawLine( x, y, x, y + height - 1 );
-    gc.setForeground( getDisplay().getSystemColor( SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW ) );
-    gc.drawLine( x + width, y, x + width, y + height );
-    gc.drawLine( x, y + height, x + width, y + height );
+  private void drawRectangle( GC gc ) {
+    if( maximum > 0 ) {
+      Rectangle clientArea = getClientArea();
+      int x = clientArea.x;
+      int y = clientArea.y;
+      int width = clientArea.width - 1;
+      int height = clientArea.height - 1 - 1;
+      gc.setAlpha( 255 );
+      gc.setForeground( getDisplay().getSystemColor( SWT.COLOR_WIDGET_NORMAL_SHADOW ) );
+      gc.drawRoundRectangle( x, y, width, height, ARC_SIZE, ARC_SIZE );
+    }
   }
 
   private void drawBar( GC gc ) {
     gc.setAlpha( 200 );
-    Rectangle rect = getClientArea();
     if( barColor != null ) {
       gc.setBackground( barColor );
     }
-    int barWidth = Math.min( rect.width - 2, getBarWidth() );
-    gc.fillRectangle( 1, 1, barWidth, rect.height - 2 );
+    Rectangle clientArea = getClientArea();
+    int barWidth = Math.min( clientArea.width - 2, getBarWidth() );
+    gc.fillRoundRectangle( 1, 1, barWidth, clientArea.height - 2 - 1, ARC_SIZE, ARC_SIZE );
   }
 
   private void drawText( GC gc ) {
