@@ -155,7 +155,7 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
   private void drawText( GC gc ) {
     gc.setAlpha( 255 );
     Rectangle rect = getClientArea();
-    Rectangle clientArea = new Rectangle( 1, 1, rect.width - 2, rect.height - 2 );
+    Rectangle clientArea = new Rectangle( rect.x + 1, rect.y + 1, rect.width - 2, rect.height - 2 );
     Point textSize = gc.textExtent( text );
     int x = 3;
     if( textAlignment == SWT.CENTER ) {
