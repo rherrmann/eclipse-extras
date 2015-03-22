@@ -1,5 +1,6 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
+import static com.codeaffine.extras.jdt.internal.junitstatus.JUnitModelUtil.countFailedTests;
 import static com.google.common.base.Objects.equal;
 import static java.lang.Integer.valueOf;
 import static java.text.MessageFormat.format;
@@ -35,8 +36,9 @@ public class JUnitTestRunListener extends TestRunListener {
   private final ProgressUI progressUI;
   private volatile int currentSessionHashCode;
   private volatile String currentTestRunName;
-  private volatile int testCount;
   private volatile int currentTest;
+  private volatile int totalTestCount;
+  private volatile int failedTestCount;
 
   public JUnitTestRunListener( ResourceManager resourceManager, ProgressUI progressUI ) {
     this( DebugPlugin.getDefault().getLaunchManager(), resourceManager, progressUI );
@@ -61,16 +63,17 @@ public class JUnitTestRunListener extends TestRunListener {
   public void sessionLaunched( final ITestRunSession testRunSession ) {
     currentSessionHashCode = testRunSession.hashCode();
     currentTestRunName = testRunSession.getTestRunName();
-    testCount = 0;
+    totalTestCount = 0;
+    failedTestCount = 0;
     currentTest = 0;
     updateProgressUI( STARTING );
-    progressUI.setToolTipText( testRunSession.getTestRunName() );
   }
 
   @Override
   public void sessionStarted( ITestRunSession testRunSession ) {
     if( belongsToCurrentSession( testRunSession ) ) {
-      testCount = JUnitModelUtil.countTestCases( testRunSession );
+      totalTestCount = JUnitModelUtil.countTestCases( testRunSession );
+      failedTestCount = 0;
       currentTest = 0;
       updateProgressUI( testRunSession );
     }
@@ -98,19 +101,43 @@ public class JUnitTestRunListener extends TestRunListener {
   }
 
   private void finishSession() {
-    if( testCount == 0 ) {
+    if( totalTestCount == 0 ) {
       updateProgressUI( "" );
     }
   }
 
-  private void updateProgressUI( ITestRunSession testRunSession  ) {
-    String text = format( "{0} / {1}", valueOf( currentTest ), valueOf( testCount ) );
-    Color barColor = getProgressBarColor( testRunSession );
-    progressUI.update( text, SWT.CENTER, barColor, currentTest, testCount );
+  private void updateProgressUI( ITestRunSession testRunSession ) {
+    updateProgressBar( testRunSession );
+    updateProgressToolTip( testRunSession );
   }
 
-  private  void updateProgressUI( String text ) {
+  private void updateProgressUI( String text ) {
     progressUI.update( text, SWT.LEFT, null, 0, 0 );
+    progressUI.setToolTipText( getToolTipText() );
+  }
+
+  private void updateProgressBar( ITestRunSession testRunSession ) {
+    String text = format( "{0} / {1}", valueOf( currentTest ), valueOf( totalTestCount ) );
+    Color barColor = getProgressBarColor( testRunSession );
+    progressUI.update( text, SWT.CENTER, barColor, currentTest, totalTestCount );
+  }
+
+  private void updateProgressToolTip( ITestRunSession testRunSession ) {
+    int failedTests = countFailedTests( testRunSession );
+    if( failedTests != failedTestCount ) {
+      failedTestCount = failedTests;
+      progressUI.setToolTipText( getToolTipText() );
+    }
+  }
+
+  private String getToolTipText() {
+    String result;
+    if( failedTestCount > 0 ) {
+      result = format( "{0} ({1} failed)", currentTestRunName, valueOf( failedTestCount ) );
+    } else {
+      result = currentTestRunName;
+    }
+    return result;
   }
 
   private Color getProgressBarColor( ITestRunSession testRunSession ) {

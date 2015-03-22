@@ -3,6 +3,8 @@ package com.codeaffine.extras.jdt.internal.junitstatus;
 import static com.codeaffine.extras.jdt.internal.junitstatus.JUnitTestRunListener.ERROR_RGB;
 import static com.codeaffine.extras.jdt.internal.junitstatus.JUnitTestRunListener.STARTING;
 import static com.codeaffine.extras.jdt.internal.junitstatus.JUnitTestRunListener.SUCCESS_RGB;
+import static java.lang.Integer.valueOf;
+import static java.text.MessageFormat.format;
 import static org.eclipse.jdt.junit.model.ITestElement.ProgressState.STOPPED;
 import static org.eclipse.jdt.junit.model.ITestElement.Result.ERROR;
 import static org.eclipse.jdt.junit.model.ITestElement.Result.FAILURE;
@@ -61,6 +63,7 @@ public class JUnitTestRunListenerTest {
     testRunListener.sessionLaunched( testRunSession );
 
     verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
   }
 
   @Test
@@ -71,6 +74,7 @@ public class JUnitTestRunListenerTest {
     testRunListener.sessionStarted( testRunSession );
 
     verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
+    verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
   }
 
   @Test
@@ -85,6 +89,7 @@ public class JUnitTestRunListenerTest {
 
     InOrder order = inOrder( progressUI );
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
     order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
   }
 
@@ -99,6 +104,7 @@ public class JUnitTestRunListenerTest {
 
     InOrder order = inOrder( progressUI );
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).setToolTipText( testCaseElement.getTestRunSession().getTestRunName() );
     order.verify( progressUI ).update( "0 / 1", SWT.CENTER, errorColor(), 0, 1 );
   }
 
@@ -120,8 +126,10 @@ public class JUnitTestRunListenerTest {
 
     InOrder order = inOrder( progressUI );
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).setToolTipText( testRunSession1.getTestRunName() );
     order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
     order.verify( progressUI).update( "0 / 2", SWT.CENTER, successColor(), 0, 2 );
     order.verify( progressUI).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
     order.verify( progressUI ).update( "2 / 2", SWT.CENTER, successColor(), 2, 2 );
@@ -138,6 +146,7 @@ public class JUnitTestRunListenerTest {
 
     InOrder order = inOrder( progressUI );
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
     order.verify( progressUI ).update( "", SWT.LEFT, null, 0, 0 );
   }
 
@@ -152,6 +161,7 @@ public class JUnitTestRunListenerTest {
 
     InOrder order = inOrder( progressUI );
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
     order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
   }
 
@@ -175,28 +185,33 @@ public class JUnitTestRunListenerTest {
     testRunListener.testCaseFinished( testCaseElement );
 
     verify( progressUI ).update( "1 / 1", SWT.CENTER, successColor(), 1, 1 );
+    verify( progressUI ).setToolTipText( testCaseElement.getTestRunSession().getTestRunName() );
   }
 
   @Test
-  public void testFailedTestCaseFinished() {
+  public void testTestCaseFinishedWithFailure() {
     ITestCaseElement testCaseElement = mockTestCaseElement( FAILURE );
     testRunListener.sessionLaunched( testCaseElement.getTestRunSession() );
     testRunListener.sessionStarted( testCaseElement.getTestRunSession() );
+    when( testCaseElement.getTestResult( false ) ).thenReturn( FAILURE );
 
     testRunListener.testCaseFinished( testCaseElement );
 
     verify( progressUI ).update( "1 / 1", SWT.CENTER, errorColor(), 1, 1 );
+    verify( progressUI ).setToolTipText( getToolTipText( testCaseElement.getTestRunSession(), 1 ) );
   }
 
   @Test
-  public void testErroredTestCaseFinished() {
-    ITestCaseElement testCaseElement = mockTestCaseElement( ERROR );
+  public void testTestCaseFinishedWithError() {
+    ITestCaseElement testCaseElement = mockTestCaseElement( FAILURE );
     testRunListener.sessionLaunched( testCaseElement.getTestRunSession() );
     testRunListener.sessionStarted( testCaseElement.getTestRunSession() );
+    when( testCaseElement.getTestResult( false ) ).thenReturn( ERROR );
 
     testRunListener.testCaseFinished( testCaseElement );
 
     verify( progressUI ).update( "1 / 1", SWT.CENTER, errorColor(), 1, 1 );
+    verify( progressUI ).setToolTipText( getToolTipText( testCaseElement.getTestRunSession(), 1 ) );
   }
 
   @Test
@@ -303,7 +318,7 @@ public class JUnitTestRunListenerTest {
   {
     ITestRunSession result = mock( ITestRunSession.class );
     when( result.getTestRunSession() ).thenReturn( result );
-    when( result.getTestRunName() ).thenReturn( "test-run-name" );
+    when( result.getTestRunName() ).thenReturn( "test-run-" + new Object().hashCode() );
     when( result.getTestResult( true ) ).thenReturn( testResult );
     when( result.getChildren() ).thenReturn( children );
     for( ITestElement child : children ) {
@@ -316,6 +331,7 @@ public class JUnitTestRunListenerTest {
     ITestCaseElement result = mock( ITestCaseElement.class );
     ITestRunSession testRunSession = mockTestRunSession( testResult, result );
     when( result.getTestRunSession() ).thenReturn( testRunSession );
+    when( result.getTestResult( false ) ).thenReturn( Result.UNDEFINED );
     return result;
   }
 
@@ -323,6 +339,10 @@ public class JUnitTestRunListenerTest {
     for( ILaunchesListener2 launchesListener : launchesListeners ) {
       launchesListener.launchesTerminated( new ILaunch[] { launch } );
     }
+  }
+
+  private static String getToolTipText( ITestRunSession testRunSession, int failedTests ) {
+    return format( "{0} ({1} failed)", testRunSession.getTestRunName(), valueOf( failedTests ) );
   }
 
   private Color successColor() {
