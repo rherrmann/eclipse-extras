@@ -7,7 +7,7 @@ Small extensions for the Eclipse IDE
 ### JUnit Status Bar
 A small contribution to the status bar shows the status of the current or most recent JUnit run. The progress bar is colored green or red depending on how the test results are. The button to the left of the bar opens the [JUnit view](http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fviews%2Fref-view-junit.htm). Use the _Java &gt; JUnit &gt; JUnit Status Bar_ preference page to show or hide the JUnit Status Bar.
 
-![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/junit-status-bar.png)
+![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/junit-status-bar-green.png) ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/junit-status-bar-red.png)
 
 ### Key Binding for the JUnit View
 The key sequence <kbd>Alt+Shift+Q U</kbd> is assigned to open the JUnit view in the current perspective.
