@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Composite;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,7 +18,7 @@ public class JUnitProgressUITest {
   @Rule
   public final DisplayHelper displayHelper = new DisplayHelper();
 
-  private JUnitProgressBar progressBar;
+  private TestableJUnitProgressBar progressBar;
   private JUnitProgressUI progressUI;
 
   @Test
@@ -71,9 +72,61 @@ public class JUnitProgressUITest {
     assertThat( progressBar.getToolTipText() ).isEqualTo( toolTipText );
   }
 
+  @Test
+  public void testSetToolTipTextFromBckgroundThread() {
+    final String text = "text";
+
+    runInThread( new Runnable() {
+      @Override
+      public void run() {
+        progressUI.setToolTipText( text );
+      }
+    } );
+    flushPendingEvents();
+
+    assertThat( progressBar.getToolTipText() ).isEqualTo( text );
+  }
+
+  @Test
+  public void testSetToolTipTextToSameValue() {
+    progressUI.setToolTipText( "text" );
+
+    progressUI.setToolTipText( "text" );
+    flushPendingEvents();
+
+    assertThat( progressBar.setToolTipTextInvocationCount ).isEqualTo( 1 );
+  }
+
+  @Test
+  public void testSetToolTipTextToDifferentValue() {
+    String otherText = "other text";
+    progressUI.setToolTipText( "text" );
+
+    progressUI.setToolTipText( otherText );
+    flushPendingEvents();
+
+    assertThat( progressBar.getToolTipText() ).isEqualTo( otherText );
+  }
+
   @Before
   public void setUp() {
-    progressBar = new JUnitProgressBar( displayHelper.createShell() );
+    progressBar = new TestableJUnitProgressBar( displayHelper.createShell() );
     progressUI = new JUnitProgressUI( progressBar );
+  }
+
+  private static class TestableJUnitProgressBar extends JUnitProgressBar {
+
+    int setToolTipTextInvocationCount;
+
+    TestableJUnitProgressBar( Composite parent ) {
+      super( parent );
+    }
+
+    @Override
+    public void setToolTipText( String string ) {
+      setToolTipTextInvocationCount++;
+      super.setToolTipText( string );
+    }
+
   }
 }

@@ -92,6 +92,7 @@ public class JUnitTestRunListener extends TestRunListener {
       int temp = currentTest;
       temp++;
       currentTest = temp;
+      failedTestCount = countFailedTests( testCaseElement.getTestRunSession() );
       updateProgressUI( testCaseElement.getTestRunSession() );
     }
   }
@@ -107,27 +108,15 @@ public class JUnitTestRunListener extends TestRunListener {
   }
 
   private void updateProgressUI( ITestRunSession testRunSession ) {
-    updateProgressBar( testRunSession );
-    updateProgressToolTip( testRunSession );
+    String text = getProgressBarText();
+    Color barColor = getProgressBarColor( testRunSession );
+    progressUI.update( text, SWT.CENTER, barColor, currentTest, totalTestCount );
+    progressUI.setToolTipText( getToolTipText() );
   }
 
   private void updateProgressUI( String text ) {
     progressUI.update( text, SWT.LEFT, null, 0, 0 );
     progressUI.setToolTipText( getToolTipText() );
-  }
-
-  private void updateProgressBar( ITestRunSession testRunSession ) {
-    String text = format( "{0} / {1}", valueOf( currentTest ), valueOf( totalTestCount ) );
-    Color barColor = getProgressBarColor( testRunSession );
-    progressUI.update( text, SWT.CENTER, barColor, currentTest, totalTestCount );
-  }
-
-  private void updateProgressToolTip( ITestRunSession testRunSession ) {
-    int failedTests = countFailedTests( testRunSession );
-    if( failedTests != failedTestCount ) {
-      failedTestCount = failedTests;
-      progressUI.setToolTipText( getToolTipText() );
-    }
   }
 
   private String getToolTipText() {
@@ -138,6 +127,10 @@ public class JUnitTestRunListener extends TestRunListener {
       result = currentTestRunName;
     }
     return result;
+  }
+
+  private String getProgressBarText() {
+    return format( "{0} / {1}", valueOf( currentTest ), valueOf( totalTestCount ) );
   }
 
   private Color getProgressBarColor( ITestRunSession testRunSession ) {

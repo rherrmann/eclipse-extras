@@ -3,14 +3,18 @@ package com.codeaffine.extras.jdt.internal.junitstatus;
 import org.eclipse.swt.graphics.Color;
 
 import com.codeaffine.eclipse.swt.util.UIThreadSynchronizer;
+import com.google.common.base.Objects;
 
 public class JUnitProgressUI implements ProgressUI {
+
   private final JUnitProgressBar progressBar;
   private final UIThreadSynchronizer uiThreadSynchronizer;
+  private volatile String currentToolTipText;
 
   public JUnitProgressUI( JUnitProgressBar progressBar ) {
     this.progressBar = progressBar;
     this.uiThreadSynchronizer = new UIThreadSynchronizer();
+    this.currentToolTipText = "";
   }
 
   @Override
@@ -29,7 +33,14 @@ public class JUnitProgressUI implements ProgressUI {
   }
 
   @Override
-  public void setToolTipText( final String toolTipText ) {
+  public void setToolTipText( String toolTipText ) {
+    if( !Objects.equal( currentToolTipText, toolTipText ) ) {
+      currentToolTipText = toolTipText;
+      execSetToolTipText( toolTipText );
+    }
+  }
+
+  private void execSetToolTipText( final String toolTipText ) {
     uiThreadSynchronizer.asyncExec( progressBar, new Runnable() {
       @Override
       public void run() {

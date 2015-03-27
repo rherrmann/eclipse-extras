@@ -21,9 +21,7 @@ public class StatusComposite extends Composite {
 
   @Override
   public Point computeSize( int wHint, int hHint, boolean changed ) {
-    GC gc = new GC( this );
-    Point textSize = gc.textExtent( "MMMMMMMMMM" );
-    gc.dispose();
+    Point textSize = measureText( "MMMMMMMMMM" );
     int height = Math.max( getDefaultTrimHeight(), textSize.y + 4 );
     int width = textSize.x + 15;
     return new Point( width, height );
@@ -46,5 +44,12 @@ public class StatusComposite extends Composite {
       shell.dispose();
     }
     return defaultTrimHeight;
+  }
+
+  private Point measureText( String string ) {
+    GC gc = new GC( this );
+    Point result = gc.textExtent( string );
+    gc.dispose();
+    return result;
   }
 }

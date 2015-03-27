@@ -73,8 +73,10 @@ public class JUnitTestRunListenerTest {
 
     testRunListener.sessionStarted( testRunSession );
 
-    verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
-    verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
+    InOrder order = inOrder( progressUI );
+    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
+    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
   }
 
   @Test
@@ -128,11 +130,15 @@ public class JUnitTestRunListenerTest {
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
     order.verify( progressUI ).setToolTipText( testRunSession1.getTestRunName() );
     order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
+    order.verify( progressUI ).setToolTipText( testRunSession1.getTestRunName() );
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
     order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
     order.verify( progressUI).update( "0 / 2", SWT.CENTER, successColor(), 0, 2 );
+    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
     order.verify( progressUI).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
+    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
     order.verify( progressUI ).update( "2 / 2", SWT.CENTER, successColor(), 2, 2 );
+    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
     order.verifyNoMoreInteractions();
   }
 
@@ -184,8 +190,13 @@ public class JUnitTestRunListenerTest {
 
     testRunListener.testCaseFinished( testCaseElement );
 
-    verify( progressUI ).update( "1 / 1", SWT.CENTER, successColor(), 1, 1 );
-    verify( progressUI ).setToolTipText( testCaseElement.getTestRunSession().getTestRunName() );
+    InOrder order = inOrder( progressUI );
+    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).setToolTipText( testCaseElement.getTestRunSession().getTestRunName() );
+    order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
+    order.verify( progressUI ).setToolTipText( testCaseElement.getTestRunSession().getTestRunName() );
+    order.verify( progressUI ).update( "1 / 1", SWT.CENTER, successColor(), 1, 1 );
+    order.verify( progressUI ).setToolTipText( testCaseElement.getTestRunSession().getTestRunName() );
   }
 
   @Test
@@ -228,10 +239,15 @@ public class JUnitTestRunListenerTest {
 
     InOrder order = inOrder( progressUI );
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).setToolTipText( testRunSession1.getTestRunName() );
     order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
+    order.verify( progressUI ).setToolTipText( testRunSession1.getTestRunName() );
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
     order.verify( progressUI ).update( "0 / 2", SWT.CENTER, successColor(), 0, 2 );
+    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
     order.verify( progressUI ).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
+    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
     order.verifyNoMoreInteractions();
   }
 
@@ -252,12 +268,19 @@ public class JUnitTestRunListenerTest {
 
     InOrder order = inOrder( progressUI );
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).setToolTipText( testRunSession1.getTestRunName() );
     order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
+    order.verify( progressUI ).setToolTipText( testRunSession1.getTestRunName() );
     order.verify( progressUI ).update( "1 / 1", SWT.CENTER, successColor(), 1, 1 );
+    order.verify( progressUI ).setToolTipText( testRunSession1.getTestRunName() );
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
     order.verify( progressUI ).update( "0 / 2", SWT.CENTER, successColor(), 0, 2 );
+    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
     order.verify( progressUI ).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
+    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
     order.verify( progressUI ).update( "2 / 2", SWT.CENTER, successColor(), 2, 2 );
+    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
     order.verifyNoMoreInteractions();
   }
 
@@ -274,9 +297,13 @@ public class JUnitTestRunListenerTest {
 
     InOrder order = inOrder( progressUI );
     order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
+    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
     order.verify( progressUI ).update( "0 / 2", SWT.CENTER, successColor(), 0, 2 );
+    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
     order.verify( progressUI ).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
+    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
     order.verify( progressUI ).update( "2 / 2", SWT.CENTER, successColor(), 2, 2 );
+    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
     order.verifyNoMoreInteractions();
   }
 
