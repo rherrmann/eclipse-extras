@@ -1,4 +1,4 @@
-# Eclipse Extras [![Build Status](https://travis-ci.org/rherrmann/eclipse-extras.png)](https://travis-ci.org/rherrmann/eclipse-extras)
+# Eclipse Extras [![Build Status](https://codeship.com/projects/6a994910-8fa7-0132-ebb3-32b8c1ae92e1/status?branch=master)](https://codeship.com/projects/6a994910-8fa7-0132-ebb3-32b8c1ae92e1/status?branch=master)
 
 Small extensions for the Eclipse IDE
 
