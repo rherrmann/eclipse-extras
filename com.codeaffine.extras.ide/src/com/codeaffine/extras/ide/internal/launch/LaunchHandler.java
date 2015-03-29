@@ -16,15 +16,22 @@ public class LaunchHandler extends AbstractHandler {
 
   @Override
   public Object execute( ExecutionEvent event ) throws ExecutionException {
-    Shell shell = HandlerUtil.getActiveWorkbenchWindow( event ).getShell();
-    LaunchSelectionDialog dialog = new LaunchSelectionDialog( shell );
+    LaunchSelectionDialog dialog = createDialog( event );
     if( dialog.open() == Window.OK ) {
-      Object[] selectedElements = dialog.getResult();
-      for( Object selectedElement : selectedElements ) {
-        ILaunchConfiguration launchConfig = ( ILaunchConfiguration )selectedElement;
-        DebugUITools.launch( launchConfig, dialog.getLaunchModeId() );
-      }
+      launchSelectedElements( dialog.getLaunchModeId(), dialog.getResult() );
     }
     return null;
+  }
+
+  private static LaunchSelectionDialog createDialog( ExecutionEvent event ) {
+    Shell shell = HandlerUtil.getActiveWorkbenchWindow( event ).getShell();
+    return new LaunchSelectionDialog( shell );
+  }
+
+  private static void launchSelectedElements( String launchModeId, Object[] selectedElements ) {
+    for( Object selectedElement : selectedElements ) {
+      ILaunchConfiguration launchConfig = ( ILaunchConfiguration )selectedElement;
+      DebugUITools.launch( launchConfig, launchModeId );
+    }
   }
 }
