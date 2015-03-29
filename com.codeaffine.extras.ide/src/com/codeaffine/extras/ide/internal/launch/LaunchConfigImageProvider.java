@@ -40,15 +40,7 @@ public class LaunchConfigImageProvider {
 
   public Image getImage( ILaunchConfiguration configuration ) {
     ensureInitialized();
-    Image result = null;
-    ILaunchConfigurationType type = getType( configuration );
-    if( type != null ) {
-      ImageDescriptor imageDescriptor = launchConfigurationTypeImages.get( type );
-      if( imageDescriptor != null ) {
-        result = resourceManager.createImage( imageDescriptor );
-      }
-    }
-    return result;
+    return getImage( getType( configuration ) );
   }
 
   public void dispose() {
@@ -69,6 +61,17 @@ public class LaunchConfigImageProvider {
       ImageDescriptor imageDescriptor = createImageDescriptor( element );
       launchConfigurationTypeImages.put( type, imageDescriptor );
     }
+  }
+
+  private Image getImage( ILaunchConfigurationType type ) {
+    Image result = null;
+    if( type != null ) {
+      ImageDescriptor imageDescriptor = launchConfigurationTypeImages.get( type );
+      if( imageDescriptor != null ) {
+        result = resourceManager.createImage( imageDescriptor );
+      }
+    }
+    return result;
   }
 
   private ILaunchConfigurationType getLaunchConfigType( IConfigurationElement element ) {
