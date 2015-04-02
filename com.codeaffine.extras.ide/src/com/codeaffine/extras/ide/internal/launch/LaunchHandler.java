@@ -2,7 +2,6 @@ package com.codeaffine.extras.ide.internal.launch;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.jface.window.Window;
@@ -15,7 +14,7 @@ public class LaunchHandler extends AbstractHandler {
   public static final String COMMAND_ID = "com.codeaffine.extras.ide.internal.LaunchCommand";
 
   @Override
-  public Object execute( ExecutionEvent event ) throws ExecutionException {
+  public Object execute( ExecutionEvent event ) {
     LaunchSelectionDialog dialog = createDialog( event );
     if( dialog.open() == Window.OK ) {
       launchSelectedElements( dialog.getLaunchModeId(), dialog.getResult() );
