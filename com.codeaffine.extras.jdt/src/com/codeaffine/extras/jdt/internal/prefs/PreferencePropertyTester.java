@@ -11,7 +11,7 @@ public class PreferencePropertyTester extends PropertyTester {
 
   public static final String ID = "com.codeaffine.extras.jdt.internal.PreferencePropertyTester";
   public static final String NAMESPACE = "com.codeaffine.extras.jdt.internal.PreferenceStore";
-  public  static final String IS_TRUE = "isTrue";
+  public static final String IS_TRUE = "isTrue";
   public static final String PROP_IS_TRUE = NAMESPACE + "." + IS_TRUE;
 
   private final IPreferenceStore preferenceStore;
@@ -28,10 +28,13 @@ public class PreferencePropertyTester extends PropertyTester {
   public boolean test( Object receiver, String property, Object[] args, Object expectedValue ) {
     boolean result = false;
     if( argumentsValid( receiver, property, args ) ) {
-      boolean value = getPreferenceValue( args );
-      result = evaluateResult( expectedValue, value );
+      result = test( args, expectedValue );
     }
     return result;
+  }
+
+  private boolean test( Object[] args, Object expectedValue ) {
+    return evaluateResult( expectedValue, getPreferenceValue( args ) );
   }
 
   private static boolean argumentsValid( Object receiver, String property, Object[] args ) {
