@@ -40,17 +40,7 @@
             sequence="M2+F3">
       </key>
       <key
-            platform="carbon"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M2+F3">
-      </key>
-      <key
             commandId="com.codeaffine.extras.ide.internal.DeleteEditorFileCommand"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+Del">
-      </key>
-      <key
-            platform="carbon"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+Del">
       </key>
@@ -60,17 +50,7 @@
             sequence="M3+F11">
       </key>
       <key
-            platform="carbon"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+F11">
-      </key>
-      <key
             commandId="com.codeaffine.extras.ide.internal.CloseViewCommand"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+M2+Q">
-      </key>
-      <key
-            platform="carbon"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+M2+Q">
       </key>

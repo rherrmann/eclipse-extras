@@ -2,7 +2,6 @@ package com.codeaffine.extras.ide.internal.launch;
 
 import static com.codeaffine.extras.test.util.KeyBindingInspector.DEFAULT_SCHEME_ID;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.jface.util.Util.WS_CARBON;
 
 import org.junit.Test;
 
@@ -22,16 +21,6 @@ public class LaunchKeyBindingPDETest {
     assertThat( keyBinding.getCommandId() ).isEqualTo( LaunchHandler.COMMAND_ID );
     assertThat( keyBinding.getContextId() ).isNull();
     assertThat( keyBinding.getPlatform() ).isNull();
-    assertThat( keyBinding.getParameters() ).isEmpty();
-  }
-
-  @Test
-  public void testCarbonKeyBinding() {
-    KeyBindingInfo keyBinding = KeyBindingInspector.keyBindingFor( KEY_SEQUENCE, WS_CARBON );
-
-    assertThat( keyBinding.getSchemeId() ).isEqualTo( DEFAULT_SCHEME_ID );
-    assertThat( keyBinding.getCommandId() ).isNull();
-    assertThat( keyBinding.getContextId() ).isNull();
     assertThat( keyBinding.getParameters() ).isEmpty();
   }
 
