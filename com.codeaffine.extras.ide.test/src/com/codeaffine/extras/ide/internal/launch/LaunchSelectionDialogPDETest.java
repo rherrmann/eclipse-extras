@@ -3,6 +3,7 @@ package com.codeaffine.extras.ide.internal.launch;
 import static com.codeaffine.extras.ide.test.LaunchManagerHelper.createLaunchConfig;
 import static com.codeaffine.extras.ide.test.LaunchManagerHelper.getDebugModeLabel;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.core.runtime.IStatus.INFO;
 
 import java.util.Comparator;
 
@@ -48,7 +49,9 @@ public class LaunchSelectionDialogPDETest {
 
     IStatus status = dialog.validateItem( launchConfig );
 
-    assertThat( status.getSeverity() ).isEqualTo( IStatus.ERROR );
+    assertThat( status.getSeverity() ).isEqualTo( INFO );
+    assertThat( status.getCode() ).isEqualTo( INFO );
+    assertThat( status.getMessage() ).contains( "Debug" );
   }
 
   @Test
@@ -113,6 +116,16 @@ public class LaunchSelectionDialogPDETest {
     assertThat( text ).isNotEmpty();
   }
 
+  @Test
+  public void testUpdateStatus() {
+    dialog.create();
+
+    dialog.updateStatus();
+
+    assertThat( dialog.lastStatus.isOK() ).isTrue();
+    assertThat( dialog.lastStatus.getMessage() ).isEmpty();
+  }
+
   @Before
   public void setUp() {
     dialog = new TestableLaunchSelectionDialog( displayHelper.createShell() );
@@ -127,10 +140,17 @@ public class LaunchSelectionDialogPDETest {
 
   public static class TestableLaunchSelectionDialog extends LaunchSelectionDialog {
     private final DialogSettings dialogSettings;
+    private IStatus lastStatus;
 
     public TestableLaunchSelectionDialog( Shell shell ) {
       super( shell );
       dialogSettings = new DialogSettings( "TestableLaunchSelectionDialog" );
+    }
+
+    @Override
+    protected void updateStatus( IStatus status ) {
+      lastStatus = status;
+      super.updateStatus( status );
     }
 
     @Override

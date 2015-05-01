@@ -3,6 +3,7 @@ package com.codeaffine.extras.ide.internal.launch;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchMode;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
@@ -17,7 +18,7 @@ public class LaunchHandler extends AbstractHandler {
   public Object execute( ExecutionEvent event ) {
     LaunchSelectionDialog dialog = createDialog( event );
     if( dialog.open() == Window.OK ) {
-      launchSelectedElements( dialog.getLaunchModeId(), dialog.getResult() );
+      launch( dialog.getLaunchMode(), dialog.getSelectedLaunchConfigurations() );
     }
     return null;
   }
@@ -27,10 +28,10 @@ public class LaunchHandler extends AbstractHandler {
     return new LaunchSelectionDialog( shell );
   }
 
-  private static void launchSelectedElements( String launchModeId, Object[] selectedElements ) {
-    for( Object selectedElement : selectedElements ) {
-      ILaunchConfiguration launchConfig = ( ILaunchConfiguration )selectedElement;
-      DebugUITools.launch( launchConfig, launchModeId );
+  private static void launch( ILaunchMode preferredLaunchMode, ILaunchConfiguration[] launchConfigs ) {
+    for( ILaunchConfiguration launchConfig : launchConfigs ) {
+      ILaunchMode launchMode = new LaunchModeComputer( launchConfig, preferredLaunchMode ).compute();
+      DebugUITools.launch( launchConfig, launchMode.getIdentifier() );
     }
   }
 }

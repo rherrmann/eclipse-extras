@@ -1,7 +1,6 @@
 package com.codeaffine.extras.ide.internal.launch;
 
 import static com.codeaffine.extras.ide.internal.IDEExtrasPlugin.PLUGIN_ID;
-import static java.text.MessageFormat.format;
 import static org.eclipse.debug.ui.DebugUITools.openLaunchConfigurationDialog;
 import static org.eclipse.jface.dialogs.IDialogConstants.CANCEL_ID;
 import static org.eclipse.jface.dialogs.IDialogConstants.CANCEL_LABEL;
@@ -58,8 +57,21 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     setSelectionHistory( new LaunchConfigSelectionHistory( launchManager ) );
   }
 
+  public ILaunchConfiguration[] getSelectedLaunchConfigurations() {
+    Object[] selectedElements = getResult();
+    ILaunchConfiguration[] result = new ILaunchConfiguration[ selectedElements.length ];
+    for( int i = 0; i < result.length; i++ ) {
+      result[ i ] = ( ILaunchConfiguration )selectedElements[ i ];
+    }
+    return result;
+  }
+
   public String getLaunchModeId() {
     return new LaunchModeSetting( launchManager, getDialogSettings() ).getLaunchModeId();
+  }
+
+  public ILaunchMode getLaunchMode() {
+    return new LaunchModeSetting( launchManager, getDialogSettings() ).getLaunchMode();
   }
 
   @Override
@@ -125,15 +137,9 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
 
   @Override
   protected IStatus validateItem( Object item ) {
-    IStatus result = new Status( IStatus.OK, PLUGIN_ID, "" );
+    ILaunchMode preferredLaunchMode = getLaunchMode();
     ILaunchConfiguration launchConfig = ( ILaunchConfiguration )item;
-    ILaunchMode launchMode = new LaunchModeSetting( launchManager, getDialogSettings() ).getLaunchMode();
-    if( !supportsLaunchMode( launchConfig, launchMode ) ) {
-      String label = launchMode.getLabel().replace( "&", "" );
-      String message = format( "Selection cannot be launched in ''{0}'' mode", label );
-      result = new Status( IStatus.ERROR, PLUGIN_ID, message );
-    }
-    return result;
+    return new LaunchConfigValidator( launchConfig, preferredLaunchMode ).validate();
   }
 
   @Override
@@ -212,9 +218,9 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     }
   }
 
-  private void updateStatus() {
+  void updateStatus() {
     StructuredSelection selection = getSelectedItems();
-    IStatus totalStatus = Status.OK_STATUS;
+    IStatus totalStatus = okStatus();
     for( Object item : selection.toArray() ) {
       IStatus itemStatus = validateItem( item );
       if( !itemStatus.isOK() ) {
@@ -224,12 +230,8 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     updateStatus( totalStatus );
   }
 
-  private static boolean supportsLaunchMode( ILaunchConfiguration launchConfig, ILaunchMode launchMode ) {
-    try {
-      return launchConfig.supportsMode( launchMode.getIdentifier() );
-    } catch( CoreException ce ) {
-      return false;
-    }
+  private static Status okStatus() {
+    return new Status( IStatus.OK, PLUGIN_ID, "" );
   }
 
   public abstract static class AccessibleSelectionHistory extends SelectionHistory {
