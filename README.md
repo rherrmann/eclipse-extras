@@ -2,6 +2,14 @@
 
 Small extensions for the Eclipse IDE
 
+## Installation
+You can install Eclipse Extras directly from this software site: 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://rherrmann.github.io/eclipse-extras/repository/
+
+In the Eclipse main menu, click _Help > Install New Software…_. Then enter the URL above and select Eclipse Extras
+
+
 ## Current Features
 
 ### JUnit Status Bar
@@ -13,6 +21,11 @@ A small contribution to the status bar shows the status of the current or most r
 The key sequence <kbd>Alt+Shift+Q U</kbd> is assigned to open the JUnit view in the current perspective.
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/show-junit-view.png)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/junit-view.png)
+
+### Launch Configuration Selection Dialog
+Much like the _Open Type_ or _Open Resource_ dialog, the <kbd>Alt+F11</kbd> key binding opens a dialog that lists all launch configurations. The selected launch configuration(s) can be started or edited prior to starting. The launch mode (debug, run, profile, etc) to be used can be changed through the _Default Launch Mode_ drop menu menu.
+
+![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/launch-config-dialog.png)
 
 ### Key Binding for the Open With... Menu
 The key sequence <kbd>Shift+F3</kbd> can be used to show the _Open With_ menu for the selected file. The menu provides a list of alternative editors to open the file in.
@@ -26,11 +39,6 @@ If the currently active editor shows a file from the workspace, the key sequence
 
 ### Key Binding to Close the Active View
 The key binding <kbd>Ctrl+Shift+Q</kbd> closes the currently active view. Just like <kbd>Ctrl+W</kbd> closes the active editor, there is now also a key binding to close the active view. 
-
-### Launch Configuration Selection Dialog
-Much like the _Open Type_ or _Open Resource_ dialog, the <kbd>Alt+F11</kbd> key binding opens a dialog that lists all launch configurations. The selected launch configuration(s) can be started or edited prior to starting. The launch mode (debug, run, profile, etc) to be used can be changed through the _Default Launch Mode_ drop menu menu.
-
-![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/launch-config-dialog.png)
 
 ### Dynamic Project Working Set
 A new type of working set allows to group projects by naming patterns. Rather than manually adding and removing resources, the working set maintains its contents dynamically. When created it is given a regular expression pattern and all projects whose name match that pattern are contained. The content is updated whenever matching projects are created, deleted or change their name.
@@ -51,11 +59,6 @@ Eclipse Extras provides extensions to the Export/Import wizards to transfer gene
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/export-preferences-wizard.png)
 
-
-## Installation
-You can install Eclipse Extras directly from this software site: http://rherrmann.github.io/eclipse-extras/repository/
-
-In the Eclipse main menu, click _Help > Install New Software…_. Then enter the URL above and select Eclipse Extras
 
 ## Requirements
 Works with all Eclipse versions back to 3.8 (Juno) and Java 1.6 or later.
