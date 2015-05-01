@@ -21,7 +21,7 @@ public class OpenWithQuickMenuHandler extends AbstractHandler {
   @Override
   public Object execute( ExecutionEvent event ) {
     IWorkbenchWindow workbenchWindow = HandlerUtil.getActiveWorkbenchWindow( event );
-    IFile file = extractFileFromSelection( HandlerUtil.getCurrentSelection( event ) );
+    IFile file = extractFileFromSelection( getStructuredSelection( event ) );
     showMenu( workbenchWindow.getActivePage(), file );
     return null;
   }
@@ -40,31 +40,36 @@ public class OpenWithQuickMenuHandler extends AbstractHandler {
   }
 
   private void setEnabled( IEvaluationContext evaluationContext ) {
-    ISelection selection = getSelection( evaluationContext );
+    IStructuredSelection selection = getSelection( evaluationContext );
     setBaseEnabled( isEnabled( selection ) );
   }
 
-  private static boolean isEnabled( ISelection selection ) {
+  private static boolean isEnabled( IStructuredSelection selection ) {
     return extractFileFromSelection( selection ) != null;
   }
 
-  private static ISelection getSelection( IEvaluationContext evaluationContext ) {
-    ISelection result = StructuredSelection.EMPTY;
+  private static IStructuredSelection getSelection( IEvaluationContext evaluationContext ) {
+    IStructuredSelection result = StructuredSelection.EMPTY;
     Object variable = evaluationContext.getVariable( ISources.ACTIVE_CURRENT_SELECTION_NAME );
-    if( variable instanceof ISelection ) {
-      result = ( ISelection )variable;
+    if( variable instanceof IStructuredSelection ) {
+      result = ( IStructuredSelection )variable;
     }
     return result;
   }
 
-  private static IFile extractFileFromSelection( ISelection selection ) {
-    IFile result = null;
+  private static IStructuredSelection getStructuredSelection( ExecutionEvent event ) {
+    IStructuredSelection result = StructuredSelection.EMPTY;
+    ISelection selection = HandlerUtil.getCurrentSelection( event );
     if( selection instanceof IStructuredSelection ) {
-      IStructuredSelection structuredSelection = ( IStructuredSelection )selection;
-      if( structuredSelection.size() == 1 ) {
-        IFile file = ResourceUtil.getFile( structuredSelection.getFirstElement() );
-        result = file;
-      }
+      result = ( IStructuredSelection )selection;
+    }
+    return result;
+  }
+
+  private static IFile extractFileFromSelection( IStructuredSelection selection ) {
+    IFile result = null;
+    if( selection.size() == 1 ) {
+      result = ResourceUtil.getFile( selection.getFirstElement() );
     }
     return result;
   }
