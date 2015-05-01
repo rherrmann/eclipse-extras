@@ -1,5 +1,7 @@
 package com.codeaffine.extras.ide.internal.delete;
 
+import static org.eclipse.ui.ide.ResourceUtil.getFile;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.expressions.IEvaluationContext;
@@ -49,7 +51,7 @@ public class DeleteEditorFileHandler extends AbstractHandler {
 
   private static boolean isEnabled( IEvaluationContext evaluationContext ) {
     Object variable = evaluationContext.getVariable( ISources.ACTIVE_EDITOR_INPUT_NAME );
-    return ResourceUtil.getFile( ( IEditorInput )variable ) != null;
+    return variable instanceof IEditorInput && getFile( ( IEditorInput )variable ) != null;
   }
 
 }

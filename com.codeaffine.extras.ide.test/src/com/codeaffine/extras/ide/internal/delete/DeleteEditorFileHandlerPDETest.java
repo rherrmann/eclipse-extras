@@ -34,7 +34,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.codeaffine.extras.ide.internal.delete.DeleteEditorFileHandler;
 import com.codeaffine.extras.ide.test.ProjectHelper;
 
 
@@ -101,6 +100,15 @@ public class DeleteEditorFileHandlerPDETest {
   }
 
   @Test
+  public void testEnablementWithObjectAsEditorInput() {
+    IEvaluationContext evaluationContext = createEvaluationContext( new Object() );
+
+    handler.setEnabled( evaluationContext );
+
+    assertThat( handler.isEnabled() ).isFalse();
+  }
+
+  @Test
   public void testExecuteWithFileEditor() throws CoreException {
     IFile file = projectHelper.createFile( "file.txt", "content" );
     IEvaluationContext evaluationContext = createEvaluationContext( new FileEditorInput( file ) );
@@ -150,7 +158,7 @@ public class DeleteEditorFileHandlerPDETest {
     return commandService.getCommand( DeleteEditorFileHandler.COMMAND_ID );
   }
 
-  private IEvaluationContext createEvaluationContext( IEditorInput editorInput ) {
+  private IEvaluationContext createEvaluationContext( Object editorInput ) {
     IWorkbenchWindow activeWorkbenchWindow = workbenchPage.getWorkbenchWindow();
     IEvaluationContext result = new EvaluationContext( null, new Object() );
     result.addVariable( ISources.ACTIVE_WORKBENCH_WINDOW_NAME, activeWorkbenchWindow );
