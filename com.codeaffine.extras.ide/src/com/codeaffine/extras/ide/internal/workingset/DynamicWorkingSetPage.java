@@ -104,7 +104,7 @@ public class DynamicWorkingSetPage extends WizardPage implements  IWorkingSetPag
     installPatternContentAssist();
     previewLabel = new Label( composite, SWT.NONE );
     previewLabel.setText( "Preview" );
-    previewViewer = new TableViewer( composite, SWT.SINGLE | SWT.FULL_SELECTION );
+    previewViewer = new TableViewer( composite, SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER );
     previewViewer.getControl().setBackground( getWidgetBackgroundColor() );
     previewViewer.getControl().addListener( SWT.FocusOut, new PreviewFocusOutListener() );
     previewLabelProvider = new PreviewLabelProvider( getShell().getDisplay() );
