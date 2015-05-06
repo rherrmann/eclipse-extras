@@ -18,7 +18,7 @@ the following steps describe the setup of the development environment.
  Import all of them into your workspace.
  
 4. The com.codeaffine.extras.target project contains suitable [Target Platform Definitions](http://help.eclipse.org/juno/index.jsp?topic=%2Forg.eclipse.pde.doc.user%2Fconcepts%2Ftarget.htm).
- Open one of them and select the 'Set as Target Platform' link.
+ Open one of them and select the _Set as Target Platform_ link.
 
 
 Now you are ready to hack the sources.
