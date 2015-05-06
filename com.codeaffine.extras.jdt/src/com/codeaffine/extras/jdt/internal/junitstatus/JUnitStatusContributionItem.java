@@ -1,6 +1,7 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
 import org.eclipse.jdt.junit.JUnitCore;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
@@ -13,6 +14,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.PartInitException;
@@ -37,6 +39,7 @@ public class JUnitStatusContributionItem extends WorkbenchWindowControlContribut
     Composite result = createControls( parent );
     layoutControls( result );
     attachListeners();
+    attachContextMenu();
     JUnitCore.addTestRunListener( testRunListener );
     return result;
   }
@@ -76,10 +79,21 @@ public class JUnitStatusContributionItem extends WorkbenchWindowControlContribut
     } );
   }
 
+  private void attachContextMenu() {
+    attachContextMenu( junitViewButton.getParent() );
+    attachContextMenu( progressBar );
+  }
+
+  private void attachContextMenu( Control control ) {
+    MenuManager menuManager = new MenuManager();
+    menuManager.add( new CloseJUnitStatusAction( getWorkbenchWindow().getWorkbench() ) );
+    Menu contextMenu = menuManager.createContextMenu( control );
+    control.setMenu( contextMenu );
+  }
+
   private Image getJUnitImage() {
     Image result = null;
-    IViewRegistry viewRegistry = getWorkbenchWindow().getWorkbench().getViewRegistry();
-    IViewDescriptor viewDescriptor = viewRegistry.find( JUNIT_VIEW_ID );
+    IViewDescriptor viewDescriptor = getViewRegistry().find( JUNIT_VIEW_ID );
     if( viewDescriptor != null ) {
       result = resourceManager.createImage( viewDescriptor.getImageDescriptor() );
     }
@@ -91,6 +105,10 @@ public class JUnitStatusContributionItem extends WorkbenchWindowControlContribut
       getWorkbenchWindow().getActivePage().showView( JUNIT_VIEW_ID );
     } catch( PartInitException ignore ) {
     }
+  }
+
+  private IViewRegistry getViewRegistry() {
+    return getWorkbenchWindow().getWorkbench().getViewRegistry();
   }
 
   private void detachTestRunListener() {

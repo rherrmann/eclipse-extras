@@ -9,10 +9,9 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.services.IEvaluationService;
 
 import com.codeaffine.extras.jdt.internal.JDTExtrasPlugin;
-import com.codeaffine.extras.jdt.internal.prefs.PreferencePropertyTester;
+import com.codeaffine.extras.jdt.internal.prefs.ExpressionEvaluator;
 
 
 public class JUnitStatusBarPreferencePage
@@ -37,10 +36,7 @@ public class JUnitStatusBarPreferencePage
   @Override
   public boolean performOk() {
     boolean result = super.performOk();
-    IEvaluationService evaluationService = getEvaluationService();
-    if( evaluationService != null ) {
-      evaluationService.requestEvaluation( PreferencePropertyTester.PROP_IS_TRUE );
-    }
+    new ExpressionEvaluator( workbench ).evaluate();
     return result;
   }
 
@@ -58,13 +54,5 @@ public class JUnitStatusBarPreferencePage
   private void createBooleanFieldEditor( Composite parent, String label, String preferenceName ) {
     FieldEditor editor = new BooleanFieldEditor( preferenceName, label, parent );
     addField( editor );
-  }
-
-  private IEvaluationService getEvaluationService() {
-    IEvaluationService result = null;
-    if( workbench != null ) {
-      result = ( IEvaluationService )workbench.getService( IEvaluationService.class );
-    }
-    return result;
   }
 }
