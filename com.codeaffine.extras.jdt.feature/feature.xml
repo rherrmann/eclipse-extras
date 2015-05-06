@@ -19,9 +19,7 @@
       <import plugin="org.eclipse.ui.views" version="3.6.0" match="compatible"/>
       <import plugin="com.google.guava" version="12.0.0" match="compatible"/>
       <import plugin="org.eclipse.core.commands" version="3.6.0" match="compatible"/>
-      <import plugin="com.codeaffine.eclipse.core.runtime" version="0.1.0" match="compatible"/>
       <import plugin="com.codeaffine.eclipse.swt" version="0.1.0" match="compatible"/>
-      <import plugin="com.codeaffine.eclipse.ui" version="0.1.0" match="compatible"/>
       <import plugin="org.eclipse.jdt.junit" version="3.7.0" match="compatible"/>
       <import plugin="org.eclipse.debug.core"/>
    </requires>
