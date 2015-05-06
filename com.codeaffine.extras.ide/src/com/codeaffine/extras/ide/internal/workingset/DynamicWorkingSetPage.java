@@ -120,7 +120,16 @@ public class DynamicWorkingSetPage extends WizardPage implements  IWorkingSetPag
     swtDefaults().align( SWT.FILL, SWT.CENTER ).grab( true, false ).applyTo( nameText );
     swtDefaults().align( SWT.FILL, SWT.CENTER ).grab( true, false ).applyTo( patternText );
     swtDefaults().align( SWT.FILL, SWT.TOP ).grab( false, false ).indent( 0, 10 ).applyTo( previewLabel );
-    swtDefaults().align( SWT.FILL, SWT.FILL ).grab( true, true ).indent( 0, 10 ).applyTo( previewViewer.getControl() );
+    swtDefaults()
+      .align( SWT.FILL, SWT.FILL )
+      .grab( true, true )
+      .indent( 0, 10 )
+      .hint( SWT.DEFAULT, getPreferredPreviewViewerHeight() )
+      .applyTo( previewViewer.getControl() );
+  }
+
+  private int getPreferredPreviewViewerHeight() {
+    return 10 * previewViewer.getTable().getItemHeight();
   }
 
   private void installPatternContentAssist() {
