@@ -7,7 +7,7 @@ You can install Eclipse Extras directly from this software site:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://rherrmann.github.io/eclipse-extras/repository/
 
-In the Eclipse main menu, click _Help > Install New Software…_. Then enter the URL above and select Eclipse Extras
+In the Eclipse main menu, click _Help > Install New Software…_. Then enter the URL above and select _Extras for the Eclipse IDE_. Expand the item to select only certain features of the Eclipse Extras package.
 
 
 ## Current Features
