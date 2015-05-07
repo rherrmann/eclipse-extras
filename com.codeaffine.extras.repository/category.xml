@@ -6,6 +6,9 @@
    <feature url="../com.codeaffine.extras.ide.feature_0.1.0.qualifier.jar" id="com.codeaffine.extras.ide.feature" version="0.1.0.qualifier">
       <category name="com.codeaffine.extras.category"/>
    </feature>
+   <feature url="../com.codeaffine.extras.launch.feature_0.1.0.qualifier.jar" id="com.codeaffine.extras.launch.feature" version="0.1.0.qualifier">
+      <category name="com.codeaffine.extras.category"/>
+   </feature>
    <category-def name="com.codeaffine.extras.category" label="Extras for the Eclipse IDE">
       <description>
          Small extensions for the Eclipse IDE

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="org.eclipse.debug.ui.category.run"
+            defaultHandler="com.codeaffine.extras.internal.launch.LaunchHandler"
+            description="Open the &apos;Start Launch Configuration&apos; Dialog"
+            id="com.codeaffine.extras.ide.internal.LaunchCommand"
+            name="Open Launch Dialog">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="com.codeaffine.extras.ide.internal.LaunchCommand"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+F11">
+      </key>
+   </extension>
+</plugin>

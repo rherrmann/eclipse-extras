@@ -18,13 +18,6 @@
             name="Delete File in Editor">
       </command>
       <command
-            categoryId="org.eclipse.debug.ui.category.run"
-            defaultHandler="com.codeaffine.extras.ide.internal.launch.LaunchHandler"
-            description="Open the &apos;Start Launch Configuration&apos; Dialog"
-            id="com.codeaffine.extras.ide.internal.LaunchCommand"
-            name="Open Launch Dialog">
-      </command>
-      <command
             categoryId="org.eclipse.ui.category.views"
             defaultHandler="com.codeaffine.extras.ide.internal.closeview.CloseViewHandler"
             description="Close the currently active view"
@@ -43,11 +36,6 @@
             commandId="com.codeaffine.extras.ide.internal.DeleteEditorFileCommand"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+Del">
-      </key>
-      <key
-            commandId="com.codeaffine.extras.ide.internal.LaunchCommand"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+F11">
       </key>
       <key
             commandId="com.codeaffine.extras.ide.internal.CloseViewCommand"

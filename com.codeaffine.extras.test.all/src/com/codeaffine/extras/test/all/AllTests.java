@@ -9,6 +9,7 @@ import com.codeaffine.osgi.testuite.BundleTestSuite.TestBundles;
 @TestBundles( {
   "com.codeaffine.extras.ide",
   "com.codeaffine.extras.jdt",
+  "com.codeaffine.extras.launch",
 } )
 public class AllTests {
 }

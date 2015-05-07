@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="com.codeaffine.extras.launch.test.TestLaunchDelegate"
+            id="com.codeaffine.extras.ide.test.TestLaunchConfigurationType"
+            modes="run, debug, profile"
+            name="Test Launch Configuration Type"
+            public="true">
+      </launchConfigurationType>
+   </extension>
+   <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="com.codeaffine.extras.ide.test.TestLaunchConfigurationType"
+            icon="icons/obj16/test-launch-config-type.png"
+            id="com.codeaffine.extras.ide.test.TestLaunchConfigurationTypeImage">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchModes">
+      <launchMode
+            label="Test Launch Mode"
+            launchAsLabel="As Test Launch Mode"
+            mode="com.codeaffine.extras.ide.test.TestLaunchMode">
+      </launchMode>
+   </extension>
+</plugin>
