@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferenceTransfer">
+      <transfer
+            icon="icons/elcl16/workbench-appearance-prefs.png"
+            id="com.codeaffine.extras.ide.internal.WorkbenchAppearanceTransfer"
+            name="Workbench Appearance Preferences">
+         <mapping
+               scope="instance">
+            <entry
+                  node="org.eclipse.ui">
+               <key
+                     name="ENABLE_ANIMATIONS">
+               </key>
+               <key
+                     name="SHOW_TRADITIONAL_STYLE_TABS">
+               </key>
+               <key
+                     name="SHOW_OTHER_IN_PERSPECTIVE_MENU">
+               </key>
+               <key
+                     name="SHOW_OPEN_ON_PERSPECTIVE_BAR">
+               </key>
+               <key
+                     name="SHOW_TEXT_ON_PERSPECTIVE_BAR">
+               </key>
+               <key
+                     name="USE_COLORED_LABELS">
+               </key>
+               <key
+                     name="EDITOR_MINIMUM_CHARACTERS">
+               </key>
+               <key
+                     name="VIEW_MINIMUM_CHARACTERS">
+               </key>
+               <key
+                     name="SHOW_MEMORY_MONITOR">
+               </key>
+               <key
+                     name="SHOW_FILTERED_TEXTS">
+               </key>
+               <key
+                     name="ENABLE_DETACHED_VIEWS">
+               </key>
+               <key
+                     name="CURRENT_THEME_ID">
+               </key>
+               <key
+                     name="MULTI_KEY_ASSIST">
+               </key>
+               <key
+                     name="perspectiveBarVisible">
+               </key>
+               <key
+                     name="coolBarVisible">
+               </key>
+               <key
+                     name="showIntro">
+               </key></entry>
+            <entry
+                  node="org.eclipse.ui.workbench">
+               <key
+                     name="RECENT_FILES">
+               </key>
+               <key
+                     name="RUN_IN_BACKGROUND">
+               </key>
+               <key
+                     name="ENABLED_DECORATORS">
+               </key>
+               <key
+                     name="FVB_HIDE">
+               </key>
+               <key
+                     name="OPEN_ON_SINGLE_CLICK">
+               </key>
+               <key
+                     name="OPEN_AFTER_DELAY">
+               </key>
+               <key
+                     name="SELECT_ON_HOVER">
+               </key>
+               <key
+                     name="STICKY_CYCLE">
+               </key>
+               <key
+                     name="OPEN_PERSPECTIVE_MODE">
+               </key>
+            </entry>
+            <entry
+                  node="org.eclipse.ui.ide">
+               <key
+                     name="SWITCH_PERSPECTIVE_ON_PROJECT_CREATION">
+               </key>
+            </entry>
+         </mapping>
+         <description>
+            Preferences related to the appearance of the elements of the workbench window like tool bar, perspective bar, editors, views.
+         </description>
+      </transfer>
+      <transfer
+            icon="icons/elcl16/workspace-prefs.gif"
+            id="com.codeaffine.extras.ide.internal.WorkspaceTransfer"
+            name="Workspace Preferences">
+         <mapping
+               scope="instance">
+            <entry
+                  node="org.eclipse.core.resources">
+               <key
+                     name="description.snapshotinterval">
+               </key>
+               <key
+                     name="description.autobuilding">
+               </key>
+               <key
+                     name="encoding">
+               </key>
+               <key
+                     name="refresh.lightweight.enabled">
+               </key>
+               <key
+                     name="refresh.enabled">
+               </key>
+               <key
+                     name="description.applyfilestatepolicy">
+               </key>
+               <key
+                     name="description.filestatelongevity">
+               </key>
+               <key
+                     name="description.maxfilestates">
+               </key>
+               <key
+                     name="description.maxfilestatesize">
+               </key>
+               <key
+                     name="description.disableLinking">
+               </key>
+            </entry>
+            <entry
+                  node="org.eclipse.core.runtime">
+               <key
+                     name="line.separator">
+               </key>
+            </entry>
+            <entry
+                  node="org.eclipse.ui.ide">
+               <key
+                     name="CLOSE_UNRELATED_PROJECTS">
+               </key>
+               <key
+                     name="SAVE_ALL_BEFORE_BUILD">
+               </key>
+               <key
+                     name="OPEN_REQUIRED_PROJECTS">
+               </key>
+               <key
+                     name="IMPORT_FILES_AND_FOLDERS_MODE">
+               </key>
+               <key
+                     name="IMPORT_FILES_AND_FOLDERS_VIRTUAL_FOLDER_MODE">
+               </key>
+               <key
+                     name="MAX_RECENT_WORKSPACES">
+               </key>
+            </entry>
+         </mapping>
+         <description>
+            General > Workspace
+         </description>
+      </transfer>
+      <transfer
+            icon="icons/elcl16/editor-prefs.png"
+            id="com.codeaffine.extras.ide.internal.EditorTransfer"
+            name="General Editor Preferences">
+         <mapping
+               scope="instance">
+            <entry
+                  node="org.eclipse.ui">
+               <key
+                     name="DISABLE_OPEN_EDITOR_IN_PLACE">
+               </key>
+               <key
+                     name="PROMPT_WHEN_SAVEABLE_STILL_OPEN">
+               </key>
+            </entry>
+            <entry
+                  node="org.eclipse.ui.workbench">
+               <key
+                     name="RECENT_FILES">
+               </key>
+               <key
+                     name="REUSE_OPEN_EDITORS_BOOLEAN">
+               </key>
+               <key
+                     name="REUSE_OPEN_EDITORS">
+               </key>
+               <key
+                     name="REUSE_DIRTY_EDITORS">
+               </key>
+               <key
+                     name="USE_IPERSISTABLE_EDITORS">
+               </key>
+            </entry>
+         </mapping>
+         <description>
+            General > Editors
+         </description>
+      </transfer>
+      <transfer
+            icon="icons/elcl16/text-editor-prefs.png"
+            id="com.codeaffine.extras.ide.internal.TextEditorTransfer"
+            name="Text Editors Preferences">
+         <mapping scope="instance">
+           <entry node="org.eclipse.ui.editors">
+              <key name="quickdiff.quickDiff">
+              </key>
+              <key name="printMargin">
+              </key>
+              <key name="printMarginColumn">
+              </key>
+              <key name="tabWidth">
+              </key>
+              <key name="currentLine">
+              </key>
+              <key name="spacesForTabs">
+              </key>
+              <key name="lineNumberRuler">
+              </key>
+              <key name="show_range_indicator">
+              </key>
+              <key name="showTextHoverAffordance">
+              </key>
+              <key name="spellingEnabled">
+              </key>
+              <key match="prefix" name="quickdiff.">
+              </key>
+              <key name="deletionIndicationInOverviewRuler">
+              </key>
+           </entry>
+           <entry node="org.eclipse.ui.editors">
+              <key name="showWhitespaceCharacters"></key>
+              <key name="showCarriageReturn"></key>
+              <key name="showLineFeed"></key>
+              <key name="showLeadingIdeographicSpaces"></key>
+              <key name="showLeadingSpaces"></key>
+              <key name="showLeadingTabs"></key>
+              <key name="showEnclosedIdeographicSpaces"></key>
+              <key name="showEnclosedSpaces"></key>
+              <key name="showEnclosedTabs"></key>
+              <key name="showTrailingIdeographicSpaces"></key>
+              <key name="showTrailingSpaces"></key>
+              <key name="showTrailingTabs"></key>
+              <key name="whitespaceCharacterAlphaValue"></key>
+           </entry>
+           <entry
+                 node="org.eclipse.ui.workbench">
+              <key
+                    name="org.eclipse.jface.textfont">
+              </key>
+              <key
+                    name="org.eclipse.ui.workbench.texteditor.blockSelectionModeFont">
+              </key>
+           </entry>
+         </mapping>
+         <description>
+            General &gt; Editors &gt; Text Editors, Spelling, Quick Diff
+         </description>
+      </transfer>
+      <transfer
+            icon="icons/elcl16/search-prefs.png"
+            id="com.codeaffine.extras.ide.internal.SearchTransfer"
+            name="Search Preferences">
+         <mapping
+               scope="instance">
+            <entry
+                  node="org.eclipse.search">
+               <key
+                     match="prefix"
+                     name="org.eclipse.search.">
+               </key>
+            </entry>
+         </mapping>
+         <description>
+            General > Search
+         </description>
+      </transfer>
+      <transfer
+            icon="icons/elcl16/run-debug-prefs.png"
+            id="com.codeaffine.extras.ide.internal.DebugTransfer"
+            name="Run/Debug Preferences">
+         <mapping
+               scope="instance">
+            <entry
+                  node="org.eclipse.debug.ui">
+               <key
+                     match="prefix"
+                     name="org.eclipse.debug.ui.">
+               </key>
+               <key
+                     match="prefix"
+                     name="Console.">
+               </key>
+               <key
+                     match="prefix"
+                     name="DEBUG.">
+               </key>
+            </entry>
+            <entry
+                  node="org.eclipse.core.variables">
+               <key
+                     name="org.eclipse.core.variables.valueVariables">
+               </key>
+            </entry>
+            <entry
+                  node="org.eclipse.ui.externaltools">
+               <key
+                     name="externaltools.builders.promptForProjectMigration">
+               </key>
+               <key
+                     name="externaltools.builders.promptForMigration">
+               </key>
+            </entry>
+         </mapping>
+         <description>
+            Run/Debug and all sub preference pages
+         </description>
+      </transfer>
+      <transfer
+            icon="icons/elcl16/xml-editor-prefs.gif"
+            id="com.codeaffine.extras.ide.internal.XmlEditorTransfer"
+            name="XML Editor">
+         <mapping scope="instance">
+            <entry node="org.eclipse.wst.xml.core">
+               <key name="outputCodeset"></key>
+               <key name="lineWidth"></key>
+               <key name="splitMultiAttrs"></key>
+               <key name="alignEndBracket"></key>
+               <key name="preserveCDATAContent"></key>
+               <key name="clearAllBlankLines"></key>
+               <key name="formatCommentText"></key>
+               <key name="formatCommentJoinLines"></key>
+               <key name="spaceBeforeEmptyCloseTag"></key>
+               <key name="indentationChar"></key>
+               <key name="indentationSize"></key>
+               <key name="useInferredGrammar"></key>
+            </entry>
+            <entry node="org.eclipse.wst.xml.ui">
+               <key name="suggestionStrategy"></key>
+               <key name="autoPropose"></key>
+               <key name="autoProposeCode"></key>
+               <key name="autoProposeDelay"></key>
+               <key name="insertSingleSuggestion"></key>
+               <key match="prefix" name="xml_content_assist_"></key>
+               <key name="org.eclipse.wst.sse.ui.custom_templates"></key>
+               <key name="removeEndTags"></key>
+               <key name="closeBrackets"></key>
+               <key name="closeStrings"></key>
+               <key name="completeComments"></key>
+               <key name="completeEndTags"></key>
+               <key name="completeElements"></key>
+            </entry>
+            <!-- Syntax Coloring -->
+            <entry node="org.eclipse.wst.xml.ui">
+               <key name="tagAttributeName"></key>
+               <key name="tagAttributeEquals"></key>
+               <key name="tagAttributeValue"></key>
+               <key name="cdataText"></key>
+               <key name="cdataBorder"></key>
+               <key name="commentText"></key>
+               <key name="commentBorder"></key>
+               <key name="xmlContent"></key>
+               <key name="declBorder"></key>
+               <key name="doctypeName"></key>
+               <key name="doctypeExternalPubref"></key>
+               <key name="doctypeExternalSysref"></key>
+               <key name="doctypeExternalId"></key>
+               <key name="entityReference"></key>
+               <key name="piContent"></key>
+               <key name="piBorder"></key>
+               <key name="tagName"></key>
+               <key name="tagBorder"></key>
+            </entry>
+            
+         </mapping>
+         <description>
+            XML editor preferences
+         </description>
+      </transfer>
+   </extension>
+</plugin>

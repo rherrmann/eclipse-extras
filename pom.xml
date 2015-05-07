@@ -23,6 +23,8 @@
   </prerequisites>
 
   <modules>
+    <module>com.codeaffine.extras.export</module>
+    <module>com.codeaffine.extras.export.feature</module>
     <module>com.codeaffine.extras.jdt</module>
     <module>com.codeaffine.extras.jdt.test</module>
     <module>com.codeaffine.extras.jdt.feature</module>
