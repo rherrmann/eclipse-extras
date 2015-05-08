@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Eclipse Core IDE Extras
+Bundle-Name: Eclipse Extras Core IDE Extras
 Bundle-SymbolicName: com.codeaffine.extras.ide;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-Vendor: codeaffine.com
@@ -19,4 +19,3 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.7.0,4.0.0)",
  com.codeaffine.eclipse.swt;bundle-version="[0.1.0,1.0.0)"
 Import-Package: com.google.common.base;version="[12.0.0,13.0.0)",
  com.google.common.collect;version="[12.0.0,13.0.0)"
-Bundle-Activator: com.codeaffine.extras.ide.internal.IDEExtrasPlugin

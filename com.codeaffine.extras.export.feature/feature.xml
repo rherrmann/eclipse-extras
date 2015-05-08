@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="com.codeaffine.extras.export.feature"
-      label="Extras for the Preference Export"
+      label="Extras for Preference Import/Export"
       version="0.1.0.qualifier"
       provider-name="codeaffine.com"
       license-feature="com.codeaffine.extras.license.feature"
