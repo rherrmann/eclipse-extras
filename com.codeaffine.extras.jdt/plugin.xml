@@ -17,6 +17,16 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M2+M3+Q U">
       </key>
+      <key
+            commandId="org.eclipse.ui.views.showView"
+            platform="carbon"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="COMMAND+ALT+Q U">
+         <parameter
+               id="org.eclipse.ui.views.showView.viewId"
+               value="org.eclipse.jdt.junit.ResultView">
+         </parameter>
+      </key>
   </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
