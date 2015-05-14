@@ -1,50 +1,102 @@
 package com.codeaffine.extras.internal.launch;
 
-import org.eclipse.core.runtime.CoreException;
+import static java.util.Arrays.asList;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.debug.ui.ILaunchGroup;
+import org.eclipse.debug.ui.actions.AbstractLaunchHistoryAction;
 import org.eclipse.ui.IMemento;
 
 import com.codeaffine.extras.internal.launch.LaunchSelectionDialog.AccessibleSelectionHistory;
-import com.google.common.base.Objects;
 
 class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
-  private static final String TAG_NAME = "name";
 
-  private final ILaunchManager launchManager;
+  @Override
+  public synchronized boolean contains( Object object ) {
+    return asList( getLaunchConfigHistory() ).contains( object );
+  }
 
-  LaunchConfigSelectionHistory( ILaunchManager launchManager ) {
-    this.launchManager = launchManager;
+  @Override
+  public synchronized Object[] getHistoryItems() {
+    return getLaunchConfigHistory();
+  }
+
+  @Override
+  public synchronized boolean remove( Object element ) {
+    return false;
+  }
+
+  @Override
+  public synchronized boolean isEmpty() {
+    return getLaunchConfigHistory().length == 0;
   }
 
   @Override
   protected Object restoreItemFromMemento( IMemento memento ) {
-    String launchConfigName = memento.getString( TAG_NAME );
-    return findLaunchConfig( launchConfigName );
+    return null;
   }
 
   @Override
   protected void storeItemToMemento( Object item, IMemento memento ) {
-    ILaunchConfiguration launchConfig = ( ILaunchConfiguration )item;
-    memento.putString( TAG_NAME, launchConfig.getName() );
   }
 
-  private ILaunchConfiguration findLaunchConfig( String launchConfigName ) {
-    ILaunchConfiguration result = null;
-    for( ILaunchConfiguration launchConf : getLaunchConfigurations() ) {
-      if( Objects.equal( launchConf.getName(), launchConfigName ) ) {
-        result = launchConf;
+  private static ILaunchConfiguration[] getLaunchConfigHistory() {
+    return new LaunchConfigHistoryCollector().collect();
+  }
+
+  private static class LaunchConfigHistoryCollector {
+    private final Set<ILaunchConfiguration> launchConfigHistory;
+
+    LaunchConfigHistoryCollector() {
+      launchConfigHistory = new LinkedHashSet<ILaunchConfiguration>();
+    }
+
+    ILaunchConfiguration[] collect() {
+      for( ILaunchGroup launchGroup : DebugUITools.getLaunchGroups() ) {
+        collect( launchGroup );
+      }
+      return launchConfigHistory.toArray( new ILaunchConfiguration[ launchConfigHistory.size() ] );
+    }
+
+    private void collect( ILaunchGroup launchGroup ) {
+      LaunchHistoryAction launchHistoryAction = new LaunchHistoryAction( launchGroup.getIdentifier() );
+      try {
+        if( launchHistoryAction.getLastLaunch() != null ) {
+          append( launchHistoryAction.getHistory() );
+          append( launchHistoryAction.getFavorites() );
+        }
+      } finally {
+        launchHistoryAction.dispose();
       }
     }
-    return result;
+
+    private void append( ILaunchConfiguration... launchConfigs ) {
+      launchConfigHistory.addAll( asList( launchConfigs ) );
+    }
   }
 
-  private ILaunchConfiguration[] getLaunchConfigurations() {
-    ILaunchConfiguration[] result = new ILaunchConfiguration[ 0 ];
-    try {
-      result = launchManager.getLaunchConfigurations();
-    } catch( CoreException ignore ) {
+  private static class LaunchHistoryAction extends AbstractLaunchHistoryAction {
+    LaunchHistoryAction( String launchGroupId ) {
+      super( launchGroupId );
     }
-    return result;
+
+    @Override
+    public ILaunchConfiguration getLastLaunch() {
+      return super.getLastLaunch();
+    }
+
+    @Override
+    public ILaunchConfiguration[] getFavorites() {
+      return super.getFavorites();
+    }
+
+    @Override
+    public ILaunchConfiguration[] getHistory() {
+      return super.getHistory();
+    }
   }
 }

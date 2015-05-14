@@ -54,7 +54,7 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     setMessage( "Enter a &name pattern (? = any character, * = any string, CamelCase)" );
     setListLabelProvider( createLaunchConfigLabelProvider( shell, LabelMode.LIST ) );
     setDetailsLabelProvider( createLaunchConfigLabelProvider( shell, LabelMode.DETAIL ) );
-    setSelectionHistory( new LaunchConfigSelectionHistory( launchManager ) );
+    setSelectionHistory( new LaunchConfigSelectionHistory() );
   }
 
   public ILaunchConfiguration[] getSelectedLaunchConfigurations() {

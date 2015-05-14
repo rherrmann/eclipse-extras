@@ -3,55 +3,107 @@ package com.codeaffine.extras.internal.launch;
 import static com.codeaffine.extras.launch.test.LaunchManagerHelper.createLaunchConfig;
 import static com.codeaffine.extras.launch.test.LaunchManagerHelper.deleteLaunchConfig;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.XMLMemento;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.codeaffine.extras.internal.launch.LaunchConfigSelectionHistory;
-import com.codeaffine.extras.launch.test.LaunchManagerHelper;
-
 public class LaunchConfigSelectionHistoryPDETest {
 
   private LaunchConfigSelectionHistory history;
-  private ILaunchConfigurationWorkingCopy launchConfig;
-  private XMLMemento memento;
+  private ILaunchConfiguration launchConfig;
 
   @Test
-  public void testRestore() {
-    history.storeItemToMemento( launchConfig, memento );
+  public void testRestoreFromMemento() {
+    Object restoredItem = history.restoreItemFromMemento( XMLMemento.createWriteRoot( "foo" ) );
 
-    ILaunchConfiguration restoredLaunchConfig
-      = ( ILaunchConfiguration )history.restoreItemFromMemento( memento );
-
-    assertThat( restoredLaunchConfig.contentsEqual( launchConfig ) ).isTrue();
+    assertThat( restoredItem ).isNull();
   }
 
   @Test
-  public void testRestoreWhenLaunchConfigWasDeleted() throws CoreException {
-    history.storeItemToMemento( launchConfig, memento );
-    LaunchManagerHelper.deleteLaunchConfig( launchConfig.getName() );
+  public void testStoreItemToMemento() {
+    IMemento memento = mock( IMemento.class );
 
-    Object restoredLaunchConfig = history.restoreItemFromMemento( memento );
+    history.storeItemToMemento( new Object(), memento );
 
-    assertThat( restoredLaunchConfig ).isNull();
+    verifyZeroInteractions( memento );
+  }
+
+  @Test
+  public void testGetHistoryItems() {
+    addLaunchConfigToHistory();
+
+    Object[] historyItems = history.getHistoryItems();
+
+    assertThat( historyItems ).containsOnly( launchConfig );
+  }
+
+  @Test
+  public void testGetHistoryItemsWhenNoHistory() {
+    Object[] historyItems = history.getHistoryItems();
+
+    assertThat( historyItems ).isEmpty();
+  }
+
+  @Test
+  public void testIsEmpty() {
+    addLaunchConfigToHistory();
+
+    boolean empty = history.isEmpty();
+
+    assertThat( empty ).isFalse();
+  }
+
+  @Test
+  public void testIsEmptyWhenNoHistory() {
+    boolean empty = history.isEmpty();
+
+    assertThat( empty ).isTrue();
+  }
+
+  @Test
+  public void testContains() {
+    addLaunchConfigToHistory();
+
+    boolean contains = history.contains( launchConfig );
+
+    assertThat( contains ).isTrue();
+  }
+
+  @Test
+  public void testContainsWhenNoHistory() {
+    boolean contains = history.contains( launchConfig );
+
+    assertThat( contains ).isFalse();
+  }
+
+  @Test
+  public void testContainsWithNullArgument() {
+    boolean contains = history.contains( null );
+
+    assertThat( contains ).isFalse();
   }
 
   @Before
-  public void setUp() throws CoreException {
-    memento = XMLMemento.createWriteRoot( "root" );
-    launchConfig = createLaunchConfig();
-    launchConfig.doSave();
-    history = new LaunchConfigSelectionHistory( DebugPlugin.getDefault().getLaunchManager() );
+  public void setUp() throws Exception {
+    launchConfig = createLaunchConfig().doSave();
+    history = new LaunchConfigSelectionHistory();
   }
 
   @After
   public void tearDown() throws CoreException {
     deleteLaunchConfig( launchConfig.getName() );
+  }
+
+  private void addLaunchConfigToHistory() {
+    DebugUITools.launch( launchConfig, ILaunchManager.RUN_MODE );
   }
 }

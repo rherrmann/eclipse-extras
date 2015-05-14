@@ -1,6 +1,7 @@
 package com.codeaffine.extras.launch.test;
 
 import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
+import static org.eclipse.debug.ui.IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -17,7 +18,9 @@ public class LaunchManagerHelper {
 
   public static ILaunchConfigurationWorkingCopy createLaunchConfig() throws CoreException {
     ILaunchConfigurationType type = getTestLaunchConfigType();
-    return type.newInstance( null, "LC" + new Object().hashCode() );
+    ILaunchConfigurationWorkingCopy result = type.newInstance( null, "LC" + new Object().hashCode() );
+    result.setAttribute( ATTR_LAUNCH_IN_BACKGROUND, false );
+    return result;
   }
 
   public static void deleteLaunchConfig( String name ) throws CoreException {
