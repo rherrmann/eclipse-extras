@@ -3,12 +3,13 @@ package com.codeaffine.extras.internal.launch;
 import static com.codeaffine.extras.launch.test.LaunchManagerHelper.createLaunchConfig;
 import static com.codeaffine.extras.launch.test.LaunchManagerHelper.deleteLaunchConfig;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
+import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.XMLMemento;
@@ -39,7 +40,17 @@ public class LaunchConfigSelectionHistoryPDETest {
 
   @Test
   public void testGetHistoryItems() {
-    addLaunchConfigToHistory();
+    runLaunchConfig();
+
+    Object[] historyItems = history.getHistoryItems();
+
+    assertThat( historyItems ).containsOnly( launchConfig );
+  }
+
+  @Test
+  public void testGetHistoryItemsAfterRunAndDebugSameLaunchConfig() {
+    runLaunchConfig();
+    debugLaunchConfig();
 
     Object[] historyItems = history.getHistoryItems();
 
@@ -55,7 +66,7 @@ public class LaunchConfigSelectionHistoryPDETest {
 
   @Test
   public void testIsEmpty() {
-    addLaunchConfigToHistory();
+    runLaunchConfig();
 
     boolean empty = history.isEmpty();
 
@@ -71,7 +82,7 @@ public class LaunchConfigSelectionHistoryPDETest {
 
   @Test
   public void testContains() {
-    addLaunchConfigToHistory();
+    runLaunchConfig();
 
     boolean contains = history.contains( launchConfig );
 
@@ -103,7 +114,11 @@ public class LaunchConfigSelectionHistoryPDETest {
     deleteLaunchConfig( launchConfig.getName() );
   }
 
-  private void addLaunchConfigToHistory() {
-    DebugUITools.launch( launchConfig, ILaunchManager.RUN_MODE );
+  private void runLaunchConfig() {
+    DebugUITools.launch( launchConfig, RUN_MODE );
+  }
+
+  private void debugLaunchConfig() {
+    DebugUITools.launch( launchConfig, DEBUG_MODE );
   }
 }
