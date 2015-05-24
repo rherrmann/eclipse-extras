@@ -5,7 +5,7 @@
          point="org.eclipse.ui.commands">
       <command
             categoryId="org.eclipse.debug.ui.category.run"
-            defaultHandler="com.codeaffine.extras.internal.launch.LaunchHandler"
+            defaultHandler="com.codeaffine.extras.launch.internal.LaunchHandler"
             description="Open the &apos;Start Launch Configuration&apos; Dialog"
             id="com.codeaffine.extras.ide.internal.LaunchCommand"
             name="Open Launch Dialog">

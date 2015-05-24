@@ -5,12 +5,12 @@
          point="org.eclipse.ui.workingSets">
       <workingSet
             description="Working Set containing all projects that match a specified pattern"
-            elementAdapterClass="com.codeaffine.extras.internal.workingset.DynamicWorkingSetElementAdapter"
+            elementAdapterClass="com.codeaffine.extras.workingset.internal.DynamicWorkingSetElementAdapter"
             icon="icons/obj16/working-set.png"
             id="com.codeaffine.extras.ide.internal.DynamicWorkingSet"
             name="Dynamic Project Working Set"
-            pageClass="com.codeaffine.extras.internal.workingset.DynamicWorkingSetPage"
-            updaterClass="com.codeaffine.extras.internal.workingset.DynamicWorkingSetUpdater">
+            pageClass="com.codeaffine.extras.workingset.internal.DynamicWorkingSetPage"
+            updaterClass="com.codeaffine.extras.workingset.internal.DynamicWorkingSetUpdater">
       </workingSet>
    </extension>
    <extension
@@ -25,7 +25,7 @@
       <wizard
             canFinishEarly="false"
             category="org.eclipse.ui.Basic"
-            class="com.codeaffine.extras.internal.workingset.DynamicWorkingSetWizard"
+            class="com.codeaffine.extras.workingset.internal.DynamicWorkingSetWizard"
             hasPages="true"
             icon="icons/etool16/new-working-set.gif"
             id="com.codeaffine.extras.ide.internal.DynamicWorkingSetWizard"
@@ -41,7 +41,7 @@
    <extension
          point="org.eclipse.ui.startup">
       <startup
-            class="com.codeaffine.extras.internal.workingset.DynamicWorkingSetStartup">
+            class="com.codeaffine.extras.workingset.internal.DynamicWorkingSetStartup">
       </startup>
    </extension>
 </plugin>
