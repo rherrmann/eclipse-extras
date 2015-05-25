@@ -8,11 +8,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchMode;
+import org.eclipse.debug.ui.ILaunchGroup;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.codeaffine.extras.launch.internal.LaunchModeComputer;
 import com.codeaffine.extras.launch.test.LaunchManagerHelper;
 
 public class LaunchModeComputerTest {
@@ -30,28 +30,61 @@ public class LaunchModeComputerTest {
   }
 
   @Test
-  public void testComputeWithSupportedMode() {
+  public void testComputeLaunchModeWithSupportedMode() {
     ILaunchMode supportedMode = getSupportedMode();
 
-    ILaunchMode launchMode = new LaunchModeComputer( launchConfig, supportedMode ).compute();
+    ILaunchMode launchMode = computeLaunchMode( supportedMode );
 
     assertThat( launchMode ).isEqualTo( supportedMode );
   }
 
   @Test
-  public void testComputeWithUnsupportedMode() {
+  public void testComputeLaunchModeWithUnsupportedMode() {
     ILaunchMode unsupportedMode = getUnsupportedMode();
 
-    ILaunchMode launchMode = new LaunchModeComputer( launchConfig, unsupportedMode ).compute();
+    ILaunchMode launchMode = computeLaunchMode( unsupportedMode );
 
     assertThat( launchMode ).isEqualTo( getSupportedMode() );
   }
 
   @Test
-  public void testComputeWithNullLaunchMode() {
-    ILaunchMode launchMode = new LaunchModeComputer( launchConfig, null ).compute();
+  public void testComputeLaunchModeWithNullLaunchMode() {
+    ILaunchMode launchMode = computeLaunchMode( null );
 
     assertThat( launchMode ).isEqualTo( getSupportedMode() );
+  }
+
+  @Test
+  public void testComputeLaunchGroupWithSupportedMode() {
+    ILaunchMode supportedMode = getSupportedMode();
+
+    ILaunchGroup launchMode = computeLaunchGroup( supportedMode );
+
+    assertThat( launchMode.getMode() ).isEqualTo( supportedMode.getIdentifier() );
+  }
+
+  @Test
+  public void testComputeLaunchGroupWithUnsupportedMode() {
+    ILaunchMode unsupportedMode = getUnsupportedMode();
+
+    ILaunchGroup launchMode = computeLaunchGroup( unsupportedMode );
+
+    assertThat( launchMode.getMode() ).isEqualTo( getSupportedMode().getIdentifier() );
+  }
+
+  @Test
+  public void testComputeLaunchGroupWithNullLaunchMode() {
+    ILaunchGroup launchGroup = computeLaunchGroup( null );
+
+    assertThat( launchGroup.getMode() ).isEqualTo( getSupportedMode().getIdentifier() );
+  }
+
+  private ILaunchMode computeLaunchMode( ILaunchMode preferredLaunchMode ) {
+    return new LaunchModeComputer( launchConfig, preferredLaunchMode ).computeLaunchMode();
+  }
+
+  private ILaunchGroup computeLaunchGroup( ILaunchMode preferredLaunchMode ) {
+    return new LaunchModeComputer( launchConfig, preferredLaunchMode ).computeLaunchGroup();
   }
 
   private static ILaunchMode getSupportedMode() {

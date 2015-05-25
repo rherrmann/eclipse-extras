@@ -1,9 +1,11 @@
 package com.codeaffine.extras.launch.internal;
 
+import static com.codeaffine.extras.launch.internal.LaunchSelectionDialog.EDIT_BUTTON_ID;
 import static com.codeaffine.extras.launch.test.LaunchManagerHelper.createLaunchConfig;
 import static com.codeaffine.extras.launch.test.LaunchManagerHelper.getDebugModeLabel;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.core.runtime.IStatus.INFO;
+import static org.eclipse.jface.dialogs.IDialogConstants.OK_ID;
 
 import java.util.Comparator;
 
@@ -13,7 +15,6 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.dialogs.DialogSettings;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
@@ -22,9 +23,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
-import com.codeaffine.extras.launch.internal.LaunchConfigComparator;
-import com.codeaffine.extras.launch.internal.LaunchModeSetting;
-import com.codeaffine.extras.launch.internal.LaunchSelectionDialog;
 import com.codeaffine.extras.launch.test.LaunchManagerHelper;
 import com.codeaffine.extras.launch.test.LaunchModeHelper;
 
@@ -68,9 +66,25 @@ public class LaunchSelectionDialogPDETest {
   public void testOkButtonLabel() {
     dialog.create();
 
-    Button button = dialog.getButton( IDialogConstants.OK_ID );
+    Button button = dialog.getButton( OK_ID );
 
     assertThat( button.getText() ).isEqualTo( getDebugModeLabel() );
+  }
+
+  @Test
+  public void testEditButtonLabel() {
+    dialog.create();
+
+    Button button = dialog.getButton( EDIT_BUTTON_ID );
+
+    assertThat( button.getText() ).isNotEmpty();
+  }
+
+  @Test
+  public void testInitialEditButtonEnablement() {
+    dialog.open();
+
+    assertThat( dialog.getButton( EDIT_BUTTON_ID ).getEnabled() ).isFalse();
   }
 
   @Test

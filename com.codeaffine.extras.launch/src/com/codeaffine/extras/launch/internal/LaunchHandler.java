@@ -30,7 +30,7 @@ public class LaunchHandler extends AbstractHandler {
 
   private static void launch( ILaunchMode preferredLaunchMode, ILaunchConfiguration[] launchConfigs ) {
     for( ILaunchConfiguration launchConfig : launchConfigs ) {
-      ILaunchMode launchMode = new LaunchModeComputer( launchConfig, preferredLaunchMode ).compute();
+      ILaunchMode launchMode = new LaunchModeComputer( launchConfig, preferredLaunchMode ).computeLaunchMode();
       DebugUITools.launch( launchConfig, launchMode.getIdentifier() );
     }
   }

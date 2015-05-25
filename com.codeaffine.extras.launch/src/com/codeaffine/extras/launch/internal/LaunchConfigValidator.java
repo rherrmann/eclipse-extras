@@ -30,7 +30,7 @@ public class LaunchConfigValidator {
   }
 
   private ILaunchMode computeActualLaunchMode() {
-    return new LaunchModeComputer( launchConfig, preferredLaunchMode ).compute();
+    return new LaunchModeComputer( launchConfig, preferredLaunchMode ).computeLaunchMode();
   }
 
   private static String getLaunchModeWarningMessage( ILaunchMode launchMode ) {
