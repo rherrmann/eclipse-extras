@@ -15,12 +15,15 @@ import org.eclipse.swt.widgets.Shell;
 
 public class EditLaunchConfigAction extends Action {
 
+  public static final String ID = EditLaunchConfigAction.class.getName();
+
   private final LaunchSelectionDialog launchSelectionDialog;
   private IStructuredSelection selection;
 
   public EditLaunchConfigAction( LaunchSelectionDialog launchSelectionDialog ) {
     this.launchSelectionDialog = launchSelectionDialog;
     this.selection = StructuredSelection.EMPTY;
+    setId( ID );
     setEnabled( false );
   }
 

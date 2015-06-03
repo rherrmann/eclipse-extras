@@ -30,6 +30,11 @@ public class EditLaunchConfigActionPDETest {
   }
 
   @Test
+  public void testGetId() {
+    assertThat( action.getId() ).isEqualTo( EditLaunchConfigAction.ID );
+  }
+
+  @Test
   public void testInitialEnablement() {
     assertThat( action.isEnabled() ).isFalse();
   }
