@@ -96,9 +96,11 @@ public class LaunchSelectionDialogPDETest {
 
   @Test
   public void testGetItemsComparator() {
-    Comparator<?> comparator = dialog.getItemsComparator();
+    Comparator<Object> comparator = dialog.getItemsComparator();
 
-    assertThat( comparator ).isInstanceOf( LaunchConfigComparator.class );
+    int comparisonResult = comparator.compare( new Object(), new Object() );
+
+    assertThat( comparisonResult ).isZero();
   }
 
   @Test
@@ -156,6 +158,7 @@ public class LaunchSelectionDialogPDETest {
   }
 
   public static class TestableLaunchSelectionDialog extends LaunchSelectionDialog {
+
     private final DialogSettings dialogSettings;
     private IStatus lastStatus;
 

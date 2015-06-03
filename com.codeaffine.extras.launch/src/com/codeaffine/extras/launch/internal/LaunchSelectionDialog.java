@@ -9,6 +9,7 @@ import static org.eclipse.jface.dialogs.IDialogConstants.CANCEL_LABEL;
 import static org.eclipse.jface.dialogs.IDialogConstants.OK_ID;
 import static org.eclipse.jface.dialogs.IDialogConstants.OK_LABEL;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 import org.eclipse.core.runtime.CoreException;
@@ -165,8 +166,13 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
   }
 
   @Override
-  protected Comparator<?> getItemsComparator() {
-    return new LaunchConfigComparator();
+  protected Comparator<Object> getItemsComparator() {
+    return new Comparator<Object>() {
+      @Override
+      public int compare( Object o1, Object o2 ) {
+        return 0;
+      }
+    };
   }
 
   @Override
@@ -176,6 +182,7 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     throws CoreException
   {
     ILaunchConfiguration[] configurations = launchManager.getLaunchConfigurations();
+    Arrays.sort( configurations, new LaunchConfigComparator() );
     for( ILaunchConfiguration configuration : configurations ) {
       contentProvider.add( configuration, itemsFilter );
     }

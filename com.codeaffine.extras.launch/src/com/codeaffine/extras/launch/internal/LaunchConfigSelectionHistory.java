@@ -56,6 +56,7 @@ class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
     }
 
     ILaunchConfiguration[] collect() {
+      launchConfigHistory.clear();
       for( ILaunchGroup launchGroup : DebugUITools.getLaunchGroups() ) {
         collect( launchGroup );
       }
@@ -66,8 +67,8 @@ class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
       LaunchHistoryAction launchHistoryAction = new LaunchHistoryAction( launchGroup.getIdentifier() );
       try {
         if( launchHistoryAction.getLastLaunch() != null ) {
-          append( launchHistoryAction.getHistory() );
           append( launchHistoryAction.getFavorites() );
+          append( launchHistoryAction.getHistory() );
         }
       } finally {
         launchHistoryAction.dispose();
