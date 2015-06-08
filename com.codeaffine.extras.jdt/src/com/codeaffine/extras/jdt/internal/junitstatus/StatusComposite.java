@@ -5,8 +5,6 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
@@ -29,21 +27,24 @@ public class StatusComposite extends Composite {
 
   private int getDefaultTrimHeight() {
     if( defaultTrimHeight == 0 ) {
-      Shell shell = new Shell( getDisplay(), SWT.NONE );
-      shell.setLayout( new GridLayout() );
-      ToolBar toolBar = new ToolBar( shell, SWT.NONE );
-      toolBar.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-      ToolItem toolItem = new ToolItem( toolBar, SWT.PUSH );
-      toolItem.setImage( JFaceResources.getImageRegistry().get( Dialog.DLG_IMG_MESSAGE_INFO ) );
-      shell.layout();
-      int toolItemHeight = toolBar.computeSize( SWT.DEFAULT, SWT.DEFAULT ).y;
-      GC gc = new GC( shell );
-      Point fontSize = gc.textExtent( "Wg" );
-      gc.dispose();
-      defaultTrimHeight = Math.max( toolItemHeight, fontSize.y );
-      shell.dispose();
+      defaultTrimHeight = computeDefaultTrimHeight();
     }
     return defaultTrimHeight;
+  }
+
+  private int computeDefaultTrimHeight() {
+    int result;
+    Shell shell = new Shell( getDisplay(), SWT.NONE );
+    try {
+      ToolBar toolBar = new ToolBar( shell, SWT.NONE );
+      ToolItem toolItem = new ToolItem( toolBar, SWT.PUSH );
+      toolItem.setImage( JFaceResources.getImageRegistry().get( Dialog.DLG_IMG_MESSAGE_INFO ) );
+      int toolItemHeight = toolBar.computeSize( SWT.DEFAULT, SWT.DEFAULT ).y;
+      result = Math.max( toolItemHeight, measureText( "Wg" ).y );
+    } finally {
+      shell.dispose();
+    }
+    return result;
   }
 
   private Point measureText( String string ) {
