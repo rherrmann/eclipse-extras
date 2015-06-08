@@ -12,6 +12,7 @@ import java.util.Comparator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.action.IMenuManager;
@@ -19,6 +20,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.DialogSettings;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Rule;
@@ -90,6 +92,13 @@ public class LaunchSelectionDialogPDETest {
   }
 
   @Test
+  public void testCreateExtendedContentArea() {
+    Control extendedContentArea = dialog.createExtendedContentArea( null );
+
+    assertThat( extendedContentArea ).isNull();
+  }
+
+  @Test
   public void testCreateFilter() {
     Object filter = dialog.createFilter();
 
@@ -98,11 +107,9 @@ public class LaunchSelectionDialogPDETest {
 
   @Test
   public void testGetItemsComparator() {
-    Comparator<Object> comparator = dialog.getItemsComparator();
+    Comparator<ILaunchConfiguration> itemsComparator = dialog.getItemsComparator();
 
-    int comparisonResult = comparator.compare( new Object(), new Object() );
-
-    assertThat( comparisonResult ).isZero();
+    assertThat( itemsComparator ).isNotNull();
   }
 
   @Test

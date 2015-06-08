@@ -9,7 +9,6 @@ import static org.eclipse.jface.dialogs.IDialogConstants.CANCEL_LABEL;
 import static org.eclipse.jface.dialogs.IDialogConstants.OK_ID;
 import static org.eclipse.jface.dialogs.IDialogConstants.OK_LABEL;
 
-import java.util.Arrays;
 import java.util.Comparator;
 
 import org.eclipse.core.runtime.CoreException;
@@ -43,11 +42,11 @@ import com.codeaffine.extras.launch.internal.LaunchConfigLabelProvider.LabelMode
 
 public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
 
-
   static final int EDIT_BUTTON_ID = IDialogConstants.CLIENT_ID + 2;
 
   private final ILaunchManager launchManager;
   private final EditLaunchConfigAction editLaunchConfigAction;
+  private final LaunchConfigSelectionHistory launchConfigHistory;
 
   public LaunchSelectionDialog( Shell shell ) {
     super( shell, true );
@@ -55,11 +54,13 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     editLaunchConfigAction = new EditLaunchConfigAction( this );
     editLaunchConfigAction.setText( "&Edit..." );
     editLaunchConfigAction.addPropertyChangeListener( new EditLaunchConfigActionListener() );
+    launchConfigHistory = new LaunchConfigSelectionHistory();
     setTitle( "Start Launch Configuration" );
     setMessage( "Enter a &name pattern (? = any character, * = any string, CamelCase)" );
     setListLabelProvider( createLaunchConfigLabelProvider( shell, LIST ) );
     setDetailsLabelProvider( createLaunchConfigLabelProvider( shell, DETAIL ) );
-    setSelectionHistory( new LaunchConfigSelectionHistory() );
+    setSelectionHistory( launchConfigHistory );
+    setSeparatorLabel( "Launch Configuration matches" );
   }
 
   public ILaunchConfiguration[] getSelectedLaunchConfigurations() {
@@ -163,13 +164,8 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
   }
 
   @Override
-  protected Comparator<Object> getItemsComparator() {
-    return new Comparator<Object>() {
-      @Override
-      public int compare( Object o1, Object o2 ) {
-        return 0;
-      }
-    };
+  protected Comparator<ILaunchConfiguration> getItemsComparator() {
+    return new LaunchConfigComparator( launchConfigHistory );
   }
 
   @Override
@@ -179,7 +175,6 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     throws CoreException
   {
     ILaunchConfiguration[] configurations = launchManager.getLaunchConfigurations();
-    Arrays.sort( configurations, new LaunchConfigComparator() );
     for( ILaunchConfiguration configuration : configurations ) {
       contentProvider.add( configuration, itemsFilter );
     }

@@ -50,6 +50,17 @@ public class LaunchConfigSelectionHistoryPDETest {
   }
 
   @Test
+  public void testGetHistoryItemsTwice() {
+    runLaunchConfig();
+
+    Object[] historyItems1 = history.getHistoryItems();
+    Object[] historyItems2 = history.getHistoryItems();
+
+    assertThat( historyItems1 ).isNotSameAs( historyItems2 );
+    assertThat( historyItems1[ 0 ] ).isEqualTo( historyItems2[ 0 ] );
+  }
+
+  @Test
   public void testGetHistoryItemsAfterRunAndDebugSameLaunchConfig() {
     runLaunchConfig();
     debugLaunchConfig();

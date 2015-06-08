@@ -13,7 +13,9 @@ import org.eclipse.ui.IMemento;
 
 import com.codeaffine.extras.launch.internal.LaunchSelectionDialog.AccessibleSelectionHistory;
 
-class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
+public class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
+
+  private ILaunchConfiguration[] launchConfigHistory;
 
   @Override
   public synchronized boolean contains( Object object ) {
@@ -22,7 +24,7 @@ class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
 
   @Override
   public synchronized Object[] getHistoryItems() {
-    return getLaunchConfigHistory();
+    return getLaunchConfigHistory().clone();
   }
 
   @Override
@@ -44,8 +46,11 @@ class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
   protected void storeItemToMemento( Object item, IMemento memento ) {
   }
 
-  private static ILaunchConfiguration[] getLaunchConfigHistory() {
-    return new LaunchConfigHistoryCollector().collect();
+  private ILaunchConfiguration[] getLaunchConfigHistory() {
+    if( launchConfigHistory == null ) {
+      launchConfigHistory = new LaunchConfigHistoryCollector().collect();
+    }
+    return launchConfigHistory;
   }
 
   private static class LaunchConfigHistoryCollector {
