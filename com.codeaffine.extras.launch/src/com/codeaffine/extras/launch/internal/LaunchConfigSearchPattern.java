@@ -10,10 +10,14 @@ public class LaunchConfigSearchPattern extends SearchPattern {
   }
 
   @Override
-  public void setPattern( String stringPattern ) {
-    super.setPattern( stringPattern );
+  public void setPattern( String pattern ) {
+    String adjustedPattern = pattern;
+    if( adjustedPattern.endsWith( " " ) ) {
+      adjustedPattern = adjustedPattern + "*";
+    }
+    super.setPattern( adjustedPattern );
     if( getMatchRule() == RULE_PATTERN_MATCH || getMatchRule() == RULE_EXACT_MATCH ) {
-      super.setPattern( prependPattern( stringPattern ) );
+      super.setPattern( prependPattern( adjustedPattern ) );
     }
   }
 

@@ -27,7 +27,14 @@ public class LaunchConfigSearchPatternTest {
   public void testSetPatternToSpace() {
     searchPattern.setPattern( " " );
 
-    assertThat( searchPattern.getPattern() ).isEqualTo( "*" );
+    assertThat( searchPattern.getPattern() ).isEqualTo( "* *" );
+  }
+
+  @Test
+  public void testSetPatternToTrailingSpace() {
+    searchPattern.setPattern( "pattern " );
+
+    assertThat( searchPattern.getPattern() ).isEqualTo( "*pattern *" );
   }
 
   @Test
