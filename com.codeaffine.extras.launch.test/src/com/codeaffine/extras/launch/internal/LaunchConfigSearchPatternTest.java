@@ -45,13 +45,6 @@ public class LaunchConfigSearchPatternTest {
   }
 
   @Test
-  public void testSetPatternToStringStartingWithAsterisk() {
-    searchPattern.setPattern( "*" );
-
-    assertThat( searchPattern.getPattern() ).isEqualTo( "*" );
-  }
-
-  @Test
   public void testMatchEmptyPattern() {
     searchPattern.setPattern( "" );
 
@@ -91,5 +84,12 @@ public class LaunchConfigSearchPatternTest {
     searchPattern.setPattern( "CC" );
 
     assertThat( searchPattern.matches( "CamelCase" ) ).isTrue();
+  }
+
+  @Test
+  public void testMatchTrailingSpacePattern() {
+    searchPattern.setPattern( "two " );
+
+    assertThat( searchPattern.matches( "two words" ) ).isTrue();
   }
 }
