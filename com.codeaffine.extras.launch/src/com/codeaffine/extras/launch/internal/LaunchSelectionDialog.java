@@ -21,6 +21,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchMode;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.DialogSettings;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -109,6 +110,8 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
   @Override
   protected void fillContextMenu( IMenuManager menuManager ) {
     menuManager.add( editLaunchConfigAction );
+    menuManager.add( new Separator() );
+    super.fillContextMenu( menuManager );
   }
 
   @Override

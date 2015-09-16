@@ -17,6 +17,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.DialogSettings;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.widgets.Button;
@@ -156,12 +157,14 @@ public class LaunchSelectionDialogPDETest {
 
   @Test
   public void testFillContextMenu() {
+    dialog.create();
     MenuManager menuManager = new MenuManager();
 
     dialog.fillContextMenu( menuManager );
 
-    assertThat( menuManager.getSize() ).isEqualTo( 1 );
+    assertThat( menuManager.getSize() ).isEqualTo( 2 );
     assertThat( menuManager.getItems()[ 0 ].getId() ).isEqualTo( EditLaunchConfigAction.ID );
+    assertThat( menuManager.getItems()[ 1 ] ).isInstanceOf( Separator.class );
   }
 
   @Before

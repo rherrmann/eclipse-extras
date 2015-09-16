@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.internal.ui.launchConfigurations.LaunchHistory;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.ILaunchGroup;
 import org.eclipse.debug.ui.actions.AbstractLaunchHistoryAction;
@@ -13,6 +14,7 @@ import org.eclipse.ui.IMemento;
 
 import com.codeaffine.extras.launch.internal.LaunchSelectionDialog.AccessibleSelectionHistory;
 
+@SuppressWarnings("restriction")
 public class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
 
   private ILaunchConfiguration[] launchConfigHistory;
@@ -29,7 +31,18 @@ public class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
 
   @Override
   public synchronized boolean remove( Object element ) {
-    return false;
+    boolean removed = false;
+    if( contains( element ) ) {
+      for( ILaunchGroup launchGroup : DebugUITools.getLaunchGroups() ) {
+        LaunchHistory launchHistory = getLaunchHistory( launchGroup );
+        if( launchHistory != null ) {
+          launchHistory.removeFromHistory( ( ILaunchConfiguration )element );
+        }
+      }
+      removed = true;
+      launchConfigHistory = null;
+    }
+    return removed;
   }
 
   @Override
@@ -53,6 +66,15 @@ public class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
     return launchConfigHistory;
   }
 
+  private static LaunchHistory getLaunchHistory( ILaunchGroup launchGroup ) {
+    LaunchHistoryAction launchHistoryAction = new LaunchHistoryAction( launchGroup );
+    try {
+      return launchHistoryAction.getLaunchHistory();
+    } finally {
+      launchHistoryAction.dispose();
+    }
+  }
+
   private static class LaunchConfigHistoryCollector {
     private final Set<ILaunchConfiguration> launchConfigHistory;
 
@@ -69,7 +91,7 @@ public class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
     }
 
     private void collect( ILaunchGroup launchGroup ) {
-      LaunchHistoryAction launchHistoryAction = new LaunchHistoryAction( launchGroup.getIdentifier() );
+      LaunchHistoryAction launchHistoryAction = new LaunchHistoryAction( launchGroup );
       try {
         if( launchHistoryAction.getLastLaunch() != null ) {
           append( launchHistoryAction.getFavorites() );
@@ -86,8 +108,14 @@ public class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
   }
 
   private static class LaunchHistoryAction extends AbstractLaunchHistoryAction {
-    LaunchHistoryAction( String launchGroupId ) {
-      super( launchGroupId );
+    LaunchHistoryAction( ILaunchGroup launchGroup ) {
+      super( launchGroup.getIdentifier() );
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public LaunchHistory getLaunchHistory() {
+      return super.getLaunchHistory();
     }
 
     @Override

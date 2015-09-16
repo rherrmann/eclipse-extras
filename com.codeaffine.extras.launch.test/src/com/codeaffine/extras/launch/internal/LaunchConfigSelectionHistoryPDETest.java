@@ -17,8 +17,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.codeaffine.extras.launch.internal.LaunchConfigSelectionHistory;
-
 public class LaunchConfigSelectionHistoryPDETest {
 
   private LaunchConfigSelectionHistory history;
@@ -114,6 +112,30 @@ public class LaunchConfigSelectionHistoryPDETest {
     boolean contains = history.contains( null );
 
     assertThat( contains ).isFalse();
+  }
+
+  @Test
+  public void testRemove() {
+    runLaunchConfig();
+    Object[] historyItems = history.getHistoryItems();
+
+    history.remove( historyItems[ 0 ] );
+
+    assertThat( history.getHistoryItems() ).extracting( "name" ).doesNotContain( launchConfig.getName() );
+  }
+
+  @Test
+  public void testRemoveWithNonLaunchConfig() {
+    boolean removed = history.remove( new Object() );
+
+    assertThat( removed ).isFalse();
+  }
+
+  @Test
+  public void testRemoveWithNonFavouriteLaunchConfig() {
+    boolean removed = history.remove( launchConfig );
+
+    assertThat( removed ).isFalse();
   }
 
   @Before
