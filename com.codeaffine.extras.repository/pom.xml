@@ -64,11 +64,6 @@
         </executions>
         <configuration>
           <source>
-            <!-- Repository for Guava -->
-            <repository>
-              <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository/</url>
-              <layout>p2</layout>
-            </repository>
             <!-- Repository for Xiliary -->
             <repository>
               <url>http://fappel.github.io/xiliary/</url>
@@ -98,14 +93,6 @@
                   id == $0 &amp;&amp; version &gt;= $1 &amp;&amp; version &lt; $2
                 </expression>
                 <parameters>com.codeaffine.eclipse.ui,0.1.0,1.0.0</parameters>
-              </query>
-            </iu>
-            <iu>
-              <query>
-                <expression>
-                  id == $0 &amp;&amp; version &gt;= $1 &amp;&amp; version &lt; $2
-                </expression>
-                <parameters>com.google.guava,12.0.0,13.0.0</parameters>
               </query>
             </iu>
           </ius>

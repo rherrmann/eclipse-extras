@@ -1,8 +1,6 @@
 package com.codeaffine.extras.workingset.internal;
 
-import static com.google.common.collect.Iterables.toArray;
-import static com.google.common.collect.Sets.newHashSet;
-
+import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
@@ -26,14 +24,14 @@ class WorkingSetContentUpdater {
   }
 
   void updateElements() {
-    Set<IProject> matchingProjects = newHashSet();
+    Set<IProject> matchingProjects = new HashSet<>();
     for( IProject project : projectsProvider.getProjects() ) {
       if( projectPatternMatcher.matches( project ) ) {
         matchingProjects.add( project );
       }
     }
     if( elementsChanged( matchingProjects ) ) {
-      workingSet.setElements( toArray( matchingProjects, IProject.class ) );
+      workingSet.setElements( matchingProjects.toArray( new IProject[ matchingProjects.size() ] ) );
     }
   }
 

@@ -1,12 +1,12 @@
 package com.codeaffine.extras.launch.internal;
 
 import static com.codeaffine.extras.launch.test.LaunchModeHelper.createLaunchMode;
-import static com.google.common.collect.Lists.newArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,9 +14,6 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchMode;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.codeaffine.extras.launch.internal.LaunchModeAction;
-import com.codeaffine.extras.launch.internal.LaunchModeActionComparator;
 
 public class LaunchModeActionComparatorTest {
 
@@ -46,7 +43,7 @@ public class LaunchModeActionComparatorTest {
 
   @Before
   public void setUp() {
-    launchModes = newArrayList();
+    launchModes = new ArrayList<>();
     comparator = new LaunchModeActionComparator();
   }
 

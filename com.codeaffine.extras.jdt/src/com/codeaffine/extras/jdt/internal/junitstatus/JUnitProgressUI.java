@@ -1,9 +1,10 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
+import java.util.Objects;
+
 import org.eclipse.swt.graphics.Color;
 
 import com.codeaffine.eclipse.swt.util.UIThreadSynchronizer;
-import com.google.common.base.Objects;
 
 public class JUnitProgressUI implements ProgressUI {
 
@@ -34,7 +35,7 @@ public class JUnitProgressUI implements ProgressUI {
 
   @Override
   public void setToolTipText( String toolTipText ) {
-    if( !Objects.equal( currentToolTipText, toolTipText ) ) {
+    if( !Objects.equals( currentToolTipText, toolTipText ) ) {
       currentToolTipText = toolTipText;
       execSetToolTipText( toolTipText );
     }

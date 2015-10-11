@@ -5,9 +5,6 @@ import java.util.LinkedList;
 
 import org.eclipse.core.resources.IProject;
 
-import com.codeaffine.extras.workingset.internal.ProjectsProvider;
-import com.google.common.collect.Iterables;
-
 public class TestProjectsProvider implements ProjectsProvider {
   private final Collection<IProject> projects;
 
@@ -25,6 +22,6 @@ public class TestProjectsProvider implements ProjectsProvider {
 
   @Override
   public IProject[] getProjects() {
-    return Iterables.toArray( projects, IProject.class );
+    return projects.toArray( new IProject[ projects.size() ] );
   }
 }

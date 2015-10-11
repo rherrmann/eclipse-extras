@@ -1,14 +1,14 @@
 package com.codeaffine.extras.test.util;
 
-import static com.google.common.base.Objects.equal;
+import static java.util.stream.Collectors.toList;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 import com.codeaffine.eclipse.core.runtime.Extension;
 import com.codeaffine.eclipse.core.runtime.Predicate;
 import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 
 
 public class KeyBindingInspector {
@@ -31,7 +31,7 @@ public class KeyBindingInspector {
   }
 
   public static KeyBindingInfo keyBindingFor( String keySequence, String platform ) {
-    Extension extension = readkeyBindingExtension( keySequence, platform );
+    Extension extension = readKeyBindingExtension( keySequence, platform );
     KeyBindingInfo result = null;
     if( extension != null ) {
       result = new KeyBindingInfo();
@@ -45,13 +45,13 @@ public class KeyBindingInspector {
   }
 
   private static ParameterInfo[] getParameters( Extension extension ) {
-    Collection<Extension> parameterElements = extension.getChildren( PARAMETER );
-    ParameterElementToParameterInfo function = new ParameterElementToParameterInfo();
-    Iterable<ParameterInfo> parameters = Iterables.transform( parameterElements, function );
-    return Iterables.toArray( parameters, ParameterInfo.class );
+    Collection<Extension> elements = extension.getChildren( PARAMETER );
+    List<ParameterInfo> list
+      = elements.stream().map( KeyBindingInspector::toParameterInfo ).collect( toList() );
+    return list.toArray( new ParameterInfo[ list.size() ] );
   }
 
-  private static Extension readkeyBindingExtension( String keySequence, String platform ) {
+  private static Extension readKeyBindingExtension( String keySequence, String platform ) {
     return readKeyBindingExtension( new KeyBindingPredicate( keySequence, platform ) );
   }
 
@@ -59,12 +59,8 @@ public class KeyBindingInspector {
     return new RegistryAdapter().readExtension( BINDINGS_EP ).thatMatches( predicate ).process();
   }
 
-  private static class ParameterElementToParameterInfo implements Function<Extension, ParameterInfo>
-  {
-    @Override
-    public ParameterInfo apply( Extension input ) {
-      return new ParameterInfo( input.getAttribute( ID ), input.getAttribute( VALUE ) );
-    }
+  private static ParameterInfo toParameterInfo( Extension extension ) {
+    return new ParameterInfo( extension.getAttribute( ID ), extension.getAttribute( VALUE ) );
   }
 
   private static class KeyBindingPredicate implements Predicate {
@@ -80,7 +76,8 @@ public class KeyBindingInspector {
     public boolean apply( Extension input ) {
       String keySequenceAttr = input.getAttribute( SEQUENCE );
       String platformAttr = input.getAttribute( PLATFORM );
-      return equal( keySequence, keySequenceAttr ) && equal( platform, platformAttr );
+      return Objects.equals( keySequence, keySequenceAttr )
+          && Objects.equals( platform, platformAttr );
     }
   }
 

@@ -2,8 +2,9 @@ package com.codeaffine.extras.jdt.internal.junitstatus;
 
 import static com.codeaffine.extras.jdt.internal.prefs.PreferencePropertyTester.PROP_IS_TRUE;
 import static com.codeaffine.extras.jdt.internal.prefs.WorkspaceScopePreferences.PREF_SHOW_JUNIT_STATUS_BAR;
-import static com.google.common.collect.Iterables.getFirst;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Collection;
 
 import org.junit.Test;
 
@@ -40,20 +41,24 @@ public class JUnitStatusContributionItemPDETest {
   }
 
   private static Extension getControlElement( Extension extension ) {
-    return getFirst( getToolBarElement( extension ).getChildren( "control" ), null );
+    return getFirst( getToolBarElement( extension ).getChildren( "control" ) );
   }
 
   private static Extension getToolBarElement( Extension extension ) {
-    return getFirst( extension.getChildren( "toolbar" ), null );
+    return getFirst( extension.getChildren( "toolbar" ) );
   }
 
   private static Extension getVisibleWhenElement( Extension extension ) {
-    return getFirst( getControlElement( extension ).getChildren( "visibleWhen" ), null );
+    return getFirst( getControlElement( extension ).getChildren( "visibleWhen" ) );
   }
 
   private static Extension getVisibleTestElement( Extension extension ) {
-    Extension withElement = getFirst( getVisibleWhenElement( extension ).getChildren( "with" ), null );
-    return getFirst( withElement.getChildren( "test" ), null );
+    Extension withElement = getFirst( getVisibleWhenElement( extension ).getChildren( "with" ) );
+    return getFirst( withElement.getChildren( "test" ) );
+  }
+
+  private static <T> T getFirst( Collection<T> collection ) {
+    return collection.stream().findFirst().orElse( null );
   }
 
   private static class LocationUriPredicate implements Predicate {

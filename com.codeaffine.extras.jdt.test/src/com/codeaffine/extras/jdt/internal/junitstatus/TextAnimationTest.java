@@ -7,8 +7,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import java.util.concurrent.TimeUnit;
-
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,7 +14,6 @@ import org.junit.Test;
 
 import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
 import com.codeaffine.extras.jdt.internal.junitstatus.TextAnimation.TextAnimationPainter;
-import com.google.common.util.concurrent.Uninterruptibles;
 
 
 
@@ -115,7 +112,11 @@ public class TextAnimationTest {
   private static void waitFor( long milliseconds ) {
     long start = System.currentTimeMillis();
     while( System.currentTimeMillis() - start <= milliseconds ) {
-      Uninterruptibles.sleepUninterruptibly( 1, TimeUnit.MILLISECONDS );
+      try {
+        Thread.sleep( 1 );
+      } catch( InterruptedException ignore ) {
+        Thread.interrupted();
+      }
       DisplayHelper.flushPendingEvents();
     }
   }

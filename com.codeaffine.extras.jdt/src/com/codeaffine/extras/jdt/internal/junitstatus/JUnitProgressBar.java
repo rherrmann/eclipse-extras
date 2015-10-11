@@ -1,6 +1,6 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
-import static com.google.common.base.Objects.equal;
+import java.util.Objects;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
@@ -185,9 +185,9 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
                                  int selection,
                                  int maximum )
   {
-    return !equal( this.text, text )
+    return !Objects.equals( this.text, text )
         || this.textAlignment != textAlignment
-        || !equal( this.barColor, barColor )
+        || !Objects.equals( this.barColor, barColor )
         || this.selection != selection
         || this.maximum != maximum;
   }

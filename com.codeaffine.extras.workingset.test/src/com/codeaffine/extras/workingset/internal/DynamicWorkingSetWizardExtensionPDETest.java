@@ -1,6 +1,5 @@
 package com.codeaffine.extras.workingset.internal;
 
-import static com.google.common.collect.Iterables.getFirst;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collection;
@@ -11,7 +10,6 @@ import org.junit.Test;
 import com.codeaffine.eclipse.core.runtime.Extension;
 import com.codeaffine.eclipse.core.runtime.Predicates;
 import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
-import com.codeaffine.extras.workingset.internal.DynamicWorkingSetWizard;
 
 
 public class DynamicWorkingSetWizardExtensionPDETest {
@@ -29,7 +27,7 @@ public class DynamicWorkingSetWizardExtensionPDETest {
     assertThat( extension.getAttribute( "canFinishEarly" ) ).isEqualTo( "false" );
     assertThat( extension.getAttribute( "hasPages" ) ).isEqualTo( "true" );
     assertThat( getDescriptions( extension ).size() ).isEqualTo( 1 );
-    assertThat( getFirst( getDescriptions( extension ), null ).getValue() ).isNotEmpty();
+    assertThat( getDescriptions( extension ).stream().findFirst().get().getValue() ).isNotEmpty();
     assertThat( getKeywordReferences( extension ).size() ).isEqualTo( 1 );
     assertThat( getFirstKeywordReference( extension ).getAttribute( "id" ) ).isEqualTo( KEYWORD_ID );
   }
@@ -50,7 +48,7 @@ public class DynamicWorkingSetWizardExtensionPDETest {
   }
 
   private static Extension getFirstKeywordReference( Extension extension ) {
-    return getFirst( getKeywordReferences( extension ), null );
+    return getKeywordReferences( extension ).stream().findFirst().orElse( null );
   }
 
   private static INewWizard getWizardClass( Extension extension ) {

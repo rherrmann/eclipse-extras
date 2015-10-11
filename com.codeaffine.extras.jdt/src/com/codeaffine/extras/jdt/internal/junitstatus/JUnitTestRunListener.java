@@ -1,8 +1,9 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
-import static com.google.common.base.Objects.equal;
 import static java.lang.Integer.valueOf;
 import static java.text.MessageFormat.format;
+
+import java.util.Objects;
 
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -167,7 +168,7 @@ public class JUnitTestRunListener extends TestRunListener {
     }
 
     private boolean matchesCurrentSession( ILaunchConfiguration launchConfig ) {
-      return launchConfig != null && equal( launchConfig.getName(), currentTestRunName );
+      return launchConfig != null && Objects.equals( launchConfig.getName(), currentTestRunName );
     }
   }
 

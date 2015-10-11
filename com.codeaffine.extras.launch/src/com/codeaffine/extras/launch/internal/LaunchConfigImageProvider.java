@@ -1,8 +1,7 @@
 package com.codeaffine.extras.launch.internal;
 
-import static com.google.common.collect.Maps.newHashMap;
-
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -35,7 +34,7 @@ public class LaunchConfigImageProvider {
   public LaunchConfigImageProvider( Display display ) {
     launchManager = DebugPlugin.getDefault().getLaunchManager();
     resourceManager = new LocalResourceManager( JFaceResources.getResources( display ) );
-    launchConfigurationTypeImages = newHashMap();
+    launchConfigurationTypeImages = new HashMap<>();
   }
 
   public Image getImage( ILaunchConfiguration configuration ) {

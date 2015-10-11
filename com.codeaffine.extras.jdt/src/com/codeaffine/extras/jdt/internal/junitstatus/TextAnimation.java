@@ -1,6 +1,8 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
-import static com.google.common.base.Strings.repeat;
+import static java.util.stream.Collectors.joining;
+
+import java.util.stream.Stream;
 
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -59,6 +61,15 @@ public class TextAnimation implements Runnable {
     return getUnanimatedText() + repeat( ".", dotCount );
   }
 
+  @Override
+  public void run() {
+    if( !widget.isDisposed() ) {
+      increaseDotCount();
+      textAnimationPainter.drawText( this );
+      widget.getDisplay().timerExec( animationInterval, this );
+    }
+  }
+
   private void updateAnimation() {
     dotCount = 0;
     if( text.endsWith( DOTS ) ) {
@@ -74,20 +85,15 @@ public class TextAnimation implements Runnable {
     return result;
   }
 
-  @Override
-  public void run() {
-    if( !widget.isDisposed() ) {
-      increaseDotCount();
-      textAnimationPainter.drawText( this );
-      widget.getDisplay().timerExec( animationInterval, this );
-    }
-  }
-
   private void increaseDotCount() {
     dotCount++;
     if( dotCount > 3 ) {
       dotCount = 0;
     }
+  }
+
+  private static String repeat( String string, int times ) {
+    return Stream.generate( () -> string ).limit( times ).collect( joining() );
   }
 
 }

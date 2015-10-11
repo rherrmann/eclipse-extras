@@ -1,16 +1,11 @@
 package com.codeaffine.extras.launch.internal;
 
-import static com.google.common.collect.Iterables.indexOf;
-import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
 import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
-
-import java.util.List;
 
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchMode;
 import org.eclipse.jface.dialogs.IDialogSettings;
-
-import com.google.common.base.Predicate;
 
 
 public class LaunchModeSetting {
@@ -47,21 +42,8 @@ public class LaunchModeSetting {
   }
 
   private boolean isValidLaunchMode( String launchModeId ) {
-    List<ILaunchMode> launchModes = asList( launchManager.getLaunchModes() );
-    return indexOf( launchModes, new MatchesLaunchModeIdentifier( launchModeId ) ) > -1;
-  }
-
-  private static class MatchesLaunchModeIdentifier implements Predicate<ILaunchMode> {
-    private final String launchModeId;
-
-    MatchesLaunchModeIdentifier( String launchModeId ) {
-      this.launchModeId = launchModeId;
-    }
-
-    @Override
-    public boolean apply( ILaunchMode input ) {
-      return input.getIdentifier().equals( launchModeId );
-    }
+    ILaunchMode[] launchModes = launchManager.getLaunchModes();
+    return stream( launchModes ).anyMatch( input -> input.getIdentifier().equals( launchModeId ) );
   }
 
 }

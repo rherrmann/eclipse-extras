@@ -3,9 +3,9 @@ package com.codeaffine.extras.launch.internal;
 import static com.codeaffine.extras.launch.internal.LaunchConfigLabelProvider.LabelMode.DETAIL;
 import static com.codeaffine.extras.launch.internal.LaunchConfigLabelProvider.LabelMode.LIST;
 import static com.codeaffine.extras.launch.test.LaunchManagerHelper.createLaunchConfig;
-import static com.google.common.collect.Lists.newArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.core.runtime.CoreException;
@@ -18,8 +18,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
-import com.codeaffine.extras.launch.internal.LaunchConfigLabelProvider;
-import com.codeaffine.extras.launch.internal.LaunchSelectionDialog;
 import com.codeaffine.extras.launch.internal.LaunchConfigLabelProvider.LabelMode;
 
 public class LaunchConfigLabelProviderPDETest {
@@ -105,7 +103,7 @@ public class LaunchConfigLabelProviderPDETest {
   }
 
   private LaunchConfigLabelProvider createLabelProvider( LabelMode labelMode ) {
-    labelProviders = newArrayList();
+    labelProviders = new ArrayList<>();
     Shell shell = displayHelper.createShell();
     LaunchSelectionDialog dialog = new LaunchSelectionDialog( shell );
     Display display = shell.getDisplay();

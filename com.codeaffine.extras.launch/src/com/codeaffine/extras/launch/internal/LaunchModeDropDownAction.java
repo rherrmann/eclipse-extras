@@ -1,7 +1,6 @@
 package com.codeaffine.extras.launch.internal;
 
-import static com.google.common.collect.Lists.newLinkedList;
-
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,8 +13,6 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
-
-import com.google.common.collect.Iterables;
 
 public class LaunchModeDropDownAction extends Action implements IMenuCreator {
 
@@ -54,15 +51,15 @@ public class LaunchModeDropDownAction extends Action implements IMenuCreator {
   }
 
   private LaunchModeAction[] createLaunchModeActions() {
-    List<LaunchModeAction> launchModeActions = newLinkedList();
     ILaunchMode[] launchModes = launchModeSetting.getLaunchManager().getLaunchModes();
+    List<LaunchModeAction> launchModeActions = new ArrayList<>( launchModes.length );
     for( ILaunchMode launchMode : launchModes ) {
       LaunchModeAction action = new LaunchModeAction( launchModeSetting, launchMode );
       action.addPropertyChangeListener( new LaunchActionPropertyChangeListner() );
       launchModeActions.add( action );
     }
     Collections.sort( launchModeActions, new LaunchModeActionComparator() );
-    return Iterables.toArray( launchModeActions, LaunchModeAction.class );
+    return launchModeActions.toArray( new LaunchModeAction[ launchModeActions.size() ] );
   }
 
   private class LaunchActionPropertyChangeListner implements IPropertyChangeListener {

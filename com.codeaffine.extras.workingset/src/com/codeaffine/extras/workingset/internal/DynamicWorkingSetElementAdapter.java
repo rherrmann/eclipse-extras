@@ -1,7 +1,5 @@
 package com.codeaffine.extras.workingset.internal;
 
-import static com.google.common.collect.Iterables.toArray;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,7 +20,7 @@ public class DynamicWorkingSetElementAdapter implements IWorkingSetElementAdapte
         adaptedElements.add( project );
       }
     }
-    return toArray( adaptedElements, IAdaptable.class );
+    return adaptedElements.toArray( new IAdaptable[ adaptedElements.size() ] );
   }
 
   @Override

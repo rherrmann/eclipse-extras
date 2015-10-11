@@ -1,7 +1,6 @@
 package com.codeaffine.extras.test.util;
 
-import static com.google.common.util.concurrent.Uninterruptibles.sleepUninterruptibly;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.eclipse.core.resources.IContainer.INCLUDE_HIDDEN;
 import static org.eclipse.core.resources.IResource.ALWAYS_DELETE_PROJECT_CONTENT;
 import static org.eclipse.core.resources.IResource.FORCE;
@@ -27,8 +26,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.ui.ide.undo.CreateProjectOperation;
 import org.junit.rules.ExternalResource;
-
-import com.google.common.base.Charsets;
 
 public class ProjectHelper extends ExternalResource {
 
@@ -86,7 +83,7 @@ public class ProjectHelper extends ExternalResource {
   {
     initializeProject();
     IFile result = parent.getFile( new Path( fileName ) );
-    InputStream stream = new ByteArrayInputStream( content.getBytes( Charsets.UTF_8 ) );
+    InputStream stream = new ByteArrayInputStream( content.getBytes( UTF_8 ) );
     if( !result.exists() ) {
       result.create( stream, true, newProgressMonitor() );
     } else {
@@ -155,7 +152,11 @@ public class ProjectHelper extends ExternalResource {
           throw new RuntimeException( "Failed to delete resource: " + resource, ce );
         }
         System.gc();
-        sleepUninterruptibly( 500, MILLISECONDS );
+        try {
+          Thread.sleep( 500 );
+        } catch( InterruptedException ignore ) {
+          Thread.interrupted();
+        }
         System.gc();
       }
     }
