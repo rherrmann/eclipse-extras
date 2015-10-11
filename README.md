@@ -61,7 +61,7 @@ Eclipse Extras provides extensions to the Export/Import wizards to transfer gene
 
 
 ## Requirements
-Works with all Eclipse versions back to 3.8 (Juno) and Java 1.6 or later.
+Works with all Eclipse versions 4.4 (Luna) or later and Java 1.8 or later.
 
 ## Contributing
 Please see the [contributing guidelines](CONTRIBUTING.md).
