@@ -4,7 +4,7 @@ Bundle-Name: Eclipse Extras Core IDE Extras
 Bundle-SymbolicName: com.codeaffine.extras.ide;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-Vendor: codeaffine.com
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.7.0,4.0.0)",

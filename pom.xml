@@ -14,7 +14,7 @@
   <properties>
     <tycho-version>0.23.1</tycho-version>
     <tycho-extras-version>0.23.1</tycho-extras-version>
-    <target-platform-classifier>eclipse-3.8</target-platform-classifier>
+    <target-platform-classifier>eclipse-4.4</target-platform-classifier>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tycho.scmUrl>scm:git:https://github.com/rherrmann/eclipse-extras.git</tycho.scmUrl>
   </properties>
@@ -177,6 +177,7 @@
         </configuration>
       </plugin>
 
+<!-- No animal sniffer JRE definition available for Java 1.8 yet 
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>animal-sniffer-maven-plugin</artifactId>
@@ -198,6 +199,7 @@
           </execution>
         </executions>
       </plugin>
+ -->
 
     </plugins>
   </build>
