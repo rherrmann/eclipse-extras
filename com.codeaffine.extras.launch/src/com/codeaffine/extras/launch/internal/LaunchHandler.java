@@ -12,7 +12,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class LaunchHandler extends AbstractHandler {
 
-  public static final String COMMAND_ID = "com.codeaffine.extras.ide.internal.LaunchCommand";
+  public static final String COMMAND_ID = "com.codeaffine.extras.launch.internal.LaunchCommand";
 
   @Override
   public Object execute( ExecutionEvent event ) {
