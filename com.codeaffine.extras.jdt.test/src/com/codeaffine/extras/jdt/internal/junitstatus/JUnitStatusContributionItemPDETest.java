@@ -14,14 +14,14 @@ import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
 
 public class JUnitStatusContributionItemPDETest {
 
-  private static final String LOCATION
-    = "toolbar:org.eclipse.ui.trim.status";
+  private static final String LOCATION = "toolbar:org.eclipse.ui.trim.status";
+  private static final String TOOL_BAR_ID = "com.codeaffine.extras.jdt.internal.JUnitStatusToolBar";
 
   @Test
   public void testExtension() {
     Extension extension = new RegistryAdapter()
       .readExtension( "org.eclipse.ui.menus" )
-      .thatMatches( new LocationUriPredicate() )
+      .thatMatches( new JUnitStatusBarPredicate() )
       .process();
 
     Extension toolbarElement = getToolBarElement( extension );
@@ -61,11 +61,24 @@ public class JUnitStatusContributionItemPDETest {
     return collection.stream().findFirst().orElse( null );
   }
 
-  private static class LocationUriPredicate implements Predicate {
+  private static class JUnitStatusBarPredicate implements Predicate {
     @Override
     public boolean apply( Extension input ) {
-      String attribute = input.getAttribute( "locationURI" );
-      return LOCATION.equals( attribute );
+      return isToolBarContribution( input ) && containsJUnitSttausBar( input );
+    }
+
+    private static boolean isToolBarContribution( Extension extension ) {
+      return LOCATION.equals( extension.getAttribute( "locationURI" ) );
+    }
+
+    private static boolean containsJUnitSttausBar( Extension extension ) {
+      Collection<Extension> toolBars = extension.getChildren( "toolbar" );
+      return toolBars.stream().anyMatch( element -> TOOL_BAR_ID.equals( getId( element ) ) );
+    }
+
+    private static String getId( Extension element ) {
+      return element.getAttribute( "id" );
     }
   }
+
 }
