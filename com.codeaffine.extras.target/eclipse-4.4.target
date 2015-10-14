@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="com.codeaffine.extras on Eclipse 4.4" sequenceNumber="177">
+<?pde version="3.8"?><target name="com.codeaffine.extras on Eclipse 4.4" sequenceNumber="178">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.codeaffine.test.libraries.feature.feature.group" version="1.0.0.201508012258"/>
@@ -10,12 +10,12 @@
 <repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="com.codeaffine.eclipse.ui.feature.feature.group" version="0.1.0.20151011-1540"/>
-<unit id="com.codeaffine.test.util.feature.feature.group" version="0.1.0.20151011-1540"/>
-<unit id="com.codeaffine.eclipse.swt.test.util.feature.feature.group" version="0.1.0.20151011-1540"/>
-<unit id="com.codeaffine.eclipse.swt.feature.feature.group" version="0.1.1.20151011-1540"/>
-<unit id="com.codeaffine.eclipse.core.runtime.test.util.feature.feature.group" version="0.1.0.20151011-1540"/>
-<unit id="com.codeaffine.eclipse.core.runtime.feature.feature.group" version="0.1.0.20151011-1540"/>
+<unit id="com.codeaffine.eclipse.ui.feature.feature.group" version="0.1.0.20151014-1632"/>
+<unit id="com.codeaffine.test.util.feature.feature.group" version="0.1.0.20151014-1632"/>
+<unit id="com.codeaffine.eclipse.swt.test.util.feature.feature.group" version="0.1.0.20151014-1632"/>
+<unit id="com.codeaffine.eclipse.swt.feature.feature.group" version="0.1.1.20151014-1632"/>
+<unit id="com.codeaffine.eclipse.core.runtime.test.util.feature.feature.group" version="0.1.0.20151014-1632"/>
+<unit id="com.codeaffine.eclipse.core.runtime.feature.feature.group" version="0.1.0.20151014-1632"/>
 <repository location="http://fappel.github.io/xiliary/"/>
 </location>
 </locations>
