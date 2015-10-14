@@ -1,11 +1,10 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
-import static com.codeaffine.extras.jdt.internal.prefs.PreferencePropertyTester.PROP_IS_TRUE;
-import static com.codeaffine.extras.jdt.internal.prefs.WorkspaceScopePreferences.PREF_SHOW_JUNIT_STATUS_BAR;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collection;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.codeaffine.eclipse.core.runtime.Extension;
@@ -17,48 +16,94 @@ public class JUnitStatusContributionItemPDETest {
   private static final String LOCATION = "toolbar:org.eclipse.ui.trim.status";
   private static final String TOOL_BAR_ID = "com.codeaffine.extras.jdt.internal.JUnitStatusToolBar";
 
-  @Test
-  public void testExtension() {
-    Extension extension = new RegistryAdapter()
+  private Extension extension;
+
+  @Before
+  public void setUp() {
+    extension = new RegistryAdapter()
       .readExtension( "org.eclipse.ui.menus" )
       .thatMatches( new JUnitStatusBarPredicate() )
       .process();
+  }
 
-    Extension toolbarElement = getToolBarElement( extension );
-    Extension controlElement = getControlElement( extension );
-    Extension visibleWhenElement = getVisibleWhenElement( extension );
-    Extension visibleTestElement = getVisibleTestElement( extension );
+  @Test
+  public void testExtension() {
+    assertThat( extension ).isNotNull();
+    Extension toolbarElement = getToolBarElement();
+    Extension controlElement = getControlElement();
+    VisibleWhenElement visibleWhen = getControlVisibleWhenElement();
     assertThat( extension.getChildren( "toolbar" ) ).hasSize( 1 );
     assertThat( toolbarElement.getChildren( "control" ) ).hasSize( 1 );
     assertThat( toolbarElement.getAttribute( "label" ) ).isEqualTo( "JUnit" );
     assertThat( controlElement.getAttribute( "id" ) ).isNotNull();
     assertThat( controlElement.createExecutableExtension( JUnitStatusContributionItem.class ) ).isNotNull();
-    assertThat( visibleWhenElement.getAttribute( "checkEnabled" ) ).isEqualTo( "false" );
-    assertThat( visibleTestElement.getAttribute( "args" ) ).isEqualTo( PREF_SHOW_JUNIT_STATUS_BAR );
-    assertThat( visibleTestElement.getAttribute( "forcePluginActivation" ) ).isEqualTo( "true" );
-    assertThat( visibleTestElement.getAttribute( "property" ) ).isEqualTo( PROP_IS_TRUE );
-    assertThat( visibleTestElement.getAttribute( "value" ) ).isEqualTo( "true" );
+    assertThat( visibleWhen.isCheckEnabled() ).isFalse();
+    assertThat( visibleWhen.referencedExpression() ).isEqualTo( "com.codeaffine.extras.jdt.internal.JUnitStatusVisibleExpression" );
   }
 
-  private static Extension getControlElement( Extension extension ) {
-    return getFirst( getToolBarElement( extension ).getChildren( "control" ) );
+  @Test
+  public void testShowJUnitViewCommand() {
+    assertThat( extension ).isNotNull();
+    Extension command = getCommandElement();
+    Extension parameter = getCommandParameterElement();
+    VisibleWhenElement visibleWhen = getCommandVisibleWhenElement();
+    assertThat( command.getAttribute( "id" ) ).isEqualTo( "com.codeaffine.extras.jdt.internal.OpenJUnitViewToolItem" );
+    assertThat( command.getAttribute( "commandId" ) ).isEqualTo( "org.eclipse.ui.views.showView" );
+    assertThat( command.getAttribute( "icon" ) ).isEqualTo( "icons/etool16/junit.gif" );
+    assertThat( command.getAttribute( "style" ) ).isEqualTo( "push" );
+    assertThat( parameter.getAttribute( "name" ) ).isEqualTo( "org.eclipse.ui.views.showView.viewId" );
+    assertThat( parameter.getAttribute( "value" ) ).isEqualTo( "org.eclipse.jdt.junit.ResultView" );
+    assertThat( visibleWhen.isCheckEnabled() ).isFalse();
+    assertThat( visibleWhen.referencedExpression() ).isEqualTo( "com.codeaffine.extras.jdt.internal.JUnitStatusVisibleExpression" );
   }
 
-  private static Extension getToolBarElement( Extension extension ) {
+  private Extension getCommandElement() {
+    return getFirst( getToolBarElement().getChildren( "command" ) );
+  }
+
+  private Extension getCommandParameterElement() {
+    return getFirst( getCommandElement().getChildren( "parameter" ) );
+  }
+
+  private VisibleWhenElement getCommandVisibleWhenElement() {
+    return new VisibleWhenElement( getVisibleWhenElement( getCommandElement() ) );
+  }
+
+  private Extension getControlElement() {
+    return getFirst( getToolBarElement().getChildren( "control" ) );
+  }
+
+  private Extension getToolBarElement() {
     return getFirst( extension.getChildren( "toolbar" ) );
   }
 
-  private static Extension getVisibleWhenElement( Extension extension ) {
-    return getFirst( getControlElement( extension ).getChildren( "visibleWhen" ) );
+  private VisibleWhenElement getControlVisibleWhenElement() {
+    return new VisibleWhenElement( getVisibleWhenElement( getControlElement() ) );
   }
 
-  private static Extension getVisibleTestElement( Extension extension ) {
-    Extension withElement = getFirst( getVisibleWhenElement( extension ).getChildren( "with" ) );
-    return getFirst( withElement.getChildren( "test" ) );
+  private static Extension getVisibleWhenElement( Extension extension ) {
+    return getFirst( extension.getChildren( "visibleWhen" ) );
   }
 
   private static <T> T getFirst( Collection<T> collection ) {
     return collection.stream().findFirst().orElse( null );
+  }
+
+  private static class VisibleWhenElement {
+
+    private final Extension extension2;
+
+    VisibleWhenElement( Extension extension ) {
+      extension2 = extension;
+    }
+
+    boolean isCheckEnabled() {
+      return "true".equals( extension2.getAttribute( "checkEnabled" ) );
+    }
+
+    String referencedExpression() {
+      return getFirst( extension2.getChildren( "reference" ) ).getAttribute( "definitionId" );
+    }
   }
 
   private static class JUnitStatusBarPredicate implements Predicate {

@@ -2,6 +2,21 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="com.codeaffine.extras.jdt.internal.JUnitStatusVisibleExpression">
+         <with
+               variable="activeWorkbenchWindow">
+            <test
+                  args="show_junit_status_bar"
+                  forcePluginActivation="true"
+                  property="com.codeaffine.extras.jdt.internal.PreferenceStore.isTrue"
+                  value="true">
+            </test>
+         </with>
+      </definition>
+   </extension>
+   <extension
          point="org.eclipse.ui.bindings">
       <key
             commandId="org.eclipse.ui.views.showView"
@@ -46,22 +61,32 @@
         <toolbar
             id="com.codeaffine.extras.jdt.internal.JUnitStatusToolBar"
             label="JUnit">
-            <control
-                class="com.codeaffine.extras.jdt.internal.junitstatus.JUnitStatusContributionItem"
-                id="com.codeaffine.extras.jdt.internal.JUnitStatusContributionItem">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="activeWorkbenchWindow">
-                     <test
-                           args="show_junit_status_bar"
-                           forcePluginActivation="true"
-                           property="com.codeaffine.extras.jdt.internal.PreferenceStore.isTrue"
-                           value="true">
-                     </test>
-                  </with>
-               </visibleWhen>
-            </control>
+           <command
+                 commandId="org.eclipse.ui.views.showView"
+                 icon="icons/etool16/junit.gif"
+                 id="com.codeaffine.extras.jdt.internal.OpenJUnitViewToolItem"
+                 style="push">
+              <parameter
+                    name="org.eclipse.ui.views.showView.viewId"
+                    value="org.eclipse.jdt.junit.ResultView">
+              </parameter>
+              <visibleWhen
+                    checkEnabled="false">
+                 <reference
+                       definitionId="com.codeaffine.extras.jdt.internal.JUnitStatusVisibleExpression">
+                 </reference>
+              </visibleWhen>
+           </command>
+           <control
+                 class="com.codeaffine.extras.jdt.internal.junitstatus.JUnitStatusContributionItem"
+                 id="com.codeaffine.extras.jdt.internal.JUnitStatusContributionItem">
+              <visibleWhen
+                    checkEnabled="false">
+                 <reference
+                       definitionId="com.codeaffine.extras.jdt.internal.JUnitStatusVisibleExpression">
+                 </reference>
+              </visibleWhen>
+           </control>
         </toolbar>
      </menuContribution>
   </extension>
