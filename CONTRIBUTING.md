@@ -8,7 +8,7 @@ You have to follow two rules only when contributing:
 If you plan to contribute a feature or bugfix to this project or just the want to have a closer look at the sources,
 the following steps describe the setup of the development environment.
  
-1. Start an Eclipse IDE that has the [Plug-in Development Environment (PDE)](https://www.eclipse.org/pde/) installed.
+1. Start an Eclipse IDE v4.4 (Luna) or later that has the [Plug-in Development Environment (PDE)](https://www.eclipse.org/pde/) installed.
  If you want to use a fresh Eclipse installation, you can download [Eclipse Standard](https://www.eclipse.org/downloads/packages/eclipse-standard-432/keplersr2). 
  It contains everything you need.
  
