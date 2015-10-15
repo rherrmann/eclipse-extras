@@ -13,6 +13,8 @@ import org.osgi.framework.Bundle;
 
 public class Images {
 
+  public static final String NEW_WORKING_SET = "icons/etool16/new-working-set.gif";
+  public static final String WORKING_SET = "icons/obj16/working-set.png";
   public static final String WORKING_SET_WIZBAN = "icons/wizban/working-set.png";
 
   public static ImageDescriptor getImageDescriptor( String name ) {

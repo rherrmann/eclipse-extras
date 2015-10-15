@@ -1,5 +1,6 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
+import static com.codeaffine.extras.jdt.internal.JDTExtrasPlugin.PLUGIN_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collection;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import com.codeaffine.eclipse.core.runtime.Extension;
 import com.codeaffine.eclipse.core.runtime.Predicate;
 import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
+import com.codeaffine.extras.test.util.ImageAssert;
 
 public class JUnitStatusContributionItemPDETest {
 
@@ -49,7 +51,8 @@ public class JUnitStatusContributionItemPDETest {
     VisibleWhenElement visibleWhen = getCommandVisibleWhenElement();
     assertThat( command.getAttribute( "id" ) ).isEqualTo( "com.codeaffine.extras.jdt.internal.OpenJUnitViewToolItem" );
     assertThat( command.getAttribute( "commandId" ) ).isEqualTo( "org.eclipse.ui.views.showView" );
-    assertThat( command.getAttribute( "icon" ) ).isEqualTo( "icons/etool16/junit.gif" );
+    assertThat( command.getAttribute( "icon" ) ).isEqualTo( "$nl$/icons/etool16/junit.gif" );
+    ImageAssert.assertThat( PLUGIN_ID, command.getAttribute( "icon" ) ).exists();
     assertThat( command.getAttribute( "style" ) ).isEqualTo( "push" );
     assertThat( parameter.getAttribute( "name" ) ).isEqualTo( "org.eclipse.ui.views.showView.viewId" );
     assertThat( parameter.getAttribute( "value" ) ).isEqualTo( "org.eclipse.jdt.junit.ResultView" );

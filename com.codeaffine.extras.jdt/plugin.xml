@@ -63,7 +63,7 @@
             label="JUnit">
            <command
                  commandId="org.eclipse.ui.views.showView"
-                 icon="icons/etool16/junit.gif"
+                 icon="$nl$/icons/etool16/junit.gif"
                  id="com.codeaffine.extras.jdt.internal.OpenJUnitViewToolItem"
                  style="push">
               <parameter

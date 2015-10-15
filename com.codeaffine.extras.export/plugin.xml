@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.preferenceTransfer">
       <transfer
-            icon="icons/elcl16/workbench-appearance-prefs.png"
+            icon="$nl$/icons/elcl16/workbench-appearance-prefs.png"
             id="com.codeaffine.extras.ide.internal.WorkbenchAppearanceTransfer"
             name="Workbench Appearance Preferences">
          <mapping
@@ -101,7 +101,7 @@
          </description>
       </transfer>
       <transfer
-            icon="icons/elcl16/workspace-prefs.gif"
+            icon="$nl$/icons/elcl16/workspace-prefs.gif"
             id="com.codeaffine.extras.ide.internal.WorkspaceTransfer"
             name="Workspace Preferences">
          <mapping
@@ -172,7 +172,7 @@
          </description>
       </transfer>
       <transfer
-            icon="icons/elcl16/editor-prefs.png"
+            icon="$nl$/icons/elcl16/editor-prefs.png"
             id="com.codeaffine.extras.ide.internal.EditorTransfer"
             name="General Editor Preferences">
          <mapping
@@ -210,7 +210,7 @@
          </description>
       </transfer>
       <transfer
-            icon="icons/elcl16/text-editor-prefs.png"
+            icon="$nl$/icons/elcl16/text-editor-prefs.png"
             id="com.codeaffine.extras.ide.internal.TextEditorTransfer"
             name="Text Editors Preferences">
          <mapping scope="instance">
@@ -270,7 +270,7 @@
          </description>
       </transfer>
       <transfer
-            icon="icons/elcl16/search-prefs.png"
+            icon="$nl$/icons/elcl16/search-prefs.png"
             id="com.codeaffine.extras.ide.internal.SearchTransfer"
             name="Search Preferences">
          <mapping
@@ -288,7 +288,7 @@
          </description>
       </transfer>
       <transfer
-            icon="icons/elcl16/run-debug-prefs.png"
+            icon="$nl$/icons/elcl16/run-debug-prefs.png"
             id="com.codeaffine.extras.ide.internal.DebugTransfer"
             name="Run/Debug Preferences">
          <mapping
@@ -329,7 +329,7 @@
          </description>
       </transfer>
       <transfer
-            icon="icons/elcl16/xml-editor-prefs.gif"
+            icon="$nl$/icons/elcl16/xml-editor-prefs.gif"
             id="com.codeaffine.extras.ide.internal.XmlEditorTransfer"
             name="XML Editor">
          <mapping scope="instance">

@@ -10,7 +10,11 @@ Eclipse-ExtensibleAPI: true
 Require-Bundle: com.codeaffine.eclipse.core.runtime;bundle-version="[0.1.0,1.0.0)",
  org.eclipse.core.resources;bundle-version="[3.8.0,4.0.0)",
  org.eclipse.core.runtime;bundle-version="[3.8.0,4.0.0)",
+ org.eclipse.ui;bundle-version="[3.8.0,4.0.0)",
  org.eclipse.ui.ide;bundle-version="[3.8.0,4.0.0)",
  org.eclipse.core.commands;bundle-version="[3.6.0,4.0.0)"
-Import-Package: org.junit.rules;version="[4.11.0,5.0.0)"
+Import-Package: org.junit.rules;version="[4.11.0,5.0.0)",
+ org.assertj.core.api;version="[1.6.0,2.0.0)",
+ org.assertj.core.api.filter;version="[1.6.0,2.0.0)",
+ org.assertj.core.condition;version="[1.6.0,2.0.0)"
 Export-Package: com.codeaffine.extras.test.util;version="0.1.0.qualifier"

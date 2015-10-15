@@ -1,5 +1,6 @@
 package com.codeaffine.extras.workingset.internal;
 
+import static com.codeaffine.extras.workingset.internal.WorkingSetExtrasPlugin.PLUGIN_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collection;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import com.codeaffine.eclipse.core.runtime.Extension;
 import com.codeaffine.eclipse.core.runtime.Predicates;
 import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
+import com.codeaffine.extras.test.util.ImageAssert;
 
 
 public class DynamicWorkingSetWizardExtensionPDETest {
@@ -22,7 +24,8 @@ public class DynamicWorkingSetWizardExtensionPDETest {
 
     assertThat( extension.getAttribute( "name" ) ).isNotEmpty();
     assertThat( getWizardClass( extension ) ).isInstanceOf( DynamicWorkingSetWizard.class );
-    assertThat( extension.getAttribute( "icon" ) ).isEqualTo( "icons/etool16/new-working-set.gif" );
+    assertThat( extension.getAttribute( "icon" ) ).isEqualTo( "$nl$/icons/etool16/new-working-set.gif" );
+    ImageAssert.assertThat( PLUGIN_ID, extension.getAttribute( "icon" ) ).exists();
     assertThat( extension.getAttribute( "category" ) ).isEqualTo( "org.eclipse.ui.Basic" );
     assertThat( extension.getAttribute( "canFinishEarly" ) ).isEqualTo( "false" );
     assertThat( extension.getAttribute( "hasPages" ) ).isEqualTo( "true" );

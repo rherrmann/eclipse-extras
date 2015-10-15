@@ -1,5 +1,6 @@
 package com.codeaffine.extras.workingset.internal;
 
+import static com.codeaffine.extras.workingset.internal.WorkingSetExtrasPlugin.PLUGIN_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.eclipse.ui.IWorkingSetElementAdapter;
@@ -10,10 +11,7 @@ import org.junit.Test;
 import com.codeaffine.eclipse.core.runtime.Extension;
 import com.codeaffine.eclipse.core.runtime.Predicates;
 import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
-import com.codeaffine.extras.workingset.internal.DynamicWorkingSet;
-import com.codeaffine.extras.workingset.internal.DynamicWorkingSetElementAdapter;
-import com.codeaffine.extras.workingset.internal.DynamicWorkingSetPage;
-import com.codeaffine.extras.workingset.internal.DynamicWorkingSetUpdater;
+import com.codeaffine.extras.test.util.ImageAssert;
 
 
 public class DynamicWorkingSetExtensionPDETest {
@@ -24,7 +22,8 @@ public class DynamicWorkingSetExtensionPDETest {
 
     assertThat( extension.getAttribute( "name" ) ).isNotEmpty();
     assertThat( extension.getAttribute( "description" ) ).isNotEmpty();
-    assertThat( extension.getAttribute( "icon" ) ).isEqualTo( "icons/obj16/working-set.png" );
+    assertThat( extension.getAttribute( "icon" ) ).isEqualTo( "$nl$/icons/obj16/working-set.png" );
+    ImageAssert.assertThat( PLUGIN_ID, extension.getAttribute( "icon" ) ).exists();
     assertThat( getPageClass( extension ) ).isInstanceOf( DynamicWorkingSetPage.class );
     assertThat( getUpdaterClass( extension ) ).isInstanceOf( DynamicWorkingSetUpdater.class );
     assertThat( getAdapterClass( extension ) ).isInstanceOf( DynamicWorkingSetElementAdapter.class );
