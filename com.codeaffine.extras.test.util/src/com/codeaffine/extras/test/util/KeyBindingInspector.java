@@ -5,9 +5,9 @@ import static java.util.stream.Collectors.toList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 import com.codeaffine.eclipse.core.runtime.Extension;
-import com.codeaffine.eclipse.core.runtime.Predicate;
 import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
 
 
@@ -55,7 +55,7 @@ public class KeyBindingInspector {
     return readKeyBindingExtension( new KeyBindingPredicate( keySequence, platform ) );
   }
 
-  private static Extension readKeyBindingExtension( Predicate predicate ) {
+  private static Extension readKeyBindingExtension( Predicate<Extension> predicate ) {
     return new RegistryAdapter().readExtension( BINDINGS_EP ).thatMatches( predicate ).process();
   }
 
@@ -63,7 +63,7 @@ public class KeyBindingInspector {
     return new ParameterInfo( extension.getAttribute( ID ), extension.getAttribute( VALUE ) );
   }
 
-  private static class KeyBindingPredicate implements Predicate {
+  private static class KeyBindingPredicate implements Predicate<Extension> {
     private final String keySequence;
     private final String platform;
 
@@ -73,7 +73,7 @@ public class KeyBindingInspector {
     }
 
     @Override
-    public boolean apply( Extension input ) {
+    public boolean test( Extension input ) {
       String keySequenceAttr = input.getAttribute( SEQUENCE );
       String platformAttr = input.getAttribute( PLATFORM );
       return Objects.equals( keySequence, keySequenceAttr )

@@ -4,12 +4,12 @@ import static com.codeaffine.extras.jdt.internal.JDTExtrasPlugin.PLUGIN_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collection;
+import java.util.function.Predicate;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.codeaffine.eclipse.core.runtime.Extension;
-import com.codeaffine.eclipse.core.runtime.Predicate;
 import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
 import com.codeaffine.extras.test.util.ImageAssert;
 
@@ -109,9 +109,9 @@ public class JUnitStatusContributionItemPDETest {
     }
   }
 
-  private static class JUnitStatusBarPredicate implements Predicate {
+  private static class JUnitStatusBarPredicate implements Predicate<Extension> {
     @Override
-    public boolean apply( Extension input ) {
+    public boolean test( Extension input ) {
       return isToolBarContribution( input ) && containsJUnitSttausBar( input );
     }
 

@@ -9,13 +9,14 @@ import static java.lang.Boolean.TRUE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
+import java.util.function.Predicate;
+
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.ui.services.IServiceLocator;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.codeaffine.eclipse.core.runtime.Extension;
-import com.codeaffine.eclipse.core.runtime.Predicate;
 import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
 import com.codeaffine.eclipse.core.runtime.test.util.ExtensionAssert;
 
@@ -123,7 +124,7 @@ public class PreferencePropertyTesterPDETest {
     return readExtension( "org.eclipse.core.expressions.propertyTesters", attribute( "id", ID ) );
   }
 
-  private static Extension readExtension( String extensionPoint, Predicate predicate ) {
+  private static Extension readExtension( String extensionPoint, Predicate<Extension> predicate ) {
     return new RegistryAdapter().readExtension( extensionPoint ).thatMatches( predicate ).process();
   }
 }

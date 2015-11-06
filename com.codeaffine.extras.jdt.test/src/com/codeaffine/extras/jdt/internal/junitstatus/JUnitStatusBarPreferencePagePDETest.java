@@ -4,13 +4,14 @@ import static com.codeaffine.eclipse.core.runtime.Predicates.attribute;
 import static com.codeaffine.extras.jdt.internal.junitstatus.JUnitStatusBarPreferencePage.ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.function.Predicate;
+
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.codeaffine.eclipse.core.runtime.Extension;
-import com.codeaffine.eclipse.core.runtime.Predicate;
 import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
 import com.codeaffine.eclipse.core.runtime.test.util.ExtensionAssert;
 import com.codeaffine.extras.jdt.internal.JDTExtrasPlugin;
@@ -59,7 +60,7 @@ public class JUnitStatusBarPreferencePagePDETest {
     return readExtension( "org.eclipse.ui.preferencePages", attribute( "id", ID ) );
   }
 
-  private static Extension readExtension( String extensionPoint, Predicate predicate ) {
+  private static Extension readExtension( String extensionPoint, Predicate<Extension> predicate ) {
     return new RegistryAdapter().readExtension( extensionPoint ).thatMatches( predicate ).process();
   }
 }
