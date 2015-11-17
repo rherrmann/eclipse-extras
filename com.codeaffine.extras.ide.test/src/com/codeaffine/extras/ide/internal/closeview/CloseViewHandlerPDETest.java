@@ -145,7 +145,7 @@ public class CloseViewHandlerPDETest {
 
   private Command getDeleteEditorFileCommand() {
     IWorkbench workbench = workbenchPage.getWorkbenchWindow().getWorkbench();
-    ICommandService commandService = ( ICommandService )workbench.getService( ICommandService.class );
+    ICommandService commandService = workbench.getService( ICommandService.class );
     return commandService.getCommand( DeleteEditorFileHandler.COMMAND_ID );
   }
 

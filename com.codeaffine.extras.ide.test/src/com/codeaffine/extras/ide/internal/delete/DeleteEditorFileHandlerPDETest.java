@@ -154,7 +154,7 @@ public class DeleteEditorFileHandlerPDETest {
 
   private Command getDeleteEditorFileCommand() {
     IWorkbench workbench = workbenchPage.getWorkbenchWindow().getWorkbench();
-    ICommandService commandService = ( ICommandService )workbench.getService( ICommandService.class );
+    ICommandService commandService = workbench.getService( ICommandService.class );
     return commandService.getCommand( DeleteEditorFileHandler.COMMAND_ID );
   }
 
@@ -169,9 +169,8 @@ public class DeleteEditorFileHandlerPDETest {
   }
 
   private static class NonFileEditorInput implements IEditorInput {
-    @SuppressWarnings("rawtypes")
     @Override
-    public Object getAdapter( Class adapter ) {
+    public <T> T getAdapter( Class<T> adapter ) {
       return null;
     }
 

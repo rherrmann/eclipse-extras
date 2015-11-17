@@ -106,7 +106,7 @@ public class OpenWithQuickMenuHandlerPDETest {
   }
 
   private Command getOpenWithQuickMenuCommand() {
-    ICommandService commandService = ( ICommandService )workbench.getService( ICommandService.class );
+    ICommandService commandService = workbench.getService( ICommandService.class );
     return commandService.getCommand( OpenWithQuickMenuHandler.COMMAND_ID );
   }
 
