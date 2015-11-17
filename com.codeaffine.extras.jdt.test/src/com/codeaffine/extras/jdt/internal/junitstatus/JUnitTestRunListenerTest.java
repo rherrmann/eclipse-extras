@@ -333,7 +333,7 @@ public class JUnitTestRunListenerTest {
 
   @Before
   public void setUp() {
-    launchesListeners = new ArrayList<ILaunchesListener2>();
+    launchesListeners = new ArrayList<>();
     launchManager = mockLaunchManager();
     resourceManager = new LocalResourceManager( getResources( displayHelper.getDisplay() ) );
     progressUI = mock( ProgressUI.class );

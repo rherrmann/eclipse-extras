@@ -36,7 +36,7 @@ public class DynamicWorkingSetUpdaterPDETest {
 
   @Before
   public void setUp() {
-    renamedProjects = new LinkedList<IProject>();
+    renamedProjects = new LinkedList<>();
     workingSetManager = PlatformUI.getWorkbench().getWorkingSetManager();
     workingSet = workingSetManager.createWorkingSet( "", new IAdaptable[ 0 ] );
     workingSet.setId( DynamicWorkingSet.ID );

@@ -26,7 +26,7 @@ public class LaunchConfigComparatorPDETest {
   public void setUp() throws CoreException {
     launchConfig1 = LaunchManagerHelper.createLaunchConfig();
     launchConfig2 = LaunchManagerHelper.createLaunchConfig();
-    historyItems = new LinkedList<ILaunchConfiguration>();
+    historyItems = new LinkedList<>();
     launchConfigHistory = mock( LaunchConfigSelectionHistory.class );
     when( launchConfigHistory.getHistoryItems() ).thenReturn( historyItems.toArray() );
   }

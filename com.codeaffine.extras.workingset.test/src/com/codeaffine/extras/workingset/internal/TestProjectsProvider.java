@@ -9,7 +9,7 @@ public class TestProjectsProvider implements ProjectsProvider {
   private final Collection<IProject> projects;
 
   public TestProjectsProvider() {
-    projects = new LinkedList<IProject>();
+    projects = new LinkedList<>();
   }
 
   public void addProject( IProject project ) {

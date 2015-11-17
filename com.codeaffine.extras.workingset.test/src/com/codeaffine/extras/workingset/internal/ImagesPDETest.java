@@ -30,7 +30,7 @@ public class ImagesPDETest {
   }
 
   private static String[] getConstantValues() throws IllegalAccessException {
-    List<String> constantValues = new LinkedList<String>();
+    List<String> constantValues = new LinkedList<>();
     Field[] declaredFields = Images.class.getDeclaredFields();
     for( Field constant : declaredFields ) {
       constantValues.add( ( String )constant.get( null ) );
