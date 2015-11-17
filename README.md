@@ -49,19 +49,6 @@ Dynamic Project Working Sets can be created with the _New Wizard_ (_File &gt; Ne
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/dynamic-working-sets.png)
 
-### Extended Export/Import Preferences Wizards
-Eclipse Extras provides extensions to the Export/Import wizards to transfer general workbench preferences. This allows to transfer settings for:
-* General Editor
-* Text Editor
-* XML Editor
-* Workbench Appearance
-* Workspace
-* Search
-* Run/Debug
-
-![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/export-preferences-wizard.png)
-
-
 ## Requirements
 Works with Eclipse 4.4 (Luna) or later and Java 1.8 or later.
 

@@ -12,9 +12,6 @@
    <feature url="../com.codeaffine.extras.workingset.feature_0.1.0.qualifier.jar" id="com.codeaffine.extras.workingset.feature" version="0.1.0.qualifier">
       <category name="com.codeaffine.extras.category"/>
    </feature>
-   <feature url="../com.codeaffine.extras.export.feature_0.1.0.qualifier.jar" id="com.codeaffine.extras.export.feature" version="0.1.0.qualifier">
-      <category name="com.codeaffine.extras.category"/>
-   </feature>
    <category-def name="com.codeaffine.extras.category" label="Extras for the Eclipse IDE">
       <description>
          Small extensions for the Eclipse IDE
