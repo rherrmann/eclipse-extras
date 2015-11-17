@@ -1,13 +1,13 @@
-# Eclipse Extras [![Build Status](https://codeship.com/projects/6a994910-8fa7-0132-ebb3-32b8c1ae92e1/status?branch=master)](https://codeship.com/projects/61325)
+# Extras for Eclipse [![Build Status](https://codeship.com/projects/6a994910-8fa7-0132-ebb3-32b8c1ae92e1/status?branch=master)](https://codeship.com/projects/61325)
 
 Small extensions for the Eclipse IDE
 
 ## Installation
-You can install Eclipse Extras directly from this software site: 
+You can install Extras for Eclipse directly from this software site: 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://rherrmann.github.io/eclipse-extras/repository/
 
-In the Eclipse main menu, click _Help > Install New Software…_. Then enter the URL above and select _Extras for the Eclipse IDE_. Expand the item to select only certain features of the Eclipse Extras package.
+In the Eclipse main menu, click _Help > Install New Software…_. Then enter the URL above and select _Extras for the Eclipse IDE_. Expand the item to select only certain features of the Extras for Eclipse package.
 
 
 ## Current Features
