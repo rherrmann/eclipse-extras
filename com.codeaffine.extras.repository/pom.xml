@@ -20,7 +20,7 @@
         <artifactId>tycho-p2-repository-plugin</artifactId>
         <version>${tycho-version}</version>
         <configuration>
-          <repositoryName>Eclipse Extras Software Repository</repositoryName>
+          <repositoryName>Extras for Eclipse Software Repository</repositoryName>
           <includeAllDependencies>false</includeAllDependencies>
           <compress>true</compress>
         </configuration>

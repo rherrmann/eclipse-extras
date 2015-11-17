@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Eclipse Extras Launch Configuration Extras
+Bundle-Name: Extras for Eclipse Launch Configurations
 Bundle-SymbolicName: com.codeaffine.extras.launch;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-Vendor: codeaffine.com

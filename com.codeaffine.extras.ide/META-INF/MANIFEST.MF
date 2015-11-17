@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Eclipse Extras Core IDE Extras
+Bundle-Name: Extras for the Eclipse Core IDE
 Bundle-SymbolicName: com.codeaffine.extras.ide;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-Vendor: codeaffine.com

@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Eclipse Extras Test Utility
+Bundle-Name: Extras for Eclipse Test Utilities
 Bundle-SymbolicName: com.codeaffine.extras.test.util;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-Vendor: codeaffine.com
