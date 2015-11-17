@@ -79,7 +79,7 @@ public class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
     private final Set<ILaunchConfiguration> launchConfigHistory;
 
     LaunchConfigHistoryCollector() {
-      launchConfigHistory = new LinkedHashSet<ILaunchConfiguration>();
+      launchConfigHistory = new LinkedHashSet<>();
     }
 
     ILaunchConfiguration[] collect() {

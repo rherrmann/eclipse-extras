@@ -43,7 +43,7 @@ public class DynamicWorkingSetUpdater
   public DynamicWorkingSetUpdater() {
     workingSetManager = PlatformUI.getWorkbench().getWorkingSetManager();
     workspace = ResourcesPlugin.getWorkspace();
-    inPropertyChange = new ThreadLocal<Boolean>();
+    inPropertyChange = new ThreadLocal<>();
     workingSets = synchronizedSet( new HashSet<IWorkingSet>() );
     initialize();
   }

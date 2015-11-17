@@ -13,7 +13,7 @@ public class DynamicWorkingSetElementAdapter implements IWorkingSetElementAdapte
 
   @Override
   public IAdaptable[] adaptElements( IWorkingSet workingSet, IAdaptable[] elements ) {
-    Collection<IAdaptable> adaptedElements = new ArrayList<IAdaptable>( elements.length + 1 );
+    Collection<IAdaptable> adaptedElements = new ArrayList<>( elements.length + 1 );
     for( IAdaptable element : elements ) {
       IProject project = adaptElememt( element );
       if( project != null ) {
