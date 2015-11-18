@@ -15,7 +15,7 @@ In the Eclipse main menu, click _Help > Install New Software…_. Then enter the
 ### JUnit Status Bar
 A small contribution to the status bar shows the status of the current or most recent JUnit run. The progress bar is colored green or red depending on how the test results are. The button to the left of the bar opens the [JUnit view](http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fviews%2Fref-view-junit.htm). 
 
-Use the _Java &gt; JUnit &gt; JUnit Status Bar_ preference page to show or hide the JUnit Status Bar. Note that in Eclipse 4.5 (Mars) you need to resize the workbench window afterwards to make the change appear (sigh).
+Use the _Java &gt; JUnit &gt; JUnit Status Bar_ preference page to show or hide the JUnit Status Bar. Note that in Eclipse 4.5 (Mars) you [need to resize the workbench window afterwards](https://bugs.eclipse.org/bugs/show_bug.cgi?id=459904) to make the change appear (sigh).
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/junit-status-bar-green.png) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/junit-status-bar-red.png)
 
