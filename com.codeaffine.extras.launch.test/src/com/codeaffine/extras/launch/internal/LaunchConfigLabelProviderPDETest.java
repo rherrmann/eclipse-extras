@@ -2,7 +2,6 @@ package com.codeaffine.extras.launch.internal;
 
 import static com.codeaffine.extras.launch.internal.LaunchConfigLabelProvider.LabelMode.DETAIL;
 import static com.codeaffine.extras.launch.internal.LaunchConfigLabelProvider.LabelMode.LIST;
-import static com.codeaffine.extras.launch.test.LaunchManagerHelper.createLaunchConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
@@ -19,9 +18,12 @@ import org.junit.Test;
 
 import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
 import com.codeaffine.extras.launch.internal.LaunchConfigLabelProvider.LabelMode;
+import com.codeaffine.extras.launch.test.LaunchConfigurationRule;
 
 public class LaunchConfigLabelProviderPDETest {
 
+  @Rule
+  public final LaunchConfigurationRule launchConfigRule = new LaunchConfigurationRule();
   @Rule
   public final DisplayHelper displayHelper = new DisplayHelper();
 
@@ -29,7 +31,7 @@ public class LaunchConfigLabelProviderPDETest {
 
   @Test
   public void testGetImage() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
     LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
 
     Image image = labelProvider.getImage( launchConfig );
@@ -48,7 +50,7 @@ public class LaunchConfigLabelProviderPDETest {
 
   @Test
   public void testGetListText() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
     LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
 
     String text = labelProvider.getText( launchConfig );
@@ -58,7 +60,7 @@ public class LaunchConfigLabelProviderPDETest {
 
   @Test
   public void testGetDetailText() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
     LaunchConfigLabelProvider labelProvider = createLabelProvider( DETAIL );
 
     String text = labelProvider.getText( launchConfig );
@@ -86,7 +88,7 @@ public class LaunchConfigLabelProviderPDETest {
 
   @Test
   public void testDispose() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
     LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
     Image image = labelProvider.getImage( launchConfig );
 

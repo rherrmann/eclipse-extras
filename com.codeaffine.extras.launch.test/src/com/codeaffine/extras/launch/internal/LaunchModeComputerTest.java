@@ -9,24 +9,22 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchMode;
 import org.eclipse.debug.ui.ILaunchGroup;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
-import com.codeaffine.extras.launch.test.LaunchManagerHelper;
+import com.codeaffine.extras.launch.test.LaunchConfigurationRule;
 
 public class LaunchModeComputerTest {
+
+  @Rule
+  public final LaunchConfigurationRule launchConfigRule = new LaunchConfigurationRule();
 
   private ILaunchConfigurationWorkingCopy launchConfig;
 
   @Before
   public void setUp() throws CoreException {
-    launchConfig = LaunchManagerHelper.createLaunchConfig();
-  }
-
-  @After
-  public void tearDown() throws CoreException {
-    LaunchManagerHelper.deleteLaunchConfig( launchConfig.getName() );
+    launchConfig = launchConfigRule.createLaunchConfig();
   }
 
   @Test

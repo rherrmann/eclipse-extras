@@ -14,11 +14,15 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
-import com.codeaffine.extras.launch.test.LaunchManagerHelper;
+import com.codeaffine.extras.launch.test.LaunchConfigurationRule;
 
 public class EditLaunchConfigActionPDETest {
+
+  @Rule
+  public final LaunchConfigurationRule launchConfigRule = new LaunchConfigurationRule();
 
   private LaunchSelectionDialog dialog;
   private EditLaunchConfigAction action;
@@ -56,7 +60,7 @@ public class EditLaunchConfigActionPDETest {
 
   @Test
   public void testSetSelectionWithSingleLaunchConfig() throws CoreException {
-    ILaunchConfiguration launchConfig = LaunchManagerHelper.createLaunchConfig();
+    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig();
 
     action.setSelection( new StructuredSelection( launchConfig ) );
 
@@ -65,8 +69,8 @@ public class EditLaunchConfigActionPDETest {
 
   @Test
   public void testSetSelectionWithMultipleLaunchConfigs() throws CoreException {
-    ILaunchConfiguration launchConfig1 = LaunchManagerHelper.createLaunchConfig();
-    ILaunchConfiguration launchConfig2 = LaunchManagerHelper.createLaunchConfig();
+    ILaunchConfiguration launchConfig1 = launchConfigRule.createLaunchConfig();
+    ILaunchConfiguration launchConfig2 = launchConfigRule.createLaunchConfig();
 
     action.setSelection( new StructuredSelection( new Object[] { launchConfig1, launchConfig2 } ) );
 
@@ -82,7 +86,7 @@ public class EditLaunchConfigActionPDETest {
 
   @Test
   public void testRun() throws CoreException {
-    ILaunchConfiguration launchConfig = LaunchManagerHelper.createLaunchConfig();
+    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig();
     action.setSelection( new StructuredSelection( launchConfig ) );
     doReturn( true ).when( action ).editLaunchConfig( launchConfig );
 
@@ -94,7 +98,7 @@ public class EditLaunchConfigActionPDETest {
 
   @Test
   public void testRunWhenDialogIsCancelled() throws CoreException {
-    ILaunchConfiguration launchConfig = LaunchManagerHelper.createLaunchConfig();
+    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig();
     action.setSelection( new StructuredSelection( launchConfig ) );
     doReturn( false ).when( action ).editLaunchConfig( launchConfig );
 

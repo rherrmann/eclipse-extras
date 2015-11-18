@@ -1,26 +1,34 @@
 package com.codeaffine.extras.launch.internal;
 
-import static com.codeaffine.extras.launch.test.LaunchManagerHelper.createLaunchConfig;
-import static com.codeaffine.extras.launch.test.LaunchManagerHelper.deleteLaunchConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
 import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.XMLMemento;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+
+import com.codeaffine.extras.launch.test.LaunchConfigurationRule;
 
 public class LaunchConfigSelectionHistoryPDETest {
 
+  @Rule
+  public final LaunchConfigurationRule launchConfigRule = new LaunchConfigurationRule();
+
   private LaunchConfigSelectionHistory history;
   private ILaunchConfiguration launchConfig;
+
+  @Before
+  public void setUp() throws Exception {
+    launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    history = new LaunchConfigSelectionHistory();
+  }
 
   @Test
   public void testRestoreFromMemento() {
@@ -136,17 +144,6 @@ public class LaunchConfigSelectionHistoryPDETest {
     boolean removed = history.remove( launchConfig );
 
     assertThat( removed ).isFalse();
-  }
-
-  @Before
-  public void setUp() throws Exception {
-    launchConfig = createLaunchConfig().doSave();
-    history = new LaunchConfigSelectionHistory();
-  }
-
-  @After
-  public void tearDown() throws CoreException {
-    deleteLaunchConfig( launchConfig.getName() );
   }
 
   private void runLaunchConfig() {

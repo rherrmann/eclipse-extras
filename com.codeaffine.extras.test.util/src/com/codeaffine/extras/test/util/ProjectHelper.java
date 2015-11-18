@@ -9,6 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IContainer;
@@ -41,13 +42,38 @@ public class ProjectHelper extends ExternalResource {
     }
   }
 
+  public static void delete( IResource resource ) {
+    int numAttempts = 0;
+    boolean success = false;
+    while( !success ) {
+      try {
+        resource.delete( FORCE | ALWAYS_DELETE_PROJECT_CONTENT, new NullProgressMonitor() );
+        success = true;
+        numAttempts++;
+      } catch( CoreException ce ) {
+        if( numAttempts > 4 ) {
+          throw new RuntimeException( "Failed to delete resource: " + resource, ce );
+        }
+        System.gc();
+        try {
+          Thread.sleep( 500 );
+        } catch( InterruptedException ignore ) {
+          Thread.interrupted();
+        }
+        System.gc();
+      }
+    }
+  }
+
   private final String projectName;
   private final IPath projectLocation;
+  private final AtomicInteger uniqueResourceId;
   private IProject project;
 
   public ProjectHelper() {
     this.projectName = uniqueProjectName();
     this.projectLocation = null;
+    this.uniqueResourceId = new AtomicInteger();
   }
 
   public String getName() {
@@ -58,6 +84,10 @@ public class ProjectHelper extends ExternalResource {
   public IProject getProject() {
     initializeProject();
     return project;
+  }
+
+  public IFolder createFolder() throws CoreException {
+    return createFolder( "folder-" + uniqueResourceId.incrementAndGet() );
   }
 
   public IFolder createFolder( String name ) throws CoreException {
@@ -76,6 +106,16 @@ public class ProjectHelper extends ExternalResource {
 
   public IFile createFile( String fileName, String content ) throws CoreException {
     return createFile( getProject(), fileName, content );
+  }
+
+  public IFile createFile() throws CoreException {
+    return createFile( getProject() );
+  }
+
+  public IFile createFile( IContainer parent ) throws CoreException {
+    String fileName = "file-" + uniqueResourceId.incrementAndGet() + ".txt";
+    String content = "content of " + fileName;
+    return createFile( parent, fileName, content );
   }
 
   public IFile createFile( IContainer parent, String fileName, String content )
@@ -137,29 +177,6 @@ public class ProjectHelper extends ExternalResource {
     String result = "test.project." + uniqueId;
     uniqueId++;
     return result;
-  }
-
-  public static void delete( IResource resource ) {
-    int numAttempts = 0;
-    boolean success = false;
-    while( !success ) {
-      try {
-        resource.delete( FORCE | ALWAYS_DELETE_PROJECT_CONTENT, new NullProgressMonitor() );
-        success = true;
-        numAttempts++;
-      } catch( CoreException ce ) {
-        if( numAttempts > 4 ) {
-          throw new RuntimeException( "Failed to delete resource: " + resource, ce );
-        }
-        System.gc();
-        try {
-          Thread.sleep( 500 );
-        } catch( InterruptedException ignore ) {
-          Thread.interrupted();
-        }
-        System.gc();
-      }
-    }
   }
 
 }

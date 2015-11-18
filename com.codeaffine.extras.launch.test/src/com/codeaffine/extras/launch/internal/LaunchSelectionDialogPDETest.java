@@ -1,10 +1,9 @@
 package com.codeaffine.extras.launch.internal;
 
 import static com.codeaffine.extras.launch.internal.LaunchSelectionDialog.EDIT_BUTTON_ID;
-import static com.codeaffine.extras.launch.test.LaunchManagerHelper.createLaunchConfig;
-import static com.codeaffine.extras.launch.test.LaunchManagerHelper.getDebugModeLabel;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.core.runtime.IStatus.INFO;
+import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
 import static org.eclipse.jface.dialogs.IDialogConstants.OK_ID;
 
 import java.util.Comparator;
@@ -28,11 +27,13 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
-import com.codeaffine.extras.launch.test.LaunchManagerHelper;
+import com.codeaffine.extras.launch.test.LaunchConfigurationRule;
 import com.codeaffine.extras.launch.test.LaunchModeHelper;
 
 public class LaunchSelectionDialogPDETest {
 
+  @Rule
+  public final LaunchConfigurationRule launchConfigRule = new LaunchConfigurationRule();
   @Rule
   public final DisplayHelper displayHelper = new DisplayHelper();
 
@@ -40,7 +41,7 @@ public class LaunchSelectionDialogPDETest {
 
   @Test
   public void testValidateItemWithSupportedLaunchMode() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = LaunchManagerHelper.createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
 
     IStatus status = dialog.validateItem( launchConfig );
 
@@ -51,7 +52,7 @@ public class LaunchSelectionDialogPDETest {
   public void testValidateItemWithUnsupportedLaunchMode() throws CoreException {
     LaunchModeSetting launchModeSetting = getLaunchModeSettings();
     launchModeSetting.setLaunchModeId( LaunchModeHelper.TEST_LAUNCH_MODE );
-    ILaunchConfigurationWorkingCopy launchConfig = LaunchManagerHelper.createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
 
     IStatus status = dialog.validateItem( launchConfig );
 
@@ -122,7 +123,7 @@ public class LaunchSelectionDialogPDETest {
 
   @Test
   public void testGetElementName() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
 
     String elementName = dialog.getElementName( launchConfig );
 
@@ -179,8 +180,11 @@ public class LaunchSelectionDialogPDETest {
     return new LaunchModeSetting( launchManager, dialogSettings );
   }
 
-  public static class TestableLaunchSelectionDialog extends LaunchSelectionDialog {
+  private static String getDebugModeLabel() {
+    return DebugPlugin.getDefault().getLaunchManager().getLaunchMode( DEBUG_MODE ).getLabel();
+  }
 
+  public static class TestableLaunchSelectionDialog extends LaunchSelectionDialog {
     private final DialogSettings dialogSettings;
     private IStatus lastStatus;
 

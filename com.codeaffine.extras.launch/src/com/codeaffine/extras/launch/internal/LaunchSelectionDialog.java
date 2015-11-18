@@ -175,9 +175,9 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
                                       IProgressMonitor progressMonitor )
     throws CoreException
   {
-    ILaunchConfiguration[] configurations = launchManager.getLaunchConfigurations();
-    for( ILaunchConfiguration configuration : configurations ) {
-      contentProvider.add( configuration, itemsFilter );
+    ILaunchConfiguration[] launchConfigs = new LaunchConfigProvider( launchManager ).getLaunchConfigurations();
+    for( ILaunchConfiguration launchConfig : launchConfigs ) {
+      contentProvider.add( launchConfig, itemsFilter );
     }
   }
 
@@ -223,8 +223,7 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     public boolean matchItem( Object item ) {
       boolean result = false;
       if( item instanceof ILaunchConfiguration ) {
-        ILaunchConfiguration configuration = ( ILaunchConfiguration )item;
-        result = matches( configuration.getName() );
+        result = matchLaunchConfig( ( ILaunchConfiguration )item );
       }
       return result;
     }
@@ -232,6 +231,10 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     @Override
     public boolean isConsistentItem( Object item ) {
       return true;
+    }
+
+    private boolean matchLaunchConfig( ILaunchConfiguration launchConfig ) {
+      return matches( launchConfig.getName() );
     }
   }
 

@@ -11,28 +11,27 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
-import com.codeaffine.extras.launch.internal.LaunchConfigImageProvider;
-import com.codeaffine.extras.launch.test.LaunchManagerHelper;
+import com.codeaffine.extras.launch.test.LaunchConfigurationRule;
 
 public class LaunchConfigImageProviderPDETest {
 
   @Rule
+  public final LaunchConfigurationRule launchConfigRule = new LaunchConfigurationRule();
+  @Rule
   public final DisplayHelper displayHelper = new DisplayHelper();
 
   private LaunchConfigImageProvider launchConfigImageProvider;
-
   private ILaunchConfigurationWorkingCopy launchConfig;
 
   @Before
   public void setUp() throws CoreException {
-    launchConfig = LaunchManagerHelper.createLaunchConfig();
+    launchConfig = launchConfigRule.createLaunchConfig();
     launchConfigImageProvider = new LaunchConfigImageProvider( displayHelper.getDisplay() );
   }
 
   @After
-  public void tearDown() throws CoreException {
+  public void tearDown() {
     launchConfigImageProvider.dispose();
-    LaunchManagerHelper.deleteLaunchConfig( launchConfig.getName() );
   }
 
   @Test

@@ -11,11 +11,15 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
-import com.codeaffine.extras.launch.test.LaunchManagerHelper;
+import com.codeaffine.extras.launch.test.LaunchConfigurationRule;
 
 public class LaunchConfigComparatorPDETest {
+
+  @Rule
+  public final LaunchConfigurationRule launchConfigRule = new LaunchConfigurationRule();
 
   private ILaunchConfigurationWorkingCopy launchConfig1;
   private ILaunchConfigurationWorkingCopy launchConfig2;
@@ -24,8 +28,8 @@ public class LaunchConfigComparatorPDETest {
 
   @Before
   public void setUp() throws CoreException {
-    launchConfig1 = LaunchManagerHelper.createLaunchConfig();
-    launchConfig2 = LaunchManagerHelper.createLaunchConfig();
+    launchConfig1 = launchConfigRule.createLaunchConfig();
+    launchConfig2 = launchConfigRule.createLaunchConfig();
     historyItems = new LinkedList<>();
     launchConfigHistory = mock( LaunchConfigSelectionHistory.class );
     when( launchConfigHistory.getHistoryItems() ).thenReturn( historyItems.toArray() );
