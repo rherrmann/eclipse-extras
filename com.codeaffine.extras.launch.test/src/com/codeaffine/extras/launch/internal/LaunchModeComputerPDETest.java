@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import com.codeaffine.extras.launch.test.LaunchConfigurationRule;
 
-public class LaunchModeComputerTest {
+public class LaunchModeComputerPDETest {
 
   @Rule
   public final LaunchConfigurationRule launchConfigRule = new LaunchConfigurationRule();
