@@ -1,9 +1,11 @@
 package com.codeaffine.extras.launch.internal;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.addAll;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.internal.ui.launchConfigurations.LaunchHistory;
@@ -84,9 +86,7 @@ public class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
 
     ILaunchConfiguration[] collect() {
       launchConfigHistory.clear();
-      for( ILaunchGroup launchGroup : DebugUITools.getLaunchGroups() ) {
-        collect( launchGroup );
-      }
+      Stream.of( DebugUITools.getLaunchGroups() ).forEach( this::collect );
       return launchConfigHistory.toArray( new ILaunchConfiguration[ launchConfigHistory.size() ] );
     }
 
@@ -94,16 +94,12 @@ public class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
       LaunchHistoryAction launchHistoryAction = new LaunchHistoryAction( launchGroup );
       try {
         if( launchHistoryAction.getLastLaunch() != null ) {
-          append( launchHistoryAction.getFavorites() );
-          append( launchHistoryAction.getHistory() );
+          addAll( launchConfigHistory, launchHistoryAction.getFavorites() );
+          addAll( launchConfigHistory, launchHistoryAction.getHistory() );
         }
       } finally {
         launchHistoryAction.dispose();
       }
-    }
-
-    private void append( ILaunchConfiguration... launchConfigs ) {
-      launchConfigHistory.addAll( asList( launchConfigs ) );
     }
   }
 

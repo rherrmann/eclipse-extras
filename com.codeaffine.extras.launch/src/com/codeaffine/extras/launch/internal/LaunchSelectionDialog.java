@@ -10,6 +10,7 @@ import static org.eclipse.jface.dialogs.IDialogConstants.OK_ID;
 import static org.eclipse.jface.dialogs.IDialogConstants.OK_LABEL;
 
 import java.util.Comparator;
+import java.util.stream.Stream;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -65,12 +66,9 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
   }
 
   public ILaunchConfiguration[] getSelectedLaunchConfigurations() {
-    Object[] selectedElements = getResult();
-    ILaunchConfiguration[] result = new ILaunchConfiguration[ selectedElements.length ];
-    for( int i = 0; i < result.length; i++ ) {
-      result[ i ] = ( ILaunchConfiguration )selectedElements[ i ];
-    }
-    return result;
+    return Stream.of( getResult() )
+      .map( element -> ( ILaunchConfiguration )element )
+      .toArray( ILaunchConfiguration[]::new );
   }
 
   public String getLaunchModeId() {
@@ -183,9 +181,7 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     }
   }
 
-  private LaunchConfigLabelProvider createLaunchConfigLabelProvider( Shell shell,
-                                                                     LabelMode labelMode )
-  {
+  private LaunchConfigLabelProvider createLaunchConfigLabelProvider( Shell shell, LabelMode labelMode ) {
     return new LaunchConfigLabelProvider( shell.getDisplay(), this, labelMode );
   }
 
