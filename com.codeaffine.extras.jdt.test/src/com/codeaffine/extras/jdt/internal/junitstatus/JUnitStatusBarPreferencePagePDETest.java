@@ -18,6 +18,8 @@ import com.codeaffine.extras.jdt.internal.JDTExtrasPlugin;
 
 public class JUnitStatusBarPreferencePagePDETest {
 
+  private static final String JUNIT_KEYWORD_ID = "org.eclipse.jdt.junit.JUnit";
+
   private JUnitStatusBarPreferencePage preferencePage;
 
   @Before
@@ -37,9 +39,16 @@ public class JUnitStatusBarPreferencePagePDETest {
     ExtensionAssert.assertThat( actual )
       .hasAttributeValue( "category", "org.eclipse.jdt.junit.preferences" )
       .hasAttributeValue( "class", JUnitStatusBarPreferencePage.class.getName() )
-      .hasChildWithAttributeValue( "id", "org.eclipse.jdt.junit.JUnit" )
+      .hasChildWithAttributeValue( "id", JUNIT_KEYWORD_ID )
       .hasNonEmptyAttributeValueFor( "name" )
       .isInstantiable( JUnitStatusBarPreferencePage.class );
+  }
+
+  @Test
+  public void testExtensionKeywordReferences() {
+    Extension extension = readExtension( "org.eclipse.ui.keywords", attribute( "id", JUNIT_KEYWORD_ID ) );
+
+    assertThat( extension ).isNotNull();
   }
 
   @Test
