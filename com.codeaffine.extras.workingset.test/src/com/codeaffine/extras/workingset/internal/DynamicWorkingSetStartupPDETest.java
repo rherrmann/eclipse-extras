@@ -12,7 +12,7 @@ import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
 import com.codeaffine.extras.workingset.internal.DynamicWorkingSetStartup;
 
 
-public class EarlyStartupExtensionPDETest {
+public class DynamicWorkingSetStartupPDETest {
 
   @Test
   public void testStartupExtension() {
