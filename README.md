@@ -39,6 +39,13 @@ If the currently active editor shows a file from the workspace, the key sequence
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/delete-editor-resource.png)
 
+### Clean Up Generated Lanch Configurations
+If this option is enabled, all _generated_ launch configurations will be deleted after the have been launched and terminated. As _generated_ are considered all launch configurations that are created by commands outside of the launch configuration dialog, for eample with _Run As > JUnit Test_.
+
+This option helps keeping the launch configuration dialog tidy in that only the relevant launch configurations are shown.
+
+![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/launch-cleanup.png)
+
 ### Key Binding to Close the Active View
 The key binding <kbd>Ctrl+Shift+Q</kbd> closes the currently active view. Just like <kbd>Ctrl+W</kbd> closes the active editor, there is now also a key binding to close the active view. 
 
