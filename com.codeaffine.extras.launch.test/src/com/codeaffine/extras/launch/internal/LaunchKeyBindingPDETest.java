@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-import com.codeaffine.extras.launch.internal.LaunchHandler;
+import com.codeaffine.extras.launch.internal.dialog.LaunchHandler;
 import com.codeaffine.extras.test.util.KeyBindingInfo;
 import com.codeaffine.extras.test.util.KeyBindingInspector;
 

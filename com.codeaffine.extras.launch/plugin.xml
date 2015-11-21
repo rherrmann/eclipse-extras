@@ -5,7 +5,7 @@
          point="org.eclipse.ui.commands">
       <command
             categoryId="org.eclipse.debug.ui.category.run"
-            defaultHandler="com.codeaffine.extras.launch.internal.LaunchHandler"
+            defaultHandler="com.codeaffine.extras.launch.internal.dialog.LaunchHandler"
             description="Open the &apos;Start Launch Configuration&apos; Dialog"
             id="com.codeaffine.extras.launch.internal.LaunchCommand"
             name="Open Launch Dialog">
@@ -18,5 +18,26 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+F11">
       </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="com.codeaffine.extras.launch.internal.LaunchExtrasStartup">
+      </startup>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.debug.ui.LaunchingPreferencePage"
+            class="com.codeaffine.extras.launch.internal.cleanup.CleanupPreferencePage"
+            id="com.codeaffine.extras.launch.internal.cleanup.CleanupPreferencePage"
+            name="Clean Up">
+         <keywordReference
+               id="org.eclipse.debug.ui.launching">
+         </keywordReference>
+         <keywordReference
+               id="org.eclipse.debug.ui.contextLaunching">
+         </keywordReference>
+      </page>
    </extension>
 </plugin>

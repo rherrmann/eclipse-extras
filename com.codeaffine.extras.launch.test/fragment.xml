@@ -4,17 +4,29 @@
    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
             delegate="com.codeaffine.extras.launch.test.TestLaunchDelegate"
-            id="com.codeaffine.extras.launch.test.TestLaunchConfigurationType"
+            id="com.codeaffine.extras.launch.test.PublicTestLaunchConfigurationType"
             modes="run, debug, profile"
-            name="Test Launch Configuration Type"
+            name="Public Test Launch Configuration Type"
             public="true">
+      </launchConfigurationType>
+      <launchConfigurationType
+            delegate="com.codeaffine.extras.launch.test.TestLaunchDelegate"
+            id="com.codeaffine.extras.launch.test.PrivateTestLaunchConfigurationType"
+            modes="run, debug, profile"
+            name="Private Test Launch Configuration Type"
+            public="false">
       </launchConfigurationType>
    </extension>
    <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
-            configTypeID="com.codeaffine.extras.launch.test.TestLaunchConfigurationType"
+            configTypeID="com.codeaffine.extras.launch.test.PublicTestLaunchConfigurationType"
             icon="icons/obj16/test-launch-config-type.png"
-            id="com.codeaffine.extras.launch.test.TestLaunchConfigurationTypeImage">
+            id="com.codeaffine.extras.launch.test.PublicTestLaunchConfigurationTypeImage">
+      </launchConfigurationTypeImage>
+      <launchConfigurationTypeImage
+            configTypeID="com.codeaffine.extras.launch.test.PrivateTestLaunchConfigurationType"
+            icon="icons/obj16/test-launch-config-type.png"
+            id="com.codeaffine.extras.launch.test.PrivateTestLaunchConfigurationTypeImage">
       </launchConfigurationTypeImage>
    </extension>
    <extension

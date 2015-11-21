@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.codeaffine.eclipse.core.runtime.Extension;
 import com.codeaffine.eclipse.core.runtime.Predicates;
 import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
-import com.codeaffine.extras.launch.internal.LaunchHandler;
+import com.codeaffine.extras.launch.internal.dialog.LaunchHandler;
 
 
 public class LaunchCommandPDETest {
