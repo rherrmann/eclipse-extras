@@ -9,16 +9,16 @@ If you plan to contribute a feature or bugfix to this project or just the want t
 the following steps describe the setup of the development environment.
  
 1. Start an Eclipse IDE v4.4 (Luna) or later that has the [Plug-in Development Environment (PDE)](https://www.eclipse.org/pde/) installed.
- If you want to use a fresh Eclipse installation, you can download [Eclipse Standard](https://www.eclipse.org/downloads/packages/eclipse-standard-432/keplersr2). 
- It contains everything you need.
+ If you want to use a fresh Eclipse installation, you can download the _Eclipse IDE for Eclipse Committers_ package from the [Eclipse Downloads](https://www.eclipse.org/downloads/packages/) page.
+It contains everything you need.
  
 2. Clone the git repository from https://github.com/rherrmann/eclipse-extras.git
  
 3. The necessary projects are located at the root of the repository. 
- Import all of them into your workspace.
+Import all of them into your workspace.
  
 4. The [com.codeaffine.extras.target](https://github.com/rherrmann/eclipse-extras/tree/master/com.codeaffine.extras.target) project contains suitable [Target Platform Definitions](http://help.eclipse.org/juno/index.jsp?topic=%2Forg.eclipse.pde.doc.user%2Fconcepts%2Ftarget.htm).
- Open one of them and select the _Set as Target Platform_ link.
+Open one of them and select the _Set as Target Platform_ link.
 
 
 Now you are ready to hack the sources.
