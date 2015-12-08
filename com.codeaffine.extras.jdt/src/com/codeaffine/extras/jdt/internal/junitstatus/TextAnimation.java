@@ -4,8 +4,6 @@ import static java.util.stream.Collectors.joining;
 
 import java.util.stream.Stream;
 
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Widget;
 
 public class TextAnimation implements Runnable {
@@ -33,12 +31,7 @@ public class TextAnimation implements Runnable {
     this.textAnimationPainter = textAnimationPainter;
     this.widget = widget;
     this.text = "";
-    this.widget.addDisposeListener( new DisposeListener() {
-      @Override
-      public void widgetDisposed( DisposeEvent event ) {
-        disable();
-      }
-    } );
+    this.widget.addDisposeListener( event -> disable() );
   }
 
   public void disable() {

@@ -5,8 +5,6 @@ import java.util.Objects;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
@@ -114,12 +112,7 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
         redraw();
       }
     } );
-    addPaintListener( new PaintListener() {
-      @Override
-      public void paintControl( PaintEvent event ) {
-        paint( event.gc );
-      }
-    } );
+    addPaintListener( event -> paint( event.gc ) );
   }
 
   private void paint( GC gc ) {
@@ -179,12 +172,7 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
     return Math.min( clientArea.width - 2, result );
   }
 
-  private boolean valuesChanged( String text,
-                                 int textAlignment,
-                                 Color barColor,
-                                 int selection,
-                                 int maximum )
-  {
+  private boolean valuesChanged( String text, int textAlignment, Color barColor, int selection, int maximum ) {
     return !Objects.equals( this.text, text )
         || this.textAlignment != textAlignment
         || !Objects.equals( this.barColor, barColor )

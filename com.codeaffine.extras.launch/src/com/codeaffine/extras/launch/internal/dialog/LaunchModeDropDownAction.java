@@ -1,8 +1,6 @@
 package com.codeaffine.extras.launch.internal.dialog;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.stream.Stream;
 
 import org.eclipse.debug.core.ILaunchMode;
 import org.eclipse.jface.action.Action;
@@ -51,24 +49,23 @@ public class LaunchModeDropDownAction extends Action implements IMenuCreator {
   }
 
   private LaunchModeAction[] createLaunchModeActions() {
-    ILaunchMode[] launchModes = launchModeSetting.getLaunchManager().getLaunchModes();
-    List<LaunchModeAction> launchModeActions = new ArrayList<>( launchModes.length );
-    for( ILaunchMode launchMode : launchModes ) {
-      LaunchModeAction action = new LaunchModeAction( launchModeSetting, launchMode );
-      action.addPropertyChangeListener( new LaunchActionPropertyChangeListner() );
-      launchModeActions.add( action );
-    }
-    Collections.sort( launchModeActions, new LaunchModeActionComparator() );
-    return launchModeActions.toArray( new LaunchModeAction[ launchModeActions.size() ] );
+    return Stream.of( launchModeSetting.getLaunchManager().getLaunchModes() )
+      .map( launchMode -> createLaunchModeAction( launchMode ) )
+      .sorted( new LaunchModeActionComparator() )
+      .toArray( LaunchModeAction[]::new );
+  }
+
+  private LaunchModeAction createLaunchModeAction( ILaunchMode launchMode ) {
+    LaunchModeAction result = new LaunchModeAction( launchModeSetting, launchMode );
+    result.addPropertyChangeListener( new LaunchActionPropertyChangeListner() );
+    return result;
   }
 
   private class LaunchActionPropertyChangeListner implements IPropertyChangeListener {
     @Override
     public void propertyChange( PropertyChangeEvent event ) {
       if( IAction.CHECKED.equals( event.getProperty() ) ) {
-        for( LaunchModeAction launchModeAction : launchModeActions ) {
-          launchModeAction.update();
-        }
+        Stream.of( launchModeActions ).forEach( LaunchModeAction::update );
       }
       firePropertyChange( event );
     }

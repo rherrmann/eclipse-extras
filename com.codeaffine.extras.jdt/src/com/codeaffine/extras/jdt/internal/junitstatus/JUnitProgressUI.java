@@ -19,12 +19,7 @@ public class JUnitProgressUI implements ProgressUI {
   }
 
   @Override
-  public void update( final String text,
-                      final int textAlignment,
-                      final Color barColor,
-                      final int selection,
-                      final int maximum )
-  {
+  public void update( String text, int textAlignment, Color barColor, int selection, int maximum ) {
     uiThreadSynchronizer.asyncExec( progressBar, new Runnable() {
       @Override
       public void run() {
