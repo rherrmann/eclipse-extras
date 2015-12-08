@@ -17,4 +17,4 @@ Import-Package: org.junit.rules;version="[4.11.0,5.0.0)",
  org.assertj.core.api;version="[1.6.0,2.0.0)",
  org.assertj.core.api.filter;version="[1.6.0,2.0.0)",
  org.assertj.core.condition;version="[1.6.0,2.0.0)"
-Export-Package: com.codeaffine.extras.test.util;version="0.1.0.qualifier"
+Export-Package: com.codeaffine.extras.test.util;version="0.1.0"
