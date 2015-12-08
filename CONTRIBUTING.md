@@ -24,7 +24,7 @@ the following steps describe the setup of the development environment.
 Now you are ready to hack the sources.
 If you whish to verify the setup, you can run the test suite. The launch configuration to run all tests is called _All Tests_
 
-Eclipse Extras uses Maven/Tycho to build, the master pom file can be found at the root of the repository.
+Extras for Eclipse uses Maven/Tycho to build, the master pom file can be found at the root of the repository.
 
 
 # Project License:  Eclipse Public License
