@@ -37,7 +37,7 @@ public class CleanupPreferencePagePDETest {
     preferencePage.createContents( displayHelper.createShell() );
 
     assertThat( preferencePage.cleanupButton.getSelection() ).isFalse();
-    assertThat( preferencePage.cleanupTypesViewer.getCheckedElements() ).isEmpty();
+    assertThat( getCheckedCleanupLaunchConfigTypes() ).isEmpty();
     assertThat( preferencePage.cleanupTypesLabel.getEnabled() ).isFalse();
     assertThat( preferencePage.cleanupTypesViewer.getControl().getEnabled() ).isFalse();
   }
@@ -56,7 +56,7 @@ public class CleanupPreferencePagePDETest {
     prepareLaunchPreferences( true, type );
     preferencePage.createContents( displayHelper.createShell() );
 
-    assertThat( preferencePage.cleanupTypesViewer.getCheckedElements() ).containsOnly( type );
+    assertThat( getCheckedCleanupLaunchConfigTypes() ).containsOnly( type );
   }
 
   @Test
@@ -68,6 +68,8 @@ public class CleanupPreferencePagePDETest {
 
     assertThat( preferencePage.cleanupTypesLabel.getEnabled() ).isTrue();
     assertThat( preferencePage.cleanupTypesViewer.getControl().getEnabled() ).isTrue();
+    assertThat( preferencePage.selectAllButton.getEnabled() ).isTrue();
+    assertThat( preferencePage.deselectAllButton.getEnabled() ).isTrue();
     assertThat( launchPreferences.isCleanupGeneratedLaunchConfigs() ).isTrue();
   }
 
@@ -80,7 +82,29 @@ public class CleanupPreferencePagePDETest {
     preferencePage.cleanupButton.setSelection( false );
     preferencePage.cleanupButton.notifyListeners( SWT.Selection, null );
 
-    assertThat( preferencePage.cleanupTypesViewer.getCheckedElements() ).containsOnly( type );
+    assertThat( getCheckedCleanupLaunchConfigTypes() ).containsOnly( type );
+  }
+
+  @Test
+  public void testSelectAllButton() {
+    preferencePage.createContents( displayHelper.createShell() );
+
+    preferencePage.selectAllButton.notifyListeners( SWT.Selection, null );
+
+    assertThat( getCheckedCleanupLaunchConfigTypes() ).isNotEmpty();
+    assertThat( getCheckedCleanupLaunchConfigTypes().length ).isEqualTo( getCleanupLaunchConfigTypesCount() );
+  }
+
+  @Test
+  public void testDeselectAllButton() {
+    ILaunchConfigurationType type = launchConfigRule.getPublicTestLaunchConfigType();
+    prepareLaunchPreferences( true, type );
+    preferencePage.createContents( displayHelper.createShell() );
+    preferencePage.selectAllButton.notifyListeners( SWT.Selection, null );
+
+    preferencePage.deselectAllButton.notifyListeners( SWT.Selection, null );
+
+    assertThat( getCheckedCleanupLaunchConfigTypes() ).isEmpty();
   }
 
   @Test
@@ -91,7 +115,7 @@ public class CleanupPreferencePagePDETest {
     preferencePage.performDefaults();
 
     assertThat( preferencePage.cleanupButton.getSelection() ).isFalse();
-    assertThat( preferencePage.cleanupTypesViewer.getCheckedElements() ).isEmpty();
+    assertThat( getCheckedCleanupLaunchConfigTypes() ).isEmpty();
   }
 
   @Test
@@ -122,8 +146,16 @@ public class CleanupPreferencePagePDETest {
     assertThat( preferenceStore ).isEqualTo( launchPreferences.getPreferenceStore() );
   }
 
-  private void prepareLaunchPreferences( boolean enabledCleanup, ILaunchConfigurationType... types ) {
-    launchPreferences.setCleanupGeneratedLaunchConfigs( enabledCleanup );
+  private Object[] getCheckedCleanupLaunchConfigTypes() {
+    return preferencePage.cleanupTypesViewer.getCheckedElements();
+  }
+
+  private int getCleanupLaunchConfigTypesCount() {
+    return preferencePage.cleanupTypesViewer.getTable().getItemCount();
+  }
+
+  private void prepareLaunchPreferences( boolean cleanupEnabled, ILaunchConfigurationType... types ) {
+    launchPreferences.setCleanupGeneratedLaunchConfigs( cleanupEnabled );
     ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
     String serializedTypes = new LaunchConfigTypeSerializer( launchManager ).serialize( types );
     launchPreferences.setCleanupGenerateLaunchConfigTypes( serializedTypes );

@@ -54,8 +54,7 @@ public class OpenWithQuickMenu {
   }
 
   private static Point computeMenuLocation( Control focusControl ) {
-    MenuLocationComputer menuLocationComputer = new MenuLocationComputer();
-    return menuLocationComputer.computeMenuLocation( focusControl );
+    return new MenuLocationComputer().computeMenuLocation( focusControl );
   }
 
   private static class MenuCloseListener implements Listener {

@@ -7,12 +7,14 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.LayoutConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -33,6 +35,8 @@ public class CleanupPreferencePage extends PreferencePage implements IWorkbenchP
   Button cleanupButton;
   Label cleanupTypesLabel;
   CheckboxTableViewer cleanupTypesViewer;
+  Button selectAllButton;
+  Button deselectAllButton;
   private Label notelabel;
 
   public CleanupPreferencePage() {
@@ -86,6 +90,12 @@ public class CleanupPreferencePage extends PreferencePage implements IWorkbenchP
     cleanupTypesViewer.setComparator( new WorkbenchViewerComparator() );
     cleanupTypesViewer.addFilter( new LaunchConfigTypeFilter() );
     cleanupTypesViewer.setInput( launchManager.getLaunchConfigurationTypes() );
+    selectAllButton = new Button( parent, SWT.PUSH );
+    selectAllButton.addListener( SWT.Selection, event -> cleanupTypesViewer.setAllChecked( true ) );
+    selectAllButton.setText( "&Select All" );
+    deselectAllButton = new Button( parent, SWT.PUSH );
+    deselectAllButton.setText( "&Deselect All" );
+    deselectAllButton.addListener( SWT.Selection, event -> cleanupTypesViewer.setAllChecked( false ) );
     notelabel = new Label( parent, SWT.WRAP );
     String text
       = "Note: Launch configurations are considered as on-the-fly generated if "
@@ -95,7 +105,7 @@ public class CleanupPreferencePage extends PreferencePage implements IWorkbenchP
   }
 
   private void layoutPageControls( Composite parent ) {
-    parent.setLayout( new GridLayout( 1, false ) );
+    parent.setLayout( new GridLayout( 2, false ) );
     GridDataFactory.swtDefaults()
       .align( SWT.FILL, SWT.TOP )
       .grab( true, false )
@@ -103,17 +113,38 @@ public class CleanupPreferencePage extends PreferencePage implements IWorkbenchP
     GridDataFactory.swtDefaults()
       .align( SWT.FILL, SWT.TOP )
       .indent( 20, 0 )
+      .span( 2, 1 )
       .applyTo( cleanupTypesLabel );
     GridDataFactory.swtDefaults()
       .align( SWT.FILL, SWT.TOP )
       .indent( 20, 0 )
       .hint( SWT.DEFAULT, getTextHeight() * 15 )
       .grab( true, false )
+      .span( 1, 2 )
       .applyTo( cleanupTypesViewer.getControl() );
     GridDataFactory.swtDefaults()
       .align( SWT.FILL, SWT.TOP )
+      .hint( computePreferredButtonWidth( selectAllButton ), SWT.DEFAULT )
+      .applyTo( selectAllButton );
+    GridDataFactory.swtDefaults()
+      .align( SWT.FILL, SWT.TOP )
+      .hint( computePreferredButtonWidth( deselectAllButton ), SWT.DEFAULT )
+      .applyTo( deselectAllButton );
+    GridDataFactory.swtDefaults()
+      .align( SWT.FILL, SWT.TOP )
       .hint( getTextWidth( cleanupButton.getText() ), SWT.DEFAULT )
+      .span( 2, 1 )
       .applyTo( notelabel );
+  }
+
+  private static int computePreferredButtonWidth( Button button ) {
+    int defaultButtonWidth = getDefaultButtonWidth();
+    Point minSize = button.computeSize( SWT.DEFAULT, SWT.DEFAULT, true );
+    return Math.max( defaultButtonWidth, minSize.x );
+  }
+
+  private static int getDefaultButtonWidth() {
+    return LayoutConstants.getMinButtonSize().x;
   }
 
   private void initPageControls() {
@@ -123,8 +154,11 @@ public class CleanupPreferencePage extends PreferencePage implements IWorkbenchP
   }
 
   private void updateEnablement() {
-    cleanupTypesLabel.setEnabled( launchPreferences.isCleanupGeneratedLaunchConfigs() );
+    boolean enabled = launchPreferences.isCleanupGeneratedLaunchConfigs();
+    cleanupTypesLabel.setEnabled( enabled );
     cleanupTypesViewer.getControl().setEnabled( launchPreferences.isCleanupGeneratedLaunchConfigs() );
+    selectAllButton.setEnabled( launchPreferences.isCleanupGeneratedLaunchConfigs() );
+    deselectAllButton.setEnabled( launchPreferences.isCleanupGeneratedLaunchConfigs() );
   }
 
   @SuppressWarnings("unused")
