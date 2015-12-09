@@ -9,6 +9,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationsDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.jface.preference.PreferenceStore;
@@ -50,6 +51,19 @@ public class LaunchConfigCleanerPDETest {
     launch( launchConfig );
 
     assertThat( getLaunchConfigs() ).extracting( "name" ).doesNotContain( launchConfig.getName() );
+  }
+
+  @Test
+  public void testCleanupWhenLaunchConfigRenamed() throws CoreException {
+    prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
+    launchConfigCleaner.install();
+    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+
+    ILaunch launch = launchConfig.launch( RUN_MODE, null );
+    String newName = renameLaunchConfig( launchConfig );
+    launch.terminate();
+
+    assertThat( getLaunchConfigs() ).extracting( "name" ).doesNotContain( newName );
   }
 
   @Test
@@ -125,6 +139,14 @@ public class LaunchConfigCleanerPDETest {
     ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
     LaunchConfigurationsDialog.setCurrentlyVisibleLaunchConfigurationDialog( null );
     return launchConfig;
+  }
+
+  private static String renameLaunchConfig( ILaunchConfiguration launchConfig ) throws CoreException {
+    String newName = launchConfig.getName() + "-renamed";
+    ILaunchConfigurationWorkingCopy workingCopy = launchConfig.getWorkingCopy();
+    workingCopy.rename( newName );
+    workingCopy.doSave();
+    return newName;
   }
 
   private static void launch( ILaunchConfiguration launchConfig ) throws CoreException {

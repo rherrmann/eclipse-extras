@@ -59,14 +59,18 @@ public class LaunchConfigCleaner {
     @Override
     public void launchesTerminated( ILaunch[] launches ) {
       for( ILaunch launch : launches ) {
-        ILaunchConfiguration launchConfig = launch.getLaunchConfiguration();
-        try {
-          if( launchConfig != null && cleanupLaunchConfigs.remove( launchConfig ) ) {
-            launchConfig.delete();
-          }
-        } catch( CoreException ce ) {
-          handleCoreException( ce );
+        launchTerminated( launch );
+      }
+    }
+
+    private void launchTerminated( ILaunch launch ) {
+      ILaunchConfiguration launchConfig = launch.getLaunchConfiguration();
+      try {
+        if( launchConfig != null && cleanupLaunchConfigs.remove( launchConfig ) ) {
+          launchConfig.delete();
         }
+      } catch( CoreException ce ) {
+        handleCoreException( ce );
       }
     }
   }
