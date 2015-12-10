@@ -43,18 +43,31 @@ public class LaunchConfigCleanerPDETest {
   }
 
   @Test
-  public void testCleanup() throws CoreException {
+  public void testCleanupAfterNextLaunch() throws CoreException {
     prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
     launchConfigCleaner.install();
     ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
-
     launch( launchConfig );
+
+    launch( launchConfigRule.createLaunchConfig().doSave() );
 
     assertThat( getLaunchConfigs() ).extracting( "name" ).doesNotContain( launchConfig.getName() );
   }
 
   @Test
-  public void testCleanupWhenLaunchConfigRenamed() throws CoreException {
+  public void testNoCleanupAfterLaunchingAgain() throws CoreException {
+    prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
+    launchConfigCleaner.install();
+    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    launch( launchConfig );
+
+    launch( launchConfig );
+
+    assertThat( getLaunchConfigs() ).extracting( "name" ).contains( launchConfig.getName() );
+  }
+
+  @Test
+  public void testNoCleanupWhenLaunchConfigRenamed() throws CoreException {
     prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
     launchConfigCleaner.install();
     ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
@@ -63,7 +76,7 @@ public class LaunchConfigCleanerPDETest {
     String newName = renameLaunchConfig( launchConfig );
     launch.terminate();
 
-    assertThat( getLaunchConfigs() ).extracting( "name" ).doesNotContain( newName );
+    assertThat( getLaunchConfigs() ).extracting( "name" ).contains( newName );
   }
 
   @Test

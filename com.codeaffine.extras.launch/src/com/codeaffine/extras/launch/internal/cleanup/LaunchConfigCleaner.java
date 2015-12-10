@@ -1,8 +1,11 @@
 package com.codeaffine.extras.launch.internal.cleanup;
 
 import static com.codeaffine.extras.launch.internal.LaunchExtrasPlugin.PLUGIN_ID;
+import static java.util.Collections.addAll;
 import static java.util.Collections.synchronizedSet;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -51,6 +54,16 @@ public class LaunchConfigCleaner {
     cleanupLaunchConfigs.clear();
   }
 
+  public void saveState( File file ) {
+    ILaunchConfiguration[] launchConfigs = cleanupLaunchConfigs.toArray( new ILaunchConfiguration[ 0 ] );
+    new LaunchConfigCleanerState( launchManager, file ).save( launchConfigs );
+  }
+
+  public void restoreState( File file ) {
+    ILaunchConfiguration[] launchConfigs = new LaunchConfigCleanerState( launchManager, file ).restore();
+    addAll( cleanupLaunchConfigs, launchConfigs );
+  }
+
   private static void handleCoreException( CoreException exception ) {
     StatusManager.getManager().handle( exception, PLUGIN_ID );
   }
@@ -64,13 +77,24 @@ public class LaunchConfigCleaner {
     }
 
     private void launchTerminated( ILaunch launch ) {
-      ILaunchConfiguration launchConfig = launch.getLaunchConfiguration();
-      try {
-        if( launchConfig != null && cleanupLaunchConfigs.remove( launchConfig ) ) {
+      ILaunchConfiguration terminatedLaunchConfig = launch.getLaunchConfiguration();
+      if( terminatedLaunchConfig != null ) {
+        try {
+          launchTerminated( terminatedLaunchConfig );
+        } catch( CoreException ce ) {
+          handleCoreException( ce );
+        }
+      }
+    }
+
+    private void launchTerminated( ILaunchConfiguration terminatedLaunchConfig ) throws CoreException {
+      for( ILaunchConfiguration launchConfig : new ArrayList<>( cleanupLaunchConfigs ) ) {
+        if(    launchConfig.getType().equals( terminatedLaunchConfig.getType() )
+            && !launchConfig.equals( terminatedLaunchConfig ) )
+        {
+          cleanupLaunchConfigs.remove( launchConfig );
           launchConfig.delete();
         }
-      } catch( CoreException ce ) {
-        handleCoreException( ce );
       }
     }
   }

@@ -80,7 +80,7 @@ public class CleanupPreferencePage extends PreferencePage implements IWorkbenchP
 
   private void createPageControls( Composite parent ) {
     cleanupButton = new Button( parent, SWT.CHECK );
-    cleanupButton.setText( "Remove on-the-fly generated launch configurations after they terminate" );
+    cleanupButton.setText( "Remove on-the-fly generated launch configurations when no longer needed" );
     cleanupButton.addListener( SWT.Selection, this::cleanupButtonSelected );
     cleanupTypesLabel = new Label( parent, SWT.NONE );
     cleanupTypesLabel.setText( "Select the launch configuration types to clean up" );
@@ -118,7 +118,7 @@ public class CleanupPreferencePage extends PreferencePage implements IWorkbenchP
     GridDataFactory.swtDefaults()
       .align( SWT.FILL, SWT.TOP )
       .indent( 20, 0 )
-      .hint( SWT.DEFAULT, getTextHeight() * 15 )
+      .hint( SWT.DEFAULT, cleanupTypesViewer.getTable().getItemHeight() * 14 )
       .grab( true, false )
       .span( 1, 2 )
       .applyTo( cleanupTypesViewer.getControl() );
@@ -176,15 +176,6 @@ public class CleanupPreferencePage extends PreferencePage implements IWorkbenchP
   private ILaunchConfigurationType[] getCleanupLaunchConfigTypes() {
     String typeIds = launchPreferences.getCleanupGenerateLaunchConfigTypes();
     return new LaunchConfigTypeSerializer( launchManager ).deserialize( typeIds );
-  }
-
-  private int getTextHeight() {
-    GC gc = new GC( cleanupTypesViewer.getControl() );
-    try {
-      return gc.getFontMetrics().getHeight();
-    } finally {
-      gc.dispose();
-    }
   }
 
   private int getTextWidth( String text ) {
