@@ -30,9 +30,7 @@ public class LaunchConfigCleanerPDETest {
   private LaunchConfigCleaner launchConfigCleaner;
 
   @Before
-  public void setUp() throws CoreException {
-    // workaround for bug 482711
-    launchConfigRule.createLaunchConfig().doSave();
+  public void setUp() {
     launchPreferences = new LaunchPreferences( new PreferenceStore() );
     launchConfigCleaner = new LaunchConfigCleaner( launchPreferences );
   }

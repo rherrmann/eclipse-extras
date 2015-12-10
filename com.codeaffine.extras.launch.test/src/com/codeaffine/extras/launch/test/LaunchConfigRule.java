@@ -2,9 +2,6 @@ package com.codeaffine.extras.launch.test;
 
 import static org.eclipse.debug.ui.IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -22,37 +19,31 @@ public class LaunchConfigRule extends ExternalResource {
     = "com.codeaffine.extras.launch.test.PrivateTestLaunchConfigurationType";
 
   private final ILaunchManager launchManager;
-  private final List<String> launchConfiguarionNames;
 
   public LaunchConfigRule() {
     launchManager = DebugPlugin.getDefault().getLaunchManager();
-    launchConfiguarionNames = new ArrayList<>();
+  }
+
+  @Override
+  protected void before() throws Throwable {
+    // workaround for bug 482711
+    ILaunchConfiguration launchConfig = newPublicLaunchConfig().doSave();
+    launchConfig.delete();
   }
 
   @Override
   protected void after() {
-    launchConfiguarionNames.forEach( this::deleteLaunchConfig );
-  }
-
-  public ILaunchConfigurationWorkingCopy createLaunchConfig() throws CoreException {
-    ILaunchConfigurationType type = getPublicTestLaunchConfigType();
-    ILaunchConfigurationWorkingCopy result = type.newInstance( null, getUniqueLaunchConfigName() );
-    result.setAttribute( ATTR_LAUNCH_IN_BACKGROUND, false );
-    launchConfiguarionNames.add( result.getName() );
-    return result;
-  }
-
-  public void deleteLaunchConfig( String name ) {
     try {
-      ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations();
-      for( ILaunchConfiguration launchConfig : launchConfigurations ) {
-        if( name.equals( launchConfig.getName() ) ) {
-          launchConfig.delete();
-        }
-      }
+      deleteLaunchConfigs();
     } catch( CoreException ce ) {
       throw new RuntimeException( ce );
     }
+  }
+
+  public ILaunchConfigurationWorkingCopy createLaunchConfig() throws CoreException {
+    ILaunchConfigurationWorkingCopy result = newPublicLaunchConfig();
+    result.setAttribute( ATTR_LAUNCH_IN_BACKGROUND, false );
+    return result;
   }
 
   public ILaunchConfigurationType getPublicTestLaunchConfigType() {
@@ -63,7 +54,21 @@ public class LaunchConfigRule extends ExternalResource {
     return launchManager.getLaunchConfigurationType( PRIVATE_TEST_LAUNCH_CONFIG_TYPE );
   }
 
+  private ILaunchConfigurationWorkingCopy newPublicLaunchConfig() throws CoreException {
+    ILaunchConfigurationType type = getPublicTestLaunchConfigType();
+    ILaunchConfigurationWorkingCopy newInstance = type.newInstance( null, getUniqueLaunchConfigName() );
+    return newInstance;
+  }
+
   private String getUniqueLaunchConfigName() {
     return launchManager.generateLaunchConfigurationName( "LC" );
   }
+
+  private void deleteLaunchConfigs() throws CoreException {
+    ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations();
+    for( ILaunchConfiguration launchConfiguration : launchConfigurations ) {
+      launchConfiguration.delete();
+    }
+  }
+
 }

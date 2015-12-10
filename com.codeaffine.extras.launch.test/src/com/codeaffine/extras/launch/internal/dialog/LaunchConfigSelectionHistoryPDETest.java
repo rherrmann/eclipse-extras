@@ -6,6 +6,7 @@ import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.ui.IMemento;
@@ -26,7 +27,7 @@ public class LaunchConfigSelectionHistoryPDETest {
   private ILaunchConfiguration launchConfig;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() throws CoreException {
     launchConfig = launchConfigRule.createLaunchConfig().doSave();
     history = new LaunchConfigSelectionHistory();
   }
