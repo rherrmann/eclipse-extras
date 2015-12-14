@@ -1,4 +1,8 @@
-# Extras for Eclipse [![Build Status](https://codeship.com/projects/6a994910-8fa7-0132-ebb3-32b8c1ae92e1/status?branch=master)](https://codeship.com/projects/61325)
+# Extras for Eclipse 
+[![Build Status](https://img.shields.io/codeship/6a994910-8fa7-0132-ebb3-32b8c1ae92e1/master.svg)](https://codeship.com/projects/61325)
+[![Version](https://img.shields.io/badge/version-1.0-lightgrey.svg)](http://rherrmann.github.io/eclipse-extras/repository/)
+![Requirements](https://img.shields.io/badge/requirements-Luna%20or%20later-2C2255.svg)
+[![EPL licensed](https://img.shields.io/badge/license-EPL-blue.svg)](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/LICENSE)
 
 Small extensions for the Eclipse IDE
 
