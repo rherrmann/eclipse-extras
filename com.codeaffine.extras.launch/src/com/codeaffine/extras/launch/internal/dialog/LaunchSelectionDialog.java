@@ -35,6 +35,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
@@ -60,8 +61,8 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     launchConfigHistory = new LaunchConfigSelectionHistory();
     setTitle( "Start Launch Configuration" );
     setMessage( "Enter a &name pattern (? = any character, * = any string, CamelCase)" );
-    setListLabelProvider( createLaunchConfigLabelProvider( LIST ) );
-    setDetailsLabelProvider( createLaunchConfigLabelProvider( DETAIL ) );
+    setListLabelProvider( createLaunchConfigLabelProvider( shell.getDisplay(), LIST ) );
+    setDetailsLabelProvider( createLaunchConfigLabelProvider( shell.getDisplay(), DETAIL ) );
     setSelectionHistory( launchConfigHistory );
     setSeparatorLabel( "Launch Configuration matches" );
   }
@@ -182,8 +183,8 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     }
   }
 
-  private LaunchConfigLabelProvider createLaunchConfigLabelProvider( LabelMode labelMode ) {
-    return new LaunchConfigLabelProvider( this, labelMode );
+  private LaunchConfigLabelProvider createLaunchConfigLabelProvider( Display display, LabelMode labelMode ) {
+    return new LaunchConfigLabelProvider( display, this, labelMode );
   }
 
   private void updateOkButtonLabel() {

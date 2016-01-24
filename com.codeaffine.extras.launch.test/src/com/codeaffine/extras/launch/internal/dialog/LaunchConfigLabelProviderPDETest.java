@@ -28,6 +28,13 @@ public class LaunchConfigLabelProviderPDETest {
 
   private Collection<LaunchConfigLabelProvider> labelProviders;
 
+  @After
+  public void tearDown() {
+    for( LaunchConfigLabelProvider labelProvider : labelProviders ) {
+      labelProvider.dispose();
+    }
+  }
+
   @Test
   public void testGetImage() throws CoreException {
     ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
@@ -85,18 +92,11 @@ public class LaunchConfigLabelProviderPDETest {
     assertThat( text ).isNotNull();
   }
 
-  @After
-  public void tearDown() {
-    for( LaunchConfigLabelProvider labelProvider : labelProviders ) {
-      labelProvider.dispose();
-    }
-  }
-
   private LaunchConfigLabelProvider createLabelProvider( LabelMode labelMode ) {
     labelProviders = new ArrayList<>();
     Shell shell = displayHelper.createShell();
     LaunchSelectionDialog dialog = new LaunchSelectionDialog( shell );
-    LaunchConfigLabelProvider result = new LaunchConfigLabelProvider( dialog, labelMode );
+    LaunchConfigLabelProvider result = new LaunchConfigLabelProvider( shell.getDisplay(), dialog, labelMode );
     labelProviders.add( result );
     return result;
   }

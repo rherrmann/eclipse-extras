@@ -2,6 +2,7 @@ package com.codeaffine.extras.launch.internal;
 
 import java.io.File;
 
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -37,6 +38,11 @@ public class LaunchExtrasPlugin extends AbstractUIPlugin {
     uninstallLaunchConfigCleaner();
     super.stop( context );
     instance = null;
+  }
+
+  @Override
+  protected void initializeImageRegistry( ImageRegistry registry ) {
+    Images.registerImages( registry );
   }
 
   private void installLaunchConfigCleaner() {

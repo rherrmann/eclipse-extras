@@ -1,16 +1,25 @@
 package com.codeaffine.extras.launch.internal.dialog;
 
+import static com.codeaffine.extras.launch.internal.Images.RUNNING;
 import static com.codeaffine.extras.launch.internal.dialog.LaunchConfigLabelProvider.LabelMode.DETAIL;
+import static org.eclipse.jface.viewers.IDecoration.BOTTOM_RIGHT;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.viewers.DecorationOverlayIcon;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
+
+import com.codeaffine.extras.launch.internal.Images;
 
 
 public class LaunchConfigLabelProvider extends LabelProvider implements IStyledLabelProvider {
@@ -20,11 +29,13 @@ public class LaunchConfigLabelProvider extends LabelProvider implements IStyledL
     DETAIL
   }
 
+  private final LocalResourceManager resourceManager;
   private final FilteredItemsSelectionDialog selectionDialog;
   private final LabelMode labelMode;
   private final IDebugModelPresentation debugModelPresentation;
 
-  public LaunchConfigLabelProvider( FilteredItemsSelectionDialog selectionDialog, LabelMode labelMode  ) {
+  public LaunchConfigLabelProvider( Display display, FilteredItemsSelectionDialog selectionDialog, LabelMode labelMode ) {
+    this.resourceManager = new LocalResourceManager( JFaceResources.getResources( display ) );
     this.selectionDialog = selectionDialog;
     this.labelMode = labelMode;
     this.debugModelPresentation = DebugUITools.newDebugModelPresentation();
@@ -32,7 +43,11 @@ public class LaunchConfigLabelProvider extends LabelProvider implements IStyledL
 
   @Override
   public Image getImage( Object element ) {
-    return debugModelPresentation.getImage( element );
+    Image result = debugModelPresentation.getImage( element );
+    if( isRunning( element ) ) {
+      result = decorateImage( result );
+    }
+    return result;
   }
 
   @Override
@@ -55,6 +70,24 @@ public class LaunchConfigLabelProvider extends LabelProvider implements IStyledL
   public void dispose() {
     debugModelPresentation.dispose();
     super.dispose();
+  }
+
+  protected boolean isRunning( Object element ) {
+    boolean result = false;
+    if( element instanceof ILaunchConfiguration ) {
+      result = LaunchConfigs.isRunning( ( ILaunchConfiguration )element );
+    }
+    return result;
+  }
+
+  private Image decorateImage( Image image ) {
+    Image result = null;
+    if( image != null ) {
+      ImageDescriptor imageDescriptor = Images.getImageDescriptor( RUNNING );
+      DecorationOverlayIcon overlay = new DecorationOverlayIcon( image, imageDescriptor, BOTTOM_RIGHT );
+      result = resourceManager.createImage( overlay );
+    }
+    return result;
   }
 
   private StyledString getStyledString( ILaunchConfiguration launchConfig ) {
