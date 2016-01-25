@@ -2,10 +2,10 @@
 <feature
       id="com.codeaffine.extras.workingset.feature"
       label="Extras for Working Sets"
-      version="0.1.0.qualifier"
+      version="1.0.0.qualifier"
       provider-name="codeaffine.com"
       license-feature="com.codeaffine.extras.license.feature"
-      license-feature-version="0.1.0.qualifier">
+      license-feature-version="1.0.0.qualifier">
 
    <description>
       %description

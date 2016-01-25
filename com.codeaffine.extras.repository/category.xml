@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="../com.codeaffine.extras.jdt.feature_0.1.0.qualifier.jar" id="com.codeaffine.extras.jdt.feature" version="0.1.0.qualifier">
+   <feature url="../com.codeaffine.extras.jdt.feature_1.0.0.qualifier.jar" id="com.codeaffine.extras.jdt.feature" version="1.0.0.qualifier">
       <category name="com.codeaffine.extras.category"/>
    </feature>
-   <feature url="../com.codeaffine.extras.ide.feature_0.1.0.qualifier.jar" id="com.codeaffine.extras.ide.feature" version="0.1.0.qualifier">
+   <feature url="../com.codeaffine.extras.ide.feature_1.0.0.qualifier.jar" id="com.codeaffine.extras.ide.feature" version="1.0.0.qualifier">
       <category name="com.codeaffine.extras.category"/>
    </feature>
-   <feature url="../com.codeaffine.extras.launch.feature_0.1.0.qualifier.jar" id="com.codeaffine.extras.launch.feature" version="0.1.0.qualifier">
+   <feature url="../com.codeaffine.extras.launch.feature_1.0.0.qualifier.jar" id="com.codeaffine.extras.launch.feature" version="1.0.0.qualifier">
       <category name="com.codeaffine.extras.category"/>
    </feature>
-   <feature url="../com.codeaffine.extras.workingset.feature_0.1.0.qualifier.jar" id="com.codeaffine.extras.workingset.feature" version="0.1.0.qualifier">
+   <feature url="../com.codeaffine.extras.workingset.feature_1.0.0.qualifier.jar" id="com.codeaffine.extras.workingset.feature" version="1.0.0.qualifier">
       <category name="com.codeaffine.extras.category"/>
    </feature>
    <category-def name="com.codeaffine.extras.category" label="Extras for the Eclipse IDE">

@@ -2,18 +2,18 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Extras for the Eclipse Core IDE Tests
 Bundle-SymbolicName: com.codeaffine.extras.ide.test;singleton:=true
-Bundle-Version: 0.1.0.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: codeaffine.com
 Fragment-Host: com.codeaffine.extras.ide
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: com.codeaffine.eclipse.core.runtime;version="[0.1.0,1.0.0)",
  com.codeaffine.eclipse.core.runtime.test.util;version="[0.1.0,1.0.0)",
  com.codeaffine.eclipse.swt.test.util;version="[0.1.0,1.0.0)",
- com.codeaffine.extras.test.util;version="[0.1.0,1.0.0)",
  com.codeaffine.osgi.testuite;version="[1.0.0,2.0.0)",
  com.codeaffine.test.util.junit;version="[0.1.0,1.0.0)",
  com.codeaffine.test.util.lang;version="[0.1.0,1.0.0)",
  com.codeaffine.test.util.util.concurrent;version="[0.1.0,1.0.0)",
+ com.codeaffine.extras.test.util;version="[1.0.0,2.0.0)",
  org.assertj.core.api;version="[1.6.0,2.0.0)",
  org.assertj.core.api.filter;version="[1.6.0,2.0.0)",
  org.assertj.core.condition;version="[1.6.0,2.0.0)",
