@@ -28,6 +28,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -183,7 +184,7 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
     }
   }
 
-  private LaunchConfigLabelProvider createLaunchConfigLabelProvider( Display display, LabelMode labelMode ) {
+  private ILabelProvider createLaunchConfigLabelProvider( Display display, LabelMode labelMode ) {
     return new LaunchConfigLabelProvider( display, this, labelMode );
   }
 
