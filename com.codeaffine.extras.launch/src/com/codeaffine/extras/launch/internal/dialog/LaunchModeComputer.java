@@ -1,5 +1,7 @@
 package com.codeaffine.extras.launch.internal.dialog;
 
+import java.util.stream.Stream;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -38,14 +40,7 @@ public class LaunchModeComputer {
   }
 
   private ILaunchMode findAlternativeLaunchMode() {
-    ILaunchMode result = null;
-    ILaunchMode[] launchModes = allLaunchModes();
-    for( int i = 0; result == null && i < launchModes.length; i++ ) {
-      if( isLaunchModeSupported( launchModes[ i ] ) ) {
-        result = launchModes[ i ];
-      }
-    }
-    return result;
+    return Stream.of( allLaunchModes() ).filter( this::isLaunchModeSupported ).findFirst().orElse( null );
   }
 
   private boolean isLaunchModeSupported( ILaunchMode launchMode ) {

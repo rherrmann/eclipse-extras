@@ -7,7 +7,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuCreator;
-import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
@@ -19,7 +18,7 @@ public class LaunchModeDropDownAction extends Action implements IMenuCreator {
   private Menu menu;
 
   public LaunchModeDropDownAction( LaunchModeSetting launchModeSetting ) {
-    super( "&Default Launch Mode", IAction.AS_DROP_DOWN_MENU );
+    super( "&Launch Mode", AS_DROP_DOWN_MENU );
     this.launchModeSetting = launchModeSetting;
     this.launchModeActions = createLaunchModeActions();
     setMenuCreator( this );
@@ -57,18 +56,15 @@ public class LaunchModeDropDownAction extends Action implements IMenuCreator {
 
   private LaunchModeAction createLaunchModeAction( ILaunchMode launchMode ) {
     LaunchModeAction result = new LaunchModeAction( launchModeSetting, launchMode );
-    result.addPropertyChangeListener( new LaunchActionPropertyChangeListner() );
+    result.addPropertyChangeListener( this::launchModeActionPropertyChanged );
     return result;
   }
 
-  private class LaunchActionPropertyChangeListner implements IPropertyChangeListener {
-    @Override
-    public void propertyChange( PropertyChangeEvent event ) {
-      if( IAction.CHECKED.equals( event.getProperty() ) ) {
-        Stream.of( launchModeActions ).forEach( LaunchModeAction::update );
-      }
-      firePropertyChange( event );
+  private void launchModeActionPropertyChanged( PropertyChangeEvent event ) {
+    if( IAction.CHECKED.equals( event.getProperty() ) ) {
+      Stream.of( launchModeActions ).forEach( LaunchModeAction::update );
     }
+    firePropertyChange( event );
   }
 
 }
