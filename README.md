@@ -6,6 +6,8 @@
 
 Small extensions for the Eclipse IDE
 
+Extras for Eclipse include a launch dialog, a JUnit status bar, a launch configuration housekeeper, and little helpers to accomplish recurring tasks with keyboard shortcuts.
+
 ## Installation
 You can install Extras for Eclipse directly from this software site: 
 
@@ -14,7 +16,7 @@ You can install Extras for Eclipse directly from this software site:
 In the Eclipse main menu, click _Help > Install New Software…_. Then enter the URL above and select _Extras for the Eclipse IDE_. Expand the item to select only certain features of the Extras for Eclipse package.
 
 
-## Current Features
+## Features at a Glance
 
 ### JUnit Status Bar
 A small contribution to the status bar shows the status of the current or most recent JUnit run. The progress bar is colored green or red depending on how the test results are. The button to the left of the bar opens the [JUnit view](http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fviews%2Fref-view-junit.htm). 
