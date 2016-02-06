@@ -9,11 +9,18 @@ Small extensions for the Eclipse IDE
 Extras for Eclipse include a launch dialog, a JUnit status bar, a launch configuration housekeeper, and little helpers to accomplish recurring tasks with keyboard shortcuts.
 
 ## Installation
-You can install Extras for Eclipse directly from this software site: 
+
+Extras for Eclipse is  available from the [Eclipse Marketplace](https://marketplace.eclipse.org/content/extras-eclipse). Just drag the icon to your running Eclipse workspace:
+
+<a href="http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=2710118" class="drag" title="Drag to your running Eclipse workspace to install Extras for Eclipse"><img class="img-responsive" src="https://marketplace.eclipse.org/sites/all/themes/solstice/_themes/solstice_marketplace/public/images/btn-install.png" alt="Drag to your running Eclipse workspace to install Extras for Eclipse" /></a>
+
+If you prefer, you can also install from this software site: 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://rherrmann.github.io/eclipse-extras/repository/
 
 In the Eclipse main menu, click _Help > Install New Software…_. Then enter the URL above and select _Extras for the Eclipse IDE_. Expand the item to select only certain features of the Extras for Eclipse package.
+
+Please note that a JRE 8 or later and Eclipse Luna (4.4) or later are required to run this software.
 
 
 ## Features at a Glance
