@@ -26,6 +26,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.codeaffine.extras.ide.test.ServiceHelper;
 import com.codeaffine.extras.test.util.ProjectHelper;
 
 
@@ -106,7 +107,7 @@ public class OpenWithQuickMenuHandlerPDETest {
   }
 
   private Command getOpenWithQuickMenuCommand() {
-    ICommandService commandService = workbench.getService( ICommandService.class );
+    ICommandService commandService = ServiceHelper.getService( workbench, ICommandService.class );
     return commandService.getCommand( OpenWithQuickMenuHandler.COMMAND_ID );
   }
 

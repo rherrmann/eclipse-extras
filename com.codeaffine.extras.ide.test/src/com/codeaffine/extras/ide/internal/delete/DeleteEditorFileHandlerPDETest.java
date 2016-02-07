@@ -34,6 +34,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.codeaffine.extras.ide.test.ServiceHelper;
 import com.codeaffine.extras.test.util.ProjectHelper;
 
 
@@ -154,7 +155,7 @@ public class DeleteEditorFileHandlerPDETest {
 
   private Command getDeleteEditorFileCommand() {
     IWorkbench workbench = workbenchPage.getWorkbenchWindow().getWorkbench();
-    ICommandService commandService = workbench.getService( ICommandService.class );
+    ICommandService commandService = ServiceHelper.getService( workbench, ICommandService.class );
     return commandService.getCommand( DeleteEditorFileHandler.COMMAND_ID );
   }
 
@@ -169,8 +170,9 @@ public class DeleteEditorFileHandlerPDETest {
   }
 
   private static class NonFileEditorInput implements IEditorInput {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public <T> T getAdapter( Class<T> adapter ) {
+    public Object getAdapter( Class adapter ) {
       return null;
     }
 
