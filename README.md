@@ -18,7 +18,7 @@ If you prefer, you can also install from this software site:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://rherrmann.github.io/eclipse-extras/repository/
 
-In the Eclipse main menu, click _Help > Install New Software…_. Then enter the URL above and select _Extras for the Eclipse IDE_. Expand the item to select only certain features of the Extras for Eclipse package.
+In the Eclipse main menu, click _Help > Install New Software…_, then enter the URL above and select _Extras for the Eclipse IDE_. Expand the item to select only certain features for installation.
 
 Please note that a JRE 8 or later and Eclipse Luna (4.4) or later are required to run this software.
 
