@@ -24,7 +24,7 @@ Open one of them and select the _Set as Target Platform_ link.
 Now you are ready to hack the sources.
 If you whish to verify the setup, you can run the test suite. The launch configuration to run all tests is called _All Tests_
 
-Extras for Eclipse uses Maven/Tycho to build, the master pom file can be found at the root of the repository.
+Extras for Eclipse uses Maven/Tycho to build, the [master pom](https://github.com/rherrmann/eclipse-extras/blob/master/pom.xml) file can be found at the root of the repository.
 
 
 # Project License:  Eclipse Public License
