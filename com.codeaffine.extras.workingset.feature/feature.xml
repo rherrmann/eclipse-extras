@@ -4,6 +4,7 @@
       label="Extras for Working Sets"
       version="1.0.0.qualifier"
       provider-name="codeaffine.com"
+      plugin="com.codeaffine.extras.branding"
       license-feature="com.codeaffine.extras.license.feature"
       license-feature-version="1.0.0.qualifier">
 
