@@ -11,11 +11,11 @@ Extras for Eclipse is a collection of small extensions for the Eclipse IDE that 
 
 ## Installation
 
-Extras for Eclipse is  available from the [Eclipse Marketplace](https://marketplace.eclipse.org/content/extras-eclipse). Just drag the icon to your running Eclipse workspace:
+Extras for Eclipse is available from the [Eclipse Marketplace](https://marketplace.eclipse.org/content/extras-eclipse). Just drag the icon to your running Eclipse workspace:
 
 <a href="http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=2710118" class="drag" title="Drag to your running Eclipse workspace to install Extras for Eclipse"><img class="img-responsive" src="https://marketplace.eclipse.org/sites/all/themes/solstice/_themes/solstice_marketplace/public/images/btn-install.png" alt="Drag to your running Eclipse workspace to install Extras for Eclipse" /></a>
 
-If you prefer, you can also install from this software site: 
+If you prefer, you can also install Extras for Eclipse from this software site: 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://rherrmann.github.io/eclipse-extras/repository/
 
