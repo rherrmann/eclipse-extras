@@ -21,7 +21,7 @@ If you prefer, you can also install from this software site:
 
 In the Eclipse main menu, click _Help > Install New Software…_, then enter the URL above and select _Extras for the Eclipse IDE_. Expand the item to select only certain features for installation.
 
-Please note that a JRE 8 or later and Eclipse Luna (4.4) or later are required to run this software.
+All features can be installed separately. Please note that a JRE 8 or later and Eclipse Luna (4.4) or later are required to run this software.
 
 
 ## Features at a Glance
