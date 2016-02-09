@@ -29,7 +29,7 @@ All features can be installed separately. Please note that a JRE 8 or later and 
 ### JUnit Status Bar
 A small contribution to the status bar shows the status of the current or most recent JUnit run. The progress bar is colored green or red depending on how the test results are. The button to the left of the bar opens the [JUnit view](http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fviews%2Fref-view-junit.htm). 
 
-Use the _Java &gt; JUnit &gt; JUnit Status Bar_ preference page to show or hide the JUnit Status Bar. Note that in Eclipse 4.5 (Mars) and later you [need to resize the workbench window afterwards](https://bugs.eclipse.org/bugs/show_bug.cgi?id=459904) to make the change appear (sigh).
+Use the _Java &gt; JUnit &gt; JUnit Status Bar_ preference page to show or hide the JUnit Status Bar. Note that due to a bug in Eclipse 4.5 (Mars) and later you [need to resize the workbench window afterwards](https://bugs.eclipse.org/bugs/show_bug.cgi?id=459904) to make the change appear (sigh).
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/junit-status-bar-starting.png)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
