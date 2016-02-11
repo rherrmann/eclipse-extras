@@ -1,5 +1,7 @@
 package com.codeaffine.extras.workingset.internal;
 
+import static java.lang.reflect.Modifier.isPublic;
+import static java.lang.reflect.Modifier.isStatic;
 import static org.junit.Assert.assertNotNull;
 
 import java.lang.reflect.Field;
@@ -9,8 +11,6 @@ import java.util.List;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.junit.Test;
-
-import com.codeaffine.extras.workingset.internal.Images;
 
 public class ImagesPDETest {
 
@@ -32,8 +32,10 @@ public class ImagesPDETest {
   private static String[] getConstantValues() throws IllegalAccessException {
     List<String> constantValues = new LinkedList<>();
     Field[] declaredFields = Images.class.getDeclaredFields();
-    for( Field constant : declaredFields ) {
-      constantValues.add( ( String )constant.get( null ) );
+    for( Field declaredField : declaredFields ) {
+      if( isStatic( declaredField.getModifiers() ) && isPublic( declaredField.getModifiers() ) ) {
+        constantValues.add( ( String )declaredField.get( null ) );
+      }
     }
     return constantValues.toArray( new String[ constantValues.size() ] );
   }
