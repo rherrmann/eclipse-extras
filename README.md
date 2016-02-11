@@ -17,7 +17,7 @@ Extras for Eclipse is available from the [Eclipse Marketplace](https://marketpla
 
 If you prefer, you can also install Extras for Eclipse from this software site: 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://rherrmann.github.io/eclipse-extras/repository/
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://rherrmann.github.io/eclipse-extras/repository/
 
 In the Eclipse main menu, click _Help > Install New Software…_, then enter the URL above and select _Extras for the Eclipse IDE_. Expand the item to select only certain features for installation.
 
