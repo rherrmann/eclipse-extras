@@ -1,7 +1,7 @@
 package com.codeaffine.extras.launch.internal.dialog;
 
 import static com.codeaffine.extras.launch.internal.Images.RUNNING;
-import static com.codeaffine.extras.launch.internal.dialog.LaunchConfigLabelProvider.LabelMode.DETAIL;
+import static com.codeaffine.extras.launch.internal.dialog.LaunchConfigLabelProvider.LabelMode.LIST;
 import static org.eclipse.jface.viewers.IDecoration.BOTTOM_RIGHT;
 
 import org.eclipse.core.runtime.CoreException;
@@ -15,9 +15,9 @@ import org.eclipse.jface.viewers.DecorationOverlayIcon;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.jface.viewers.StyledString.Styler;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
 
 import com.codeaffine.extras.launch.internal.Images;
 
@@ -29,14 +29,16 @@ public class LaunchConfigLabelProvider extends LabelProvider implements IStyledL
     DETAIL
   }
 
+  private static final Styler ADDITIONAL_INFO_STYLER = StyledString.QUALIFIER_STYLER;
+
   private final LocalResourceManager resourceManager;
-  private final FilteredItemsSelectionDialog selectionDialog;
+  private final DuplicatesDetector duplicatesDetector;
   private final LabelMode labelMode;
   private final IDebugModelPresentation debugModelPresentation;
 
-  public LaunchConfigLabelProvider( Display display, FilteredItemsSelectionDialog selectionDialog, LabelMode labelMode ) {
+  public LaunchConfigLabelProvider( Display display, DuplicatesDetector selectionDialog, LabelMode labelMode ) {
     this.resourceManager = new LocalResourceManager( JFaceResources.getResources( display ) );
-    this.selectionDialog = selectionDialog;
+    this.duplicatesDetector = selectionDialog;
     this.labelMode = labelMode;
     this.debugModelPresentation = DebugUITools.newDebugModelPresentation();
   }
@@ -92,10 +94,37 @@ public class LaunchConfigLabelProvider extends LabelProvider implements IStyledL
 
   private StyledString getStyledString( ILaunchConfiguration launchConfig ) {
     StyledString result;
+    if( labelMode == LIST ) {
+      result = getListStyledString( launchConfig );
+    } else {
+      result = getDetailStyledString( launchConfig );
+    }
+    return result;
+  }
+
+  private StyledString getListStyledString( ILaunchConfiguration launchConfig ) {
+    StyledString result;
     result = new StyledString( debugModelPresentation.getText( launchConfig ) );
-    if( labelMode == DETAIL || selectionDialog.isDuplicateElement( launchConfig ) ) {
-      result.append( " - ", StyledString.QUALIFIER_STYLER );
-      result.append( getTypeName( launchConfig ), StyledString.QUALIFIER_STYLER );
+    if( duplicatesDetector.isDuplicateElement( launchConfig ) ) {
+      result.append( " - ", ADDITIONAL_INFO_STYLER );
+      if( launchConfig.getFile() != null ) {
+        result.append( getContainerName( launchConfig ), ADDITIONAL_INFO_STYLER );
+      } else {
+        result.append( getTypeName( launchConfig ), ADDITIONAL_INFO_STYLER );
+      }
+    }
+    return result;
+  }
+
+  private StyledString getDetailStyledString( ILaunchConfiguration launchConfig ) {
+    StyledString result;
+    result = new StyledString( debugModelPresentation.getText( launchConfig ) );
+    result.append( " - ", ADDITIONAL_INFO_STYLER );
+    result.append( getTypeName( launchConfig ), ADDITIONAL_INFO_STYLER );
+    if( launchConfig.getFile() != null ) {
+      result.append( " (", ADDITIONAL_INFO_STYLER );
+      result.append( getContainerName( launchConfig ), ADDITIONAL_INFO_STYLER );
+      result.append( ")", ADDITIONAL_INFO_STYLER );
     }
     return result;
   }
@@ -107,5 +136,9 @@ public class LaunchConfigLabelProvider extends LabelProvider implements IStyledL
     } catch( CoreException ignore ) {
     }
     return result;
+  }
+
+  private static String getContainerName( ILaunchConfiguration launchConfig ) {
+    return launchConfig.getFile().getParent().getFullPath().makeRelative().toPortableString();
   }
 }

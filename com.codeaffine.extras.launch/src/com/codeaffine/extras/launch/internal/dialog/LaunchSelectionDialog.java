@@ -45,7 +45,7 @@ import com.codeaffine.extras.launch.internal.LaunchExtrasPlugin;
 import com.codeaffine.extras.launch.internal.dialog.LaunchConfigLabelProvider.LabelMode;
 
 
-public class LaunchSelectionDialog extends FilteredItemsSelectionDialog {
+public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implements DuplicatesDetector {
 
   static final int EDIT_BUTTON_ID = IDialogConstants.CLIENT_ID + 2;
 
