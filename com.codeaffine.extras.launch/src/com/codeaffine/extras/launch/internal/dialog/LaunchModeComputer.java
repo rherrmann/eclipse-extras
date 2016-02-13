@@ -1,5 +1,7 @@
 package com.codeaffine.extras.launch.internal.dialog;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.stream.Stream;
 
 import org.eclipse.core.runtime.CoreException;
@@ -16,6 +18,7 @@ public class LaunchModeComputer {
   private final ILaunchMode preferredLaunchMode;
 
   public LaunchModeComputer( ILaunchConfiguration launchConfig, ILaunchMode preferredLaunchMode ) {
+    requireNonNull( launchConfig, "launchConfig" );
     this.launchConfig = launchConfig;
     this.preferredLaunchMode = preferredLaunchMode;
   }
@@ -46,8 +49,8 @@ public class LaunchModeComputer {
   private boolean isLaunchModeSupported( ILaunchMode launchMode ) {
     try {
       return launchMode != null && launchConfig.supportsMode( launchMode.getIdentifier() );
-    } catch( CoreException ce ) {
-      throw new RuntimeException( ce );
+    } catch( CoreException ignore ) {
+      return false;
     }
   }
 

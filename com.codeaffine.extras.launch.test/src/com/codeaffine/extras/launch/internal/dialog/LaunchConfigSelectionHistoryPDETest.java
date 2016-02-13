@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.XMLMemento;
@@ -66,6 +67,18 @@ public class LaunchConfigSelectionHistoryPDETest {
 
     assertThat( historyItems1 ).isNotSameAs( historyItems2 );
     assertThat( historyItems1[ 0 ] ).isEqualTo( historyItems2[ 0 ] );
+  }
+
+  @Test
+  public void testGetHistoryItemsAfterRenamingLaunchConfig() throws CoreException {
+    runLaunchConfig();
+    ILaunchConfigurationWorkingCopy workingCopy = launchConfig.getWorkingCopy();
+    workingCopy.rename( launchConfig.getName() + "-renamed" );
+    ILaunchConfiguration renamedLaunchConfig = workingCopy.doSave();
+
+    Object[] historyItems = history.getHistoryItems();
+
+    assertThat( historyItems ).containsOnly( renamedLaunchConfig );
   }
 
   @Test

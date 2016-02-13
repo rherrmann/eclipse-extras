@@ -6,6 +6,7 @@ import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchMode;
 import org.eclipse.debug.ui.ILaunchGroup;
@@ -26,6 +27,11 @@ public class LaunchModeComputerPDETest {
   @Before
   public void setUp() throws CoreException {
     launchConfig = launchConfigRule.createLaunchConfig();
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void testConstructorWithNullLaunchConfig() {
+    new LaunchModeComputer( null, getSupportedMode() );
   }
 
   @Test
@@ -54,6 +60,17 @@ public class LaunchModeComputerPDETest {
   }
 
   @Test
+  public void testComputeLaunchModeWithDeletedLaunchConfig() throws CoreException {
+    ILaunchMode supportedMode = getSupportedMode();
+    ILaunchConfiguration deletedLaunchConfig = launchConfig.doSave();
+    deletedLaunchConfig.delete();
+
+    ILaunchMode launchMode = new LaunchModeComputer( deletedLaunchConfig, supportedMode ).computeLaunchMode();
+
+    assertThat( launchMode ).isNull();
+  }
+
+  @Test
   public void testComputeLaunchGroupWithSupportedMode() {
     ILaunchMode supportedMode = getSupportedMode();
 
@@ -76,6 +93,17 @@ public class LaunchModeComputerPDETest {
     ILaunchGroup launchGroup = computeLaunchGroup( null );
 
     assertThat( launchGroup.getMode() ).isEqualTo( getSupportedMode().getIdentifier() );
+  }
+
+  @Test
+  public void testComputeLaunchGroupWithDeletedLaunchConfig() throws CoreException {
+    ILaunchMode supportedMode = getSupportedMode();
+    ILaunchConfiguration deletedLaunchConfig = launchConfig.doSave();
+    deletedLaunchConfig.delete();
+
+    ILaunchGroup launchGroup = new LaunchModeComputer( deletedLaunchConfig, supportedMode ).computeLaunchGroup();
+
+    assertThat( launchGroup ).isNull();
   }
 
   private ILaunchMode computeLaunchMode( ILaunchMode preferredLaunchMode ) {

@@ -41,7 +41,7 @@ public class LaunchSelectionDialogPDETest {
 
   @Test
   public void testValidateItemWithSupportedLaunchMode() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
+    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
 
     IStatus status = dialog.validateItem( launchConfig );
 
@@ -52,7 +52,7 @@ public class LaunchSelectionDialogPDETest {
   public void testValidateItemWithUnsupportedLaunchMode() throws CoreException {
     LaunchModeSetting launchModeSetting = getLaunchModeSettings();
     launchModeSetting.setLaunchModeId( LaunchModeHelper.TEST_LAUNCH_MODE );
-    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
+    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
 
     IStatus status = dialog.validateItem( launchConfig );
 

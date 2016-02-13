@@ -23,6 +23,7 @@ public class EditLaunchConfigAction extends Action {
   public EditLaunchConfigAction( LaunchSelectionDialog launchSelectionDialog ) {
     this.launchSelectionDialog = launchSelectionDialog;
     this.selection = StructuredSelection.EMPTY;
+    setText( "&Edit..." );
     setId( ID );
     setEnabled( false );
   }

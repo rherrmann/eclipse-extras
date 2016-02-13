@@ -36,16 +36,24 @@ public class LaunchConfigLabelProvider extends LabelProvider implements IStyledL
   private final LabelMode labelMode;
   private final IDebugModelPresentation debugModelPresentation;
 
-  public LaunchConfigLabelProvider( Display display, DuplicatesDetector selectionDialog, LabelMode labelMode ) {
+  public LaunchConfigLabelProvider( Display display,
+                                    DuplicatesDetector duplicatesDetector,
+                                    LabelMode labelMode )
+  {
     this.resourceManager = new LocalResourceManager( JFaceResources.getResources( display ) );
-    this.duplicatesDetector = selectionDialog;
+    this.duplicatesDetector = duplicatesDetector;
     this.labelMode = labelMode;
     this.debugModelPresentation = DebugUITools.newDebugModelPresentation();
   }
 
   @Override
   public Image getImage( Object element ) {
-    Image result = debugModelPresentation.getImage( element );
+    Image result;
+    if( isNonExistingLaunchConfig( element ) ) {
+      result = null;
+    } else {
+      result = debugModelPresentation.getImage( element );
+    }
     if( isRunning( element ) ) {
       result = decorateImage( result );
     }
@@ -80,6 +88,10 @@ public class LaunchConfigLabelProvider extends LabelProvider implements IStyledL
       result = LaunchConfigs.isRunning( ( ILaunchConfiguration )element );
     }
     return result;
+  }
+
+  private static boolean isNonExistingLaunchConfig( Object element ) {
+    return element instanceof ILaunchConfiguration && !( ( ILaunchConfiguration )element ).exists();
   }
 
   private Image decorateImage( Image image ) {

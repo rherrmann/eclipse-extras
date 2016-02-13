@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -36,6 +37,20 @@ public class EditLaunchConfigActionPDETest {
   @Test
   public void testGetId() {
     assertThat( action.getId() ).isEqualTo( EditLaunchConfigAction.ID );
+  }
+
+  @Test
+  public void testGetText() {
+    String text = action.getText();
+
+    assertThat( text ).isNotEmpty();
+  }
+
+  @Test
+  public void testGetImageDescriptor() {
+    ImageDescriptor imageDescriptor = action.getImageDescriptor();
+
+    assertThat( imageDescriptor ).isNull();
   }
 
   @Test

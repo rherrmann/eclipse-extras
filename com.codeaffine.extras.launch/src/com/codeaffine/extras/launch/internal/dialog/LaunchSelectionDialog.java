@@ -57,7 +57,6 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implemen
     super( shell, true );
     launchManager = DebugPlugin.getDefault().getLaunchManager();
     editLaunchConfigAction = new EditLaunchConfigAction( this );
-    editLaunchConfigAction.setText( "&Edit..." );
     editLaunchConfigAction.addPropertyChangeListener( new EditLaunchConfigActionListener() );
     launchConfigHistory = new LaunchConfigSelectionHistory();
     setTitle( "Start Launch Configuration" );
@@ -233,7 +232,11 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implemen
 
     @Override
     public boolean isConsistentItem( Object item ) {
-      return true;
+      boolean result = true;
+      if( item instanceof ILaunchConfiguration && !( ( ILaunchConfiguration )item ).exists() ) {
+        result = false;
+      }
+      return result;
     }
 
     private boolean matchLaunchConfig( ILaunchConfiguration launchConfig ) {

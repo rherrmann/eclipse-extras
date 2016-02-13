@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -49,12 +50,23 @@ public class LaunchConfigLabelProviderPDETest {
 
   @Test
   public void testGetImage() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
+    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
     LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
 
     Image image = labelProvider.getImage( launchConfig );
 
     assertThat( image ).isNotNull();
+  }
+
+  @Test
+  public void testGetImageForDeletedLaunchConfig() throws CoreException {
+    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    launchConfig.delete();
+    LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
+
+    Image image = labelProvider.getImage( launchConfig );
+
+    assertThat( image ).isNull();
   }
 
   @Test
