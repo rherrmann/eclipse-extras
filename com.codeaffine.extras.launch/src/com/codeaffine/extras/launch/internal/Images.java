@@ -14,6 +14,7 @@ import org.osgi.framework.Bundle;
 public class Images {
 
   public static final String RUNNING = "icons/ovr/running.gif";
+  public static final String TERMINATE_ALL = "icons/etool16/terminate-all.png";
 
   public static ImageDescriptor getImageDescriptor( String name ) {
     ImageDescriptor result = null;

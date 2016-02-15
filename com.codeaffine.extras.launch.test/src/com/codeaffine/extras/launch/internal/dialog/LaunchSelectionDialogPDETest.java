@@ -163,9 +163,11 @@ public class LaunchSelectionDialogPDETest {
 
     dialog.fillContextMenu( menuManager );
 
-    assertThat( menuManager.getSize() ).isEqualTo( 2 );
+    assertThat( menuManager.getSize() ).isEqualTo( 4 );
     assertThat( menuManager.getItems()[ 0 ].getId() ).isEqualTo( EditLaunchConfigAction.ID );
     assertThat( menuManager.getItems()[ 1 ] ).isInstanceOf( Separator.class );
+    assertThat( menuManager.getItems()[ 2 ].getId() ).isEqualTo( TerminateLaunchesAction.ID );
+    assertThat( menuManager.getItems()[ 3 ] ).isInstanceOf( Separator.class );
   }
 
   @Before

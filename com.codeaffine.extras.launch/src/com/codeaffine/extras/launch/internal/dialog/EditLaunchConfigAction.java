@@ -21,9 +21,9 @@ public class EditLaunchConfigAction extends Action {
   private IStructuredSelection selection;
 
   public EditLaunchConfigAction( LaunchSelectionDialog launchSelectionDialog ) {
+    super( "&Edit..." );
     this.launchSelectionDialog = launchSelectionDialog;
     this.selection = StructuredSelection.EMPTY;
-    setText( "&Edit..." );
     setId( ID );
     setEnabled( false );
   }

@@ -3,7 +3,9 @@ package com.codeaffine.extras.launch.test;
 import static org.eclipse.debug.ui.IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -34,6 +36,7 @@ public class LaunchConfigRule extends ExternalResource {
   @Override
   protected void after() {
     try {
+      terminateLaunches();
       deleteLaunchConfigs();
     } catch( CoreException ce ) {
       throw new RuntimeException( ce );
@@ -64,9 +67,14 @@ public class LaunchConfigRule extends ExternalResource {
     return launchManager.generateLaunchConfigurationName( "LC" );
   }
 
+  private void terminateLaunches() throws DebugException {
+    for( ILaunch launch : launchManager.getLaunches() ) {
+      launch.terminate();
+    }
+  }
+
   private void deleteLaunchConfigs() throws CoreException {
-    ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations();
-    for( ILaunchConfiguration launchConfiguration : launchConfigurations ) {
+    for( ILaunchConfiguration launchConfiguration : launchManager.getLaunchConfigurations() ) {
       launchConfiguration.delete();
     }
   }

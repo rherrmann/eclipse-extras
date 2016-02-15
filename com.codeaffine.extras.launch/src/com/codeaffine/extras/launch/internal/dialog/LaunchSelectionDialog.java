@@ -54,6 +54,7 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implemen
 
   private final ILaunchManager launchManager;
   private final EditLaunchConfigAction editLaunchConfigAction;
+  private final TerminateLaunchesAction terminateLaunchesAction;
   private final LaunchConfigSelectionHistory launchConfigHistory;
 
   public LaunchSelectionDialog( Shell shell ) {
@@ -61,6 +62,7 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implemen
     launchManager = DebugPlugin.getDefault().getLaunchManager();
     editLaunchConfigAction = new EditLaunchConfigAction( this );
     editLaunchConfigAction.addPropertyChangeListener( new EditLaunchConfigActionListener() );
+    terminateLaunchesAction = new TerminateLaunchesAction();
     launchConfigHistory = new LaunchConfigSelectionHistory();
     setTitle( "Start Launch Configuration" );
     setMessage( "Enter a &name pattern (? = any character, * = any string, CamelCase)" );
@@ -120,6 +122,8 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implemen
   protected void fillContextMenu( IMenuManager menuManager ) {
     menuManager.add( editLaunchConfigAction );
     menuManager.add( new Separator() );
+    menuManager.add( terminateLaunchesAction );
+    menuManager.add( new Separator() );
     super.fillContextMenu( menuManager );
   }
 
@@ -161,6 +165,7 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implemen
   protected void handleSelected( StructuredSelection selection ) {
     super.handleSelected( selection );
     editLaunchConfigAction.setSelection( selection );
+    terminateLaunchesAction.setSelection( selection );
   }
 
   @Override
