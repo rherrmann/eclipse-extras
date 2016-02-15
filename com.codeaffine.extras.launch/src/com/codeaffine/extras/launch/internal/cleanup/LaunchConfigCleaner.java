@@ -21,6 +21,8 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationsDialog;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import com.codeaffine.extras.launch.internal.util.LaunchAdapter;
+
 
 @SuppressWarnings("restriction")
 public class LaunchConfigCleaner {

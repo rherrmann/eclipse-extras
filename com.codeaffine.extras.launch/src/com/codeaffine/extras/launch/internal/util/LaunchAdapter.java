@@ -1,4 +1,4 @@
-package com.codeaffine.extras.launch.internal.cleanup;
+package com.codeaffine.extras.launch.internal.util;
 
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchesListener2;

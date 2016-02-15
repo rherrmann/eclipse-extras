@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchMode;
@@ -41,8 +42,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
 
+import com.codeaffine.eclipse.swt.util.UIThreadSynchronizer;
 import com.codeaffine.extras.launch.internal.LaunchExtrasPlugin;
 import com.codeaffine.extras.launch.internal.dialog.LaunchConfigLabelProvider.LabelMode;
+import com.codeaffine.extras.launch.internal.util.LaunchAdapter;
 
 
 public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implements DuplicatesDetector {
@@ -85,6 +88,12 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implemen
   public String getElementName( Object item ) {
     ILaunchConfiguration configuration = ( ILaunchConfiguration )item;
     return configuration.getName();
+  }
+
+  @Override
+  public void create() {
+    super.create();
+    registerLaunchConfigDecorationUpdater();
   }
 
   public void close( int returnCode ) {
@@ -183,6 +192,12 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implemen
     }
   }
 
+  private void registerLaunchConfigDecorationUpdater() {
+    LaunchAdapter launchListener = new LaunchConfigDecorationUpdater();
+    launchManager.addLaunchListener( launchListener );
+    getShell().addListener( SWT.Dispose, event -> launchManager.removeLaunchListener( launchListener ) );
+  }
+
   private ILabelProvider createLaunchConfigLabelProvider( Display display, LabelMode labelMode ) {
     return new LaunchConfigLabelProvider( display, this, labelMode );
   }
@@ -241,6 +256,22 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implemen
 
     private boolean matchLaunchConfig( ILaunchConfiguration launchConfig ) {
       return matches( launchConfig.getName() );
+    }
+  }
+
+  private class LaunchConfigDecorationUpdater extends LaunchAdapter {
+    @Override
+    public void launchesAdded( ILaunch[] launches ) {
+      update();
+    }
+
+    @Override
+    public void launchesTerminated( ILaunch[] launches ) {
+      update();
+    }
+
+    private void update() {
+      new UIThreadSynchronizer().asyncExec( getShell(), LaunchSelectionDialog.this::refresh );
     }
   }
 
