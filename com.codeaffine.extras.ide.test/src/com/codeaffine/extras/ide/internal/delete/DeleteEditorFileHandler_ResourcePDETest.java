@@ -20,7 +20,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.ISources;
@@ -33,18 +32,31 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
+import com.codeaffine.extras.ide.internal.delete.DeleteEditorFileHandler.DeleteEditorFilePrompter;
 import com.codeaffine.extras.ide.test.ServiceHelper;
 import com.codeaffine.extras.test.util.ProjectHelper;
 
 
-public class DeleteEditorFileHandlerPDETest {
+public class DeleteEditorFileHandler_ResourcePDETest {
 
   @Rule
   public ProjectHelper projectHelper = new ProjectHelper();
+  @Rule
+  public final TemporaryFolder tempFolder = new TemporaryFolder();
 
   private IWorkbenchPage workbenchPage;
+  private DeleteEditorFilePrompter prompter;
   private DeleteEditorFileHandler handler;
+
+  @Before
+  public void setUp() {
+    workbenchPage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+    prompter = mock( DeleteEditorFilePrompter.class );
+    handler = spy( new DeleteEditorFileHandler( prompter ) );
+    doNothing().when( handler ).deleteResource( any(), any() );
+  }
 
   @Test
   public void testEnablementWithFileEditor() throws CoreException {
@@ -110,18 +122,18 @@ public class DeleteEditorFileHandlerPDETest {
   }
 
   @Test
-  public void testExecuteWithFileEditor() throws CoreException {
+  public void testExecuteWithExistingResource() throws CoreException {
     IFile file = projectHelper.createFile( "file.txt", "content" );
     IEvaluationContext evaluationContext = createEvaluationContext( new FileEditorInput( file ) );
     ExecutionEvent event = createExecutionEvent( evaluationContext );
 
     handler.execute( event );
 
-    verify( handler ).deleteFile( workbenchPage.getWorkbenchWindow(), file );
+    verify( handler ).deleteResource( workbenchPage.getWorkbenchWindow(), file );
   }
 
   @Test
-  public void testExecuteWithNonExistingFile() throws CoreException {
+  public void testExecuteWithNonExistingResource() throws CoreException {
     IFile file = projectHelper.createFile( "file.txt", "content" );
     file.delete( true, new NullProgressMonitor() );
     IEvaluationContext evaluationContext = createEvaluationContext( new FileEditorInput( file ) );
@@ -129,7 +141,7 @@ public class DeleteEditorFileHandlerPDETest {
 
     handler.execute( event );
 
-    verify( handler, never() ).deleteFile( any( IShellProvider.class ), any( IFile.class ) );
+    verify( handler, never() ).deleteResource( any(), any() );
   }
 
   @Test
@@ -139,14 +151,7 @@ public class DeleteEditorFileHandlerPDETest {
 
     handler.execute( event );
 
-    verify( handler, never() ).deleteFile( any( IShellProvider.class ), any( IFile.class ) );
-  }
-
-  @Before
-  public void setUp() {
-    workbenchPage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-    handler = spy( new DeleteEditorFileHandler() );
-    doNothing().when( handler ).deleteFile( any( IShellProvider.class ), any( IFile.class ) );
+    verify( handler, never() ).deleteResource( any(), any() );
   }
 
   private ExecutionEvent createExecutionEvent( IEvaluationContext evaluationContext ) {
