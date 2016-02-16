@@ -1,4 +1,4 @@
-package com.codeaffine.extras.ide.test;
+package com.codeaffine.extras.test.util;
 
 import org.eclipse.ui.services.IServiceLocator;
 

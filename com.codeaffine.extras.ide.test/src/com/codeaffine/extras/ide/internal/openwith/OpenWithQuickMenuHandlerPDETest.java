@@ -26,8 +26,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.codeaffine.extras.ide.test.ServiceHelper;
 import com.codeaffine.extras.test.util.ProjectHelper;
+import com.codeaffine.extras.test.util.ServiceHelper;
 
 
 public class OpenWithQuickMenuHandlerPDETest {

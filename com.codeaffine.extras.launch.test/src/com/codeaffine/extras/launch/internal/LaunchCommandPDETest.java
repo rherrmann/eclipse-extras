@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.codeaffine.eclipse.core.runtime.Extension;
 import com.codeaffine.eclipse.core.runtime.Predicates;
 import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
-import com.codeaffine.extras.launch.internal.dialog.LaunchHandler;
+import com.codeaffine.extras.launch.internal.dialog.OpenLaunchDialogHander;
 
 
 public class LaunchCommandPDETest {
@@ -21,13 +21,13 @@ public class LaunchCommandPDETest {
     assertThat( extension.getAttribute( "description" ) ).isNotEmpty();
     assertThat( extension.getAttribute( "categoryId" ) ).isEqualTo( "org.eclipse.debug.ui.category.run" );
     IHandler handler = extension.createExecutableExtension( "defaultHandler", IHandler.class );
-    assertThat( handler ).isInstanceOf( LaunchHandler.class );
+    assertThat( handler ).isInstanceOf( OpenLaunchDialogHander.class );
   }
 
   private static Extension readCommandExtension() {
     return new RegistryAdapter()
       .readExtension( "org.eclipse.ui.commands" )
-      .thatMatches( Predicates.attribute( "id", LaunchHandler.COMMAND_ID ) )
+      .thatMatches( Predicates.attribute( "id", OpenLaunchDialogHander.COMMAND_ID ) )
       .process();
   }
 

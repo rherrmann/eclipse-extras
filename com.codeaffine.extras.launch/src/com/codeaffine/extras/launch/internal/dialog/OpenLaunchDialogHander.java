@@ -10,9 +10,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 
-public class LaunchHandler extends AbstractHandler {
+public class OpenLaunchDialogHander extends AbstractHandler {
 
-  public static final String COMMAND_ID = "com.codeaffine.extras.launch.internal.LaunchCommand";
+  public static final String COMMAND_ID = "com.codeaffine.extras.launch.internal.OpenLaunchDialogCommand";
 
   @Override
   public Object execute( ExecutionEvent event ) {
@@ -23,7 +23,7 @@ public class LaunchHandler extends AbstractHandler {
     return null;
   }
 
-  private static LaunchSelectionDialog createDialog( ExecutionEvent event ) {
+  protected LaunchSelectionDialog createDialog( ExecutionEvent event ) {
     Shell shell = HandlerUtil.getActiveWorkbenchWindow( event ).getShell();
     return new LaunchSelectionDialog( shell );
   }

@@ -35,8 +35,8 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import com.codeaffine.extras.ide.internal.delete.DeleteEditorFileHandler.DeleteEditorFilePrompter;
-import com.codeaffine.extras.ide.test.ServiceHelper;
 import com.codeaffine.extras.test.util.ProjectHelper;
+import com.codeaffine.extras.test.util.ServiceHelper;
 
 
 public class DeleteEditorFileHandler_ResourcePDETest {

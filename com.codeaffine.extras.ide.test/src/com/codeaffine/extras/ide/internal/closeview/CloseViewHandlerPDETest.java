@@ -23,10 +23,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.codeaffine.extras.ide.internal.delete.DeleteEditorFileHandler;
-import com.codeaffine.extras.ide.test.ServiceHelper;
 import com.codeaffine.extras.ide.test.TestEditorInput;
 import com.codeaffine.extras.ide.test.TestEditorPart;
 import com.codeaffine.extras.ide.test.TestViewPart;
+import com.codeaffine.extras.test.util.ServiceHelper;
 
 public class CloseViewHandlerPDETest {
 
