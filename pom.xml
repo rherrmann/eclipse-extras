@@ -1,16 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project 
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
-  <name>Eclipse Extras</name>
-
   <groupId>com.codeaffine.extras</groupId>
   <artifactId>com.codeaffine.extras.parent</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-
+  <name>Extras for Eclipse</name>
+  <description>Extras for Eclipse - Small extensions for the Eclipse IDE</description>
+  <url>https://github.com/rherrmann/eclipse-extras</url>
+  <scm>
+    <url>https://github.com/kevinsawicki/github-maven-example</url>
+    <connection>scm:git:https://github.com/rherrmann/eclipse-extras.git</connection>
+    <developerConnection>scm:git:git@github.com:rherrmann/eclipse-extras.git</developerConnection>
+  </scm>
+  <ciManagement>
+    <system>Codeship</system>
+    <url>https://codeship.com/projects/61325</url>
+  </ciManagement>
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/rherrmann/eclipse-extras/issues</url>
+  </issueManagement>
+  <developers>
+    <developer>
+      <email>rherrmann@codeaffine.com</email>
+      <name>Rüdiger Herrmann</name>
+      <url>http://www.codeaffine.com/author/rherrmann/</url>
+      <id>rherrmann</id>
+    </developer>
+  </developers>
+  <licenses>
+    <license>
+      <name>Eclipse Public License v1.0</name>
+      <url>http://www.eclipse.org/legal/epl-v10.html</url>
+    </license>
+  </licenses>
   <properties>
     <tycho-version>0.24.0</tycho-version>
     <tycho-extras-version>0.24.0</tycho-extras-version>
@@ -18,11 +44,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tycho.scmUrl>scm:git:https://github.com/rherrmann/eclipse-extras.git</tycho.scmUrl>
   </properties>
-
   <prerequisites>
     <maven>3.0</maven>
   </prerequisites>
-
   <modules>
     <module>com.codeaffine.extras.jdt</module>
     <module>com.codeaffine.extras.jdt.test</module>
@@ -42,41 +66,36 @@
     <module>com.codeaffine.extras.repository</module>
     <module>com.codeaffine.extras.target</module>
   </modules>
-
   <pluginRepositories>
     <pluginRepository>
       <id>repo.eclipse.org</id>
       <url>https://repo.eclipse.org/content/groups/releases/</url>
     </pluginRepository>
   </pluginRepositories>
-
   <build>
     <plugins>
-
-			<plugin>
-			   <groupId>org.eclipse.tycho</groupId>
-			   <artifactId>target-platform-configuration</artifactId>
-			   <version>${tycho-version}</version>
-			   <configuration>
-			      <target>
-			         <artifact>
-			            <groupId>com.codeaffine.extras</groupId>
-			            <artifactId>com.codeaffine.extras.target</artifactId>
-                  <version>1.0.0-SNAPSHOT</version>
-                  <classifier>${target-platform-classifier}</classifier>
-			         </artifact>
-          	</target>
-            <includePackedArtifacts>true</includePackedArtifacts>
-			   </configuration>
-			</plugin>
-			
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <target>
+            <artifact>
+              <groupId>com.codeaffine.extras</groupId>
+              <artifactId>com.codeaffine.extras.target</artifactId>
+              <version>1.0.0-SNAPSHOT</version>
+              <classifier>${target-platform-classifier}</classifier>
+            </artifact>
+          </target>
+          <includePackedArtifacts>true</includePackedArtifacts>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-maven-plugin</artifactId>
         <version>${tycho-version}</version>
         <extensions>true</extensions>
       </plugin>
-
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-packaging-plugin</artifactId>
@@ -87,7 +106,7 @@
             <artifactId>tycho-sourceref-jgit</artifactId>
             <version>${tycho-extras-version}</version>
           </dependency>
-        </dependencies>        
+        </dependencies>
         <configuration>
           <format>yyyyMMdd-HHmm</format>
           <sourceReferences>
@@ -95,7 +114,6 @@
           </sourceReferences>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-compiler-plugin</artifactId>
@@ -104,7 +122,6 @@
           <useProjectSettings>true</useProjectSettings>
         </configuration>
       </plugin>
-      
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-source-plugin</artifactId>
@@ -118,7 +135,6 @@
           </execution>
         </executions>
       </plugin>
-      
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-surefire-plugin</artifactId>
@@ -142,7 +158,6 @@
           </dependencies>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>org.eclipse.tycho.extras</groupId>
         <artifactId>tycho-pack200b-plugin</artifactId>
@@ -156,7 +171,6 @@
           </execution>
         </executions>
       </plugin>
-      
       <!-- Alter p2-metadata to make .pack.gz artifacts visible from other modules -->
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
@@ -175,32 +189,6 @@
           <defaultP2Metadata>false</defaultP2Metadata>
         </configuration>
       </plugin>
-
-<!-- No animal sniffer JRE definition available for Java 1.8 yet 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>animal-sniffer-maven-plugin</artifactId>
-        <version>1.11</version>
-        <configuration>
-          <signature>
-            <groupId>org.codehaus.mojo.signature</groupId>
-            <artifactId>java16</artifactId>
-            <version>1.1</version>
-          </signature>
-        </configuration>
-        <executions>
-          <execution>
-            <id>ensure-java-1.6-class-library</id>
-            <phase>test</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
- -->
-
     </plugins>
   </build>
-
 </project>
