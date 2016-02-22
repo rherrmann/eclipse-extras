@@ -126,7 +126,7 @@
                 -DartifactRepoDirectory=${project.build.directory}/repository
                 -Dp2StatsURI=http://www.codeaffine.com/p2-stats
                 -DstatsTrackedArtifacts=com.codeaffine.extras.ide.feature,com.codeaffine.extras.jdt.feature,com.codeaffine.extras.launch.feature,com.codeaffine.extras.workingset.feature
-                -DstatsArtifactsSuffix=-${project.version}
+                -DstatsArtifactsSuffix=-${qualifiedVersion}
               </argLine>
               <dependencies>
                 <dependency>
