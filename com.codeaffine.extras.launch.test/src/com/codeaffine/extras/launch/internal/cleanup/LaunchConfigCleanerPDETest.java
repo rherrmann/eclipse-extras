@@ -19,12 +19,15 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.codeaffine.extras.launch.test.LaunchConfigRule;
+import com.codeaffine.extras.test.util.ProjectHelper;
 
 @SuppressWarnings("restriction")
 public class LaunchConfigCleanerPDETest {
 
   @Rule
   public final LaunchConfigRule launchConfigRule = new LaunchConfigRule();
+  @Rule
+  public final ProjectHelper projectHelper = new ProjectHelper();
 
   private LaunchPreferences launchPreferences;
   private LaunchConfigCleaner launchConfigCleaner;
@@ -75,6 +78,42 @@ public class LaunchConfigCleanerPDETest {
     launch.terminate();
 
     assertThat( getLaunchConfigs() ).extracting( "name" ).contains( newName );
+  }
+
+  @Test
+  public void testNoCleanupWithImmediatelyStoredLaunchConfig() throws CoreException {
+    prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
+    launchConfigCleaner.install();
+    ILaunchConfiguration workingCopy = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = storeLaunchConfigInWorkspace( workingCopy );
+    launch( launchConfig );
+
+    launch( launchConfigRule.createLaunchConfig().doSave() );
+
+    assertThat( launchConfig.getFile().exists() ).isTrue();
+    assertThat( getLaunchConfigs() ).extracting( "name" ).contains( launchConfig.getName() );
+  }
+
+  @Test
+  public void testNoCleanupWithLaterStoredLaunchConfig() throws CoreException {
+    prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
+    launchConfigCleaner.install();
+    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    launch( launchConfig );
+    launchConfig = storeLaunchConfigInWorkspace( launchConfig );
+
+    launch( launchConfigRule.createLaunchConfig().doSave() );
+
+    assertThat( launchConfig.getFile().exists() ).isTrue();
+    assertThat( getLaunchConfigs() ).extracting( "name" ).contains( launchConfig.getName() );
+  }
+
+  private ILaunchConfiguration storeLaunchConfigInWorkspace( ILaunchConfiguration launchConfig )
+    throws CoreException
+  {
+    ILaunchConfigurationWorkingCopy workingCopy = launchConfig.getWorkingCopy();
+    workingCopy.setContainer( projectHelper.getProject() );
+    return workingCopy.doSave();
   }
 
   @Test

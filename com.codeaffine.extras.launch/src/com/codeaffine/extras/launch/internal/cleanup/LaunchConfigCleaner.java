@@ -92,12 +92,17 @@ public class LaunchConfigCleaner {
     private void launchTerminated( ILaunchConfiguration terminatedLaunchConfig ) throws CoreException {
       for( ILaunchConfiguration launchConfig : new ArrayList<>( cleanupLaunchConfigs ) ) {
         if(    launchConfig.getType().equals( terminatedLaunchConfig.getType() )
+            && !isStoredInWorkspace( launchConfig )
             && !launchConfig.equals( terminatedLaunchConfig ) )
         {
           cleanupLaunchConfigs.remove( launchConfig );
           launchConfig.delete();
         }
       }
+    }
+
+    private boolean isStoredInWorkspace( ILaunchConfiguration launchConfig ) {
+      return launchConfig.getFile() != null;
     }
   }
 
