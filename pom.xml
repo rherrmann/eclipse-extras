@@ -42,7 +42,7 @@
     <tycho-extras-version>0.24.0</tycho-extras-version>
     <target-platform-classifier>eclipse-4.5</target-platform-classifier>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <tycho.scmUrl>scm:git:https://github.com/rherrmann/eclipse-extras.git</tycho.scmUrl>
+    <tycho.scmUrl>${project.scm.connection}</tycho.scmUrl>
   </properties>
   <prerequisites>
     <maven>3.0</maven>
