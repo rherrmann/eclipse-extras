@@ -1,6 +1,9 @@
 package com.codeaffine.extras.launch.internal.dialog;
 
+import static com.codeaffine.test.util.lang.ThrowableCaptor.thrownBy;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
+import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -8,8 +11,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchMode;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,24 +26,29 @@ public class LaunchConfigComparatorPDETest {
   @Rule
   public final LaunchConfigRule launchConfigRule = new LaunchConfigRule();
 
-  private ILaunchConfigurationWorkingCopy launchConfig1;
-  private ILaunchConfigurationWorkingCopy launchConfig2;
+  private ILaunchConfiguration launchConfig1;
+  private ILaunchConfiguration launchConfig2;
   private LaunchConfigSelectionHistory launchConfigHistory;
   private List<ILaunchConfiguration> historyItems;
 
   @Before
   public void setUp() throws CoreException {
-    launchConfig1 = launchConfigRule.createLaunchConfig();
-    launchConfig2 = launchConfigRule.createLaunchConfig();
+    launchConfig1 = launchConfigRule.createLaunchConfig().doSave();
+    launchConfig2 = launchConfigRule.createLaunchConfig().doSave();
     historyItems = new LinkedList<>();
     launchConfigHistory = mock( LaunchConfigSelectionHistory.class );
     when( launchConfigHistory.getHistoryItems() ).thenReturn( historyItems.toArray() );
   }
 
+  @Test(expected = NullPointerException.class)
+  public void testConstructorWithNullLaunchConfigHistory() {
+    new LaunchConfigComparator( null, null );
+  }
+
   @Test
-  public void testCompareWhenBothLaunchConfigsInHistory() {
-    launchConfig1.rename( "z" + launchConfig1.getName() );
-    launchConfig2.rename( "a" + launchConfig2.getName() );
+  public void testCompareWhenBothLaunchConfigsInHistory() throws CoreException {
+    renameLaunchConfig1( "z" + launchConfig1.getName() );
+    renameLaunchConfig2( "a" + launchConfig2.getName() );
     addToHistory( launchConfig1 );
     addToHistory( launchConfig2 );
 
@@ -48,9 +58,9 @@ public class LaunchConfigComparatorPDETest {
   }
 
   @Test
-  public void testCompareWhenOneLaunchConfigInHistory() {
-    launchConfig1.rename( "z" + launchConfig1.getName() );
-    launchConfig2.rename( "a" + launchConfig2.getName() );
+  public void testCompareWhenOneLaunchConfigInHistory() throws CoreException {
+    renameLaunchConfig1( "z" + launchConfig1.getName() );
+    renameLaunchConfig2( "a" + launchConfig2.getName() );
     addToHistory( launchConfig1 );
 
     int compareResult = compare( launchConfig1, launchConfig2 );
@@ -59,25 +69,84 @@ public class LaunchConfigComparatorPDETest {
   }
 
   @Test
-  public void testCompareWhenBothLaunchConfigsNotInHistory() {
-    launchConfig1.rename( "z" + launchConfig1.getName() );
-    launchConfig2.rename( "a" + launchConfig2.getName() );
+  public void testCompareWhenBothLaunchConfigsNotInHistory() throws CoreException {
+    renameLaunchConfig1( "z" + launchConfig1.getName() );
+    renameLaunchConfig2( "a" + launchConfig2.getName() );
 
     int compareResult = compare( launchConfig1, launchConfig2 );
 
     assertThat( compareResult ).isGreaterThan( 0 );
   }
 
-  private void addToHistory( ILaunchConfigurationWorkingCopy launchConfig ) {
+  @Test
+  public void testCompareWithLastLaunched() throws CoreException {
+    addToHistory( launchConfig2 );
+    addToHistory( launchConfig1 );
+    launchConfig1.launch( DEBUG_MODE, null );
+
+    int compareResult = compare( launchConfig1, launchConfig2 );
+
+    assertThat( compareResult ).isLessThan( 0 );
+  }
+
+  @Test
+  public void testCompareWithLastLaunchedInDifferentLaunchMode() throws CoreException {
+    addToHistory( launchConfig2 );
+    addToHistory( launchConfig1 );
+    launchConfig1.launch( DEBUG_MODE, null );
+
+    int compareResult = compare( launchConfig1, launchConfig2, RUN_MODE );
+
+    assertThat( compareResult ).isLessThan( 0 );
+  }
+
+  @Test
+  public void testCompareWithNullLaunchMode() {
+    addToHistory( launchConfig1 );
+    addToHistory( launchConfig2 );
+
+    LaunchConfigComparator comparator = new LaunchConfigComparator( launchConfigHistory, null );
+    int compareResult = comparator.compare( launchConfig1, launchConfig2 );
+
+    assertThat( compareResult ).isLessThan( 0 );
+  }
+
+  @Test
+  public void testCompareWithNullLaunchConfigs() {
+    Throwable throwable = thrownBy( () -> compare( null, null ) );
+
+    assertThat( throwable ).isInstanceOf( NullPointerException.class );
+  }
+
+  private void renameLaunchConfig1( String name ) throws CoreException {
+    ILaunchConfigurationWorkingCopy workingCopy = launchConfig1.getWorkingCopy();
+    workingCopy.rename( name );
+    launchConfig1 = workingCopy.doSave();
+  }
+
+  private void renameLaunchConfig2( String name ) throws CoreException {
+    ILaunchConfigurationWorkingCopy workingCopy = launchConfig2.getWorkingCopy();
+    workingCopy.rename( name );
+    launchConfig2 = workingCopy.doSave();
+  }
+
+  private void addToHistory( ILaunchConfiguration launchConfig ) {
     historyItems.add( launchConfig );
     when( launchConfigHistory.contains( launchConfig ) ).thenReturn( true );
     when( launchConfigHistory.getHistoryItems() ).thenReturn( historyItems.toArray() );
   }
 
-  private int compare( ILaunchConfigurationWorkingCopy launchConfig1,
-                       ILaunchConfigurationWorkingCopy launchConfig2 )
+  private int compare( ILaunchConfiguration launchConfig1, ILaunchConfiguration launchConfig2 ) {
+    return compare( launchConfig1, launchConfig2, DEBUG_MODE );
+  }
+
+  private int compare( ILaunchConfiguration launchConfig1,
+                       ILaunchConfiguration launchConfig2,
+                       String mode )
   {
-    LaunchConfigComparator comparator = new LaunchConfigComparator( launchConfigHistory );
+    ILaunchMode launchMode = DebugPlugin.getDefault().getLaunchManager().getLaunchMode( mode );
+    LaunchConfigComparator comparator = new LaunchConfigComparator( launchConfigHistory, launchMode );
     return comparator.compare( launchConfig1, launchConfig2 );
   }
+
 }

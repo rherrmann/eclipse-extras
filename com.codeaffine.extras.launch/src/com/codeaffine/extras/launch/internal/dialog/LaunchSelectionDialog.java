@@ -182,7 +182,7 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implemen
 
   @Override
   protected Comparator<ILaunchConfiguration> getItemsComparator() {
-    return new LaunchConfigComparator( launchConfigHistory );
+    return new LaunchConfigComparator( launchConfigHistory, getLaunchMode() );
   }
 
   @Override
