@@ -79,6 +79,8 @@ Dynamic Project Working Sets can be created with the _New Wizard_ (_File &gt; Ne
 ## Requirements
 Works with Eclipse 4.4 (Luna) or later and Java 1.8 or later.
 
+**Important:** If you don't run Eclipse with Java 1.8, the update process may appear to succeed, but Extras for Eclipse will simply not show in the target installation.
+
 ## Contributing
 Please see the [contributing guidelines](CONTRIBUTING.md).
 
