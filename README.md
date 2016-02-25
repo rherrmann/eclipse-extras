@@ -43,11 +43,11 @@ The key sequence <kbd>Alt+Shift+Q U</kbd> is assigned to open the JUnit view in 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/show-junit-view.png)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/junit-view.png)
 
 ### Launch Configuration Selection Dialog
-Much like the _Open Type_ or _Open Resource_ dialog, the <kbd>Alt+F11</kbd> key binding opens a dialog that lists all launch configurations. The selected launch configuration(s) can be started or edited prior to starting. The launch mode (debug, run, profile, etc) to be used can be changed through the _Launch Mode_ drop menu menu.
+Much like the _Open Type_ or _Open Resource_ dialog, the <kbd>Alt+F11</kbd> key binding opens a dialog that lists all launch configurations. The selected launch configuration(s) can be started or edited prior to starting. The launch mode (debug, run, profile, etc) to be used can be changed through the _Launch Mode_ drop menu menu. 
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/launch-config-dialog.png)
 
-Launch configurations that are currently running are decorated with a _running_ ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/running.png) symbol.
+Launch configurations that are currently running are decorated with a _running_ ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/running.png) symbol. Furthermore, the list's context menu offers a command to terminate all currently running instances of the selected launch configuration(s).
 
 ### Key Binding for the Open With... Menu
 The key sequence <kbd>Shift+F3</kbd> can be used to show the _Open With_ menu for the selected file. The menu provides a list of alternative editors to open the file in.
