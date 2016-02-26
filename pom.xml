@@ -11,7 +11,7 @@
   <description>Extras for Eclipse - Small extensions for the Eclipse IDE</description>
   <url>https://github.com/rherrmann/eclipse-extras</url>
   <scm>
-    <url>https://github.com/kevinsawicki/github-maven-example</url>
+    <url>https://github.com/rherrmann/eclipse-extras</url>
     <connection>scm:git:https://github.com/rherrmann/eclipse-extras.git</connection>
     <developerConnection>scm:git:git@github.com:rherrmann/eclipse-extras.git</developerConnection>
   </scm>
