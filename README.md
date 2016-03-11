@@ -23,7 +23,7 @@ In the Eclipse main menu, click _Help > Install New Software…_, then enter the
 
 All features can be installed separately. Please note that a JRE 8 or later and Eclipse Luna (4.4) or later are required to run this software.
 
-The software is released continuously. The [Changelog](https://github.com/rherrmann/eclipse-extras/wiki/Extras-for-Eclipse-Changelog) summarizes the changes.
+The software is released continuously and the sources listed above always contain the latest stable release. See the  [Changelog](https://github.com/rherrmann/eclipse-extras/wiki/Extras-for-Eclipse-Changelog) for a summary of the most recent changes.
 
 
 ## Features at a Glance
