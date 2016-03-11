@@ -2,6 +2,7 @@ package com.codeaffine.extras.jdt.internal.junitstatus;
 
 import org.eclipse.jdt.junit.JUnitCore;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
@@ -55,6 +56,8 @@ public class JUnitStatusContributionItem extends WorkbenchWindowControlContribut
 
   private void attachContextMenu( Control control ) {
     MenuManager menuManager = new MenuManager();
+    menuManager.add( new ActivateJUnitViewOnFailureAction() );
+    menuManager.add( new Separator() );
     menuManager.add( new CloseJUnitStatusAction( getWorkbenchWindow().getWorkbench() ) );
     Menu contextMenu = menuManager.createContextMenu( control );
     control.setMenu( contextMenu );
