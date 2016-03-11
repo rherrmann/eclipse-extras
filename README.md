@@ -3,7 +3,6 @@
 
 &nbsp;
 [![Build Status](https://img.shields.io/codeship/6a994910-8fa7-0132-ebb3-32b8c1ae92e1/master.svg)](https://codeship.com/projects/61325)
-[![Version](https://img.shields.io/badge/version-1.0-lightgrey.svg)](http://rherrmann.github.io/eclipse-extras/repository/)
 [![Requirements](https://img.shields.io/badge/requirements-JRE%201.8%20%26%20Luna%20or%20later-2C2255.svg)](https://eclipse.org/luna/)
 [![EPL licensed](https://img.shields.io/badge/license-EPL-blue.svg)](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/LICENSE)
 
@@ -22,6 +21,8 @@ If you prefer, you can also install Extras for Eclipse from this software site:
 In the Eclipse main menu, click _Help > Install New Software…_, then enter the URL above and select _Extras for the Eclipse IDE_. Expand the item to select only certain features for installation.
 
 All features can be installed separately. Please note that a JRE 8 or later and Eclipse Luna (4.4) or later are required to run this software.
+
+The software is released continuously. The [Changelog](https://github.com/rherrmann/eclipse-extras/wiki/Extras-for-Eclipse-Changelog) summarizes the changes.
 
 
 ## Features at a Glance
