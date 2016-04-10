@@ -10,7 +10,7 @@ public class LaunchModeAction extends Action {
   private final ILaunchMode launchMode;
 
   public LaunchModeAction( LaunchModeSetting launchModeSetting, ILaunchMode launchMode ) {
-    super( launchMode.getLabel(), IAction.AS_CHECK_BOX );
+    super( launchMode.getLabel(), IAction.AS_RADIO_BUTTON );
     this.launchModeSetting = launchModeSetting;
     this.launchMode = launchMode;
     update();

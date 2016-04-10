@@ -38,7 +38,7 @@ public class LaunchModeActionTest {
 
     int style = action.getStyle();
 
-    assertThat( style ).isEqualTo( IAction.AS_CHECK_BOX );
+    assertThat( style ).isEqualTo( IAction.AS_RADIO_BUTTON );
   }
 
   @Test
