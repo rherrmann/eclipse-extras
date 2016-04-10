@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="com.codeaffine.extras on Eclipse 4.6 milestones" sequenceNumber="191">
+<?pde version="3.8"?><target name="com.codeaffine.extras on Eclipse 4.6 milestones" sequenceNumber="192">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.codeaffine.test.libraries.feature.feature.group" version="1.0.0.201508012258"/>
@@ -15,7 +15,7 @@
 <repository location="http://fappel.github.io/xiliary/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.sdk.ide" version="4.6.0.I20151029-1100"/>
+<unit id="org.eclipse.sdk.ide" version="4.6.0.I20160317-0200"/>
 <repository location="http://download.eclipse.org/eclipse/updates/4.6milestones"/>
 </location>
 </locations>
