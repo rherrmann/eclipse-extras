@@ -83,7 +83,7 @@
             <artifact>
               <groupId>com.codeaffine.extras</groupId>
               <artifactId>com.codeaffine.extras.target</artifactId>
-              <version>1.0.0-SNAPSHOT</version>
+              <version>${project.version}</version>
               <classifier>${target-platform-classifier}</classifier>
             </artifact>
           </target>
