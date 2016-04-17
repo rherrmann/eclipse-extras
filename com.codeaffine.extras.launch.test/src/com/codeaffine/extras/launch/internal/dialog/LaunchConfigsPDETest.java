@@ -23,7 +23,7 @@ public class LaunchConfigsPDETest {
 
   @Test
   public void testIsRunning() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
 
     boolean running = LaunchConfigs.isRunning( launchConfig );
 
@@ -32,7 +32,7 @@ public class LaunchConfigsPDETest {
 
   @Test
   public void testIsRunningWithLaunchedLaunchConfig() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
     ILaunch launch = launchConfig.launch( RUN_MODE, null );
 
     boolean running = LaunchConfigs.isRunning( launchConfig );

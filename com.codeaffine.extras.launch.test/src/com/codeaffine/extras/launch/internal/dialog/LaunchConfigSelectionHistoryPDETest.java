@@ -29,7 +29,7 @@ public class LaunchConfigSelectionHistoryPDETest {
 
   @Before
   public void setUp() throws CoreException {
-    launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
     history = new LaunchConfigSelectionHistory();
   }
 

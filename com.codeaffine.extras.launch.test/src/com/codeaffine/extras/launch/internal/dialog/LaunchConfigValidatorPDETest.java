@@ -24,7 +24,7 @@ public class LaunchConfigValidatorPDETest {
 
   @Before
   public void setUp() throws CoreException {
-    launchConfig = launchConfigRule.createLaunchConfig();
+    launchConfig = launchConfigRule.createPublicLaunchConfig();
   }
 
   @Test(expected = NullPointerException.class)

@@ -50,7 +50,7 @@ public class LaunchConfigLabelProviderPDETest {
 
   @Test
   public void testGetImage() throws CoreException {
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
     LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
 
     Image image = labelProvider.getImage( launchConfig );
@@ -60,7 +60,7 @@ public class LaunchConfigLabelProviderPDETest {
 
   @Test
   public void testGetImageForDeletedLaunchConfig() throws CoreException {
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
     launchConfig.delete();
     LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
 
@@ -80,7 +80,7 @@ public class LaunchConfigLabelProviderPDETest {
 
   @Test
   public void testGetListText() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
     LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
 
     String text = labelProvider.getText( launchConfig );
@@ -90,7 +90,7 @@ public class LaunchConfigLabelProviderPDETest {
 
   @Test
   public void testGetListTextForDuplicate() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
     when( duplicatesDetector.isDuplicateElement( launchConfig ) ).thenReturn( true );
     LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
 
@@ -101,7 +101,7 @@ public class LaunchConfigLabelProviderPDETest {
 
   @Test
   public void testGetListTextForDuplicateInContainer() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
     saveToContainer( launchConfig );
     when( duplicatesDetector.isDuplicateElement( launchConfig ) ).thenReturn( true );
     LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
@@ -113,7 +113,7 @@ public class LaunchConfigLabelProviderPDETest {
 
   @Test
   public void testGetDetailText() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
     LaunchConfigLabelProvider labelProvider = createLabelProvider( DETAIL );
 
     String text = labelProvider.getText( launchConfig );
@@ -123,7 +123,7 @@ public class LaunchConfigLabelProviderPDETest {
 
   @Test
   public void testGetDetailTextForDuplicate() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
     when( duplicatesDetector.isDuplicateElement( launchConfig ) ).thenReturn( true );
     LaunchConfigLabelProvider labelProvider = createLabelProvider( DETAIL );
 
@@ -134,7 +134,7 @@ public class LaunchConfigLabelProviderPDETest {
 
   @Test
   public void testGetDetailTextForContainerLaunchConfig() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
     saveToContainer( launchConfig );
     LaunchConfigLabelProvider labelProvider = createLabelProvider( DETAIL );
 

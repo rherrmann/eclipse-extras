@@ -106,16 +106,9 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implemen
   @Override
   protected void fillViewMenu( IMenuManager menuManager ) {
     super.fillViewMenu( menuManager );
-    LaunchModeSetting launchModeSetting = new LaunchModeSetting( launchManager, getDialogSettings() );
-    LaunchModeDropDownAction action = new LaunchModeDropDownAction( launchModeSetting );
-    action.addPropertyChangeListener( new IPropertyChangeListener() {
-      @Override
-      public void propertyChange( PropertyChangeEvent event ) {
-        updateOkButtonLabel();
-        updateStatus();
-      }
-    } );
-    menuManager.add( action );
+    menuManager.add( new Separator() );
+    menuManager.add( new ToggleTerminateBeforeRelaunchAction() );
+    menuManager.add( createLaunchModeDropDownAction() );
   }
 
   @Override
@@ -205,6 +198,16 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implemen
 
   private ILabelProvider createLaunchConfigLabelProvider( Display display, LabelMode labelMode ) {
     return new LaunchConfigLabelProvider( display, this, labelMode );
+  }
+
+  private LaunchModeDropDownAction createLaunchModeDropDownAction() {
+    LaunchModeSetting launchModeSetting = new LaunchModeSetting( launchManager, getDialogSettings() );
+    LaunchModeDropDownAction result = new LaunchModeDropDownAction( launchModeSetting );
+    result.addPropertyChangeListener( event -> {
+      updateOkButtonLabel();
+      updateStatus();
+    } );
+    return result;
   }
 
   private void updateOkButtonLabel() {

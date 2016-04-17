@@ -27,8 +27,8 @@ public class LaunchConfigRule extends ExternalResource {
   }
 
   @Override
-  protected void before() throws Throwable {
-    // workaround for bug 482711
+  protected void before() throws CoreException {
+    // workaround for bug 482711 (https://bugs.eclipse.org/bugs/show_bug.cgi?id=482711)
     ILaunchConfiguration launchConfig = newPublicLaunchConfig().doSave();
     launchConfig.delete();
   }
@@ -43,8 +43,14 @@ public class LaunchConfigRule extends ExternalResource {
     }
   }
 
-  public ILaunchConfigurationWorkingCopy createLaunchConfig() throws CoreException {
+  public ILaunchConfigurationWorkingCopy createPublicLaunchConfig() throws CoreException {
     ILaunchConfigurationWorkingCopy result = newPublicLaunchConfig();
+    result.setAttribute( ATTR_LAUNCH_IN_BACKGROUND, false );
+    return result;
+  }
+
+  public ILaunchConfigurationWorkingCopy createPrivateLaunchConfig() throws CoreException {
+    ILaunchConfigurationWorkingCopy result = newPrivateLaunchConfig();
     result.setAttribute( ATTR_LAUNCH_IN_BACKGROUND, false );
     return result;
   }
@@ -57,10 +63,25 @@ public class LaunchConfigRule extends ExternalResource {
     return launchManager.getLaunchConfigurationType( PRIVATE_TEST_LAUNCH_CONFIG_TYPE );
   }
 
+  public String renameLaunchConfig( ILaunchConfiguration launchConfig ) throws CoreException {
+    String newName = launchConfig.getName() + "-renamed";
+    if( launchManager.isExistingLaunchConfigurationName( newName ) ) {
+      newName = launchManager.generateLaunchConfigurationName( newName );
+    }
+    ILaunchConfigurationWorkingCopy workingCopy = launchConfig.getWorkingCopy();
+    workingCopy.rename( newName );
+    workingCopy.doSave();
+    return newName;
+  }
+
   private ILaunchConfigurationWorkingCopy newPublicLaunchConfig() throws CoreException {
     ILaunchConfigurationType type = getPublicTestLaunchConfigType();
-    ILaunchConfigurationWorkingCopy newInstance = type.newInstance( null, getUniqueLaunchConfigName() );
-    return newInstance;
+    return type.newInstance( null, getUniqueLaunchConfigName() );
+  }
+
+  private ILaunchConfigurationWorkingCopy newPrivateLaunchConfig() throws CoreException {
+    ILaunchConfigurationType type = getPrivateTestLaunchConfigType();
+    return type.newInstance( null, getUniqueLaunchConfigName() );
   }
 
   private String getUniqueLaunchConfigName() {

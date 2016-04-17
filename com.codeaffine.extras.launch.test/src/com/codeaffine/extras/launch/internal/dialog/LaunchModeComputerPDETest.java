@@ -26,7 +26,7 @@ public class LaunchModeComputerPDETest {
 
   @Before
   public void setUp() throws CoreException {
-    launchConfig = launchConfigRule.createLaunchConfig();
+    launchConfig = launchConfigRule.createPublicLaunchConfig();
   }
 
   @Test(expected = NullPointerException.class)

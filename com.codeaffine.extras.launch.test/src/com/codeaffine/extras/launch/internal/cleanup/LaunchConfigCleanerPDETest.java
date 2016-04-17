@@ -47,10 +47,10 @@ public class LaunchConfigCleanerPDETest {
   public void testCleanupAfterNextLaunch() throws CoreException {
     prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
     launchConfigCleaner.install();
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
     launch( launchConfig );
 
-    launch( launchConfigRule.createLaunchConfig().doSave() );
+    launch( launchConfigRule.createPublicLaunchConfig().doSave() );
 
     assertThat( getLaunchConfigs() ).extracting( "name" ).doesNotContain( launchConfig.getName() );
   }
@@ -59,7 +59,7 @@ public class LaunchConfigCleanerPDETest {
   public void testNoCleanupAfterLaunchingAgain() throws CoreException {
     prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
     launchConfigCleaner.install();
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
     launch( launchConfig );
 
     launch( launchConfig );
@@ -71,10 +71,10 @@ public class LaunchConfigCleanerPDETest {
   public void testNoCleanupWhenLaunchConfigRenamed() throws CoreException {
     prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
     launchConfigCleaner.install();
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
     ILaunch launch = launchConfig.launch( RUN_MODE, null );
-    String newName = renameLaunchConfig( launchConfig );
+    String newName = launchConfigRule.renameLaunchConfig( launchConfig );
     launch.terminate();
 
     assertThat( getLaunchConfigs() ).extracting( "name" ).contains( newName );
@@ -84,11 +84,11 @@ public class LaunchConfigCleanerPDETest {
   public void testNoCleanupWithImmediatelyStoredLaunchConfig() throws CoreException {
     prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
     launchConfigCleaner.install();
-    ILaunchConfiguration workingCopy = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration workingCopy = launchConfigRule.createPublicLaunchConfig().doSave();
     ILaunchConfiguration launchConfig = storeLaunchConfigInWorkspace( workingCopy );
     launch( launchConfig );
 
-    launch( launchConfigRule.createLaunchConfig().doSave() );
+    launch( launchConfigRule.createPublicLaunchConfig().doSave() );
 
     assertThat( launchConfig.getFile().exists() ).isTrue();
     assertThat( getLaunchConfigs() ).extracting( "name" ).contains( launchConfig.getName() );
@@ -98,11 +98,11 @@ public class LaunchConfigCleanerPDETest {
   public void testNoCleanupWithLaterStoredLaunchConfig() throws CoreException {
     prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
     launchConfigCleaner.install();
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
     launch( launchConfig );
     launchConfig = storeLaunchConfigInWorkspace( launchConfig );
 
-    launch( launchConfigRule.createLaunchConfig().doSave() );
+    launch( launchConfigRule.createPublicLaunchConfig().doSave() );
 
     assertThat( launchConfig.getFile().exists() ).isTrue();
     assertThat( getLaunchConfigs() ).extracting( "name" ).contains( launchConfig.getName() );
@@ -120,7 +120,7 @@ public class LaunchConfigCleanerPDETest {
   public void testNoCleanupIfDisabled() throws CoreException {
     prepareLaunchPreferences( false, launchConfigRule.getPublicTestLaunchConfigType() );
     launchConfigCleaner.install();
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
     launch( launchConfig );
 
@@ -131,7 +131,7 @@ public class LaunchConfigCleanerPDETest {
   public void testNoCleanupIfTypeNotSelected() throws CoreException {
     prepareLaunchPreferences( true, null );
     launchConfigCleaner.install();
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
     launch( launchConfig );
 
@@ -142,7 +142,7 @@ public class LaunchConfigCleanerPDETest {
   public void testNoCleanupAfterUninstall() throws CoreException {
     prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
     launchConfigCleaner.install();
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
     launchConfigCleaner.uninstall();
 
     launch( launchConfig );
@@ -154,7 +154,7 @@ public class LaunchConfigCleanerPDETest {
   public void testNoCleanupWhenLaunchConfigDeleted() throws CoreException {
     prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
     launchConfigCleaner.install();
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
     ILaunch launch = launchConfig.launch( RUN_MODE, null );
     launchConfig.delete();
@@ -186,17 +186,9 @@ public class LaunchConfigCleanerPDETest {
   private ILaunchConfiguration createLaunchConfigInDialog() throws CoreException {
     ILaunchConfigurationDialog dialog = mock( ILaunchConfigurationDialog.class );
     LaunchConfigurationsDialog.setCurrentlyVisibleLaunchConfigurationDialog( dialog );
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
     LaunchConfigurationsDialog.setCurrentlyVisibleLaunchConfigurationDialog( null );
     return launchConfig;
-  }
-
-  private static String renameLaunchConfig( ILaunchConfiguration launchConfig ) throws CoreException {
-    String newName = launchConfig.getName() + "-renamed";
-    ILaunchConfigurationWorkingCopy workingCopy = launchConfig.getWorkingCopy();
-    workingCopy.rename( newName );
-    workingCopy.doSave();
-    return newName;
   }
 
   private static void launch( ILaunchConfiguration launchConfig ) throws CoreException {

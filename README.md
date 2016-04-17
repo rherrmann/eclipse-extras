@@ -49,7 +49,10 @@ Much like the _Open Type_ or _Open Resource_ dialog, the <kbd>Alt+F11</kbd> key 
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/launch-config-dialog.png)
 
-Launch configurations that are currently running are decorated with a _running_ ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/running.png) symbol. Furthermore, the list's context menu offers a command to terminate all currently running instances of the selected launch configuration(s).
+Launch configurations that are currently running are decorated with a _running_ ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/running.png) symbol.
+
+Furthermore, the list's context menu offers a command to terminate all currently running instances of the selected launch configuration(s).
+If you wish to terminate running instances always before relaunching, enable the _Terminate before Relaunch_ option from the drop-down menu.
 
 ### Key Binding for the Open With... Menu
 The key sequence <kbd>Shift+F3</kbd> can be used to show the _Open With_ menu for the selected file. The menu provides a list of alternative editors to open the file in.

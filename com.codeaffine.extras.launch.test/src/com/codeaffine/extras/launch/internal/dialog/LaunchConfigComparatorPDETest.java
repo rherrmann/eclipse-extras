@@ -33,8 +33,8 @@ public class LaunchConfigComparatorPDETest {
 
   @Before
   public void setUp() throws CoreException {
-    launchConfig1 = launchConfigRule.createLaunchConfig().doSave();
-    launchConfig2 = launchConfigRule.createLaunchConfig().doSave();
+    launchConfig1 = launchConfigRule.createPublicLaunchConfig().doSave();
+    launchConfig2 = launchConfigRule.createPublicLaunchConfig().doSave();
     historyItems = new LinkedList<>();
     launchConfigHistory = mock( LaunchConfigSelectionHistory.class );
     when( launchConfigHistory.getHistoryItems() ).thenReturn( historyItems.toArray() );

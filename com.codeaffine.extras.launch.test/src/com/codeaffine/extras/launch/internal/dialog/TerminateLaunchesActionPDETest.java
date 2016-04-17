@@ -82,7 +82,7 @@ public class TerminateLaunchesActionPDETest {
 
   @Test
   public void testSetSelectionToLaunchConfig() throws CoreException {
-    action.setSelection( new StructuredSelection( launchConfigRule.createLaunchConfig() ) );
+    action.setSelection( new StructuredSelection( launchConfigRule.createPublicLaunchConfig() ) );
 
     assertThat( action.isEnabled() ).isFalse();
   }
@@ -128,7 +128,7 @@ public class TerminateLaunchesActionPDETest {
 
   @Test
   public void testRunWithMultipleLaunches() throws Exception {
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
     ILaunch launch1 = launchConfig.launch( RUN_MODE, null );
     ILaunch launch2 = launchConfig.launch( RUN_MODE, null );
     action.setSelection( new StructuredSelection( launchConfig ) );
@@ -170,7 +170,7 @@ public class TerminateLaunchesActionPDETest {
   }
 
   private ILaunch runLaunchConfig() throws CoreException {
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
     return launchConfig.launch( RUN_MODE, null );
   }
 

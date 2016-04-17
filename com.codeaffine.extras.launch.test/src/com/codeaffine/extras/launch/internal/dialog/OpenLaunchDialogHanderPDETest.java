@@ -48,7 +48,7 @@ public class OpenLaunchDialogHanderPDETest {
 
   @Test
   public void testExecuteSingleLaunchConfig() throws CoreException {
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
     LaunchSelectionDialog dialog = mockLaunchSelectionDialog( launchConfig );
     doReturn( dialog ).when( handler ).createDialog( any() );
 
@@ -61,8 +61,8 @@ public class OpenLaunchDialogHanderPDETest {
 
   @Test
   public void testExecuteMultipleLaunchConfigs() throws CoreException {
-    ILaunchConfiguration launchConfig1 = launchConfigRule.createLaunchConfig().doSave();
-    ILaunchConfiguration launchConfig2 = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig1 = launchConfigRule.createPublicLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig2 = launchConfigRule.createPublicLaunchConfig().doSave();
     LaunchSelectionDialog dialog = mockLaunchSelectionDialog( launchConfig1, launchConfig2 );
     doReturn( dialog ).when( handler ).createDialog( any() );
 

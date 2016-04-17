@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchMode;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.dialogs.DialogSettings;
 import org.eclipse.swt.widgets.Control;
@@ -29,6 +30,14 @@ public class LaunchModeDropDownActionTest {
   private ILaunchManager launchManager;
   private LaunchModeSetting launchModeSetting;
 
+  @Before
+  public void setUp() {
+    launchManager = mock( ILaunchManager.class );
+    when( launchManager.getLaunchModes() ).thenReturn( new ILaunchMode[ 0 ] );
+    DialogSettings dialogSettings = new DialogSettings( "section-name" );
+    launchModeSetting = new LaunchModeSetting( launchManager, dialogSettings );
+  }
+
   @Test
   public void testMenuCreator() {
     LaunchModeDropDownAction action = new LaunchModeDropDownAction( launchModeSetting );
@@ -45,6 +54,24 @@ public class LaunchModeDropDownActionTest {
     String text = action.getText();
 
     assertThat( text ).isNotEmpty();
+  }
+
+  @Test
+  public void testId() {
+    LaunchModeDropDownAction action = new LaunchModeDropDownAction( launchModeSetting );
+
+    String id = action.getId();
+
+    assertThat( id ).isEqualTo( LaunchModeDropDownAction.ID );
+  }
+
+  @Test
+  public void testStyle() {
+    LaunchModeDropDownAction action = new LaunchModeDropDownAction( launchModeSetting );
+
+    int style = action.getStyle();
+
+    assertThat( style ).isEqualTo( IAction.AS_DROP_DOWN_MENU );
   }
 
   @Test(expected=UnsupportedOperationException.class)
@@ -77,13 +104,5 @@ public class LaunchModeDropDownActionTest {
     action.dispose();
 
     assertThat( menu.isDisposed() ).isTrue();
-  }
-
-  @Before
-  public void setUp() {
-    launchManager = mock( ILaunchManager.class );
-    when( launchManager.getLaunchModes() ).thenReturn( new ILaunchMode[ 0 ] );
-    DialogSettings dialogSettings = new DialogSettings( "section-name" );
-    launchModeSetting = new LaunchModeSetting( launchManager, dialogSettings );
   }
 }

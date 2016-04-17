@@ -54,7 +54,7 @@ public class LaunchConfigProviderPDETest {
 
   @Test
   public void testSingleLaunchConfig() throws CoreException {
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
     ILaunchConfiguration[] launchConfigs = launchConfigProvider.getLaunchConfigurations();
 
@@ -63,7 +63,7 @@ public class LaunchConfigProviderPDETest {
 
   @Test
   public void testKeepWhenPrivate() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
     launchConfig.setAttribute( ATTR_PRIVATE, true );
     launchConfig.doSave();
 
@@ -125,7 +125,7 @@ public class LaunchConfigProviderPDETest {
   }
 
   private IResource createLaunchConfigForResource() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
     IFile resource = projectHelper.createFile();
     launchConfig.setMappedResources( new IResource[] { resource } );
     launchConfig.doSave();

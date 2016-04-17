@@ -39,9 +39,15 @@ public class LaunchSelectionDialogPDETest {
 
   private TestableLaunchSelectionDialog dialog;
 
+  @Before
+  public void setUp() {
+    dialog = new TestableLaunchSelectionDialog( displayHelper.createShell() );
+    dialog.setBlockOnOpen( false );;
+  }
+
   @Test
   public void testValidateItemWithSupportedLaunchMode() throws CoreException {
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
     IStatus status = dialog.validateItem( launchConfig );
 
@@ -52,7 +58,7 @@ public class LaunchSelectionDialogPDETest {
   public void testValidateItemWithUnsupportedLaunchMode() throws CoreException {
     LaunchModeSetting launchModeSetting = getLaunchModeSettings();
     launchModeSetting.setLaunchModeId( LaunchModeHelper.TEST_LAUNCH_MODE );
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
     IStatus status = dialog.validateItem( launchConfig );
 
@@ -123,7 +129,7 @@ public class LaunchSelectionDialogPDETest {
 
   @Test
   public void testGetElementName() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createLaunchConfig();
+    ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
 
     String elementName = dialog.getElementName( launchConfig );
 
@@ -170,10 +176,17 @@ public class LaunchSelectionDialogPDETest {
     assertThat( menuManager.getItems()[ 3 ] ).isInstanceOf( Separator.class );
   }
 
-  @Before
-  public void setUp() {
-    dialog = new TestableLaunchSelectionDialog( displayHelper.createShell() );
-    dialog.setBlockOnOpen( false );;
+  @Test
+  public void testFillViewMenu() {
+    dialog.create();
+    MenuManager menuManager = new MenuManager();
+
+    dialog.fillViewMenu( menuManager );
+
+    assertThat( menuManager.getSize() ).isEqualTo( 4 );
+    assertThat( menuManager.getItems()[ 1 ] ).isInstanceOf( Separator.class );
+    assertThat( menuManager.getItems()[ 2 ].getId() ).isEqualTo( ToggleTerminateBeforeRelaunchAction.ID );
+    assertThat( menuManager.getItems()[ 3 ].getId() ).isEqualTo( LaunchModeDropDownAction.ID );
   }
 
   private LaunchModeSetting getLaunchModeSettings() {

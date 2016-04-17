@@ -36,7 +36,7 @@ public class LaunchConfigCleanerStatePDETest {
   @Test
   public void testSave() throws CoreException {
     File file = new File( tempFolder.getRoot(), "state.txt" );
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
     new LaunchConfigCleanerState( launchManager, file ).save( launchConfig );
 
@@ -47,7 +47,7 @@ public class LaunchConfigCleanerStatePDETest {
   public void testSaveWithExistingFile() throws IOException, CoreException {
     File file = tempFolder.newFile();
     Files.write( file.toPath(), asList( "foo\nbar\n" ), UTF_8 );
-    ILaunchConfiguration launchConfig = launchConfigRule.createLaunchConfig().doSave();
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
     new LaunchConfigCleanerState( launchManager, file ).save( launchConfig );
 

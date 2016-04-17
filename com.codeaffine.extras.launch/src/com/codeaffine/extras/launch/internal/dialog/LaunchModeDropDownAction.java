@@ -13,6 +13,8 @@ import org.eclipse.swt.widgets.Menu;
 
 public class LaunchModeDropDownAction extends Action implements IMenuCreator {
 
+  public static final String ID = LaunchModeDropDownAction.class.getName();
+
   private final LaunchModeSetting launchModeSetting;
   private final LaunchModeAction[] launchModeActions;
   private Menu menu;
@@ -21,6 +23,7 @@ public class LaunchModeDropDownAction extends Action implements IMenuCreator {
     super( "&Launch Mode", AS_DROP_DOWN_MENU );
     this.launchModeSetting = launchModeSetting;
     this.launchModeActions = createLaunchModeActions();
+    setId( ID );
     setMenuCreator( this );
   }
 
