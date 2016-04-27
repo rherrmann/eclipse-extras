@@ -93,19 +93,18 @@ public class JUnitStatusContributionItemPDETest {
   }
 
   private static class VisibleWhenElement {
-
-    private final Extension extension2;
+    private final Extension extension;
 
     VisibleWhenElement( Extension extension ) {
-      extension2 = extension;
+      this.extension = extension;
     }
 
     boolean isCheckEnabled() {
-      return "true".equals( extension2.getAttribute( "checkEnabled" ) );
+      return "true".equals( extension.getAttribute( "checkEnabled" ) );
     }
 
     String referencedExpression() {
-      return getFirst( extension2.getChildren( "reference" ) ).getAttribute( "definitionId" );
+      return getFirst( extension.getChildren( "reference" ) ).getAttribute( "definitionId" );
     }
   }
 
