@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import com.codeaffine.extras.launch.internal.dialog.OpenLaunchDialogHander;
 
-public class StartLaunchConfigMennuPDETest {
+public class StartLaunchConfigMenuPDETest {
 
   private static final String MENU_ITEM_ID = "com.codeaffine.extras.launch.internal.StartLaunchConfigMenuItem";
 
