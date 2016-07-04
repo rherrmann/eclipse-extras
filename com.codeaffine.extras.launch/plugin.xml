@@ -16,7 +16,7 @@
       <key
             commandId="com.codeaffine.extras.launch.internal.OpenLaunchDialogCommand"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+F11">
+            sequence="M2+F11">
       </key>
    </extension>
    <extension

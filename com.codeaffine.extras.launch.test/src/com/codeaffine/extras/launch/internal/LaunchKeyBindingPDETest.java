@@ -12,7 +12,7 @@ import com.codeaffine.extras.test.util.KeyBindingInspector;
 
 public class LaunchKeyBindingPDETest {
 
-  private static final String KEY_SEQUENCE = "M3+F11";
+  private static final String KEY_SEQUENCE = "M2+F11";
 
   @Test
   public void testGeneralKeyBinding() {
