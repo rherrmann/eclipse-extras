@@ -6,6 +6,10 @@ See the [Installation](https://github.com/rherrmann/eclipse-extras/blob/master/R
 
 
 ## List of Changes
+##### June 2016 
+###### Bugfixes
+* [Launch Dialog] Key binding conflict with Toggle Full Screen command [#45](https://github.com/rherrmann/eclipse-extras/issues/45)
+
 ##### April 2016 
 ###### Launch Dialog
 The launch dialog can optionally terminate all running instances of a launch configuration before relaunching it.
