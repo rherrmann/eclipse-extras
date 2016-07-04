@@ -179,6 +179,7 @@ public class DeleteEditorFileHandler_FilePDETest {
     handler.execute( event );
   }
 
+  @SuppressWarnings("deprecation")
   private IEditorPart openEditor( File file ) throws PartInitException {
     String editorId = IDE.getEditorDescriptor( file.getName() ).getId();
     return IDE.openEditor( workbenchPage, file.toURI(), editorId, true );
