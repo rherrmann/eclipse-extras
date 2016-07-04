@@ -6,7 +6,7 @@ See the [Installation](https://github.com/rherrmann/eclipse-extras/blob/master/R
 
 
 ## List of Changes
-##### June 2016 
+##### July 2016 
 ###### Bugfixes
 * [Launch Dialog] Key binding conflict with Toggle Full Screen command [#45](https://github.com/rherrmann/eclipse-extras/issues/45)
 
