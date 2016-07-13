@@ -49,6 +49,8 @@ Much like the _Open Type_ or _Open Resource_ dialog, the <kbd>Shift+F11</kbd> ke
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/launch-config-dialog.png)
 
+The dialog maintains a history of recently launched configurations (everything above the _Launch Configuration matches_ line). Individual items can be removed from history with <kbd>Delete</kbd> or via the context menu.
+
 Launch configurations that are currently running are decorated with a _running_ ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/running.png) symbol.
 
 Furthermore, the list's context menu offers a command to terminate all currently running instances of the selected launch configuration(s).
