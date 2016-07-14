@@ -23,6 +23,7 @@
           <repositoryName>Extras for Eclipse Software Repository</repositoryName>
           <includeAllDependencies>false</includeAllDependencies>
           <compress>true</compress>
+          <xzCompress>false</xzCompress>
         </configuration>
       </plugin>
       
