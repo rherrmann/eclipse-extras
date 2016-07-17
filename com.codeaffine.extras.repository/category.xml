@@ -6,6 +6,9 @@
    <feature url="../com.codeaffine.extras.ide.feature_1.0.0.qualifier.jar" id="com.codeaffine.extras.ide.feature" version="1.0.0.qualifier">
       <category name="com.codeaffine.extras.category"/>
    </feature>
+   <feature url="../com.codeaffine.extras.imageviewer.feature_1.0.0.qualifier.jar" id="com.codeaffine.extras.imageviewer.feature" version="1.0.0.qualifier">
+      <category name="com.codeaffine.extras.category"/>
+   </feature>
    <feature url="../com.codeaffine.extras.launch.feature_1.0.0.qualifier.jar" id="com.codeaffine.extras.launch.feature" version="1.0.0.qualifier">
       <category name="com.codeaffine.extras.category"/>
    </feature>
