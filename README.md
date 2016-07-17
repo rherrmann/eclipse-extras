@@ -73,6 +73,9 @@ This option helps to keep the launch configuration dialog tidy in that only the 
 
 ![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/launch-cleanup.png)
 
+### Image Viewer
+Editor for viewing images. The editor is able to display images, regardless of whether they are stored in the local file system or located in an archive, for example a jar or war file. By default, the image viewer associates its editor with .gif .jpg .jpeg .png .bmp .ico and .tiff file extensions.
+
 ### Key Binding to Close the Active View
 The key binding <kbd>Ctrl+Shift+Q</kbd> closes the currently active view. Just like <kbd>Ctrl+W</kbd> closes the active editor, there is now also a key binding to close the active view. 
 
