@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            file-extensions="gif,jpg,jpeg,png,bmp,ico,tiff"
+            id="com.codeaffine.extras.imageviewer.ImageContentType"
+            name="Image"
+            priority="normal">
+      </content-type>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="com.codeaffine.extras.imageviewer.internal.ImageViewerEditor"
+            default="true"
+            id="com.codeaffine.extras.imageviewer.internal.ImageViewerEditor"
+            name="Image Viewer">
+         <contentTypeBinding
+               contentTypeId="com.codeaffine.extras.imageviewer.ImageContentType">
+         </contentTypeBinding>
+      </editor>
+   </extension>
+</plugin>
