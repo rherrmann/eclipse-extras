@@ -6,7 +6,11 @@ See the [Installation](https://github.com/rherrmann/eclipse-extras/blob/master/R
 
 
 ## List of Changes
+
 ##### July 2016 
+###### Image Viewer
+Commonly used image files (png, jpeg, gif, tiff, bmp, ico) can now be opened in an editor, regardless of whether the images are stored in the local file system or if they are located in an archive, for example a jar or war file.
+[#47](https://github.com/rherrmann/eclipse-extras/issues/47)
 ###### Bugfixes
 * [Launch Dialog] Key binding conflict with Toggle Full Screen command [#45](https://github.com/rherrmann/eclipse-extras/issues/45)
 
