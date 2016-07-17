@@ -113,9 +113,9 @@ public class ImageViewerEditorPDETest {
   }
 
   private static class UnsupportedEditorInput implements IEditorInput {
-
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public <T> T getAdapter( Class<T> adapter ) {
+    public Object getAdapter( Class adapter ) {
       return null;
     }
 
@@ -171,8 +171,9 @@ public class ImageViewerEditorPDETest {
       return "";
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public <T> T getAdapter( Class<T> adapter ) {
+    public Object getAdapter( Class adapter ) {
       return Platform.getAdapterManager().getAdapter( this, adapter );
     }
 
@@ -184,8 +185,9 @@ public class ImageViewerEditorPDETest {
   }
 
   private static class ImageStorage implements IStorage {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public <T> T getAdapter( Class<T> adapter ) {
+    public Object getAdapter( Class adapter ) {
       return Platform.getAdapterManager().getAdapter( this, adapter );
     }
 
