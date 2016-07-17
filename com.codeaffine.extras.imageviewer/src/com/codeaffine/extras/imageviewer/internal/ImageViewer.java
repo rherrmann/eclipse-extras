@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Label;
 public class ImageViewer {
 
   private final ScrolledComposite scrolledComposite;
-  private final Label imageLabel;
+  final Label imageLabel;
   private ImageData[] imageDatas;
   private Image image;
 
