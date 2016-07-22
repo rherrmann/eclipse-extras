@@ -42,7 +42,7 @@ public class LaunchSelectionDialogPDETest {
   @Before
   public void setUp() {
     dialog = new TestableLaunchSelectionDialog( displayHelper.createShell() );
-    dialog.setBlockOnOpen( false );;
+    dialog.setBlockOnOpen( false );
   }
 
   @Test

@@ -59,7 +59,7 @@ public class LaunchModeActionTest {
     changeCurrentLaunchMode( createLaunchMode( DEBUG_MODE ) );
 
     LaunchModeAction action = createLaunchModeAction();
-    changeCurrentLaunchMode( launchMode );;
+    changeCurrentLaunchMode( launchMode );
 
     action.update();
 
