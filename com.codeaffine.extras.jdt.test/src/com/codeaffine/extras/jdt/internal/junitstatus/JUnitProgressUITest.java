@@ -74,7 +74,7 @@ public class JUnitProgressUITest {
 
   @Test
   public void testSetToolTipTextFromBckgroundThread() {
-    final String text = "text";
+    String text = "text";
 
     runInThread( new Runnable() {
       @Override
