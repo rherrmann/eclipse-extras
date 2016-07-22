@@ -71,7 +71,7 @@ public class LaunchSelectionDialogPDETest {
   public void testGetLaunchModeId() {
     String launchModeId = dialog.getLaunchModeId();
 
-    assertThat( launchModeId ).isEqualTo( ILaunchManager.DEBUG_MODE );
+    assertThat( launchModeId ).isEqualTo( DEBUG_MODE );
   }
 
   @Test

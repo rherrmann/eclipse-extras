@@ -14,10 +14,6 @@ import org.eclipse.jface.action.IMenuCreator;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.codeaffine.extras.launch.internal.dialog.LaunchModeAction;
-import com.codeaffine.extras.launch.internal.dialog.LaunchModeSetting;
-import com.codeaffine.extras.launch.test.LaunchModeHelper;
-
 public class LaunchModeActionTest {
 
   private LaunchModeSetting launchModeSetting;
@@ -52,7 +48,7 @@ public class LaunchModeActionTest {
 
   @Test
   public void testInitialCheckState() {
-    changeCurrentLaunchMode( launchMode );;
+    changeCurrentLaunchMode( launchMode );
     LaunchModeAction action = createLaunchModeAction();
 
     assertThat( action.isChecked() ).isTrue();
@@ -92,7 +88,7 @@ public class LaunchModeActionTest {
   @Before
   public void setUp() {
     launchModeSetting = mock( LaunchModeSetting.class );
-    launchMode = LaunchModeHelper.createLaunchMode( RUN_MODE );
+    launchMode = createLaunchMode( RUN_MODE );
   }
 
   private LaunchModeAction createLaunchModeAction() {

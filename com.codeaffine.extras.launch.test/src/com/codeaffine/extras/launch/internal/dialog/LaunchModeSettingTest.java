@@ -35,7 +35,7 @@ public class LaunchModeSettingTest {
 
     String launchModeId = launchModeSetting.getLaunchModeId();
 
-    assertThat( launchModeId ).isEqualTo( ILaunchManager.DEBUG_MODE );
+    assertThat( launchModeId ).isEqualTo( DEBUG_MODE );
   }
 
   @Test
