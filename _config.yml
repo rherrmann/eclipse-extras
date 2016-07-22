@@ -22,9 +22,9 @@ avatar: "/assets/img/eclipse-extras.png"
 
 # List of links in the navigation bar
 nav-links:
-  About: "/eclipse-extras/homepage/about"
-  Install: "/eclipse-extras/homepage/install"
-  News: "/eclipse-extras/homepage/news"
+  About: "/eclipse-extras/about"
+  Install: "/eclipse-extras/install"
+  News: "/eclipse-extras/news"
   Issues: "https://github.com/rherrmann/eclipse-extras/issues"
   Source: "https://github.com/rherrmann/eclipse-extras"
   
