@@ -30,7 +30,7 @@ import org.junit.rules.ExternalResource;
 
 public class ProjectHelper extends ExternalResource {
 
-  private static int uniqueId = 0;
+  private static int uniqueId;
   private static List<ProjectHelper> projects = new LinkedList<ProjectHelper>();
 
   public static void cleanWorkspace() throws CoreException {
