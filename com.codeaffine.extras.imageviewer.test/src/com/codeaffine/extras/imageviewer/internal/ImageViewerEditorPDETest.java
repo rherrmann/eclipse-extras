@@ -158,7 +158,7 @@ public class ImageViewerEditorPDETest {
 
     @Override
     public String getName() {
-      return Images.GIF_IMAGE;
+      return GIF_IMAGE;
     }
 
     @Override
@@ -198,7 +198,7 @@ public class ImageViewerEditorPDETest {
 
     @Override
     public String getName() {
-      return Images.GIF_IMAGE;
+      return GIF_IMAGE;
     }
 
     @Override
@@ -208,7 +208,7 @@ public class ImageViewerEditorPDETest {
 
     @Override
     public InputStream getContents() {
-      return getClass().getResourceAsStream( Images.GIF_IMAGE );
+      return getClass().getResourceAsStream( GIF_IMAGE );
     }
   }
 }
