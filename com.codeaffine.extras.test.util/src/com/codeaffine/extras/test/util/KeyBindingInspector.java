@@ -63,6 +63,8 @@ public class KeyBindingInspector {
     return new ParameterInfo( extension.getAttribute( ID ), extension.getAttribute( VALUE ) );
   }
 
+  private KeyBindingInspector() {}
+
   private static class KeyBindingPredicate implements Predicate<Extension> {
     private final String keySequence;
     private final String platform;

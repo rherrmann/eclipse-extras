@@ -49,8 +49,9 @@ public class ConcurrentHelper {
     return result;
   }
 
-  private static class RunnableWrapper implements Runnable {
+  private ConcurrentHelper() {}
 
+  private static class RunnableWrapper implements Runnable {
     private final Runnable runnable;
     private final Lock lock;
     private final Condition running;

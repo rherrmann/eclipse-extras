@@ -21,4 +21,6 @@ public class LaunchModeHelper {
     return result;
   }
 
+  private LaunchModeHelper() { }
+
 }
