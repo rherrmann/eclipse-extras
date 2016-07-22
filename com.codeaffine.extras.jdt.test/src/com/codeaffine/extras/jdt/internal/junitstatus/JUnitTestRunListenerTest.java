@@ -200,7 +200,7 @@ public class JUnitTestRunListenerTest {
     testRunListener.sessionLaunched( testRunSession );
     testRunListener.sessionStarted( testRunSession );
 
-    setTestCaseResult( testCaseElement, Result.OK );
+    setTestCaseResult( testCaseElement, OK );
     testRunListener.testCaseFinished( testCaseElement );
 
     InOrder order = inOrder( progressUI );
