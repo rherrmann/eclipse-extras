@@ -3,7 +3,7 @@ package com.codeaffine.extras.workingset.internal;
 
 public class ValidationStatus {
 
-  public static enum Severity {
+  public enum Severity {
     NONE,
     WARNING,
     ERROR
