@@ -90,10 +90,8 @@ public class DynamicWorkingSetUpdater
 
   @Override
   public void resourceChanged( IResourceChangeEvent event ) {
-    if( event.getDelta() != null ) {
-      if( isUpdateNeeded( event ) ) {
-        update();
-      }
+    if( event.getDelta() != null && isUpdateNeeded( event ) ) {
+      update();
     }
   }
 
