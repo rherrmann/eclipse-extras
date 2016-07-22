@@ -1,0 +1,67 @@
+# Build settings
+# Gems
+gems: 
+
+# url is the full website URL
+# baseurl is the website's URL without the hostname
+url: "https://rherrmann.github.io/eclipse-extras/homepage"
+baseurl: "/eclipse-extras/homepage"
+enforce_ssl: ""
+
+# Title of website
+title: Extras for Eclipse
+
+# Short description of your site
+desc: Small Extensions for the Eclipse IDE 
+
+# Default keywords (used if no keywords are specified on a page basis)
+keywords: Eclipse, IDE, Tools, JUnit
+
+# OpenGraph Image
+avatar: "/assets/img/eclipse-extras.png"
+
+# List of links in the navigation bar
+nav-links:
+  About: "/eclipse-extras/homepage/about"
+  Install: "/eclipse-extras/homepage/install"
+  News: "/eclipse-extras/homepage/news"
+  Issues: "https://github.com/rherrmann/eclipse-extras/issues"
+  Source: "https://github.com/rherrmann/eclipse-extras"
+  
+# Footer
+created-by: Rüdiger Herrmann
+creator-url: http://www.codeaffine.com/author/rherrmann/
+
+# Google Analytics Settings
+google_analytics_id: "UA-35034221-4"
+
+# Set these options as you need (For more information, check Jekyll's site)
+timezone: "Europe/Berlin"
+markdown: kramdown
+encoding: "utf-8"
+safe: true
+lsi: false
+
+# Default YAML values (more information on Jekyll's site)
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      comments: true  # add comments to all blog posts
+  -
+    scope:
+      path: "" # all files
+    values:
+      layout: "default"
+      show-avatar: true
+
+# Exclude these files from production site
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - CNAME
+  - .gitignore
+

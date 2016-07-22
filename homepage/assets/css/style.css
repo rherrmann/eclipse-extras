@@ -1,0 +1,157 @@
+/*
+  logo color gray: #808080;
+  logo color green: #74BF2A;
+*/
+
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%
+}
+ 
+body, p, ul, ol {
+  color: #1e1e1e;
+  font-size: 15px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+a {
+  text-decoration: none;
+  font-size: 15px;
+  color: #1b4177;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+p, ul, ol {
+  margin-bottom: 0.6em;
+}
+
+ul, ol {
+  list-style-position: inside;
+  margin-left: 1em;
+}
+
+.intro {
+  font-size: 112%;
+}
+
+h2 {
+  margin-top: 1.5em;
+  margin-bottom: 0.8em;
+  font-size: 180%;
+}
+
+h3 {
+  margin-top: 0.9em;
+  margin-bottom: 0.4em;
+}
+
+h4 {
+  margin-bottom: 0.6em;
+}
+
+header {
+  background-color: #74BF2A;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  box-shadow: 0 0 3px 1px rgba( 0, 0, 0, 0.25 );
+}
+
+header * {
+  color: white;
+  font-size: 110%;
+}
+
+header .title {
+  display: inline-block;
+  vertical-align: baseline;
+  float: left;
+  font-size: 180%;
+  font-weight: normal;
+}
+
+header a:active, header a:hover {
+  display: inline-block;
+  vertical-align: baseline;
+  color: #808080;
+  text-decoration: none;
+}
+
+header .menu {
+  display: inline-block;
+  vertical-align: baseline;
+  float: right;
+}
+
+header .menu a {
+  margin-left: 1.2em;
+}
+
+header .menu a.active {
+  padding-bottom: 15px;
+}
+
+#page-body {
+  min-height: 100%;
+  position: relative;
+}
+
+#main {
+  padding-top: 2em;
+  padding-bottom: 3em; /* Height of the footer, keep in sync with footer rule */
+}
+
+footer {
+  font-size: 12px;
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  position: absolute;
+  bottom: 0;
+  height: 3em; /* Height of the footer, keep in sync with #main rule */
+}
+
+footer a {
+  font-size: 12px;
+}
+
+.center {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.clear {
+  clear: both;
+}
+
+kbd { 
+  display:inline-block;
+  padding: 3px 5px;
+  font-size: 88%;
+  line-height: 90%;
+  color:#555;
+  text-shadow:0 1px 0 #fff;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb
+  white-space: nowrap;
+}
