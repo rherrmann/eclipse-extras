@@ -41,11 +41,11 @@ public class JUnitProgressUITest {
 
   @Test
   public void testUpdateFromBackgroundThread() {
-    final String text = "text";
-    final int textAslignment = SWT.CENTER;
-    final Color color = progressBar.getDisplay().getSystemColor( SWT.COLOR_GREEN );
-    final int selection = 1;
-    final int maximum = 2;
+    String text = "text";
+    int textAslignment = SWT.CENTER;
+    Color color = progressBar.getDisplay().getSystemColor( SWT.COLOR_GREEN );
+    int selection = 1;
+    int maximum = 2;
 
     runInThread( new Runnable() {
       @Override
