@@ -8,12 +8,11 @@ import org.eclipse.swt.widgets.Widget;
 
 public class TextAnimation implements Runnable {
 
-  private static final String DOTS = "...";
-
   public interface TextAnimationPainter {
     void drawText( TextAnimation textAnimation );
   }
 
+  private static final String DOTS = "...";
   private static final int DEFAULT_ANIMATION_INTERVAL = 400;
 
   private final int animationInterval;
