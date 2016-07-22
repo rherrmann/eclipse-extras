@@ -4,8 +4,8 @@ gems:
 
 # url is the full website URL
 # baseurl is the website's URL without the hostname
-url: "https://rherrmann.github.io/eclipse-extras/homepage"
-baseurl: "/eclipse-extras/homepage"
+url: "https://rherrmann.github.io/eclipse-extras"
+baseurl: "/eclipse-extras"
 enforce_ssl: ""
 
 # Title of website
