@@ -17,7 +17,7 @@ public class WorkspaceScopePreferenceInitializerPDETest {
     AbstractPreferenceInitializer actual = createExtension();
 
     assertThat( actual )
-     .isInstanceOf( WorkspaceScopePreferenceInitializer.class );
+      .isInstanceOf( WorkspaceScopePreferenceInitializer.class );
   }
 
   private static AbstractPreferenceInitializer createExtension() {
