@@ -11,8 +11,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchMode;
 
-import com.codeaffine.extras.launch.internal.LaunchExtrasPlugin;
-
 
 public class LaunchConfigValidator {
 
@@ -59,7 +57,7 @@ public class LaunchConfigValidator {
   }
 
   private static Status okStatus() {
-    return new Status( IStatus.OK, LaunchExtrasPlugin.PLUGIN_ID, "" );
+    return new Status( IStatus.OK, PLUGIN_ID, "" );
   }
 
 }
