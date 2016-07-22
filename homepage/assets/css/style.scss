@@ -1,8 +1,10 @@
-/*
-  logo color gray: #808080;
-  logo color green: #74BF2A;
-*/
+---
+---
 
+$logo-color-gray: #808080;
+$logo-color-green: #74BF2A;
+$regular-font-size: 15px;
+$small-font-size: 12px;
 
 * {
   margin: 0;
@@ -15,13 +17,13 @@ html, body {
  
 body, p, ul, ol {
   color: #1e1e1e;
-  font-size: 15px;
+  font-size: $regular-font-size;
   font-family: 'Open Sans', sans-serif;
 }
 
 a {
   text-decoration: none;
-  font-size: 15px;
+  font-size: $regular-font-size;
   color: #1b4177;
 }
 
@@ -58,7 +60,7 @@ h4 {
 }
 
 header {
-  background-color: #74BF2A;
+  background-color: $logo-color-green;
   padding-top: 5px;
   padding-bottom: 5px;
   box-shadow: 0 0 3px 1px rgba( 0, 0, 0, 0.25 );
@@ -80,7 +82,7 @@ header .title {
 header a:active, header a:hover {
   display: inline-block;
   vertical-align: baseline;
-  color: #808080;
+  color: $logo-color-gray;
   text-decoration: none;
 }
 
@@ -109,7 +111,7 @@ header .menu a.active {
 }
 
 footer {
-  font-size: 12px;
+  font-size: $small-font-size;
   width: 90%;
   margin-left: 5%;
   margin-right: 5%;
@@ -119,7 +121,7 @@ footer {
 }
 
 footer a {
-  font-size: 12px;
+  font-size: $small-font-size;
 }
 
 .center {
@@ -152,6 +154,6 @@ kbd {
   border: solid 1px #ccc;
   border-bottom-color: #bbb;
   border-radius: 3px;
-  box-shadow: inset 0 -1px 0 #bbb
+  box-shadow: inset 0 -1px 0 #bbb;
   white-space: nowrap;
 }
