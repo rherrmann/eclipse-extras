@@ -16,7 +16,7 @@ public class OpenLaunchDialogHander extends AbstractHandler {
   public Object execute( ExecutionEvent event ) {
     LaunchSelectionDialog dialog = createDialog( event );
     if( dialog.open() == OK ) {
-      new LaunchConfigStarter( dialog.getLaunchMode(), dialog.getSelectedLaunchConfigurations() ).start();;
+      new LaunchConfigStarter( dialog.getLaunchMode(), dialog.getSelectedLaunchConfigurations() ).start();
     }
     return null;
   }
