@@ -15,6 +15,8 @@ import com.codeaffine.extras.test.util.ImageAssert;
 
 public class JUnitStatusContributionItemPDETest {
 
+  private static final String JUNIT_STATUS_VISIBLE_EXPRESSION
+    = "com.codeaffine.extras.jdt.internal.JUnitStatusVisibleExpression";
   private static final String LOCATION = "toolbar:org.eclipse.ui.trim.status";
   private static final String TOOL_BAR_ID = "com.codeaffine.extras.jdt.internal.JUnitStatusToolBar";
 
@@ -40,7 +42,7 @@ public class JUnitStatusContributionItemPDETest {
     assertThat( controlElement.getAttribute( "id" ) ).isNotNull();
     assertThat( controlElement.createExecutableExtension( JUnitStatusContributionItem.class ) ).isNotNull();
     assertThat( visibleWhen.isCheckEnabled() ).isFalse();
-    assertThat( visibleWhen.referencedExpression() ).isEqualTo( "com.codeaffine.extras.jdt.internal.JUnitStatusVisibleExpression" );
+    assertThat( visibleWhen.referencedExpression() ).isEqualTo( JUNIT_STATUS_VISIBLE_EXPRESSION );
   }
 
   @Test
@@ -57,7 +59,7 @@ public class JUnitStatusContributionItemPDETest {
     assertThat( parameter.getAttribute( "name" ) ).isEqualTo( "org.eclipse.ui.views.showView.viewId" );
     assertThat( parameter.getAttribute( "value" ) ).isEqualTo( "org.eclipse.jdt.junit.ResultView" );
     assertThat( visibleWhen.isCheckEnabled() ).isFalse();
-    assertThat( visibleWhen.referencedExpression() ).isEqualTo( "com.codeaffine.extras.jdt.internal.JUnitStatusVisibleExpression" );
+    assertThat( visibleWhen.referencedExpression() ).isEqualTo( JUNIT_STATUS_VISIBLE_EXPRESSION );
   }
 
   private Extension getCommandElement() {

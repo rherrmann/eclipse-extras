@@ -29,7 +29,10 @@ public class LaunchConfigStarter {
     this( new DebugUIPreferences(), launchMode, launchConfigs );
   }
 
-  public LaunchConfigStarter( DebugUIPreferences preferences, ILaunchMode launchMode, ILaunchConfiguration... launchConfigs ) {
+  public LaunchConfigStarter( DebugUIPreferences preferences,
+                              ILaunchMode launchMode,
+                              ILaunchConfiguration... launchConfigs )
+  {
     this.preferences = requireNonNull( preferences );
     this.preferredLaunchMode = requireNonNull( launchMode );
     this.launchConfigs = launchConfigs;

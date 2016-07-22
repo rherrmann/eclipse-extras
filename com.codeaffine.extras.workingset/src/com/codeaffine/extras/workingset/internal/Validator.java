@@ -14,7 +14,9 @@ public class Validator {
   static final String MSG_NAME_EXISTS = "A working set with the same name already exists";
   static final String MSG_PATTERN_EMPTY = "Please enter a regular expression pattern";
   static final String MSG_PATTERN_INVALID = "The regular expression is not valid";
-  static final String MSG_JDT_RESTRICTION = "Due to a restriction in the Java Tools, working sets that are initially empty are not shown in the Package Explorer.";
+  static final String MSG_JDT_RESTRICTION
+    = "Due to a restriction in the Java Tools, working "
+    + "sets that are initially empty are not shown in the Package Explorer.";
 
   private final WorkingSetsProvider workingSetsProvider;
   private final ProjectsProvider projectsProvider;
