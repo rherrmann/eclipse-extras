@@ -18,14 +18,14 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
 
   private static final int ARC_SIZE = 3;
   private static final int DEFAULT_WIDTH = 160;
-	private static final int DEFAULT_HEIGHT = 18;
+  private static final int DEFAULT_HEIGHT = 18;
 
 	private final TextAnimation textAnimation;
-	private String text;
-	private int textAlignment;
-	private int maximum;
-	private int selection;
-	private Color barColor;
+  private String text;
+  private int textAlignment;
+  private int maximum;
+  private int selection;
+  private Color barColor;
 
   public JUnitProgressBar( Composite parent ) {
     super( parent, SWT.NO_BACKGROUND | SWT.DOUBLE_BUFFERED | SWT.NO_FOCUS );
