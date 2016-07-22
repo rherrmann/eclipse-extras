@@ -31,7 +31,7 @@ public class WorkspaceScopePreferences {
     preferenceStore.setValue( PREF_SHOW_JUNIT_STATUS_BAR, value );
   }
 
-  public boolean getShowJUnitStatusBar() {
+  public boolean isShowJUnitStatusBar() {
     return preferenceStore.getBoolean( PREF_SHOW_JUNIT_STATUS_BAR );
   }
 }

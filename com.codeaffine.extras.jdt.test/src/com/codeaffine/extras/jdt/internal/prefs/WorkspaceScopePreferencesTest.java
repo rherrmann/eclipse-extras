@@ -26,11 +26,11 @@ public class WorkspaceScopePreferencesTest {
   }
 
   @Test
-  public void testGetShowJUnitStatusBar() {
-    store.setValue( PREF_SHOW_JUNIT_STATUS_BAR, true );
-
-    assertThat( workspaceScopePreferences.getShowJUnitStatusBar() ).isTrue();
-  }
+    public void testIsShowJUnitStatusBar() {
+      store.setValue( PREF_SHOW_JUNIT_STATUS_BAR, true );
+  
+      assertThat( workspaceScopePreferences.isShowJUnitStatusBar() ).isTrue();
+    }
 
   @Test
   public void testGetPreferenceStore() {

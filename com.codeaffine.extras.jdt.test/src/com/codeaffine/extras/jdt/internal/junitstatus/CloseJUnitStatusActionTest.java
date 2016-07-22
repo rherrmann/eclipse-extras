@@ -41,7 +41,7 @@ public class CloseJUnitStatusActionTest {
 
     action.run();
 
-    assertThat( preferences.getShowJUnitStatusBar() ).isFalse();
+    assertThat( preferences.isShowJUnitStatusBar() ).isFalse();
     verify( evaluationService ).requestEvaluation( PreferencePropertyTester.PROP_IS_TRUE );
   }
 
@@ -51,7 +51,7 @@ public class CloseJUnitStatusActionTest {
 
     action.run();
 
-    assertThat( preferences.getShowJUnitStatusBar() ).isFalse();
+    assertThat( preferences.isShowJUnitStatusBar() ).isFalse();
     verify( evaluationService ).requestEvaluation( PreferencePropertyTester.PROP_IS_TRUE );
   }
 }
