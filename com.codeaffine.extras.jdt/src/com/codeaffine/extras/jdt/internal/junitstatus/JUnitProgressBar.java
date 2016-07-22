@@ -20,7 +20,7 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
   private static final int DEFAULT_WIDTH = 160;
   private static final int DEFAULT_HEIGHT = 18;
 
-	private final TextAnimation textAnimation;
+  private final TextAnimation textAnimation;
   private String text;
   private int textAlignment;
   private int maximum;
@@ -92,7 +92,7 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
     redraw();
   }
 
-	@Override
+  @Override
   public Point computeSize( int wHint, int hHint, boolean changed ) {
     checkWidget();
     Point result = new Point( DEFAULT_WIDTH, DEFAULT_HEIGHT );
