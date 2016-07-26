@@ -1,7 +1,7 @@
 package com.codeaffine.extras.workingset.internal;
 
 
-public class RegexPatterns {
+class RegexPatterns {
 
   static final String ANYTHING = ".*";
 
