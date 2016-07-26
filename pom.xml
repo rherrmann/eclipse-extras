@@ -146,6 +146,7 @@
           <argLine>-Xmx512m</argLine>
           <useUIHarness>true</useUIHarness>
           <appArgLine>-nl en -consolelog</appArgLine>
+          <forkedProcessTimeoutInSeconds>1200</forkedProcessTimeoutInSeconds>
           <includes>
             <include>**/*Test.class</include>
           </includes>
