@@ -15,6 +15,7 @@
       <editor
             class="com.codeaffine.extras.imageviewer.internal.ImageViewerEditor"
             default="true"
+            icon="$nl$/icons/eview16/image-viewer-editor.gif"
             id="com.codeaffine.extras.imageviewer.internal.ImageViewerEditor"
             name="Image Viewer">
          <contentTypeBinding
