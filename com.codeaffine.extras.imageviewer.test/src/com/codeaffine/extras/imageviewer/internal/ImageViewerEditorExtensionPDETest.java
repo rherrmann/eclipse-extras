@@ -11,12 +11,13 @@ import com.codeaffine.eclipse.core.runtime.test.util.ExtensionAssert;
 public class ImageViewerEditorExtensionPDETest {
 
   @Test
-  public void testExtension() {
+  public void testEditorExtension() {
     Extension actual = readEditorsExtension();
 
     ExtensionAssert.assertThat( actual )
       .isInstantiable( "class", ImageViewerEditor.class )
       .hasNoAttributeValueFor( "contributorClass" )
+      .hasAttributeValue( "icon", "$nl$/icons/eview16/image-viewer-editor.gif" )
       .hasAttributeValue( "default", Boolean.TRUE.toString() )
       .hasNonEmptyAttributeValueFor( "name" )
       .hasNoAttributeValueFor( "matchingStrategy" )
