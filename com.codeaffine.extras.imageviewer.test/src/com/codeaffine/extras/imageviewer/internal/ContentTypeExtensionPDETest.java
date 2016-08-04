@@ -50,7 +50,7 @@ public class ContentTypeExtensionPDETest {
 
   @Test
   public void testDefaultEditorBinding() throws Exception {
-    IEditorDescriptor editorDescriptor = IDE.getEditorDescriptor( fileName, true, false );
+    IEditorDescriptor editorDescriptor = IDE.getEditorDescriptor( fileName, true );
 
     assertThat( editorDescriptor.getId() ).isEqualTo( ImageViewerEditor.ID );
   }
