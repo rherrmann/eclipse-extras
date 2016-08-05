@@ -10,7 +10,7 @@
 
 Extras for Eclipse is a collection of small extensions for the Eclipse IDE that include a launch dialog, a JUnit status bar, a launch configuration housekeeper, and little helpers to accomplish recurring tasks with keyboard shortcuts.
 
-Please visit the homepage for more information: http://rherrmann.github.io/eclipse-extras/
+Please visit the homepage for more information: https://rherrmann.github.io/eclipse-extras/
 
 ## Installation
 
