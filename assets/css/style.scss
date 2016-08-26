@@ -6,6 +6,20 @@ $logo-color-green: #53C23C;
 $regular-font-size: 15px;
 $small-font-size: 12px;
 
+@media( min-width: 992px ) {
+  .desktop-only {
+    display:block !important;
+  }
+}
+@media( max-width: 991px ) {
+  .mobile-only {
+    display:block !important;
+  }
+  .desktop-only {
+      display:none !important;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
