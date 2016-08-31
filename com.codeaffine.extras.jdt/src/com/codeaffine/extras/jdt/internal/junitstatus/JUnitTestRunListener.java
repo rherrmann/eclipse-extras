@@ -77,6 +77,7 @@ public class JUnitTestRunListener extends TestRunListener {
 
   @Override
   public void testCaseFinished( ITestCaseElement testCaseElement ) {
+System.out.println( "finished " + testCaseElement.getTestMethodName() );
     if( belongsToCurrentSession( testCaseElement ) ) {
       initializeCurrentSession( testCaseElement );
       updateProgressUI( new TestRunSessionInfo( testCaseElement ) );
@@ -100,24 +101,24 @@ public class JUnitTestRunListener extends TestRunListener {
     }
   }
 
-  private void updateProgressUI( TestRunSessionInfo testSessionMetrics ) {
-    Color barColor = getProgressBarColor( testSessionMetrics );
-    String text = getProgressBarText( testSessionMetrics );
-    int executedTestCount = testSessionMetrics.getExecutedTestCount();
-    int totalTestCount = testSessionMetrics.getTotalTestCount();
+  private void updateProgressUI( TestRunSessionInfo testRunSessionInfo ) {
+    Color barColor = getProgressBarColor( testRunSessionInfo );
+    String text = getProgressBarText( testRunSessionInfo );
+    int executedTestCount = testRunSessionInfo.getExecutedTestCount();
+    int totalTestCount = testRunSessionInfo.getTotalTestCount();
     progressUI.update( text, SWT.CENTER, barColor, executedTestCount, totalTestCount );
-    progressUI.setToolTipText( getToolTipText( testSessionMetrics ) );
+    progressUI.setToolTipText( getToolTipText( testRunSessionInfo ) );
   }
 
-  private void updateProgressUI( TestRunSessionInfo testSessionMetrics, String text ) {
+  private void updateProgressUI( TestRunSessionInfo testRunSessionInfo, String text ) {
     progressUI.update( text, SWT.LEFT, null, 0, 0 );
-    progressUI.setToolTipText( getToolTipText( testSessionMetrics ) );
+    progressUI.setToolTipText( getToolTipText( testRunSessionInfo ) );
   }
 
-  private String getToolTipText( TestRunSessionInfo testSessionMetrics ) {
+  private String getToolTipText( TestRunSessionInfo testRunSessionInfo ) {
     String result = currentTestRunName;
-    if( testSessionMetrics != null ) {
-      int failedTestCount = testSessionMetrics.getFailedTestCount();
+    if( testRunSessionInfo != null ) {
+      int failedTestCount = testRunSessionInfo.getFailedTestCount();
       if( failedTestCount > 0 ) {
         result = format( "{0} ({1} failed)", currentTestRunName, valueOf( failedTestCount ) );
       }
