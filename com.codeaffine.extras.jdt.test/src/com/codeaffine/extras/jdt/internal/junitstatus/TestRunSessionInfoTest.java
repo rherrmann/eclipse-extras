@@ -15,8 +15,16 @@ import org.junit.Test;
 
 public class TestRunSessionInfoTest {
 
+  private static final int EXECUTED_TEST_COUNT = 123;
+
   private ITestRunSession testRunSession;
   private TestRunSessionInfo testRunSessionInfo;
+
+  @Before
+  public void setUp() {
+    testRunSession = mockTestRunSession();
+    testRunSessionInfo = new TestRunSessionInfo( testRunSession, EXECUTED_TEST_COUNT );
+  }
 
   @Test
   public void testGetTotalTestCountWithEmptyContainer() {
@@ -114,69 +122,9 @@ public class TestRunSessionInfoTest {
 
   @Test
   public void testGetExecutedTestCount() {
-    setChildren( testRunSession, mockTestCase( Result.UNDEFINED ) );
-
     int count = testRunSessionInfo.getExecutedTestCount();
 
-    assertThat( count ).isEqualTo( 0 );
-  }
-
-  @Test
-  public void testGetExecutedTestCountWithEmptyContainer() {
-    setChildren( testRunSession, new ITestElement[ 0 ] );
-
-    int count = testRunSessionInfo.getExecutedTestCount();
-
-    assertThat( count ).isEqualTo( 0 );
-  }
-
-  @Test
-  public void testGetExecutedTestCountWithErroredTest() {
-    setChildren( testRunSession, mockTestCase( Result.ERROR ) );
-
-    int count = testRunSessionInfo.getExecutedTestCount();
-
-    assertThat( count ).isEqualTo( 1 );
-  }
-
-  @Test
-  public void testGetExecutedTestCountWithFailedTest() {
-    setChildren( testRunSession, mockTestCase( Result.FAILURE ) );
-
-    int count = testRunSessionInfo.getExecutedTestCount();
-
-    assertThat( count ).isEqualTo( 1 );
-  }
-
-  @Test
-  public void testGetExecutedTestCountWithIgnoredTest() {
-    setChildren( testRunSession, mockTestCase( Result.IGNORED ) );
-
-    int count = testRunSessionInfo.getExecutedTestCount();
-
-    assertThat( count ).isEqualTo( 1 );
-  }
-
-  @Test
-  public void testGetExecutedTestCountWithSucceededTest() {
-    setChildren( testRunSession, mockTestCase( Result.OK ) );
-
-    int count = testRunSessionInfo.getExecutedTestCount();
-
-    assertThat( count ).isEqualTo( 1 );
-  }
-
-  @Test
-  public void testGetExecutedTestCountWithNestedChilren() {
-    ITestElementContainer nestedContainer1 = mock( ITestElementContainer.class );
-    ITestElementContainer nestedContainer2 = mock( ITestElementContainer.class );
-    setChildren( nestedContainer1, mockTestCase( Result.OK ) );
-    setChildren( nestedContainer2, mockTestCase( Result.FAILURE ) );
-    setChildren( testRunSession, nestedContainer1, nestedContainer2 );
-
-    int count = testRunSessionInfo.getExecutedTestCount();
-
-    assertThat( count ).isEqualTo( 2 );
+    assertThat( count ).isEqualTo( EXECUTED_TEST_COUNT );
   }
 
   @Test
@@ -251,12 +199,6 @@ public class TestRunSessionInfoTest {
     TestRunState testRunState = testRunSessionInfo.getTestRunState();
 
     assertThat( testRunState ).isEqualTo( TestRunState.SUCCESS );
-  }
-
-  @Before
-  public void setUp() {
-    testRunSession = mockTestRunSession();
-    testRunSessionInfo = new TestRunSessionInfo( testRunSession );
   }
 
   private static ITestRunSession mockTestRunSession() {

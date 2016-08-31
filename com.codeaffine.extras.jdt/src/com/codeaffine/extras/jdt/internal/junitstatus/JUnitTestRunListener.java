@@ -32,6 +32,7 @@ public class JUnitTestRunListener extends TestRunListener {
   private final ProgressUI progressUI;
   private volatile int currentSessionHashCode;
   private volatile String currentTestRunName;
+  private volatile int executedTestCount;
 
   public JUnitTestRunListener( ResourceManager resourceManager, ProgressUI progressUI ) {
     this( DebugPlugin.getDefault().getLaunchManager(), resourceManager, progressUI );
@@ -56,15 +57,16 @@ public class JUnitTestRunListener extends TestRunListener {
   @Override
   public void sessionLaunched( ITestRunSession testRunSession ) {
     currentSessionHashCode = 0;
+    executedTestCount = 0;
     currentTestRunName = testRunSession.getTestRunName();
-    updateProgressUI( new TestRunSessionInfo( testRunSession ), STARTING );
+    updateProgressUI( new TestRunSessionInfo( testRunSession, executedTestCount ), STARTING );
   }
 
   @Override
   public void sessionStarted( ITestRunSession testRunSession ) {
     if( belongsToCurrentSession( testRunSession ) ) {
       initializeCurrentSession( testRunSession );
-      updateProgressUI( new TestRunSessionInfo( testRunSession ) );
+      updateProgressUI( new TestRunSessionInfo( testRunSession, executedTestCount ) );
     }
   }
 
@@ -77,10 +79,10 @@ public class JUnitTestRunListener extends TestRunListener {
 
   @Override
   public void testCaseFinished( ITestCaseElement testCaseElement ) {
-System.out.println( "finished " + testCaseElement.getTestMethodName() );
     if( belongsToCurrentSession( testCaseElement ) ) {
       initializeCurrentSession( testCaseElement );
-      updateProgressUI( new TestRunSessionInfo( testCaseElement ) );
+      executedTestCount++;
+      updateProgressUI( new TestRunSessionInfo( testCaseElement, executedTestCount ) );
     }
   }
 
@@ -127,8 +129,8 @@ System.out.println( "finished " + testCaseElement.getTestMethodName() );
   }
 
   private static String getProgressBarText( TestRunSessionInfo testRunSessionInfo ) {
-    int executedTestCount = testRunSessionInfo.getExecutedTestCount();
     int totalTestCount = testRunSessionInfo.getTotalTestCount();
+    int executedTestCount = testRunSessionInfo.getExecutedTestCount();
     return format( "{0} / {1}", valueOf( executedTestCount ), valueOf( totalTestCount ) );
   }
 
