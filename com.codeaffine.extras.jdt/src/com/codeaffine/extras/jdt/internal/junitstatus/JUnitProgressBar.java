@@ -116,13 +116,20 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
   }
 
   private void paint( GC gc ) {
-    gc.fillRectangle( getClientArea() );
-    drawRectangle( gc );
+    prepareGC( gc );
+    drawBorder( gc );
     drawBar( gc );
     drawText( gc );
   }
 
-  private void drawRectangle( GC gc ) {
+  private void prepareGC( GC gc ) {
+    if( gc.getAdvanced() ) {
+      gc.setTextAntialias( SWT.ON );
+    }
+    gc.fillRectangle( getClientArea() );
+  }
+
+  private void drawBorder( GC gc ) {
     if( maximum > 0 ) {
       Rectangle clientArea = getClientArea();
       int x = clientArea.x;
