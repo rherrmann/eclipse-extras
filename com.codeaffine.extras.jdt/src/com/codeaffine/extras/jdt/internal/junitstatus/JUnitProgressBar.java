@@ -3,8 +3,6 @@ package com.codeaffine.extras.jdt.internal.junitstatus;
 import java.util.Objects;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
@@ -106,13 +104,8 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
   }
 
   private void registerListeners() {
-    addControlListener( new ControlAdapter() {
-      @Override
-      public void controlResized( ControlEvent event ) {
-        redraw();
-      }
-    } );
-    addPaintListener( event -> paint( event.gc ) );
+    addListener( SWT.Resize, event -> redraw() );
+    addListener( SWT.Paint, event -> paint( event.gc ) );
   }
 
   private void paint( GC gc ) {
