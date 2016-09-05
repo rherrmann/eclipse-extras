@@ -155,8 +155,39 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
       x = ( clientArea.width - textSize.x ) / 2;
     }
     int y = ( clientArea.height - textSize.y ) / 2 + 1;
-    gc.setForeground( getDisplay().getSystemColor( SWT.COLOR_WIDGET_FOREGROUND ) );
-    gc.drawText( textAnimation.getAnimatedText(), x, y, SWT.DRAW_TRANSPARENT );
+    String text = textAnimation.getAnimatedText();
+    Color color = getDisplay().getSystemColor( SWT.COLOR_WIDGET_FOREGROUND );
+    drawText( gc, text, x, y, color, null );
+    Color contrastColor = getBarForegroundColor();
+    if( !color.getRGB().equals( contrastColor.getRGB() ) ) {
+      int barWidth = Math.min( clientArea.width - 2, getBarWidth() );
+      Rectangle clipping = new Rectangle( clientArea.x, clientArea.y, barWidth, clientArea.height );
+      drawText( gc, text, x, y, contrastColor, clipping );
+    }
+  }
+
+  private static void drawText( GC gc, String text, int x, int y, Color foreground, Rectangle clip ) {
+    Rectangle previousClipping = gc.getClipping();
+    if( clip != null ) {
+      gc.setClipping( clip );
+    }
+    gc.setForeground( foreground );
+    gc.drawText( text, x, y, SWT.DRAW_TRANSPARENT );
+    if( clip != null ) {
+      gc.setClipping( previousClipping );
+    }
+  }
+
+  private Color getBarForegroundColor() {
+    Color result = getDisplay().getSystemColor( SWT.COLOR_WIDGET_FOREGROUND );
+    if( barColor != null ) {
+      double y
+        = ( 299 * barColor.getRed() + 587 * barColor.getGreen() + 114 * barColor.getBlue() ) / 1000;
+      result = y >= 128
+        ? getDisplay().getSystemColor( SWT.COLOR_BLACK )
+        : getDisplay().getSystemColor( SWT.COLOR_WHITE );
+    }
+    return result;
   }
 
   int getBarWidth() {

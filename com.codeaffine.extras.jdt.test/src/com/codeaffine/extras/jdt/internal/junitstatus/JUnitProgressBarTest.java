@@ -1,12 +1,15 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,6 +28,13 @@ public class JUnitProgressBarTest {
   public final ConditionalIgnoreRule ignoreRule = new ConditionalIgnoreRule();
 
   private JUnitProgressBar progressBar;
+
+  @Before
+  public void setUp() {
+    Shell parent = displayHelper.createShell();
+    parent.setLayout( new FillLayout() );
+    progressBar = new JUnitProgressBar( parent );
+  }
 
   @Test
   public void testInitialValues() {
@@ -175,9 +185,28 @@ public class JUnitProgressBarTest {
     assertThat( progressBar.getBarWidth() ).isEqualTo( 0 );
   }
 
-  @Before
-  public void setUp() {
-    progressBar = new JUnitProgressBar( displayHelper.createShell() );
+  @Test
+  public void testRedrawWithInitialValues() {
+    progressBar.getParent().setVisible( true );
+
+    try {
+      progressBar.redraw();
+    } catch( Exception notExpected ) {
+      fail();
+    }
+  }
+
+  @Test
+  public void testRedrawWithCustomValues() {
+    progressBar.getParent().setVisible( true );
+    Color barColor = displayHelper.getSystemColor( SWT.COLOR_BLUE );
+    progressBar.setValues( "text", SWT.CENTER, barColor, 4, 5 );
+
+    try {
+      progressBar.redraw();
+    } catch( Exception notExpected ) {
+      fail();
+    }
   }
 
   private void setProgressBarWidth( int width ) {
