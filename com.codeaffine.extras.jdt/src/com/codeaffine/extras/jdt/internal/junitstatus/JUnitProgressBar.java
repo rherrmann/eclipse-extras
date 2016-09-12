@@ -109,85 +109,9 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
   }
 
   private void paint( GC gc ) {
-    prepareGC( gc );
-    drawBorder( gc );
-    drawBar( gc );
-    drawText( gc );
-  }
-
-  private void prepareGC( GC gc ) {
-    if( gc.getAdvanced() ) {
-      gc.setTextAntialias( SWT.ON );
-    }
-    gc.fillRectangle( getClientArea() );
-  }
-
-  private void drawBorder( GC gc ) {
-    if( maximum > 0 ) {
-      Rectangle clientArea = getClientArea();
-      int x = clientArea.x;
-      int y = clientArea.y;
-      int width = clientArea.width - 1;
-      int height = clientArea.height - 1 - 1;
-      gc.setAlpha( 255 );
-      gc.setForeground( getDisplay().getSystemColor( SWT.COLOR_WIDGET_NORMAL_SHADOW ) );
-      gc.drawRoundRectangle( x, y, width, height, ARC_SIZE, ARC_SIZE );
-    }
-  }
-
-  private void drawBar( GC gc ) {
-    gc.setAlpha( 200 );
-    if( barColor != null ) {
-      gc.setBackground( barColor );
-    }
-    Rectangle clientArea = getClientArea();
-    int barWidth = Math.min( clientArea.width - 2, getBarWidth() );
-    gc.fillRoundRectangle( 1, 1, barWidth, clientArea.height - 2 - 1, ARC_SIZE, ARC_SIZE );
-  }
-
-  private void drawText( GC gc ) {
-    gc.setAlpha( 255 );
-    Rectangle rect = getClientArea();
-    Rectangle clientArea = new Rectangle( rect.x + 1, rect.y + 1, rect.width - 2, rect.height - 2 );
-    Point textSize = gc.textExtent( text );
-    int x = 3;
-    if( textAlignment == SWT.CENTER ) {
-      x = ( clientArea.width - textSize.x ) / 2;
-    }
-    int y = ( clientArea.height - textSize.y ) / 2 + 1;
+    int style = ( maximum > 0 ? SWT.BORDER : SWT.NONE ) | textAlignment;
     String text = textAnimation.getAnimatedText();
-    Color color = getDisplay().getSystemColor( SWT.COLOR_WIDGET_FOREGROUND );
-    drawText( gc, text, x, y, color, null );
-    Color contrastColor = getBarForegroundColor();
-    if( !color.getRGB().equals( contrastColor.getRGB() ) ) {
-      int barWidth = Math.min( clientArea.width - 2, getBarWidth() );
-      Rectangle clipping = new Rectangle( clientArea.x, clientArea.y, barWidth, clientArea.height );
-      drawText( gc, text, x, y, contrastColor, clipping );
-    }
-  }
-
-  private static void drawText( GC gc, String text, int x, int y, Color foreground, Rectangle clip ) {
-    Rectangle previousClipping = gc.getClipping();
-    if( clip != null ) {
-      gc.setClipping( clip );
-    }
-    gc.setForeground( foreground );
-    gc.drawText( text, x, y, SWT.DRAW_TRANSPARENT );
-    if( clip != null ) {
-      gc.setClipping( previousClipping );
-    }
-  }
-
-  private Color getBarForegroundColor() {
-    Color result = getDisplay().getSystemColor( SWT.COLOR_WIDGET_FOREGROUND );
-    if( barColor != null ) {
-      double y
-        = ( 299 * barColor.getRed() + 587 * barColor.getGreen() + 114 * barColor.getBlue() ) / 1000;
-      result = y >= 128
-        ? getDisplay().getSystemColor( SWT.COLOR_BLACK )
-        : getDisplay().getSystemColor( SWT.COLOR_WHITE );
-    }
-    return result;
+    new Painter( gc, getClientArea(), text, barColor, getBarWidth(), style  ).paint();
   }
 
   int getBarWidth() {
@@ -209,6 +133,118 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
         || !Objects.equals( this.barColor, barColor )
         || this.selection != selection
         || this.maximum != maximum;
+  }
+
+  private static class Painter {
+    private final GC gc;
+    private final Rectangle clientArea;
+    private final String text;
+    private final Color barColor;
+    private final int barWidth;
+    private final int style;
+
+    Painter( GC gc, Rectangle clientArea, String text, Color barColor, int barWidth, int style ) {
+      this.gc = gc;
+      this.clientArea = clientArea;
+      this.text = text;
+      this.barColor = barColor;
+      this.barWidth = barWidth;
+      this.style = style;
+    }
+
+    void paint() {
+      prepareGC();
+      drawBorder();
+      drawBar();
+      drawText();
+    }
+
+    private void prepareGC() {
+      if( gc.getAdvanced() ) {
+        gc.setTextAntialias( SWT.ON );
+      }
+      gc.fillRectangle( clientArea );
+    }
+
+    private void drawBorder() {
+      if( ( style & SWT.BORDER ) != 0 ) {
+        int x = clientArea.x;
+        int y = clientArea.y;
+        int width = clientArea.width - 1;
+        int height = clientArea.height - 1 - 1;
+        gc.setAlpha( 255 );
+        gc.setForeground( getSystemColor( SWT.COLOR_WIDGET_NORMAL_SHADOW ) );
+        gc.drawRoundRectangle( x, y, width, height, ARC_SIZE, ARC_SIZE );
+      }
+    }
+
+    private void drawBar() {
+      if( barColor != null ) {
+        gc.setAlpha( 200 );
+        gc.setBackground( barColor );
+        gc.fillRoundRectangle( 1, 1, barWidth, clientArea.height - 2 - 1, ARC_SIZE, ARC_SIZE );
+      }
+    }
+
+    private void drawText() {
+      gc.setAlpha( 255 );
+      Rectangle rect = insideBorderArea();
+      Point textLocation = getTextLocation( rect );
+
+      Color defaultForeground = getSystemColor( SWT.COLOR_WIDGET_FOREGROUND );
+      drawText( textLocation, defaultForeground, null );
+      Color barForeground = getBarForegroundColor();
+      if( !equals( defaultForeground, barForeground ) ) {
+        Rectangle clipping = new Rectangle( rect.x, rect.y, barWidth, rect.height );
+        drawText( textLocation, barForeground, clipping );
+      }
+    }
+
+    private void drawText( Point location, Color foreground, Rectangle clipping ) {
+      Rectangle previousClipping = gc.getClipping();
+      if( clipping != null ) {
+        gc.setClipping( clipping );
+      }
+      gc.setForeground( foreground );
+      gc.drawText( text, location.x, location.y, SWT.DRAW_TRANSPARENT );
+      if( clipping != null ) {
+        gc.setClipping( previousClipping );
+      }
+    }
+
+    private Point getTextLocation( Rectangle clientArea ) {
+      Point textSize = gc.textExtent( text );
+      int x = 3;
+      if( ( style & SWT.CENTER ) != 0 ) {
+        x = ( clientArea.width - textSize.x ) / 2;
+      }
+      int y = ( clientArea.height - textSize.y ) / 2 + 1;
+      return new Point( x, y );
+    }
+
+    private Color getBarForegroundColor() {
+      Color result = getSystemColor( SWT.COLOR_WIDGET_FOREGROUND );
+      if( barColor != null ) {
+        int red = barColor.getRed();
+        int green = barColor.getGreen();
+        int blue = barColor.getBlue();
+        double y = ( 299 * red + 587 * green + 114 * blue ) / 1000;
+        result = y >= 128 ? getSystemColor( SWT.COLOR_BLACK ) : getSystemColor( SWT.COLOR_WHITE );
+      }
+      return result;
+    }
+
+    private Color getSystemColor( int id ) {
+      return gc.getDevice().getSystemColor( id );
+    }
+
+    private Rectangle insideBorderArea() {
+      return new Rectangle( clientArea.x + 1, clientArea.y + 1, clientArea.width - 2, clientArea.height - 2 );
+    }
+
+    private static boolean equals( Color color1, Color color2 ) {
+      return color1.getRGB().equals( color2.getRGB() );
+    }
   }
 
 }

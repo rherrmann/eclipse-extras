@@ -1,5 +1,7 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
+import static org.eclipse.jdt.junit.model.ITestElement.Result.UNDEFINED;
+
 import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestElement;
 import org.eclipse.jdt.junit.model.ITestElement.ProgressState;
@@ -11,25 +13,13 @@ import org.eclipse.jdt.junit.model.ITestRunSession;
 public class TestRunSessionInfo {
 
   private final ITestRunSession testRunSession;
-  private final int executedTestCount;
   private boolean countersInitialized;
   private int totalTestCount;
   private int failedTestCount;
+  private int executedTestCount;
 
-  /*
-   * [rh] The number of executed tests cannot be determined from evaluating the test result of
-   * each tests within a session. In certain cases, the test result is UNDEFINED even though the
-   * test was executed.
-   *
-   * Therefore the number of executed tests is increased in JUnitTestRunListener::testCaseFinished
-   * and passed as an argument to this constructor.
-   *
-   * See issue #49 [JUnit StatusBar] Show wrong progress information when the same test is executed multiple times
-   * https://github.com/rherrmann/eclipse-extras/issues/49
-   */
-  public TestRunSessionInfo( ITestElement testElement, int executedTestCount ) {
+  public TestRunSessionInfo( ITestElement testElement ) {
     this.testRunSession = testElement.getTestRunSession();
-    this.executedTestCount = executedTestCount;
   }
 
   public int getTotalTestCount() {
@@ -43,6 +33,7 @@ public class TestRunSessionInfo {
   }
 
   public int getExecutedTestCount() {
+    initializeCounters();
     return executedTestCount;
   }
 
@@ -81,6 +72,9 @@ public class TestRunSessionInfo {
 
   private void updateCounters( ITestCaseElement testElement ) {
     Result testResult = testElement.getTestResult( false );
+    if( !UNDEFINED.equals( testResult ) ) {
+      executedTestCount++;
+    }
     if( isTestFailed( testResult ) ) {
       failedTestCount++;
     }
