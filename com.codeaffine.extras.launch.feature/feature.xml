@@ -4,19 +4,13 @@
       label="Extras for Launch Configurations"
       version="1.0.0.qualifier"
       provider-name="codeaffine.com"
-      plugin="com.codeaffine.extras.branding">
+      plugin="com.codeaffine.extras.branding"
+      license-feature="com.codeaffine.extras.license.feature"
+      license-feature-version="1.0.0.qualifier">
 
    <description>
       %description
    </description>
-
-   <copyright>
-      %copyright
-   </copyright>
-
-   <license url="%licenseURL">
-      %license
-   </license>
 
    <requires>
       <import plugin="org.eclipse.core.runtime" version="3.7.0" match="compatible"/>

@@ -65,6 +65,7 @@
     <module>com.codeaffine.extras.workingset.feature</module>
     <module>com.codeaffine.extras.test.util</module>
     <module>com.codeaffine.extras.branding</module>
+    <module>com.codeaffine.extras.license.feature</module>
     <module>com.codeaffine.extras.repository</module>
     <module>com.codeaffine.extras.target</module>
   </modules>
