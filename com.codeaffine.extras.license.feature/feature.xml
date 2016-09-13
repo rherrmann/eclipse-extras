@@ -4,12 +4,4 @@
       version="1.0.0.qualifier"
       provider-name="codeaffine.com">
 
-   <copyright>
-      %copyright
-   </copyright>
-
-   <license url="%licenseURL">
-      %license
-   </license>
-
 </feature>
