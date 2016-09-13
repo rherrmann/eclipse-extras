@@ -1,5 +1,6 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
+import static java.util.Objects.requireNonNull;
 import static org.eclipse.jdt.junit.model.ITestElement.Result.UNDEFINED;
 
 import org.eclipse.jdt.junit.model.ITestCaseElement;
@@ -12,29 +13,46 @@ import org.eclipse.jdt.junit.model.ITestRunSession;
 
 public class TestRunSessionInfo {
 
+  public static boolean isTestFailed( Result testResult ) {
+    return Result.ERROR.equals( testResult ) || Result.FAILURE.equals( testResult );
+  }
+
   private final ITestRunSession testRunSession;
+  private final Object lock;
   private boolean countersInitialized;
   private int totalTestCount;
   private int failedTestCount;
   private int executedTestCount;
 
   public TestRunSessionInfo( ITestElement testElement ) {
+    requireNonNull( testElement, "testElement" );
     this.testRunSession = testElement.getTestRunSession();
+    this.lock = new Object();
+  }
+
+  public String getName() {
+    return testRunSession.getTestRunName();
   }
 
   public int getTotalTestCount() {
-    initializeCounters();
-    return totalTestCount;
+    synchronized( lock ) {
+      initializeCounters();
+      return totalTestCount;
+    }
   }
 
   public int getFailedTestCount() {
-    initializeCounters();
-    return failedTestCount;
+    synchronized( lock ) {
+      initializeCounters();
+      return failedTestCount;
+    }
   }
 
   public int getExecutedTestCount() {
-    initializeCounters();
-    return executedTestCount;
+    synchronized( lock ) {
+      initializeCounters();
+      return executedTestCount;
+    }
   }
 
   public TestRunState getTestRunState() {
@@ -42,7 +60,7 @@ public class TestRunSessionInfo {
     if( testRunSession.getProgressState() == ProgressState.STOPPED ) {
       result = TestRunState.STOPPED;
     } else {
-      if( isTestFailed( testRunSession.getTestResult( true ) ) ) {
+      if( getFailedTestCount() > 0 ) {
         result = TestRunState.FAILED;
       } else {
         result = TestRunState.SUCCESS;
@@ -51,10 +69,34 @@ public class TestRunSessionInfo {
     return result;
   }
 
+  public void incExecutedTestCount() {
+    synchronized( lock ) {
+      initializeCounters();
+      executedTestCount++;
+    }
+  }
+
+  public void incFailedTestCount() {
+    synchronized( lock ) {
+      initializeCounters();
+      failedTestCount++;
+    }
+  }
+
+  public boolean equalsSession( ITestElement testElement ) {
+    return testElement != null && testElement.getTestRunSession().equals( testRunSession );
+  }
+
   private void initializeCounters() {
     if( !countersInitialized ) {
       countersInitialized = true;
       collectCounters( testRunSession );
+      if( executedTestCount > 0 ) {
+        executedTestCount--;
+      }
+      if( failedTestCount > 0 ) {
+        failedTestCount--;
+      }
     }
   }
 
@@ -79,10 +121,6 @@ public class TestRunSessionInfo {
       failedTestCount++;
     }
     totalTestCount++;
-  }
-
-  private static boolean isTestFailed( Result testResult ) {
-    return Result.ERROR.equals( testResult ) || Result.FAILURE.equals( testResult );
   }
 
 }

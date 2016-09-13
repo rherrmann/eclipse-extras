@@ -18,6 +18,26 @@ public class TestRunSessionInfoTest {
   private ITestRunSession testRunSession;
   private TestRunSessionInfo testRunSessionInfo;
 
+  @Before
+  public void setUp() {
+    testRunSession = mockTestRunSession();
+    testRunSessionInfo = new TestRunSessionInfo( testRunSession );
+  }
+
+  @Test(expected=NullPointerException.class)
+  public void testConstructorWithNullArgument() {
+    new TestRunSessionInfo( null );
+  }
+
+  @Test
+  public void testGetName() {
+    when( testRunSession.getTestRunName() ).thenReturn( "test-run-name" );
+
+    String name = testRunSessionInfo.getName();
+
+    assertThat( name ).isEqualTo( testRunSession.getTestRunName() );
+  }
+
   @Test
   public void testGetTotalTestCountWithEmptyContainer() {
     setChildren( testRunSession, new ITestElement[ 0 ] );
@@ -67,7 +87,7 @@ public class TestRunSessionInfoTest {
 
   @Test
   public void testGetFailedTestCountWithFailureResult() {
-    setChildren( testRunSession, mockTestCase( Result.FAILURE ) );
+    setChildren( testRunSession, mockTestCase( Result.FAILURE ), mockTestCase( Result.FAILURE ) );
 
     int count = testRunSessionInfo.getFailedTestCount();
 
@@ -76,7 +96,7 @@ public class TestRunSessionInfoTest {
 
   @Test
   public void testGetFailedTestCountWithErrorResult() {
-    setChildren( testRunSession, mockTestCase( Result.ERROR ) );
+    setChildren( testRunSession, mockTestCase( Result.ERROR ), mockTestCase( Result.ERROR ) );
 
     int count = testRunSessionInfo.getFailedTestCount();
 
@@ -104,7 +124,7 @@ public class TestRunSessionInfoTest {
   @Test
   public void testGetFailedTestCountWithErrorInNestedChilren() {
     ITestElementContainer nestedContainer = mock( ITestElementContainer.class );
-    setChildren( nestedContainer, mockTestCase( Result.ERROR ) );
+    setChildren( nestedContainer, mockTestCase( Result.ERROR ), mockTestCase( Result.ERROR ) );
     setChildren( testRunSession, nestedContainer );
 
     int count = testRunSessionInfo.getFailedTestCount();
@@ -132,7 +152,7 @@ public class TestRunSessionInfoTest {
 
   @Test
   public void testGetExecutedTestCountWithErroredTest() {
-    setChildren( testRunSession, mockTestCase( Result.ERROR ) );
+    setChildren( testRunSession, mockTestCase( Result.ERROR ), mockTestCase( Result.ERROR ) );
 
     int count = testRunSessionInfo.getExecutedTestCount();
 
@@ -141,7 +161,7 @@ public class TestRunSessionInfoTest {
 
   @Test
   public void testGetExecutedTestCountWithFailedTest() {
-    setChildren( testRunSession, mockTestCase( Result.FAILURE ) );
+    setChildren( testRunSession, mockTestCase( Result.FAILURE ), mockTestCase( Result.FAILURE ) );
 
     int count = testRunSessionInfo.getExecutedTestCount();
 
@@ -150,7 +170,7 @@ public class TestRunSessionInfoTest {
 
   @Test
   public void testGetExecutedTestCountWithIgnoredTest() {
-    setChildren( testRunSession, mockTestCase( Result.IGNORED ) );
+    setChildren( testRunSession, mockTestCase( Result.IGNORED ), mockTestCase( Result.IGNORED ) );
 
     int count = testRunSessionInfo.getExecutedTestCount();
 
@@ -159,7 +179,7 @@ public class TestRunSessionInfoTest {
 
   @Test
   public void testGetExecutedTestCountWithSucceededTest() {
-    setChildren( testRunSession, mockTestCase( Result.OK ) );
+    setChildren( testRunSession, mockTestCase( Result.OK ), mockTestCase( Result.OK ) );
 
     int count = testRunSessionInfo.getExecutedTestCount();
 
@@ -170,7 +190,7 @@ public class TestRunSessionInfoTest {
   public void testGetExecutedTestCountWithNestedChilren() {
     ITestElementContainer nestedContainer1 = mock( ITestElementContainer.class );
     ITestElementContainer nestedContainer2 = mock( ITestElementContainer.class );
-    setChildren( nestedContainer1, mockTestCase( Result.OK ) );
+    setChildren( nestedContainer1, mockTestCase( Result.OK ), mockTestCase( Result.OK ) );
     setChildren( nestedContainer2, mockTestCase( Result.FAILURE ) );
     setChildren( testRunSession, nestedContainer1, nestedContainer2 );
 
@@ -200,7 +220,7 @@ public class TestRunSessionInfoTest {
 
   @Test
   public void testGetTestRunStateWhenFailedTests() {
-    when( testRunSession.getTestResult( true ) ).thenReturn( Result.FAILURE );
+    setChildren( testRunSession, mockTestCase( Result.FAILURE ), mockTestCase( Result.FAILURE ) );
 
     TestRunState testRunState = testRunSessionInfo.getTestRunState();
 
@@ -209,7 +229,16 @@ public class TestRunSessionInfoTest {
 
   @Test
   public void testGetTestRunStateWhenErroredTests() {
-    when( testRunSession.getTestResult( true ) ).thenReturn( Result.ERROR );
+    setChildren( testRunSession, mockTestCase( Result.ERROR ), mockTestCase( Result.ERROR ) );
+
+    TestRunState testRunState = testRunSessionInfo.getTestRunState();
+
+    assertThat( testRunState ).isEqualTo( TestRunState.FAILED );
+  }
+
+  @Test
+  public void testGetTestRunStateAfterFailedTestCountIncreased() {
+    testRunSessionInfo.incFailedTestCount();
 
     TestRunState testRunState = testRunSessionInfo.getTestRunState();
 
@@ -253,15 +282,45 @@ public class TestRunSessionInfoTest {
     assertThat( testRunState ).isEqualTo( TestRunState.SUCCESS );
   }
 
-  @Before
-  public void setUp() {
-    testRunSession = mockTestRunSession();
-    testRunSessionInfo = new TestRunSessionInfo( testRunSession );
+  @Test
+  public void testEqualsSessionWithDifferentSession() {
+    boolean equalsSession = testRunSessionInfo.equalsSession( mockTestRunSession() );
+
+    assertThat( equalsSession ).isFalse();
+  }
+
+  @Test
+  public void testEqualsSessionWithDifferentSame() {
+    boolean equalsSession = testRunSessionInfo.equalsSession( testRunSession );
+
+    assertThat( equalsSession ).isTrue();
+  }
+
+  @Test
+  public void testtestEqualsSessionWithNullArgument() {
+    boolean equalsSession = testRunSessionInfo.equalsSession( null );
+
+    assertThat( equalsSession ).isFalse();
+  }
+
+  @Test
+  public void testIncExecutedTestCount() {
+    testRunSessionInfo.incExecutedTestCount();
+
+    assertThat( testRunSessionInfo.getExecutedTestCount() ).isEqualTo( 1 );
+  }
+
+  @Test
+  public void testIncFailedTestCount() {
+    testRunSessionInfo.incFailedTestCount();
+
+    assertThat( testRunSessionInfo.getFailedTestCount() ).isEqualTo( 1 );
   }
 
   private static ITestRunSession mockTestRunSession() {
     ITestRunSession result = mock( ITestRunSession.class );
     when( result.getTestRunSession() ).thenReturn( result );
+    setChildren( result, new ITestElement[ 0 ] );
     return result;
   }
 

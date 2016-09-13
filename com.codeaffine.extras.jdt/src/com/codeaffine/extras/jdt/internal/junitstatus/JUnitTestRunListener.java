@@ -30,8 +30,7 @@ public class JUnitTestRunListener extends TestRunListener {
   private final ILaunchManager launchManager;
   private final ResourceManager resourceManager;
   private final ProgressUI progressUI;
-  private volatile int currentSessionHashCode;
-  private volatile String currentTestRunName;
+  private volatile TestRunSessionInfo currentSession;
 
   public JUnitTestRunListener( ResourceManager resourceManager, ProgressUI progressUI ) {
     this( DebugPlugin.getDefault().getLaunchManager(), resourceManager, progressUI );
@@ -46,7 +45,6 @@ public class JUnitTestRunListener extends TestRunListener {
     this.progressUI = progressUI;
     this.launchManager = launchManager;
     this.launchManager.addLaunchListener( launchListener );
-    this.currentTestRunName = "";
   }
 
   public void dispose() {
@@ -55,17 +53,14 @@ public class JUnitTestRunListener extends TestRunListener {
 
   @Override
   public void sessionLaunched( ITestRunSession testRunSession ) {
-    currentSessionHashCode = 0;
-    currentTestRunName = testRunSession.getTestRunName();
-    updateProgressUI( new TestRunSessionInfo( testRunSession ), STARTING );
+    currentSession = new TestRunSessionInfo( testRunSession );
+    updateProgressUI( STARTING );
   }
 
   @Override
   public void sessionStarted( ITestRunSession testRunSession ) {
-    if( belongsToCurrentSession( testRunSession ) ) {
-      initializeCurrentSession( testRunSession );
-      updateProgressUI( new TestRunSessionInfo( testRunSession ) );
-    }
+    currentSession = new TestRunSessionInfo( testRunSession );
+    updateProgressUI( currentSession );
   }
 
   @Override
@@ -79,25 +74,30 @@ public class JUnitTestRunListener extends TestRunListener {
   public void testCaseFinished( ITestCaseElement testCaseElement ) {
     if( belongsToCurrentSession( testCaseElement ) ) {
       initializeCurrentSession( testCaseElement );
-      updateProgressUI( new TestRunSessionInfo( testCaseElement ) );
+      currentSession.incExecutedTestCount();
+      if( TestRunSessionInfo.isTestFailed( testCaseElement.getTestResult( false ) ) ) {
+        currentSession.incFailedTestCount();
+      }
+      updateProgressUI( currentSession );
     }
   }
 
   private boolean belongsToCurrentSession( ITestElement testElement ) {
-    return currentSessionHashCode == 0
-        || currentSessionHashCode == testElement.getTestRunSession().hashCode();
+    return currentSession == null
+        || currentSession.equalsSession( testElement.getTestRunSession() );
   }
 
   private void initializeCurrentSession( ITestElement testElement ) {
-    currentSessionHashCode = testElement.getTestRunSession().hashCode();
-    currentTestRunName = testElement.getTestRunSession().getTestRunName();
+    if( currentSession == null ) {
+      currentSession = new TestRunSessionInfo( testElement );
+    }
   }
 
   private void finishSession() {
-    if( currentSessionHashCode == 0 ) {
-      currentTestRunName = "";
-      updateProgressUI( null, "" );
+    if( currentSession != null && currentSession.getTotalTestCount() == 0 ) {
+      updateProgressUI( "" );
     }
+    currentSession = null;
   }
 
   private void updateProgressUI( TestRunSessionInfo testRunSessionInfo ) {
@@ -106,20 +106,25 @@ public class JUnitTestRunListener extends TestRunListener {
     int executedTestCount = testRunSessionInfo.getExecutedTestCount();
     int totalTestCount = testRunSessionInfo.getTotalTestCount();
     progressUI.update( text, SWT.CENTER, barColor, executedTestCount, totalTestCount );
-    progressUI.setToolTipText( getToolTipText( testRunSessionInfo ) );
+    progressUI.setToolTipText( getToolTipText() );
   }
 
-  private void updateProgressUI( TestRunSessionInfo testRunSessionInfo, String text ) {
+  private void updateProgressUI( String text ) {
     progressUI.update( text, SWT.LEFT, null, 0, 0 );
-    progressUI.setToolTipText( getToolTipText( testRunSessionInfo ) );
+    if( text.isEmpty() ) {
+      progressUI.setToolTipText( "" );
+    } else {
+      progressUI.setToolTipText( getToolTipText() );
+    }
   }
 
-  private String getToolTipText( TestRunSessionInfo testRunSessionInfo ) {
-    String result = currentTestRunName;
-    if( testRunSessionInfo != null ) {
-      int failedTestCount = testRunSessionInfo.getFailedTestCount();
+  private String getToolTipText() {
+    String result = "";
+    if( currentSession != null ) {
+      result = currentSession.getName();
+      int failedTestCount = currentSession.getFailedTestCount();
       if( failedTestCount > 0 ) {
-        result = format( "{0} ({1} failed)", currentTestRunName, valueOf( failedTestCount ) );
+        result = format( "{0} ({1} failed)", currentSession.getName(), valueOf( failedTestCount ) );
       }
     }
     return result;
@@ -169,7 +174,9 @@ public class JUnitTestRunListener extends TestRunListener {
     }
 
     private boolean matchesCurrentSession( ILaunchConfiguration launchConfig ) {
-      return launchConfig != null && Objects.equals( launchConfig.getName(), currentTestRunName );
+      return launchConfig != null
+          && currentSession != null
+          && Objects.equals( launchConfig.getName(), currentSession.getName() );
     }
   }
 

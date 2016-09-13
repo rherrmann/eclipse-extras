@@ -151,7 +151,7 @@ public class JUnitTestRunListenerTest {
 
   @Test
   public void testLaunchTerminatedBeforeSessionStarted() {
-    ITestRunSession testRunSession = mockTestRunSession( OK, mockTestCaseElement() );
+    ITestRunSession testRunSession = mockTestRunSession( OK );
     testRunListener.sessionLaunched( testRunSession );
 
     ILaunch launch = mockLaunch( testRunSession.getTestRunName() );
