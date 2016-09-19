@@ -94,6 +94,19 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.eclipse.tycho.extras</groupId>
+        <artifactId>target-platform-validation-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+	        <checkDependencies>true</checkDependencies>
+	        <checkProvisioning>true</checkProvisioning>
+	        <executionEnvironment>JavaSE-1.8</executionEnvironment>
+	        <targetFiles>
+	          <file>com.codeaffine.extras.target/${target-platform-classifier}</file>
+	        </targetFiles>
+        </configuration>
+      </plugin>      
+      <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-maven-plugin</artifactId>
         <version>${tycho-version}</version>
