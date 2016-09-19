@@ -143,7 +143,9 @@
         <artifactId>tycho-surefire-plugin</artifactId>
         <version>${tycho-version}</version>
         <configuration>
-          <argLine>-Xmx512m</argLine>
+          <jvmArgs> 
+            <args>-Xmx512m</args>
+          </jvmArgs>
           <useUIHarness>true</useUIHarness>
           <appArgLine>-nl en -consolelog</appArgLine>
           <forkedProcessTimeoutInSeconds>1200</forkedProcessTimeoutInSeconds>
