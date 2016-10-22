@@ -3,6 +3,7 @@ package com.codeaffine.extras.launch.internal.dialog;
 import static com.codeaffine.extras.launch.internal.LaunchExtrasPlugin.PLUGIN_ID;
 import static com.codeaffine.extras.launch.internal.dialog.LaunchConfigLabelProvider.LabelMode.DETAIL;
 import static com.codeaffine.extras.launch.internal.dialog.LaunchConfigLabelProvider.LabelMode.LIST;
+import static java.util.Arrays.stream;
 import static org.eclipse.jface.action.IAction.ENABLED;
 import static org.eclipse.jface.dialogs.IDialogConstants.CANCEL_ID;
 import static org.eclipse.jface.dialogs.IDialogConstants.CANCEL_LABEL;
@@ -184,10 +185,9 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implemen
                                       IProgressMonitor progressMonitor )
     throws CoreException
   {
-    ILaunchConfiguration[] launchConfigs = new LaunchConfigProvider( launchManager ).getLaunchConfigurations();
-    for( ILaunchConfiguration launchConfig : launchConfigs ) {
-      contentProvider.add( launchConfig, itemsFilter );
-    }
+    LaunchConfigProvider launchConfigProvider = new LaunchConfigProvider( launchManager );
+    stream( launchConfigProvider.getLaunchConfigurations() )
+      .forEach( launchConfig -> contentProvider.add( launchConfig, itemsFilter ) );
   }
 
   private void registerLaunchConfigDecorationUpdater() {
@@ -221,19 +221,16 @@ public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implemen
   }
 
   void updateStatus() {
-    StructuredSelection selection = getSelectedItems();
-    IStatus totalStatus = okStatus();
-    for( Object item : selection.toArray() ) {
-      IStatus itemStatus = validateItem( item );
-      if( !itemStatus.isOK() ) {
-        totalStatus = itemStatus;
-      }
-    }
+    IStatus totalStatus = ( IStatus )getSelectedItems().toList().stream()
+      .map( item -> validateItem( item ) )
+      .filter( status -> !( ( IStatus )status ).isOK() )
+      .findFirst()
+      .orElse( okStatus() );
     updateStatus( totalStatus );
   }
 
   private static Status okStatus() {
-    return new Status( IStatus.OK, PLUGIN_ID, "" );
+    return new Status( OK, PLUGIN_ID, "" );
   }
 
   public abstract static class AccessibleSelectionHistory extends SelectionHistory {
