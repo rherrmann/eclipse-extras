@@ -23,9 +23,9 @@ addons:
       - libwebkit-dev
 
 script:
-  - mvn -q -f clean verify -Dtarget-platform-classifier=eclipse-4.5
-  - mvn -q -f clean verify -Dtarget-platform-classifier=eclipse-4.6
-  - mvn -q -f clean verify -Dtarget-platform-classifier=eclipse-4.7
+  - mvn clean verify -q -e -Dtarget-platform-classifier=eclipse-4.5
+  - mvn clean verify -q -e -Dtarget-platform-classifier=eclipse-4.6
+  - mvn clean verify -q -e -Dtarget-platform-classifier=eclipse-4.7
 
 before_script:
   - export DISPLAY=:99.0
