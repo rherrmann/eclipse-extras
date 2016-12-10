@@ -23,7 +23,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; th
 
   # setup git and clone from gh-pages branch
   git config --global user.email "travis-deployer@codeaffine.com"
-  git config --global user.name "Travis Deployer"
+  git config --global user.name "Travis Deployer for Extras for Eclipse"
   git clone --quiet --branch=gh-pages git@github.com:${TRAVIS_REPO_SLUG}.git . > /dev/null 2>&1 || error_exit "Error cloning gh-pages"
 
   # clean the repository directory, then copy the build result into it
