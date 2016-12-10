@@ -38,6 +38,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; th
 
   # go back to the directory where we started
   cd ..
+  rm -rf deployment-work
   
   echo -e "Done with deployment to gh-pages\n"
 fi
