@@ -1,5 +1,6 @@
 bin/
 target/
+deploy-key
 Thumbs.db
 .DS_Store
 hs_err_pid*.log
