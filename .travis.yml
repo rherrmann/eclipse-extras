@@ -22,6 +22,13 @@ addons:
       - metacity
       - libwebkit-dev
 
+before_install:
+  - openssl aes-256-cbc -K $encrypted_8c7035aad7a2_key -iv $encrypted_8c7035aad7a2_iv
+    -in deploy-key.enc -out deploy-key -d
+  - chmod 600 deploy-key
+  - eval `ssh-agent -s`
+  - ssh-add deploy-key
+
 script:
   - mvn clean verify -q -e -Dtarget-platform-classifier=eclipse-4.5
   - mvn clean verify -q -e -Dtarget-platform-classifier=eclipse-4.6
