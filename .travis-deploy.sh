@@ -9,10 +9,6 @@ function error_exit
 if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
   echo -e "Starting to deploy to gh-pages...\n"
 
-  # create and cd into temporary deployment work directory
-  mkdir deployment-work
-  cd deployment-work
-
   # setup ssh agent
   ENCRYPTED_KEY="encrypted_${ENCRYPTION_LABEL}_key"
   ENCRYPTED_IV="encrypted_${ENCRYPTION_LABEL}_iv"
@@ -20,6 +16,10 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; th
   chmod 600 deploy-key
   eval `ssh-agent -s`
   ssh-add deploy-key
+
+  # create and cd into temporary deployment work directory
+  mkdir deployment-work
+  cd deployment-work
 
   # setup git and clone from gh-pages branch
   git config --global user.email "travis-deployer@codeaffine.com"
@@ -39,6 +39,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; th
   # go back to the directory where we started
   cd ..
   rm -rf deployment-work
+  rm deploy-key
   
   echo -e "Done with deployment to gh-pages\n"
 fi
