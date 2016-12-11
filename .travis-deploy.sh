@@ -12,7 +12,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; th
   # setup ssh agent
   ENCRYPTED_KEY="encrypted_${ENCRYPTION_LABEL}_key"
   ENCRYPTED_IV="encrypted_${ENCRYPTION_LABEL}_iv"
-  openssl aes-256-cbc -K ${!ENCRYPTED_KEY} -iv ${!ENCRYPTED_IV} -in deploy-key.enc -out deploy-key -d
+  openssl aes-256-cbc -K ${ENCRYPTED_KEY} -iv ${ENCRYPTED_IV} -in deploy-key.enc -out deploy-key -d
   chmod 600 deploy-key
   eval `ssh-agent -s`
   ssh-add deploy-key
