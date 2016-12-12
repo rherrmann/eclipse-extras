@@ -1,4 +1,5 @@
 #!/bin/bash
+set -o nounset
 
 function error_exit
 {
