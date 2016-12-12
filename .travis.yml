@@ -45,8 +45,4 @@ after_success:
   - "./.travis-deploy.sh"
 
 after_failure:
-  - cat com.codeaffine.extras.ide.test/target/surefire-reports/*.txt
-  - cat com.codeaffine.extras.imageviewer.test/target/surefire-reports/*.txt
-  - cat com.codeaffine.extras.jdt.test/target/surefire-reports/*.txt
-  - cat com.codeaffine.extras.launch.test/target/surefire-reports/*.txt
-  - cat com.codeaffine.extras.workingset.test/target/surefire-reports/*.txt
+  - find . -path "*/surefire-reports/*.txt" | xargs cat
