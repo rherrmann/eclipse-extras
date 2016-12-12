@@ -29,9 +29,7 @@ before_install:
   - cp deploy-key ~/.ssh/id_rsa
 
 script:
-  - mvn clean verify -q -e -Dtarget-platform-classifier=eclipse-4.5
-    && mvn clean verify -q -e -Dtarget-platform-classifier=eclipse-4.6
-    && mvn clean verify -q -e -Dtarget-platform-classifier=eclipse-4.7
+  - mvn clean verify -e -Dtarget-platform-classifier=eclipse-4.7
 
 before_script:
   - export DISPLAY=:99.0
