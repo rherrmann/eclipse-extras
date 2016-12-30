@@ -1,5 +1,5 @@
 
-![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/extras-for-eclipse.png)
+[![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/extras-for-eclipse.png)](https://rherrmann.github.io/eclipse-extras/)
 
 &nbsp;
 [![Build Status](https://img.shields.io/codeship/6a994910-8fa7-0132-ebb3-32b8c1ae92e1/master.svg)](https://codeship.com/projects/61325)
