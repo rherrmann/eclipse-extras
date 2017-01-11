@@ -18,8 +18,6 @@ import org.junit.Test;
 
 import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
 import com.codeaffine.eclipse.swt.test.util.SWTIgnoreConditions.NonWindowsPlatform;
-import com.codeaffine.extras.workingset.internal.DynamicWorkingSetPage;
-import com.codeaffine.extras.workingset.internal.JdtFeature;
 import com.codeaffine.test.util.junit.ConditionalIgnoreRule;
 import com.codeaffine.test.util.junit.ConditionalIgnoreRule.ConditionalIgnore;
 
@@ -31,13 +29,19 @@ public class DynamicWorkingSetPagePDETest {
   public final ConditionalIgnoreRule ignoreRule = new ConditionalIgnoreRule();
 
   private TestProjectsProvider projectsProvider;
+  private IWorkingSet initialWorkingSet;
+  private WorkingSetFactory workingSetFactory;
   private TestableDynamicWorkingSetPage page;
 
   @Before
   public void setUp() {
     displayHelper.ensureDisplay();
     projectsProvider = new TestProjectsProvider();
-    page = new TestableDynamicWorkingSetPage( projectsProvider, mock( JdtFeature.class ) );
+    initialWorkingSet = createWorkingSet();
+    workingSetFactory = mock( WorkingSetFactory.class );
+    when( workingSetFactory.createWorkingSet() ).thenReturn( initialWorkingSet );
+    JdtFeature jdtFeature = mock( JdtFeature.class );
+    page = new TestableDynamicWorkingSetPage( projectsProvider, jdtFeature, workingSetFactory );
   }
 
   @After
@@ -64,6 +68,10 @@ public class DynamicWorkingSetPagePDETest {
     assertThat( page.getSelection() ).isEqualTo( workingSet );
   }
 
+  @Test
+  public void testGetInitialSelection() {
+    assertThat( page.getSelection() ).isEqualTo( initialWorkingSet );
+  }
 
   @ConditionalIgnore(condition=NonWindowsPlatform.class)
   @Test
@@ -73,6 +81,7 @@ public class DynamicWorkingSetPagePDETest {
     page.setVisible( true );
 
     assertThat( page.nameText.isFocusControl() ).isTrue();
+    assertThat( page.getControl().getVisible() ).isTrue();
     assertThat( page.getMessage() ).isNull();
     assertThat( page.getMessageType() ).isEqualTo( IMessageProvider.NONE );
     assertThat( page.isPageComplete() ).isFalse();
@@ -87,6 +96,7 @@ public class DynamicWorkingSetPagePDETest {
     page.setVisible( true );
 
     assertThat( page.patternText.isFocusControl() ).isTrue();
+    assertThat( page.getControl().getVisible() ).isTrue();
   }
 
   @Test
@@ -124,6 +134,18 @@ public class DynamicWorkingSetPagePDETest {
 
     verify( workingSet ).setLabel( "name" );
     verify( workingSet ).setName( "pattern" );
+  }
+
+  @Test // see https://github.com/rherrmann/eclipse-extras/issues/53
+  public void testFinishWithoutSelection() {
+    page.createControl( displayHelper.createShell() );
+    page.nameText.setText( "name" );
+    page.patternText.setText( "pattern" );
+
+    page.finish();
+
+    verify( initialWorkingSet ).setLabel( "name" );
+    verify( initialWorkingSet ).setName( "pattern" );
   }
 
   @Test
@@ -202,8 +224,11 @@ public class DynamicWorkingSetPagePDETest {
   }
 
   private static class TestableDynamicWorkingSetPage extends DynamicWorkingSetPage {
-    TestableDynamicWorkingSetPage( TestProjectsProvider projectsProvider, JdtFeature jdtFeature ) {
-      super( projectsProvider, jdtFeature );
+    TestableDynamicWorkingSetPage( TestProjectsProvider projectsProvider,
+                                   JdtFeature jdtFeature,
+                                   WorkingSetFactory workingSetFactory )
+    {
+      super( projectsProvider, jdtFeature, workingSetFactory );
     }
 
     @Override

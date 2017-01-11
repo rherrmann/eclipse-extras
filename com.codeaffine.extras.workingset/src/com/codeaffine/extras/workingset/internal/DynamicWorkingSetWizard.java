@@ -3,12 +3,10 @@ package com.codeaffine.extras.workingset.internal;
 import static com.codeaffine.extras.workingset.internal.Images.WORKING_SET_WIZBAN;
 import static com.codeaffine.extras.workingset.internal.Images.getImageDescriptor;
 
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkingSet;
 
 public class DynamicWorkingSetWizard extends Wizard implements INewWizard {
 
@@ -31,7 +29,6 @@ public class DynamicWorkingSetWizard extends Wizard implements INewWizard {
   @Override
   public void addPages() {
     page = new DynamicWorkingSetPage();
-    page.setSelection( createWorkingSet() );
     addPage( page );
   }
 
@@ -42,9 +39,4 @@ public class DynamicWorkingSetWizard extends Wizard implements INewWizard {
     return true;
   }
 
-  private IWorkingSet createWorkingSet() {
-    IWorkingSet result = workbench.getWorkingSetManager().createWorkingSet( "", new IAdaptable[ 0 ] );
-    result.setId( DynamicWorkingSet.ID );
-    return result;
-  }
 }

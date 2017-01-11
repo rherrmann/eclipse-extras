@@ -43,13 +43,17 @@ public class DynamicWorkingSetPage extends WizardPage implements  IWorkingSetPag
   PreviewLabelProvider previewLabelProvider;
 
   public DynamicWorkingSetPage() {
-    this( new WorkspaceProjectsProvider(), new JdtFeature() );
+    this( new WorkspaceProjectsProvider(), new JdtFeature(), new DynamicWorkingSetFactory() );
   }
 
-  public DynamicWorkingSetPage( ProjectsProvider projectsProvider, JdtFeature jdtFeature ) {
+  public DynamicWorkingSetPage( ProjectsProvider projectsProvider,
+                                JdtFeature jdtFeature,
+                                WorkingSetFactory workingSetFactory )
+  {
     super( "DynamicWorkingSetWizardPage" );
     this.projectsProvider = projectsProvider;
     this.validator = new Validator( projectsProvider, jdtFeature );
+    this.workingSet = workingSetFactory.createWorkingSet();
     setTitle( "Dynamic Project Working Set" );
     setDescription( "Enter a pattern to include matching projects in this working set" );
     setImageDescriptor( Images.getImageDescriptor( WORKING_SET_WIZBAN ) );

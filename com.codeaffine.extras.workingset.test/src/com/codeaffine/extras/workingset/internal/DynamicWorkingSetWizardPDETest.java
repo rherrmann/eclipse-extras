@@ -61,6 +61,7 @@ public class DynamicWorkingSetWizardPDETest {
     assertThat( wizard.getPages() ).hasSize( 1 );
     assertThat( wizard.getPages()[ 0 ] ).isInstanceOf( DynamicWorkingSetPage.class );
     assertThat( wizard.getStartingPage() ).isEqualTo( wizard.getPages()[ 0 ] );
+    assertThat( ( ( DynamicWorkingSetPage )wizard.getPages()[ 0 ] ).getSelection() ).isNotNull();
   }
 
   @Test

@@ -10,6 +10,8 @@ import org.osgi.framework.FrameworkUtil;
 
 public class JdtFeature {
 
+  private static final String JDT_BUNDLE = "org.eclipse.jdt.ui";
+
   private Boolean installed;
 
   public boolean isInstalled() {
@@ -23,7 +25,7 @@ public class JdtFeature {
     installed = FALSE;
     Bundle[] bundles = getBundles();
     for( int i = 0; installed == FALSE && i < bundles.length; i++ ) {
-      if( "org.eclipse.jdt.ui".equals( bundles[ i ].getSymbolicName() ) ) {
+      if( JDT_BUNDLE.equals( bundles[ i ].getSymbolicName() ) ) {
         installed = TRUE;
       }
     }
