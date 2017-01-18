@@ -128,6 +128,16 @@
           <sourceReferences>
             <generate>true</generate>
           </sourceReferences>
+          <manifest>
+            <addDefaultImplementationEntries>false</addDefaultImplementationEntries>
+            <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
+          </manifest>
+          <archive>
+            <manifestEntries>
+              <Built-By>codeaffine.com</Built-By>
+              <Created-By>Apache Maven ${maven.version} / Eclipse Tycho ${tycho-version}</Created-By>
+            </manifestEntries>
+          </archive>
         </configuration>
       </plugin>
       <plugin>
