@@ -30,7 +30,7 @@ The software is released continuously, and the sources listed above always conta
 
 
 ## Requirements
-Works with Eclipse 4.5 (Luna) or later and Java 1.8 or later.
+Works with Eclipse 4.5 (Mars) or later and Java 1.8 or later.
 
 **Important:** If you don't run Eclipse with Java 1.8, the update process may appear to succeed, but Extras for Eclipse will simply not show in the target installation.
 
