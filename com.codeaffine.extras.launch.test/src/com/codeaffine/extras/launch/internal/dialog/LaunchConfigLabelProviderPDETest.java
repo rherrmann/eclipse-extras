@@ -3,6 +3,7 @@ package com.codeaffine.extras.launch.internal.dialog;
 import static com.codeaffine.extras.launch.internal.dialog.LaunchConfigLabelProvider.LabelMode.DETAIL;
 import static com.codeaffine.extras.launch.internal.dialog.LaunchConfigLabelProvider.LabelMode.LIST;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -67,6 +68,19 @@ public class LaunchConfigLabelProviderPDETest {
     Image image = labelProvider.getImage( launchConfig );
 
     assertThat( image ).isNull();
+  }
+
+  @Test
+  public void testGetImageForRunningLaunchConfig() throws CoreException {
+    LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
+    ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
+
+    Image image = labelProvider.getImage( launchConfig );
+    launchConfig.launch( RUN_MODE, null );
+    Image runningImage = labelProvider.getImage( launchConfig );
+
+    assertThat( runningImage ).isNotNull();
+    assertThat( runningImage ).isNotEqualTo( image );
   }
 
   @Test
