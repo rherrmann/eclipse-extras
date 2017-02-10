@@ -40,6 +40,7 @@
   <properties>
     <tycho-version>0.26.0</tycho-version>
     <tycho-extras-version>0.26.0</tycho-extras-version>
+    <jacoco-version>0.7.9</jacoco-version>
     <target-platform-classifier>eclipse-4.5</target-platform-classifier>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tycho.scmUrl>${project.scm.connection}</tycho.scmUrl>
@@ -68,11 +69,16 @@
     <module>com.codeaffine.extras.license.feature</module>
     <module>com.codeaffine.extras.repository</module>
     <module>com.codeaffine.extras.target</module>
+    <module>com.codeaffine.extras.test.coverage</module>
   </modules>
   <pluginRepositories>
     <pluginRepository>
       <id>repo.eclipse.org</id>
       <url>https://repo.eclipse.org/content/groups/releases/</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>maven.central</id>
+      <url>http://repo1.maven.org/maven2/</url>
     </pluginRepository>
   </pluginRepositories>
   <build>
@@ -188,6 +194,18 @@
           </dependencies>
         </configuration>
       </plugin>
+      <plugin>
+	      <groupId>org.jacoco</groupId>
+	      <artifactId>jacoco-maven-plugin</artifactId>
+	      <version>${jacoco-version}</version>
+	      <executions>
+	        <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+	        </execution>
+	      </executions>
+      </plugin>      
       <plugin>
         <groupId>org.eclipse.tycho.extras</groupId>
         <artifactId>tycho-pack200b-plugin</artifactId>
