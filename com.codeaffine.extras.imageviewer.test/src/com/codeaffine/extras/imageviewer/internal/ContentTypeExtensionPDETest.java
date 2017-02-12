@@ -48,6 +48,7 @@ public class ContentTypeExtensionPDETest {
     assertThat( contentType.getId() ).isEqualTo( ImageViewerPlugin.IMAGE_CONTENT_TYPE_ID );
   }
 
+  @SuppressWarnings("deprecation")
   @Test
   public void testDefaultEditorBinding() throws Exception {
     IEditorDescriptor editorDescriptor = IDE.getEditorDescriptor( fileName, true );
