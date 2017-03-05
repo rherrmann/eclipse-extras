@@ -7,6 +7,7 @@ import static org.eclipse.core.resources.IResource.FORCE;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,7 +31,7 @@ import org.junit.rules.ExternalResource;
 
 public class ProjectHelper extends ExternalResource {
 
-  private static int uniqueId;
+  private static int uniqueProjectId;
   private static List<ProjectHelper> projects = new LinkedList<ProjectHelper>();
 
   public static void cleanWorkspace() throws CoreException {
@@ -58,7 +59,7 @@ public class ProjectHelper extends ExternalResource {
         try {
           Thread.sleep( 500 );
         } catch( InterruptedException ignore ) {
-          Thread.interrupted();
+          Thread.currentThread().interrupt();
         }
         System.gc();
       }
@@ -68,12 +69,18 @@ public class ProjectHelper extends ExternalResource {
   private final String projectName;
   private final IPath projectLocation;
   private final AtomicInteger uniqueResourceId;
+  private final List<ProjectHelper> nestedProjectHelpers;
   private IProject project;
 
   public ProjectHelper() {
+    this( null );
+  }
+
+  public ProjectHelper( IPath baseLocation ) {
     this.projectName = uniqueProjectName();
-    this.projectLocation = null;
+    this.projectLocation = baseLocation == null ? null : baseLocation.append( projectName );
     this.uniqueResourceId = new AtomicInteger();
+    this.nestedProjectHelpers = new ArrayList<>();
   }
 
   public String getName() {
@@ -84,6 +91,12 @@ public class ProjectHelper extends ExternalResource {
   public IProject getProject() {
     initializeProject();
     return project;
+  }
+
+  public ProjectHelper createNestedProject() {
+    ProjectHelper nestedProjectHelper = new ProjectHelper( getProject().getLocation() );
+    nestedProjectHelpers.add( nestedProjectHelper );
+    return nestedProjectHelper;
   }
 
   public IFolder createFolder() throws CoreException {
@@ -134,8 +147,8 @@ public class ProjectHelper extends ExternalResource {
 
   @Override
   protected void after() {
-    if( isProjectCreated() ) {
-      projects.remove( this );
+    nestedProjectHelpers.forEach( ProjectHelper::after );
+    if( isProjectCreated() && projects.remove( this ) ) {
       delete( project );
     }
   }
@@ -174,8 +187,8 @@ public class ProjectHelper extends ExternalResource {
   }
 
   private static String uniqueProjectName() {
-    String result = "test.project." + uniqueId;
-    uniqueId++;
+    String result = "test.project." + uniqueProjectId;
+    uniqueProjectId++;
     return result;
   }
 

@@ -43,4 +43,15 @@
             sequence="M1+M2+Q">
       </key>
    </extension>
+   <extension
+         point="org.eclipse.core.resources.filterMatchers">
+      <filterMatcher
+            argumentType="none"
+            class="com.codeaffine.extras.ide.internal.resourcefilter.NestedProjectFilter"
+            description="Filer nested projects known to the workspace"
+            id="com.codeaffine.extras.ide.internal.resourcefilter.NestedProjectFilter"
+            name="Nested Workspace Projects"
+            ordering="first">
+      </filterMatcher>
+   </extension>
 </plugin>

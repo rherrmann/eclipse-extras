@@ -15,7 +15,7 @@ public class ConcurrentHelper {
     return result;
   }
 
-  public static void runInThread( final Runnable runnable ) {
+  public static void runInThread( Runnable runnable ) {
     AtomicReference<Throwable> exception = new AtomicReference<Throwable>();
     Runnable exceptionGuard = new Runnable() {
       @Override
