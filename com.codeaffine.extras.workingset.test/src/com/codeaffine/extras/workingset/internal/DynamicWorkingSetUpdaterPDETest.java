@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.codeaffine.extras.test.util.ConcurrentHelper;
 import com.codeaffine.extras.test.util.ProjectHelper;
 import com.codeaffine.extras.workingset.internal.DynamicWorkingSet;
 
@@ -207,6 +208,26 @@ public class DynamicWorkingSetUpdaterPDETest {
     workingSet.setElements( new IAdaptable[ 0 ] );
 
     assertThat( workingSet.getElements() ).isEmpty();
+  }
+
+  @Test
+  public void testCreateMatchingProjectFromBackgroundThread() {
+    setWorkingSetPattern( ANYTHING );
+    workingSetManager.addWorkingSet( workingSet );
+
+    ConcurrentHelper.runInThread( () -> projectHelper.getProject() );
+
+    assertThat( workingSet.getElements() ).containsOnly( projectHelper.getProject() );
+  }
+
+  @Test
+  public void testAddWorkingSetFromBackgroundThread() {
+    IProject project = projectHelper.getProject();
+    setWorkingSetPattern( ANYTHING );
+
+    ConcurrentHelper.runInThread( () -> workingSetManager.addWorkingSet( workingSet ) );
+
+    assertThat( workingSet.getElements() ).containsOnly( project );
   }
 
   private void setWorkingSetPattern( String pattern ) {
