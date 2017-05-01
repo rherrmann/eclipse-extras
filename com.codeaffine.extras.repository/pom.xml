@@ -77,6 +77,14 @@
                 <expression>
                   id == $0 &amp;&amp; version &gt;= $1 &amp;&amp; version &lt; $2
                 </expression>
+                <parameters>com.codeaffine.util,0.1.0,1.0.0</parameters>
+              </query>
+            </iu>
+            <iu>
+              <query>
+                <expression>
+                  id == $0 &amp;&amp; version &gt;= $1 &amp;&amp; version &lt; $2
+                </expression>
                 <parameters>com.codeaffine.eclipse.core.runtime,0.1.0,1.0.0</parameters>
               </query>
             </iu>
