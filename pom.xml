@@ -44,6 +44,7 @@
     <target-platform-classifier>eclipse-4.5</target-platform-classifier>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tycho.scmUrl>${project.scm.connection}</tycho.scmUrl>
+    <os-jvm-flags/>
   </properties>
   <prerequisites>
     <maven>3.0</maven>
@@ -81,6 +82,17 @@
       <url>http://repo1.maven.org/maven2/</url>
     </pluginRepository>
   </pluginRepositories>
+  <profiles>
+    <profile>
+      <id>macos-jvm-flags</id>
+      <activation>
+        <os><family>mac</family></os>
+      </activation>
+      <properties>
+        <os-jvm-flags>-XstartOnFirstThread</os-jvm-flags>
+      </properties>
+    </profile>
+  </profiles>
   <build>
     <plugins>
       <plugin>
@@ -175,6 +187,7 @@
         <configuration>
           <jvmArgs> 
             <args>-Xmx512m</args>
+            <args>${os-jvm-flags}</args>
           </jvmArgs>
           <useUIHarness>true</useUIHarness>
           <appArgLine>-nl en -consolelog</appArgLine>
