@@ -38,8 +38,8 @@
     </license>
   </licenses>
   <properties>
-    <tycho-version>1.0.0</tycho-version>
-    <tycho-extras-version>1.0.0</tycho-extras-version>
+    <tycho-version>1.1.0</tycho-version>
+    <tycho-extras-version>1.1.0</tycho-extras-version>
     <jacoco-version>0.7.9</jacoco-version>
     <target-platform-classifier>eclipse-4.5</target-platform-classifier>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
