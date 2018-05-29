@@ -10,7 +10,7 @@ By using this Site or/and its services, you consent to the Processing of your Pe
 
 
 ## Site Owner and Data Controller
-Rüdiger Herrmann, Sophiensr. 124, 76135 Karlsruhe, Germany
+Rüdiger Herrmann, 76135 Karlsruhe, Germany
 
 Contact email: <a href="mailto:privacy@codeaffine.com?Subject=Code%20Affine%20Privacy%20Policy">privacy@codeaffine.com</a>
 
