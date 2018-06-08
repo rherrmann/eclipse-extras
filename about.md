@@ -47,7 +47,7 @@ through the _Launch Mode_ drop-down menu.
 ![Launch Dialog]({{ site.baseurl }}/assets/img/about/launch-config-dialog.png)
 
 The dialog maintains a history of recently launched configurations (everything above the _Launch
-Configuration matches_ line). Individual items can be removed from history with <kbd>Delete</kbd>
+Configuration matches_ line). Individual items can be removed from history with <kbd>Del</kbd>
 or via the context menu.
 
 Launch configurations that are currently running are decorated with a _running_
