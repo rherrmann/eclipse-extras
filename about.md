@@ -90,7 +90,7 @@ stored in the local file system or located in an archive, for example a jar or w
 the image viewer associates its editor with .gif .jpg .jpeg .png .bmp .ico and .tiff file extensions.
 
 ### Key Binding to Close the Active View
-The key binding <kbd>Ctrl+Shift+Q</kbd> closes the currently active view. Just like <kbd>Ctrl+W</kbd>
+The key binding <kbd>Ctrl+Shift+Q</kbd> closes the currently active view. Just like <kbd key-binding-mac="Cmd+W">Ctrl+W</kbd>
 closes the active editor, there is now also a key binding to close the active view.
 
 ### Dynamic Project Working Set
