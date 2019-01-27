@@ -22,6 +22,7 @@ if [ $CI_PULL_REQUEST == "false" ] && [ `git name-rev --name-only --refs=refs/he
   git rm -rf repository
   mkdir -p repository 
   cp -rf ../com.codeaffine.extras.repository/target/repository/* ./repository
+  zip -r repository/eclipse-extras-repository.zip repository/*
   
   # add, commit and push files
   git add -f .
