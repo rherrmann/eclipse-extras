@@ -1,7 +1,7 @@
 package com.codeaffine.extras.jdt.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.jface.util.Util.WS_CARBON;
+import static org.eclipse.jface.util.Util.WS_COCOA;
 
 import org.junit.Test;
 
@@ -31,7 +31,7 @@ public class ShowJUnitViewKeyBindingPDETest {
 
   @Test
   public void testCarbonKeyBindingOverride() {
-    KeyBindingInfo keyBinding = KeyBindingInspector.keyBindingFor( KEY_SEQUENCE, WS_CARBON );
+    KeyBindingInfo keyBinding = KeyBindingInspector.keyBindingFor( KEY_SEQUENCE, WS_COCOA );
 
     assertThat( keyBinding.getSchemeId() ).isEqualTo( KeyBindingInspector.DEFAULT_SCHEME_ID );
     assertThat( keyBinding.getCommandId() ).isNull();
@@ -41,12 +41,12 @@ public class ShowJUnitViewKeyBindingPDETest {
 
   @Test
   public void testCarbonKeyBinding() {
-    KeyBindingInfo keyBinding = KeyBindingInspector.keyBindingFor( "COMMAND+ALT+Q U", WS_CARBON );
+    KeyBindingInfo keyBinding = KeyBindingInspector.keyBindingFor( "COMMAND+ALT+Q U", WS_COCOA );
 
     assertThat( keyBinding.getSchemeId() ).isEqualTo( KeyBindingInspector.DEFAULT_SCHEME_ID );
     assertThat( keyBinding.getCommandId() ).isEqualTo( SHOW_VIEW_COMMAND_ID );
     assertThat( keyBinding.getContextId() ).isNull();
-    assertThat( keyBinding.getPlatform() ).isEqualTo( WS_CARBON );
+    assertThat( keyBinding.getPlatform() ).isEqualTo( WS_COCOA );
     assertThat( keyBinding.getParameters() ).hasSize( 1 );
     assertThat( keyBinding.getParameters()[ 0 ].getId() ).isEqualTo( VIEW_PARAMETER_NAME );
     assertThat( keyBinding.getParameters()[ 0 ].getValue() ).isEqualTo( JUNIT_VIEW_ID );
