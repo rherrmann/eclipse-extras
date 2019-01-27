@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde version="3.8"?><target name="com.codeaffine.extras on Eclipse 4.9" sequenceNumber="208">
+<locations>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="com.codeaffine.test.libraries.feature.feature.group" version="1.1.0.201605230951"/>
+<repository location="http://fappel.github.io/test-libraries/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="com.codeaffine.eclipse.core.runtime.feature.feature.group" version="0.1.0.20170706-1138"/>
+<unit id="com.codeaffine.eclipse.core.runtime.test.util.feature.feature.group" version="0.1.0.20170706-1138"/>
+<unit id="com.codeaffine.eclipse.swt.feature.feature.group" version="0.5.0.20170519-1200"/>
+<unit id="com.codeaffine.eclipse.swt.test.util.feature.feature.group" version="0.2.0.20170706-1138"/>
+<unit id="com.codeaffine.eclipse.ui.feature.feature.group" version="0.1.0.20170706-1138"/>
+<unit id="com.codeaffine.test.util.feature.feature.group" version="0.2.0.20170706-1138"/>
+<repository location="http://fappel.github.io/xiliary/"/>
+</location>
+  <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+    <unit id="org.eclipse.sdk.ide" version="4.10.0.I20181206-0815"/>
+    <repository location="http://download.eclipse.org/eclipse/updates/4.10"/>
+  </location>
+</locations>
+<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-9"/>
+</target>
