@@ -38,9 +38,9 @@
     </license>
   </licenses>
   <properties>
-    <tycho-version>1.1.0</tycho-version>
-    <tycho-extras-version>1.1.0</tycho-extras-version>
-    <jacoco-version>0.7.9</jacoco-version>
+    <tycho-version>1.2.0</tycho-version>
+    <tycho-extras-version>1.2.0</tycho-extras-version>
+    <jacoco-version>0.8.2</jacoco-version>
     <target-platform-classifier>eclipse-4.6</target-platform-classifier>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tycho.scmUrl>${project.scm.connection}</tycho.scmUrl>
