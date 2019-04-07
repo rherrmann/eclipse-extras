@@ -192,16 +192,6 @@
           <includes>
             <include>**/*Test.class</include>
           </includes>
-          <dependencies>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.eclipse.equinox.ds</artifactId>
-            </dependency>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.eclipse.equinox.event</artifactId>
-            </dependency>
-          </dependencies>
         </configuration>
       </plugin>
       <plugin>
