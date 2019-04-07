@@ -24,6 +24,9 @@
           <includeAllDependencies>false</includeAllDependencies>
           <compress>true</compress>
           <xzCompress>false</xzCompress>
+          <extraArtifactRepositoryProperties>
+            <p2.statsURI>https://www.codeaffine.com/p2-stats</p2.statsURI>
+          </extraArtifactRepositoryProperties>          
         </configuration>
       </plugin>
       
@@ -118,46 +121,6 @@
         </configuration>
       </plugin>
             
-      <plugin>
-        <groupId>org.eclipse.tycho.extras</groupId>
-        <artifactId>tycho-eclipserun-plugin</artifactId>
-        <version>${tycho-extras-version}</version>
-        <executions>
-          <execution>
-            <id>add-repo-properties</id>
-            <goals>
-              <goal>eclipse-run</goal>
-            </goals>
-            <phase>package</phase>
-            <configuration>
-              <appArgLine>-application org.eclipse.wtp.releng.tools.addRepoProperties</appArgLine>
-              <argLine>
-                -DartifactRepoDirectory=${project.build.directory}/repository
-                -Dp2StatsURI=http://www.codeaffine.com/p2-stats
-                -DstatsTrackedArtifacts=com.codeaffine.extras.ide.feature,com.codeaffine.extras.jdt.feature,com.codeaffine.extras.launch.feature,com.codeaffine.extras.workingset.feature
-                -DstatsArtifactsSuffix=-${qualifiedVersion}
-              </argLine>
-              <dependencies>
-                <dependency>
-                  <artifactId>org.eclipse.wtp.releng.tools.feature</artifactId>
-                  <type>eclipse-feature</type>
-                </dependency>
-              </dependencies>
-              <repositories>
-                <repository>
-                  <url>http://download.eclipse.org/webtools/releng/repository</url>
-                  <layout>p2</layout>
-                </repository>
-                <repository>
-                  <url>http://download.eclipse.org/releases/kepler</url>
-                  <layout>p2</layout>
-                </repository>
-              </repositories>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
     </plugins>
   </build>
 
