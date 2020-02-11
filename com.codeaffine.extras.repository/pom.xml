@@ -70,7 +70,7 @@
           <source>
             <!-- Repository for Xiliary -->
             <repository>
-              <url>http://fappel.github.io/xiliary/</url>
+              <url>https://fappel.github.io/xiliary/</url>
               <layout>p2</layout>
             </repository>
           </source>
