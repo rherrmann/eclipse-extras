@@ -24,6 +24,9 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <title>Extras for Eclipse Test Coverage</title>
+        </configuration>
       </plugin>
     </plugins>
   </build>

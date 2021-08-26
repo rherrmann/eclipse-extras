@@ -63,6 +63,7 @@ public class EditLaunchConfigActionPDETest {
     assertThat( action.getSelection().isEmpty() ).isTrue();
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void testGetSelection() {
     StructuredSelection selection = new StructuredSelection();

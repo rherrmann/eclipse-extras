@@ -31,16 +31,16 @@ public class WorbenchWorkingSetsProviderPDETest {
   @Test
   public void testGetWorkingSets() {
     workingSetManager.addWorkingSet( workingSet );
-  
+
     IWorkingSet[] workingSets = new WorbenchWorkingSetsProvider().getWorkingSets();
-  
-    assertThat( workingSets ).containsOnly( workingSet );
+
+    assertThat( workingSets ).contains( workingSet );
   }
 
   @Test
   public void testGetWorkingSetsWhenNoneRegistered() {
     IWorkingSet[] workingSets = new WorbenchWorkingSetsProvider().getWorkingSets();
 
-    assertThat( workingSets ).isEmpty();
+    assertThat( workingSets ).doesNotContain( workingSet );
   }
 }

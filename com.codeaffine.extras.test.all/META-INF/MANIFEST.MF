@@ -4,7 +4,7 @@ Bundle-Name: Extras for Eclipse All Tests
 Bundle-SymbolicName: com.codeaffine.extras.test.all;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: codeaffine.com
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: com.codeaffine.extras.ide;bundle-version="[1.0.0,2.0.0)",
  com.codeaffine.extras.jdt;bundle-version="[1.0.0,2.0.0)",
  com.codeaffine.extras.launch;bundle-version="[1.0.0,2.0.0)",

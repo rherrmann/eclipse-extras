@@ -16,8 +16,8 @@
     <developerConnection>scm:git:git@github.com:rherrmann/eclipse-extras.git</developerConnection>
   </scm>
   <ciManagement>
-    <system>Codeship</system>
-    <url>https://codeship.com/projects/61325</url>
+    <system>GitHub Actions</system>
+    <url>https://github.com/rherrmann/eclipse-extras/actions</url>
   </ciManagement>
   <issueManagement>
     <system>GitHub Issues</system>
@@ -38,17 +38,14 @@
     </license>
   </licenses>
   <properties>
-    <tycho-version>1.3.0</tycho-version>
-    <tycho-extras-version>1.3.0</tycho-extras-version>
-    <jacoco-version>0.8.3</jacoco-version>
-    <target-platform-classifier>eclipse-4.6</target-platform-classifier>
+    <tycho-version>2.3.0</tycho-version>
+    <tycho-extras-version>2.3.0</tycho-extras-version>
+    <jacoco-version>0.8.7</jacoco-version>
+    <target-platform-classifier>eclipse-4.20</target-platform-classifier>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tycho.scmUrl>${project.scm.connection}</tycho.scmUrl>
     <os-jvm-flags/>
   </properties>
-  <prerequisites>
-    <maven>3.0</maven>
-  </prerequisites>
   <modules>
     <module>com.codeaffine.extras.jdt</module>
     <module>com.codeaffine.extras.jdt.test</module>
@@ -89,7 +86,19 @@
         <os><family>mac</family></os>
       </activation>
       <properties>
-        <os-jvm-flags>-XstartOnFirstThread</os-jvm-flags>
+        <os-jvm-flags>${tycho.testArgLine} -Xmx512m -XstartOnFirstThread</os-jvm-flags>
+      </properties>
+    </profile>
+    <profile>
+      <id>other-os</id>
+      <activation>
+        <os>
+          <name>not-mac</name>
+          <family>!mac</family>
+        </os>
+      </activation>
+      <properties>
+        <ui.test.vmargs>${tycho.testArgLine} -Xmx512m</ui.test.vmargs>
       </properties>
     </profile>
   </profiles>
@@ -118,7 +127,7 @@
         <configuration>
 	        <checkDependencies>true</checkDependencies>
 	        <checkProvisioning>true</checkProvisioning>
-	        <executionEnvironment>JavaSE-1.8</executionEnvironment>
+	        <executionEnvironment>JavaSE-11</executionEnvironment>
 	        <targetFiles>
 	          <file>com.codeaffine.extras.target/${target-platform-classifier}</file>
 	        </targetFiles>
@@ -185,7 +194,7 @@
         <artifactId>tycho-surefire-plugin</artifactId>
         <version>${tycho-version}</version>
         <configuration>
-          <argLine>-Xmx512m ${os-jvm-flags}</argLine>
+          <argLine>${os-jvm-flags}</argLine>
           <useUIHarness>true</useUIHarness>
           <appArgLine>-nl en -consolelog</appArgLine>
           <forkedProcessTimeoutInSeconds>1200</forkedProcessTimeoutInSeconds>
@@ -206,20 +215,6 @@
 	        </execution>
 	      </executions>
       </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho.extras</groupId>
-        <artifactId>tycho-pack200b-plugin</artifactId>
-        <version>${tycho-extras-version}</version>
-        <executions>
-          <execution>
-            <id>pack200-pack</id>
-            <goals>
-              <goal>pack</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- Alter p2-metadata to make .pack.gz artifacts visible from other modules -->
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-p2-plugin</artifactId>

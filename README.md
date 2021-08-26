@@ -2,11 +2,9 @@
 [![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/extras-for-eclipse.png)](https://rherrmann.github.io/eclipse-extras/)
 
 &nbsp;
-[![Build Status](https://img.shields.io/codeship/6a994910-8fa7-0132-ebb3-32b8c1ae92e1/master.svg)](https://codeship.com/projects/61325)
-[![Code Quality](https://img.shields.io/codacy/grade/e2fd582b61bb4145bf9a3df7a520b727.svg?maxAge=2592000?style=flat)](https://www.codacy.com/app/ruediger-herrmann/eclipse-extras/dashboard)
-[![Code Coverage](https://api.codacy.com/project/badge/Coverage/e2fd582b61bb4145bf9a3df7a520b727)](https://www.codacy.com/app/ruediger-herrmann/eclipse-extras?utm_source=github.com&utm_medium=referral&utm_content=rherrmann/eclipse-extras&utm_campaign=Badge_Coverage)
+[![Build Status](https://img.shields.io/github/workflow/status/rherrmann/eclipse-extras/build)](https://github.com/rherrmann/eclipse-extras/actions/workflows/build.yaml)
 [![Version](https://img.shields.io/badge/version-1.0-lightgrey.svg)](http://rherrmann.github.io/eclipse-extras/repository/)
-[![Requirements](https://img.shields.io/badge/requirements-JRE%201.8%20%26%20Neon%20or%20later-2C2255.svg)](https://eclipse.org/luna/)
+[![Requirements](https://img.shields.io/badge/requirements-Eclipse%202021.06%20or%20later-2C2255.svg)](https://eclipse.org/luna/)
 [![EPL licensed](https://img.shields.io/badge/license-EPL-blue.svg)](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/LICENSE)
 
 Extras for Eclipse is a collection of small extensions for the Eclipse IDE that include a launch dialog, a JUnit status bar, a launch configuration housekeeper, and little helpers to accomplish recurring tasks with keyboard shortcuts.
@@ -19,7 +17,7 @@ Extras for Eclipse is available from the [Eclipse Marketplace](https://marketpla
 
 <a href="http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=2710118" class="drag" title="Drag to your running Eclipse workspace."><img class="img-responsive" src="https://marketplace.eclipse.org/sites/all/themes/solstice/public/images/marketplace/btn-install.png" alt="Drag to your running Eclipse workspace." /></a>
 
-If you prefer, you can also install Extras for Eclipse from this software site: 
+If you prefer, you can also install Extras for Eclipse from this software site:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://rherrmann.github.io/eclipse-extras/repository/
 
@@ -31,9 +29,9 @@ The software is released continuously, and the sources listed above always conta
 
 
 ## Requirements
-Works with Eclipse 4.6 (Neon) or later and Java 1.8 or later.
+Works with Eclipse 2021-06 or later and Java 11 or later.
 
-**Important:** If you don't run Eclipse with Java 1.8, the update process may appear to succeed, but Extras for Eclipse will simply not show in the target installation.
+**Important:** If you don't run Eclipse with Java 11, the update process may appear to succeed, but Extras for Eclipse will simply not show in the target installation.
 
 ## Contributing
 Please see the [contributing guidelines](CONTRIBUTING.md).

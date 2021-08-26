@@ -116,7 +116,7 @@
           <latestVersionOnly>true</latestVersionOnly>
           <mirrorMetadataOnly>false</mirrorMetadataOnly>
           <compress>true</compress>
-          <includePacked>true</includePacked>
+          <includePacked>false</includePacked>
           <append>true</append>
         </configuration>
       </plugin>

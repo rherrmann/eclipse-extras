@@ -4,7 +4,7 @@ Bundle-Name: Extras for Eclipse Test Utilities
 Bundle-SymbolicName: com.codeaffine.extras.test.util;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: codeaffine.com
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Require-Bundle: com.codeaffine.eclipse.core.runtime;bundle-version="[0.1.0,1.0.0)",

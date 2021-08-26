@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Build
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Compile, Test, and Package
+        run: ./mvnw --batch-mode verify
+      - name: Upload Code Coverage Report to Artifact Store
+        if: ${{ matrix.os == 'macos-latest' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: com.codeaffine.extras.test.coverage/target/site/jacoco-aggregate
+          if-no-files-found: error
+      - name: Upload p2 Repository to Artifact Store
+        if: ${{ matrix.os == 'macos-latest' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: repo
+          path: com.codeaffine.extras.repository/target/repository/
+          if-no-files-found: error
+
+  publish:
+    needs: build
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    runs-on: macos-latest
+    steps:
+      - name: Checkout gh-pages
+        uses: actions/checkout@v2
+        with:
+          ref: refs/heads/gh-pages
+      - name: Delete Latest p2 Repository
+        run: rm -rf repository
+      - name: Download p2 Repository from Artifact Store
+        uses: actions/download-artifact@v2
+        with:
+          name: repo
+          path: repository
+      - name: Create Zip File from p2 Repository
+        run: zip -r repository/eclipse-extras-repository.zip repository/*
+      - name: Publish p2 Repository to gh-pages
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          git config user.name "GitHub Actions Runner"
+          git config user.email "actions-runner@nusers.oreply.github.com"
+          git add -A
+          git commit -m "Publish results of build #${RUN_NUMBER}"
+          git push
