@@ -1,11 +1,11 @@
 
-[![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/readme-images/extras-for-eclipse.png)](https://rherrmann.github.io/eclipse-extras/)
+[![](https://raw.githubusercontent.com/rherrmann/eclipse-extras/main/readme-images/extras-for-eclipse.png)](https://rherrmann.github.io/eclipse-extras/)
 
 &nbsp;
 [![Build Status](https://img.shields.io/github/workflow/status/rherrmann/eclipse-extras/build)](https://github.com/rherrmann/eclipse-extras/actions/workflows/build.yaml)
 [![Version](https://img.shields.io/badge/version-1.0-lightgrey.svg)](http://rherrmann.github.io/eclipse-extras/repository/)
 [![Requirements](https://img.shields.io/badge/requirements-Eclipse%202021.06%20or%20later-2C2255.svg)](https://eclipse.org/luna/)
-[![EPL licensed](https://img.shields.io/badge/license-EPL-blue.svg)](https://raw.githubusercontent.com/rherrmann/eclipse-extras/master/LICENSE)
+[![EPL licensed](https://img.shields.io/badge/license-EPL-blue.svg)](https://raw.githubusercontent.com/rherrmann/eclipse-extras/main/LICENSE)
 
 Extras for Eclipse is a collection of small extensions for the Eclipse IDE that include a launch dialog, a JUnit status bar, a launch configuration housekeeper, and little helpers to accomplish recurring tasks with keyboard shortcuts.
 
