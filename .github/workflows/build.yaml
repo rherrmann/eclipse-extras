@@ -49,6 +49,11 @@ jobs:
         with:
           name: repo
           path: repository
+      - name: Download Code Coverage Report
+        uses: actions/download-artifact@v2
+        with:
+          name: coverage-report
+          path: coverage-report
       - name: Create Zip File from p2 Repository
         run: zip -r repository/eclipse-extras-repository.zip repository/*
       - name: Publish p2 Repository to gh-pages
