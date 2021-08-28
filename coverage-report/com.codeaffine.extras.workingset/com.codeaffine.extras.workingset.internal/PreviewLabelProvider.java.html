@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>PreviewLabelProvider.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.workingset</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.workingset.internal</a> &gt; <span class="el_source">PreviewLabelProvider.java</span></div><h1>PreviewLabelProvider.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.workingset.internal;
+
+import static org.eclipse.ui.ide.IDE.SharedImages.IMG_OBJ_PROJECT;
+import static org.eclipse.ui.ide.IDE.SharedImages.IMG_OBJ_PROJECT_CLOSED;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jface.preference.JFacePreferences;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.viewers.IColorProvider;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
+
+public class PreviewLabelProvider extends LabelProvider implements IColorProvider {
+
+  private final LocalResourceManager resourceManager;
+  private ProjectPatternMatcher projectPatternMatcher;
+
+<span class="fc" id="L24">  public PreviewLabelProvider( Display display ) {</span>
+<span class="fc" id="L25">    resourceManager = new LocalResourceManager( JFaceResources.getResources( display ) );</span>
+<span class="fc" id="L26">    projectPatternMatcher = new ProjectPatternMatcher( &quot;&quot; );</span>
+<span class="fc" id="L27">  }</span>
+
+  public void setPattern( String pattern ) {
+<span class="fc" id="L30">    projectPatternMatcher = new ProjectPatternMatcher( pattern );</span>
+<span class="fc" id="L31">  }</span>
+
+  @Override
+  public String getText( Object element ) {
+<span class="fc" id="L35">    IProject project = ( IProject )element;</span>
+<span class="fc" id="L36">    return project.getName();</span>
+  }
+
+  @Override
+  public Image getImage( Object element ) {
+<span class="fc" id="L41">    IProject project = ( IProject )element;</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">    return getSharedImage( project.isOpen() ? IMG_OBJ_PROJECT : IMG_OBJ_PROJECT_CLOSED );</span>
+  }
+
+  @Override
+  public Color getForeground( Object element ) {
+<span class="fc" id="L47">    IProject project = ( IProject )element;</span>
+<span class="fc" id="L48">    Color result = null;</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">    if( !projectPatternMatcher.matches( project ) ) {</span>
+<span class="fc" id="L50">      result = JFaceResources.getColorRegistry().get( JFacePreferences.QUALIFIER_COLOR );</span>
+    }
+<span class="fc" id="L52">    return result;</span>
+  }
+
+  @Override
+  public Color getBackground( Object element ) {
+<span class="fc" id="L57">    return null;</span>
+  }
+
+  @Override
+  public void dispose() {
+<span class="fc" id="L62">    super.dispose();</span>
+<span class="fc" id="L63">    resourceManager.dispose();</span>
+<span class="fc" id="L64">  }</span>
+
+  private Image getSharedImage( String imageName ) {
+<span class="fc" id="L67">    IWorkbench workbench = PlatformUI.getWorkbench();</span>
+<span class="fc" id="L68">    ImageDescriptor imageDescriptor = workbench.getSharedImages().getImageDescriptor( imageName );</span>
+<span class="fc" id="L69">    return resourceManager.createImage( imageDescriptor );</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

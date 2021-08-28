@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>TestRunSessionInfo.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.jdt</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.jdt.internal.junitstatus</a> &gt; <span class="el_source">TestRunSessionInfo.java</span></div><h1>TestRunSessionInfo.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.jdt.internal.junitstatus;
+
+import static java.util.Objects.requireNonNull;
+import static org.eclipse.jdt.junit.model.ITestElement.Result.UNDEFINED;
+
+import org.eclipse.jdt.junit.model.ITestCaseElement;
+import org.eclipse.jdt.junit.model.ITestElement;
+import org.eclipse.jdt.junit.model.ITestElement.ProgressState;
+import org.eclipse.jdt.junit.model.ITestElement.Result;
+import org.eclipse.jdt.junit.model.ITestElementContainer;
+import org.eclipse.jdt.junit.model.ITestRunSession;
+
+
+public class TestRunSessionInfo {
+
+  public static boolean isTestFailed( Result testResult ) {
+<span class="fc bfc" id="L17" title="All 4 branches covered.">    return Result.ERROR.equals( testResult ) || Result.FAILURE.equals( testResult );</span>
+  }
+
+  private final ITestRunSession testRunSession;
+  private final Object lock;
+  private boolean countersInitialized;
+  private int totalTestCount;
+  private int failedTestCount;
+  private int executedTestCount;
+
+<span class="fc" id="L27">  public TestRunSessionInfo( ITestElement testElement ) {</span>
+<span class="fc" id="L28">    requireNonNull( testElement, &quot;testElement&quot; );</span>
+<span class="fc" id="L29">    this.testRunSession = testElement.getTestRunSession();</span>
+<span class="fc" id="L30">    this.lock = new Object();</span>
+<span class="fc" id="L31">  }</span>
+
+  public String getName() {
+<span class="fc" id="L34">    return testRunSession.getTestRunName();</span>
+  }
+
+  public int getTotalTestCount() {
+<span class="fc" id="L38">    synchronized( lock ) {</span>
+<span class="fc" id="L39">      initializeCounters();</span>
+<span class="fc" id="L40">      return totalTestCount;</span>
+    }
+  }
+
+  public int getFailedTestCount() {
+<span class="fc" id="L45">    synchronized( lock ) {</span>
+<span class="fc" id="L46">      initializeCounters();</span>
+<span class="fc" id="L47">      return failedTestCount;</span>
+    }
+  }
+
+  public int getExecutedTestCount() {
+<span class="fc" id="L52">    synchronized( lock ) {</span>
+<span class="fc" id="L53">      initializeCounters();</span>
+<span class="fc" id="L54">      return executedTestCount;</span>
+    }
+  }
+
+  public TestRunState getTestRunState() {
+    TestRunState result;
+<span class="fc bfc" id="L60" title="All 2 branches covered.">    if( testRunSession.getProgressState() == ProgressState.STOPPED ) {</span>
+<span class="fc" id="L61">      result = TestRunState.STOPPED;</span>
+<span class="fc" id="L62">    } else {</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">      if( getFailedTestCount() &gt; 0 ) {</span>
+<span class="fc" id="L64">        result = TestRunState.FAILED;</span>
+<span class="fc" id="L65">      } else {</span>
+<span class="fc" id="L66">        result = TestRunState.SUCCESS;</span>
+      }
+    }
+<span class="fc" id="L69">    return result;</span>
+  }
+
+  public void incExecutedTestCount() {
+<span class="fc" id="L73">    synchronized( lock ) {</span>
+<span class="fc" id="L74">      initializeCounters();</span>
+<span class="fc" id="L75">      executedTestCount++;</span>
+    }
+<span class="fc" id="L77">  }</span>
+
+  public void incFailedTestCount() {
+<span class="fc" id="L80">    synchronized( lock ) {</span>
+<span class="fc" id="L81">      initializeCounters();</span>
+<span class="fc" id="L82">      failedTestCount++;</span>
+    }
+<span class="fc" id="L84">  }</span>
+
+  public boolean equalsSession( ITestElement testElement ) {
+<span class="fc bfc" id="L87" title="All 4 branches covered.">    return testElement != null &amp;&amp; testElement.getTestRunSession().equals( testRunSession );</span>
+  }
+
+  private void initializeCounters() {
+<span class="fc bfc" id="L91" title="All 2 branches covered.">    if( !countersInitialized ) {</span>
+<span class="fc" id="L92">      countersInitialized = true;</span>
+<span class="fc" id="L93">      collectCounters( testRunSession );</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">      if( executedTestCount &gt; 0 ) {</span>
+<span class="fc" id="L95">        executedTestCount--;</span>
+      }
+<span class="fc bfc" id="L97" title="All 2 branches covered.">      if( failedTestCount &gt; 0 ) {</span>
+<span class="fc" id="L98">        failedTestCount--;</span>
+      }
+    }
+<span class="fc" id="L101">  }</span>
+
+  private void collectCounters( ITestElementContainer testElementContainer ) {
+<span class="fc" id="L104">    ITestElement[] children = testElementContainer.getChildren();</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">    for( ITestElement child : children ) {</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">      if( child instanceof ITestElementContainer ) {</span>
+<span class="fc" id="L107">        collectCounters( ( ITestElementContainer )child );</span>
+      }
+<span class="fc bfc" id="L109" title="All 2 branches covered.">      if( child instanceof ITestCaseElement ) {</span>
+<span class="fc" id="L110">        updateCounters( ( ITestCaseElement )child );</span>
+      }
+    }
+<span class="fc" id="L113">  }</span>
+
+  private void updateCounters( ITestCaseElement testElement ) {
+<span class="fc" id="L116">    Result testResult = testElement.getTestResult( false );</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">    if( !UNDEFINED.equals( testResult ) ) {</span>
+<span class="fc" id="L118">      executedTestCount++;</span>
+    }
+<span class="fc bfc" id="L120" title="All 2 branches covered.">    if( isTestFailed( testResult ) ) {</span>
+<span class="fc" id="L121">      failedTestCount++;</span>
+    }
+<span class="fc" id="L123">    totalTestCount++;</span>
+<span class="fc" id="L124">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

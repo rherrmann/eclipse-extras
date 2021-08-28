@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>JUnitTestRunListener.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.jdt</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.jdt.internal.junitstatus</a> &gt; <span class="el_source">JUnitTestRunListener.java</span></div><h1>JUnitTestRunListener.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.jdt.internal.junitstatus;
+
+import static java.lang.Integer.valueOf;
+import static java.text.MessageFormat.format;
+
+import java.util.Objects;
+
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jdt.junit.TestRunListener;
+import org.eclipse.jdt.junit.model.ITestCaseElement;
+import org.eclipse.jdt.junit.model.ITestElement;
+import org.eclipse.jdt.junit.model.ITestRunSession;
+import org.eclipse.jface.resource.ColorDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
+
+public class JUnitTestRunListener extends TestRunListener {
+
+<span class="fc" id="L24">  static final RGB ERROR_RGB = new RGB( 159, 63, 63 );</span>
+<span class="fc" id="L25">  static final RGB SUCCESS_RGB = new RGB( 95, 191, 95 );</span>
+<span class="fc" id="L26">  static final RGB STOPPED_RGB = new RGB( 120, 120, 120 );</span>
+<span class="fc" id="L27">  static final String STARTING = &quot;Starting...&quot;;</span>
+
+  private final LaunchesAdapter launchListener;
+  private final ILaunchManager launchManager;
+  private final ResourceManager resourceManager;
+  private final ProgressUI progressUI;
+  private volatile TestRunSessionInfo currentSession;
+
+  public JUnitTestRunListener( ResourceManager resourceManager, ProgressUI progressUI ) {
+<span class="fc" id="L36">    this( DebugPlugin.getDefault().getLaunchManager(), resourceManager, progressUI );</span>
+<span class="fc" id="L37">  }</span>
+
+<span class="fc" id="L39">  public JUnitTestRunListener( ILaunchManager launchManager,</span>
+                               ResourceManager resourceManager,
+                               ProgressUI progressUI )
+  {
+<span class="fc" id="L43">    this.launchListener = new LaunchTerminatedListener();</span>
+<span class="fc" id="L44">    this.resourceManager = resourceManager;</span>
+<span class="fc" id="L45">    this.progressUI = progressUI;</span>
+<span class="fc" id="L46">    this.launchManager = launchManager;</span>
+<span class="fc" id="L47">    this.launchManager.addLaunchListener( launchListener );</span>
+<span class="fc" id="L48">  }</span>
+
+  public void dispose() {
+<span class="fc" id="L51">    launchManager.removeLaunchListener( launchListener );</span>
+<span class="fc" id="L52">  }</span>
+
+  @Override
+  public void sessionLaunched( ITestRunSession testRunSession ) {
+<span class="fc" id="L56">    currentSession = new TestRunSessionInfo( testRunSession );</span>
+<span class="fc" id="L57">    updateProgressUI( STARTING );</span>
+<span class="fc" id="L58">  }</span>
+
+  @Override
+  public void sessionStarted( ITestRunSession testRunSession ) {
+<span class="fc" id="L62">    currentSession = new TestRunSessionInfo( testRunSession );</span>
+<span class="fc" id="L63">    updateProgressUI( currentSession );</span>
+<span class="fc" id="L64">  }</span>
+
+  @Override
+  public void sessionFinished( ITestRunSession testRunSession ) {
+<span class="fc bfc" id="L68" title="All 2 branches covered.">    if( belongsToCurrentSession( testRunSession ) ) {</span>
+<span class="fc" id="L69">      finishSession();</span>
+    }
+<span class="fc" id="L71">  }</span>
+
+  @Override
+  public void testCaseFinished( ITestCaseElement testCaseElement ) {
+<span class="fc bfc" id="L75" title="All 2 branches covered.">    if( belongsToCurrentSession( testCaseElement ) ) {</span>
+<span class="fc" id="L76">      initializeCurrentSession( testCaseElement );</span>
+<span class="fc" id="L77">      currentSession.incExecutedTestCount();</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">      if( TestRunSessionInfo.isTestFailed( testCaseElement.getTestResult( false ) ) ) {</span>
+<span class="fc" id="L79">        currentSession.incFailedTestCount();</span>
+      }
+<span class="fc" id="L81">      updateProgressUI( currentSession );</span>
+    }
+<span class="fc" id="L83">  }</span>
+
+  private boolean belongsToCurrentSession( ITestElement testElement ) {
+<span class="fc bfc" id="L86" title="All 2 branches covered.">    return currentSession == null</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        || currentSession.equalsSession( testElement.getTestRunSession() );</span>
+  }
+
+  private void initializeCurrentSession( ITestElement testElement ) {
+<span class="fc bfc" id="L91" title="All 2 branches covered.">    if( currentSession == null ) {</span>
+<span class="fc" id="L92">      currentSession = new TestRunSessionInfo( testElement );</span>
+    }
+<span class="fc" id="L94">  }</span>
+
+  private void finishSession() {
+<span class="pc bpc" id="L97" title="1 of 4 branches missed.">    if( currentSession != null &amp;&amp; currentSession.getTotalTestCount() == 0 ) {</span>
+<span class="fc" id="L98">      updateProgressUI( &quot;&quot; );</span>
+    }
+<span class="fc" id="L100">    currentSession = null;</span>
+<span class="fc" id="L101">  }</span>
+
+  private void updateProgressUI( TestRunSessionInfo testRunSessionInfo ) {
+<span class="fc" id="L104">    Color barColor = getProgressBarColor( testRunSessionInfo );</span>
+<span class="fc" id="L105">    String text = getProgressBarText( testRunSessionInfo );</span>
+<span class="fc" id="L106">    int executedTestCount = testRunSessionInfo.getExecutedTestCount();</span>
+<span class="fc" id="L107">    int totalTestCount = testRunSessionInfo.getTotalTestCount();</span>
+<span class="fc" id="L108">    progressUI.update( text, SWT.CENTER, barColor, executedTestCount, totalTestCount );</span>
+<span class="fc" id="L109">    progressUI.setToolTipText( getToolTipText() );</span>
+<span class="fc" id="L110">  }</span>
+
+  private void updateProgressUI( String text ) {
+<span class="fc" id="L113">    progressUI.update( text, SWT.LEFT, null, 0, 0 );</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">    if( text.isEmpty() ) {</span>
+<span class="fc" id="L115">      progressUI.setToolTipText( &quot;&quot; );</span>
+<span class="fc" id="L116">    } else {</span>
+<span class="fc" id="L117">      progressUI.setToolTipText( getToolTipText() );</span>
+    }
+<span class="fc" id="L119">  }</span>
+
+  private String getToolTipText() {
+<span class="fc" id="L122">    String result = &quot;&quot;;</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">    if( currentSession != null ) {</span>
+<span class="fc" id="L124">      result = currentSession.getName();</span>
+<span class="fc" id="L125">      int failedTestCount = currentSession.getFailedTestCount();</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">      if( failedTestCount &gt; 0 ) {</span>
+<span class="fc" id="L127">        result = format( &quot;{0} ({1} failed)&quot;, currentSession.getName(), valueOf( failedTestCount ) );</span>
+      }
+    }
+<span class="fc" id="L130">    return result;</span>
+  }
+
+  private static String getProgressBarText( TestRunSessionInfo testRunSessionInfo ) {
+<span class="fc" id="L134">    int executedTestCount = testRunSessionInfo.getExecutedTestCount();</span>
+<span class="fc" id="L135">    int totalTestCount = testRunSessionInfo.getTotalTestCount();</span>
+<span class="fc" id="L136">    return format( &quot;{0} / {1}&quot;, valueOf( executedTestCount ), valueOf( totalTestCount ) );</span>
+  }
+
+  private Color getProgressBarColor( TestRunSessionInfo testRunSessionInfo ) {
+    RGB rgb;
+<span class="fc" id="L141">    TestRunState testRunState = testRunSessionInfo.getTestRunState();</span>
+<span class="pc bpc" id="L142" title="2 of 4 branches missed.">    switch( testRunState ) {</span>
+      case STOPPED:
+<span class="nc" id="L144">        rgb = STOPPED_RGB;</span>
+<span class="nc" id="L145">      break;</span>
+      case FAILED:
+<span class="fc" id="L147">        rgb = ERROR_RGB;</span>
+<span class="fc" id="L148">      break;</span>
+      case SUCCESS:
+<span class="fc" id="L150">        rgb = SUCCESS_RGB;</span>
+<span class="fc" id="L151">      break;</span>
+      default:
+<span class="nc" id="L153">        throw new UnsupportedOperationException( &quot;Unsupported TestRunState: &quot; + testRunState );</span>
+    }
+<span class="fc" id="L155">    return getColor( rgb );</span>
+  }
+
+  private Color getColor( RGB rgb ) {
+<span class="fc" id="L159">    return resourceManager.createColor( ColorDescriptor.createFrom( rgb ) );</span>
+  }
+
+<span class="fc" id="L162">  private class LaunchTerminatedListener extends LaunchesAdapter {</span>
+    @Override
+    public void launchesTerminated( ILaunch[] launches ) {
+<span class="fc bfc" id="L165" title="All 2 branches covered.">      for( ILaunch launch : launches ) {</span>
+<span class="fc" id="L166">        launchTerminated( launch );</span>
+      }
+<span class="fc" id="L168">    }</span>
+
+    private void launchTerminated( ILaunch launch ) {
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">      if( matchesCurrentSession( launch.getLaunchConfiguration() ) ) {</span>
+<span class="fc" id="L172">        finishSession();</span>
+      }
+<span class="fc" id="L174">    }</span>
+
+    private boolean matchesCurrentSession( ILaunchConfiguration launchConfig ) {
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">      return launchConfig != null</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">          &amp;&amp; currentSession != null</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">          &amp;&amp; Objects.equals( launchConfig.getName(), currentSession.getName() );</span>
+    }
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

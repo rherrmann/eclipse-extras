@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>OpenLaunchDialogHander.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.launch</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.launch.internal.dialog</a> &gt; <span class="el_source">OpenLaunchDialogHander.java</span></div><h1>OpenLaunchDialogHander.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.launch.internal.dialog;
+
+import static org.eclipse.jface.window.Window.OK;
+
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchMode;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.handlers.HandlerUtil;
+
+
+<span class="fc" id="L13">public class OpenLaunchDialogHander extends AbstractHandler {</span>
+
+  public static final String COMMAND_ID = &quot;com.codeaffine.extras.launch.internal.OpenLaunchDialogCommand&quot;;
+
+  @Override
+  public Object execute( ExecutionEvent event ) {
+<span class="fc" id="L19">    LaunchSelectionDialog dialog = createDialog( event );</span>
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">    if( dialog.open() == OK ) {</span>
+<span class="fc" id="L21">      startLaunchConfigs( dialog.getLaunchMode(), dialog.getSelectedLaunchConfigurations() );</span>
+    }
+<span class="fc" id="L23">    return null;</span>
+  }
+
+  private static void startLaunchConfigs( ILaunchMode launchMode,
+                                          ILaunchConfiguration[] launchConfigs )
+  {
+<span class="fc" id="L29">    new LaunchConfigStarter( launchMode, launchConfigs ).start();</span>
+<span class="fc" id="L30">  }</span>
+
+  protected LaunchSelectionDialog createDialog( ExecutionEvent event ) {
+<span class="nc" id="L33">    Shell shell = HandlerUtil.getActiveWorkbenchWindow( event ).getShell();</span>
+<span class="nc" id="L34">    return new LaunchSelectionDialog( shell );</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

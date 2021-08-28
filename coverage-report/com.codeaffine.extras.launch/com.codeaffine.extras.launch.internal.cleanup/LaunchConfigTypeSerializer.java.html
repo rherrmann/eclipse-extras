@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>LaunchConfigTypeSerializer.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.launch</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.launch.internal.cleanup</a> &gt; <span class="el_source">LaunchConfigTypeSerializer.java</span></div><h1>LaunchConfigTypeSerializer.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">package com.codeaffine.extras.launch.internal.cleanup;</span>
+
+import static java.util.stream.Collectors.joining;
+
+import java.util.Objects;
+import java.util.stream.Stream;
+
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchManager;
+
+
+public class LaunchConfigTypeSerializer {
+
+  private static final String DELIMITER = &quot;,&quot;;
+  private static final String ESCAPED_DELIMITER = &quot;\\&quot; + DELIMITER;
+
+  private final ILaunchManager launchManager;
+
+<span class="fc" id="L19">  public LaunchConfigTypeSerializer( ILaunchManager launchManager ) {</span>
+<span class="fc" id="L20">    this.launchManager = launchManager;</span>
+<span class="fc" id="L21">  }</span>
+
+  public String serialize( ILaunchConfigurationType... types ) {
+<span class="fc" id="L24">    return Stream.of( types ).map( type -&gt; type.getIdentifier() ).collect( joining( DELIMITER ) );</span>
+  }
+
+  public ILaunchConfigurationType[] deserialize( String string ) {
+<span class="fc" id="L28">    return Stream.of( string.split( ESCAPED_DELIMITER ) )</span>
+<span class="fc" id="L29">      .map( typeId -&gt; findType( typeId ) )</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">      .filter( type -&gt; type != null )</span>
+<span class="fc" id="L31">      .toArray( ILaunchConfigurationType[]::new );</span>
+  }
+
+  private ILaunchConfigurationType findType( String typeId ) {
+<span class="fc" id="L35">    return Stream.of( launchManager.getLaunchConfigurationTypes() )</span>
+<span class="fc" id="L36">      .filter( type -&gt; Objects.equals( type.getIdentifier(), typeId ) )</span>
+<span class="fc" id="L37">      .findFirst()</span>
+<span class="fc" id="L38">      .orElse( null );</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

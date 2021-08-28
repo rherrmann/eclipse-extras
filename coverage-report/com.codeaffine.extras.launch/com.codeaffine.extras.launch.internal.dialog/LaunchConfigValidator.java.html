@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>LaunchConfigValidator.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.launch</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.launch.internal.dialog</a> &gt; <span class="el_source">LaunchConfigValidator.java</span></div><h1>LaunchConfigValidator.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.launch.internal.dialog;
+
+import static com.codeaffine.extras.launch.internal.LaunchExtrasPlugin.PLUGIN_ID;
+import static java.text.MessageFormat.format;
+import static java.util.Objects.requireNonNull;
+import static org.eclipse.core.runtime.IStatus.ERROR;
+import static org.eclipse.core.runtime.IStatus.INFO;
+
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchMode;
+
+
+public class LaunchConfigValidator {
+
+  static final String NO_LAUNCH_MODE_FOUND = &quot;No launch mode could be found&quot;;
+  static final String LAUNCH_CONFIG_NOT_FOUND = &quot;Launch configuration could not be found&quot;;
+
+  private final ILaunchConfiguration launchConfig;
+  private final ILaunchMode preferredLaunchMode;
+
+<span class="fc" id="L23">  public LaunchConfigValidator( ILaunchConfiguration launchConfig, ILaunchMode preferredLaunchMode ) {</span>
+<span class="fc" id="L24">    requireNonNull( launchConfig, &quot;launchConfig&quot; );</span>
+<span class="fc" id="L25">    this.launchConfig = launchConfig;</span>
+<span class="fc" id="L26">    this.preferredLaunchMode = preferredLaunchMode;</span>
+<span class="fc" id="L27">  }</span>
+
+  public IStatus validate() {
+<span class="fc" id="L30">    IStatus result = okStatus();</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">    if( launchConfig.exists() ) {</span>
+<span class="fc" id="L32">      result = validateExistingLaunchConfig();</span>
+<span class="fc" id="L33">    } else {</span>
+<span class="fc" id="L34">      result = new Status( ERROR, PLUGIN_ID, 0, LAUNCH_CONFIG_NOT_FOUND, null );</span>
+    }
+<span class="fc" id="L36">    return result;</span>
+  }
+
+  private IStatus validateExistingLaunchConfig() {
+<span class="fc" id="L40">    IStatus result = okStatus();</span>
+<span class="fc" id="L41">    ILaunchMode launchMode = computeActualLaunchMode();</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">    if( launchMode == null ) {</span>
+<span class="nc" id="L43">      result = new Status( ERROR, PLUGIN_ID, 0, NO_LAUNCH_MODE_FOUND, null );</span>
+<span class="pc bfc" id="L44" title="All 2 branches covered.">    } else if( !preferredLaunchMode.getIdentifier().equals( launchMode.getIdentifier() ) ) {</span>
+<span class="fc" id="L45">      result = new Status( INFO, PLUGIN_ID, INFO, getLaunchModeWarningMessage( launchMode ), null );</span>
+    }
+<span class="fc" id="L47">    return result;</span>
+  }
+
+  private ILaunchMode computeActualLaunchMode() {
+<span class="fc" id="L51">    return new LaunchModeComputer( launchConfig, preferredLaunchMode ).computeLaunchMode();</span>
+  }
+
+  private static String getLaunchModeWarningMessage( ILaunchMode launchMode ) {
+<span class="fc" id="L55">    String label = launchMode.getLabel().replace( &quot;&amp;&quot;, &quot;&quot; );</span>
+<span class="fc" id="L56">    return format( &quot;Selection will be launched in ''{0}'' mode&quot;, label );</span>
+  }
+
+  private static Status okStatus() {
+<span class="fc" id="L60">    return new Status( IStatus.OK, PLUGIN_ID, &quot;&quot; );</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>PreviewComparator.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.workingset</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.workingset.internal</a> &gt; <span class="el_source">PreviewComparator.java</span></div><h1>PreviewComparator.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.workingset.internal;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jface.viewers.ViewerComparator;
+
+
+public class PreviewComparator extends ViewerComparator {
+
+  private final ProjectPatternMatcher patternMatcher;
+
+<span class="fc" id="L11">  public PreviewComparator( String pattern ) {</span>
+<span class="fc" id="L12">    patternMatcher = new ProjectPatternMatcher( pattern );</span>
+<span class="fc" id="L13">  }</span>
+
+  @Override
+  public int category( Object element ) {
+<span class="fc" id="L17">    IProject project = ( IProject )element;</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">    return patternMatcher.matches( project ) ? 0 : 1;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

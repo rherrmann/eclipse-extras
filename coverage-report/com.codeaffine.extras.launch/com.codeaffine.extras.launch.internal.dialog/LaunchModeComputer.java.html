@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>LaunchModeComputer.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.launch</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.launch.internal.dialog</a> &gt; <span class="el_source">LaunchModeComputer.java</span></div><h1>LaunchModeComputer.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.launch.internal.dialog;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.stream.Stream;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchMode;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.debug.ui.ILaunchGroup;
+
+
+public class LaunchModeComputer {
+
+  private final ILaunchConfiguration launchConfig;
+  private final ILaunchMode preferredLaunchMode;
+
+<span class="fc" id="L20">  public LaunchModeComputer( ILaunchConfiguration launchConfig, ILaunchMode preferredLaunchMode ) {</span>
+<span class="fc" id="L21">    requireNonNull( launchConfig, &quot;launchConfig&quot; );</span>
+<span class="fc" id="L22">    this.launchConfig = launchConfig;</span>
+<span class="fc" id="L23">    this.preferredLaunchMode = preferredLaunchMode;</span>
+<span class="fc" id="L24">  }</span>
+
+  public ILaunchMode computeLaunchMode() {
+    ILaunchMode result;
+<span class="fc bfc" id="L28" title="All 2 branches covered.">    if( isLaunchModeSupported( preferredLaunchMode ) ) {</span>
+<span class="fc" id="L29">      result = preferredLaunchMode;</span>
+<span class="fc" id="L30">    } else {</span>
+<span class="fc" id="L31">      result = findAlternativeLaunchMode();</span>
+    }
+<span class="fc" id="L33">    return result;</span>
+  }
+
+  public ILaunchGroup computeLaunchGroup() {
+<span class="fc" id="L37">    ILaunchGroup result = null;</span>
+<span class="fc" id="L38">    ILaunchMode launchMode = computeLaunchMode();</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">    if( launchMode != null ) {</span>
+<span class="fc" id="L40">      result = DebugUITools.getLaunchGroup( launchConfig, launchMode.getIdentifier() );</span>
+    }
+<span class="fc" id="L42">    return result;</span>
+  }
+
+  private ILaunchMode findAlternativeLaunchMode() {
+<span class="fc" id="L46">    return Stream.of( allLaunchModes() ).filter( this::isLaunchModeSupported ).findFirst().orElse( null );</span>
+  }
+
+  private boolean isLaunchModeSupported( ILaunchMode launchMode ) {
+    try {
+<span class="fc bfc" id="L51" title="All 4 branches covered.">      return launchMode != null &amp;&amp; launchConfig.supportsMode( launchMode.getIdentifier() );</span>
+<span class="fc" id="L52">    } catch( CoreException ignore ) {</span>
+<span class="fc" id="L53">      return false;</span>
+    }
+  }
+
+  private static ILaunchMode[] allLaunchModes() {
+<span class="fc" id="L58">    return DebugPlugin.getDefault().getLaunchManager().getLaunchModes();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

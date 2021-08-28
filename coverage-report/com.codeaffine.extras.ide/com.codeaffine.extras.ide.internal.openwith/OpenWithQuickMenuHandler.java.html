@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>OpenWithQuickMenuHandler.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.ide</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.ide.internal.openwith</a> &gt; <span class="el_source">OpenWithQuickMenuHandler.java</span></div><h1>OpenWithQuickMenuHandler.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.ide.internal.openwith;
+
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.ISources;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.ide.ResourceUtil;
+
+<span class="fc" id="L16">public class OpenWithQuickMenuHandler extends AbstractHandler {</span>
+
+  public static final String COMMAND_ID
+    = &quot;com.codeaffine.extras.ide.internal.OpenWithQuickMenu&quot;;
+
+  @Override
+  public Object execute( ExecutionEvent event ) {
+<span class="fc" id="L23">    IWorkbenchWindow workbenchWindow = HandlerUtil.getActiveWorkbenchWindow( event );</span>
+<span class="fc" id="L24">    IFile file = extractFileFromSelection( getStructuredSelection( event ) );</span>
+<span class="fc" id="L25">    showMenu( workbenchWindow.getActivePage(), file );</span>
+<span class="fc" id="L26">    return null;</span>
+  }
+
+  @Override
+  public void setEnabled( Object evaluationContext ) {
+<span class="fc bfc" id="L31" title="All 2 branches covered.">    if( evaluationContext instanceof IEvaluationContext ) {</span>
+<span class="fc" id="L32">      setEnabled( ( IEvaluationContext )evaluationContext );</span>
+<span class="fc" id="L33">    } else {</span>
+<span class="fc" id="L34">      setBaseEnabled( false );</span>
+    }
+<span class="fc" id="L36">  }</span>
+
+  protected void showMenu( IWorkbenchPage workbenchPage, IFile file ) {
+<span class="nc" id="L39">    new OpenWithQuickMenu( workbenchPage, file ).show();</span>
+<span class="nc" id="L40">  }</span>
+
+  private void setEnabled( IEvaluationContext evaluationContext ) {
+<span class="fc" id="L43">    IStructuredSelection selection = getSelection( evaluationContext );</span>
+<span class="fc" id="L44">    setBaseEnabled( isEnabled( selection ) );</span>
+<span class="fc" id="L45">  }</span>
+
+  private static boolean isEnabled( IStructuredSelection selection ) {
+<span class="fc bfc" id="L48" title="All 2 branches covered.">    return extractFileFromSelection( selection ) != null;</span>
+  }
+
+  private static IStructuredSelection getSelection( IEvaluationContext evaluationContext ) {
+<span class="fc" id="L52">    IStructuredSelection result = StructuredSelection.EMPTY;</span>
+<span class="fc" id="L53">    Object variable = evaluationContext.getVariable( ISources.ACTIVE_CURRENT_SELECTION_NAME );</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">    if( variable instanceof IStructuredSelection ) {</span>
+<span class="fc" id="L55">      result = ( IStructuredSelection )variable;</span>
+    }
+<span class="fc" id="L57">    return result;</span>
+  }
+
+  private static IStructuredSelection getStructuredSelection( ExecutionEvent event ) {
+<span class="fc" id="L61">    IStructuredSelection result = StructuredSelection.EMPTY;</span>
+<span class="fc" id="L62">    ISelection selection = HandlerUtil.getCurrentSelection( event );</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">    if( selection instanceof IStructuredSelection ) {</span>
+<span class="fc" id="L64">      result = ( IStructuredSelection )selection;</span>
+    }
+<span class="fc" id="L66">    return result;</span>
+  }
+
+  private static IFile extractFileFromSelection( IStructuredSelection selection ) {
+<span class="fc" id="L70">    IFile result = null;</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">    if( selection.size() == 1 ) {</span>
+<span class="fc" id="L72">      result = ResourceUtil.getFile( selection.getFirstElement() );</span>
+    }
+<span class="fc" id="L74">    return result;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

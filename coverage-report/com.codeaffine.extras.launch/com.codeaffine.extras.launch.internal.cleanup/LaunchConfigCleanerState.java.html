@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>LaunchConfigCleanerState.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.launch</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.launch.internal.cleanup</a> &gt; <span class="el_source">LaunchConfigCleanerState.java</span></div><h1>LaunchConfigCleanerState.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">package com.codeaffine.extras.launch.internal.cleanup;</span>
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.stream.Collectors.toList;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchManager;
+
+public class LaunchConfigCleanerState {
+
+  public static final String DEFAULT_FILE_NAME = &quot;cleanup-launch-configurations.txt&quot;;
+
+  private final ILaunchManager launchManager;
+  private final File file;
+
+<span class="fc" id="L25">  public LaunchConfigCleanerState( ILaunchManager launchManager, File file ) {</span>
+<span class="fc" id="L26">    this.launchManager = launchManager;</span>
+<span class="fc" id="L27">    this.file = file;</span>
+<span class="fc" id="L28">  }</span>
+
+  public void save( ILaunchConfiguration... launchConfigs ) {
+    try {
+<span class="fc" id="L32">      Files.write( file.toPath(), getLaunchConfigNames( launchConfigs ), UTF_8 );</span>
+<span class="pc" id="L33">    } catch( IOException ioe ) {</span>
+<span class="nc" id="L34">      handleSaveException( ioe );</span>
+    }
+<span class="fc" id="L36">  }</span>
+
+  public ILaunchConfiguration[] restore() {
+<span class="fc" id="L39">    ILaunchConfiguration[] result = new ILaunchConfiguration[ 0 ];</span>
+<span class="fc" id="L40">    try( Stream&lt;String&gt; stream = readLines() ) {</span>
+<span class="fc" id="L41">      result = stream</span>
+<span class="fc" id="L42">        .map( this::findLaunchConfig )</span>
+<span class="fc" id="L43">        .filter( Objects::nonNull )</span>
+<span class="fc" id="L44">        .toArray( ILaunchConfiguration[]::new );</span>
+<span class="nc" id="L45">    } catch( IOException ioe ) {</span>
+<span class="nc" id="L46">      handleRestoreExeption( ioe );</span>
+    }
+<span class="fc" id="L48">    return result;</span>
+  }
+
+  private Stream&lt;String&gt; readLines() throws IOException {
+    try {
+<span class="fc" id="L53">      return Files.lines( file.toPath(), UTF_8 );</span>
+<span class="fc" id="L54">    } catch( NoSuchFileException ignore ) {</span>
+<span class="fc" id="L55">      return Stream.empty();</span>
+    }
+  }
+
+  private ILaunchConfiguration findLaunchConfig( String name ) {
+<span class="fc" id="L60">    return Stream.of( getLaunchConfigs() )</span>
+<span class="fc" id="L61">      .filter( launchConfig -&gt; name.equals( launchConfig.getName() ) )</span>
+<span class="fc" id="L62">      .findAny()</span>
+<span class="fc" id="L63">      .orElse( null );</span>
+  }
+
+  private ILaunchConfiguration[] getLaunchConfigs() {
+    try {
+<span class="fc" id="L68">      return launchManager.getLaunchConfigurations();</span>
+<span class="nc" id="L69">    } catch( CoreException ce ) {</span>
+<span class="nc" id="L70">      throw new RuntimeException( ce );</span>
+    }
+  }
+
+  private static List&lt;String&gt; getLaunchConfigNames( ILaunchConfiguration... launchConfigs ) {
+<span class="fc" id="L75">    return Stream.of( launchConfigs ).map( launchConfig -&gt; launchConfig.getName() ).collect( toList() );</span>
+  }
+
+  private void handleSaveException( IOException ioe ) {
+<span class="nc" id="L79">    String msg = String.format( &quot;Failed to save launch configuration cleanup state to: &quot;, file );</span>
+<span class="nc" id="L80">    throw new RuntimeException( msg, ioe );</span>
+  }
+
+  private void handleRestoreExeption( IOException ioe ) {
+<span class="nc" id="L84">    String msg = String.format( &quot;Failed to restore launch configuration cleanup state to: &quot;, file );</span>
+<span class="nc" id="L85">    throw new RuntimeException( msg, ioe );</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

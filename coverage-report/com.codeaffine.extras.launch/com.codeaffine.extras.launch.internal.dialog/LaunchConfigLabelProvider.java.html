@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>LaunchConfigLabelProvider.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.launch</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.launch.internal.dialog</a> &gt; <span class="el_source">LaunchConfigLabelProvider.java</span></div><h1>LaunchConfigLabelProvider.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.launch.internal.dialog;
+
+import static com.codeaffine.extras.launch.internal.Images.RUNNING;
+import static com.codeaffine.extras.launch.internal.dialog.LaunchConfigLabelProvider.LabelMode.LIST;
+import static org.eclipse.jface.viewers.IDecoration.BOTTOM_RIGHT;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.debug.ui.IDebugModelPresentation;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.viewers.DecorationOverlayIcon;
+import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.jface.viewers.StyledString.Styler;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
+
+import com.codeaffine.extras.launch.internal.Images;
+
+
+public class LaunchConfigLabelProvider extends LabelProvider implements IStyledLabelProvider {
+
+<span class="fc" id="L27">  public enum LabelMode {</span>
+<span class="fc" id="L28">    LIST,</span>
+<span class="fc" id="L29">    DETAIL</span>
+  }
+
+<span class="fc" id="L32">  private static final Styler ADDITIONAL_INFO_STYLER = StyledString.QUALIFIER_STYLER;</span>
+
+  private final LocalResourceManager resourceManager;
+  private final DuplicatesDetector duplicatesDetector;
+  private final LabelMode labelMode;
+  private final IDebugModelPresentation debugModelPresentation;
+
+<span class="fc" id="L39">  public LaunchConfigLabelProvider( Display display,</span>
+                                    DuplicatesDetector duplicatesDetector,
+                                    LabelMode labelMode )
+  {
+<span class="fc" id="L43">    this.resourceManager = new LocalResourceManager( JFaceResources.getResources( display ) );</span>
+<span class="fc" id="L44">    this.duplicatesDetector = duplicatesDetector;</span>
+<span class="fc" id="L45">    this.labelMode = labelMode;</span>
+<span class="fc" id="L46">    this.debugModelPresentation = DebugUITools.newDebugModelPresentation();</span>
+<span class="fc" id="L47">  }</span>
+
+  @Override
+  public Image getImage( Object element ) {
+    Image result;
+<span class="fc bfc" id="L52" title="All 2 branches covered.">    if( isNonExistingLaunchConfig( element ) ) {</span>
+<span class="fc" id="L53">      result = null;</span>
+<span class="fc" id="L54">    } else {</span>
+<span class="fc" id="L55">      result = debugModelPresentation.getImage( element );</span>
+    }
+<span class="fc bfc" id="L57" title="All 2 branches covered.">    if( isRunning( element ) ) {</span>
+<span class="fc" id="L58">      result = decorateImage( result );</span>
+    }
+<span class="fc" id="L60">    return result;</span>
+  }
+
+  @Override
+  public String getText( Object element ) {
+<span class="fc" id="L65">    return getStyledText( element ).toString();</span>
+  }
+
+  @Override
+  public StyledString getStyledText( Object element ) {
+    StyledString result;
+<span class="fc bfc" id="L71" title="All 2 branches covered.">    if( element instanceof ILaunchConfiguration ) {</span>
+<span class="fc" id="L72">      result = getStyledString( ( ILaunchConfiguration )element );</span>
+<span class="fc" id="L73">    } else {</span>
+<span class="fc" id="L74">      result = new StyledString( String.valueOf( element ) );</span>
+    }
+<span class="fc" id="L76">    return result;</span>
+  }
+
+  @Override
+  public void dispose() {
+<span class="fc" id="L81">    debugModelPresentation.dispose();</span>
+<span class="fc" id="L82">    super.dispose();</span>
+<span class="fc" id="L83">  }</span>
+
+  protected boolean isRunning( Object element ) {
+<span class="fc" id="L86">    boolean result = false;</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">    if( element instanceof ILaunchConfiguration ) {</span>
+<span class="fc" id="L88">      result = LaunchConfigs.isRunning( ( ILaunchConfiguration )element );</span>
+    }
+<span class="fc" id="L90">    return result;</span>
+  }
+
+  private static boolean isNonExistingLaunchConfig( Object element ) {
+<span class="fc bfc" id="L94" title="All 4 branches covered.">    return element instanceof ILaunchConfiguration &amp;&amp; !( ( ILaunchConfiguration )element ).exists();</span>
+  }
+
+  private Image decorateImage( Image image ) {
+<span class="fc" id="L98">    Image result = null;</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">    if( image != null ) {</span>
+<span class="fc" id="L100">      ImageDescriptor imageDescriptor = Images.getImageDescriptor( RUNNING );</span>
+<span class="fc" id="L101">      DecorationOverlayIcon overlay = new DecorationOverlayIcon( image, imageDescriptor, BOTTOM_RIGHT );</span>
+<span class="fc" id="L102">      result = resourceManager.createImage( overlay );</span>
+    }
+<span class="fc" id="L104">    return result;</span>
+  }
+
+  private StyledString getStyledString( ILaunchConfiguration launchConfig ) {
+    StyledString result;
+<span class="fc bfc" id="L109" title="All 2 branches covered.">    if( labelMode == LIST ) {</span>
+<span class="fc" id="L110">      result = getListStyledString( launchConfig );</span>
+<span class="fc" id="L111">    } else {</span>
+<span class="fc" id="L112">      result = getDetailStyledString( launchConfig );</span>
+    }
+<span class="fc" id="L114">    return result;</span>
+  }
+
+  private StyledString getListStyledString( ILaunchConfiguration launchConfig ) {
+    StyledString result;
+<span class="fc" id="L119">    result = new StyledString( debugModelPresentation.getText( launchConfig ) );</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">    if( duplicatesDetector.isDuplicateElement( launchConfig ) ) {</span>
+<span class="fc" id="L121">      result.append( &quot; - &quot;, ADDITIONAL_INFO_STYLER );</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">      if( launchConfig.getFile() != null ) {</span>
+<span class="fc" id="L123">        result.append( getContainerName( launchConfig ), ADDITIONAL_INFO_STYLER );</span>
+<span class="fc" id="L124">      } else {</span>
+<span class="fc" id="L125">        result.append( getTypeName( launchConfig ), ADDITIONAL_INFO_STYLER );</span>
+      }
+    }
+<span class="fc" id="L128">    return result;</span>
+  }
+
+  private StyledString getDetailStyledString( ILaunchConfiguration launchConfig ) {
+    StyledString result;
+<span class="fc" id="L133">    result = new StyledString( debugModelPresentation.getText( launchConfig ) );</span>
+<span class="fc" id="L134">    result.append( &quot; - &quot;, ADDITIONAL_INFO_STYLER );</span>
+<span class="fc" id="L135">    result.append( getTypeName( launchConfig ), ADDITIONAL_INFO_STYLER );</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">    if( launchConfig.getFile() != null ) {</span>
+<span class="fc" id="L137">      result.append( &quot; (&quot;, ADDITIONAL_INFO_STYLER );</span>
+<span class="fc" id="L138">      result.append( getContainerName( launchConfig ), ADDITIONAL_INFO_STYLER );</span>
+<span class="fc" id="L139">      result.append( &quot;)&quot;, ADDITIONAL_INFO_STYLER );</span>
+    }
+<span class="fc" id="L141">    return result;</span>
+  }
+
+  private static String getTypeName( ILaunchConfiguration configuration ) {
+<span class="fc" id="L145">    String result = &quot;Unknown Launch Configuration Type&quot;;</span>
+    try {
+<span class="fc" id="L147">      result = configuration.getType().getName();</span>
+<span class="pc" id="L148">    } catch( CoreException ignore ) {</span>
+    }
+<span class="fc" id="L150">    return result;</span>
+  }
+
+  private static String getContainerName( ILaunchConfiguration launchConfig ) {
+<span class="fc" id="L154">    return launchConfig.getFile().getParent().getFullPath().makeRelative().toPortableString();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

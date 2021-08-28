@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>JUnitProgressBar.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.jdt</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.jdt.internal.junitstatus</a> &gt; <span class="el_source">JUnitProgressBar.java</span></div><h1>JUnitProgressBar.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.jdt.internal.junitstatus;
+
+import java.util.Objects;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Composite;
+
+import com.codeaffine.extras.jdt.internal.junitstatus.TextAnimation.TextAnimationPainter;
+
+public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
+
+  private static final int ARC_SIZE = 3;
+  private static final int DEFAULT_WIDTH = 160;
+  private static final int DEFAULT_HEIGHT = 18;
+
+  private final TextAnimation textAnimation;
+  private String text;
+  private int textAlignment;
+  private int maximum;
+  private int selection;
+  private Color barColor;
+
+  public JUnitProgressBar( Composite parent ) {
+<span class="fc" id="L29">    super( parent, SWT.NO_BACKGROUND | SWT.DOUBLE_BUFFERED | SWT.NO_FOCUS );</span>
+<span class="fc" id="L30">    text = &quot;&quot;;</span>
+<span class="fc" id="L31">    textAlignment = SWT.LEFT;</span>
+<span class="fc" id="L32">    textAnimation = new TextAnimation( this, this );</span>
+<span class="fc" id="L33">    registerListeners();</span>
+<span class="fc" id="L34">  }</span>
+
+  public void setValues( String text, int textAlignment, Color barColor, int selection, int maximum ) {
+<span class="fc bfc" id="L37" title="All 2 branches covered.">    if( valuesChanged( text, textAlignment, barColor, selection, maximum ) ) {</span>
+<span class="fc" id="L38">      this.text = text;</span>
+<span class="fc" id="L39">      this.textAnimation.setText( text );</span>
+<span class="fc" id="L40">      this.textAlignment = textAlignment;</span>
+<span class="fc" id="L41">      this.barColor = barColor;</span>
+<span class="fc" id="L42">      this.selection = selection;</span>
+<span class="fc" id="L43">      this.maximum = maximum;</span>
+<span class="fc" id="L44">      redraw();</span>
+    }
+<span class="fc" id="L46">  }</span>
+
+  public void setMaximum( int maximum ) {
+<span class="fc" id="L49">    setValues( text, textAlignment, barColor, selection, maximum );</span>
+<span class="fc" id="L50">  }</span>
+
+  public int getMaximum() {
+<span class="fc" id="L53">    return maximum;</span>
+  }
+
+  public void setSelection( int selection ) {
+<span class="fc" id="L57">    setValues( text, textAlignment, barColor, selection, maximum );</span>
+<span class="fc" id="L58">  }</span>
+
+  public int getSelection() {
+<span class="fc" id="L61">    return selection;</span>
+  }
+
+  public void setBarColor( Color barColor ) {
+<span class="fc" id="L65">    setValues( text, textAlignment, barColor, selection, maximum );</span>
+<span class="fc" id="L66">  }</span>
+
+  public Color getBarColor() {
+<span class="fc" id="L69">    return barColor;</span>
+  }
+
+  public void setText( String text ) {
+<span class="fc" id="L73">    setValues( text, textAlignment, barColor, selection, maximum );</span>
+<span class="fc" id="L74">  }</span>
+
+  public String getText() {
+<span class="fc" id="L77">    return text;</span>
+  }
+
+  public void setTextAlignment( int textAlignment ) {
+<span class="fc" id="L81">    setValues( text, textAlignment, barColor, selection, maximum );</span>
+<span class="fc" id="L82">  }</span>
+
+  public int getTextAlignment() {
+<span class="fc" id="L85">    return textAlignment;</span>
+  }
+
+  @Override
+  public void drawText( TextAnimation textAnimation ) {
+<span class="nc" id="L90">    redraw();</span>
+<span class="nc" id="L91">  }</span>
+
+  @Override
+  public Point computeSize( int wHint, int hHint, boolean changed ) {
+<span class="fc" id="L95">    checkWidget();</span>
+<span class="fc" id="L96">    Point result = new Point( DEFAULT_WIDTH, DEFAULT_HEIGHT );</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">    if( wHint != SWT.DEFAULT ) {</span>
+<span class="fc" id="L98">      result.x = wHint;</span>
+    }
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">    if( hHint != SWT.DEFAULT ) {</span>
+<span class="nc" id="L101">      result.y = hHint;</span>
+    }
+<span class="fc" id="L103">    return result;</span>
+  }
+
+  private void registerListeners() {
+<span class="fc" id="L107">    addListener( SWT.Resize, event -&gt; redraw() );</span>
+<span class="fc" id="L108">    addListener( SWT.Paint, event -&gt; paint( event.gc ) );</span>
+<span class="fc" id="L109">  }</span>
+
+  private void paint( GC gc ) {
+<span class="fc bfc" id="L112" title="All 2 branches covered.">    int style = ( maximum &gt; 0 ? SWT.BORDER : SWT.NONE ) | textAlignment;</span>
+<span class="fc" id="L113">    String text = textAnimation.getAnimatedText();</span>
+<span class="fc" id="L114">    new Painter( gc, getClientArea(), text, barColor, getBarWidth(), style  ).paint();</span>
+<span class="fc" id="L115">  }</span>
+
+  int getBarWidth() {
+<span class="fc" id="L118">    int result = selection;</span>
+<span class="fc" id="L119">    Rectangle clientArea = getClientArea();</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">    if( maximum &gt; 0 ) {</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">      if( clientArea.width != 0 ) {</span>
+<span class="fc" id="L122">        result = Math.max( 0, selection * ( clientArea.width - 2 ) / maximum );</span>
+      }
+<span class="fc" id="L124">    } else {</span>
+<span class="fc" id="L125">      result = 0;</span>
+    }
+<span class="fc" id="L127">    return Math.min( clientArea.width - 2, result );</span>
+  }
+
+  private boolean valuesChanged( String text, int textAlignment, Color barColor, int selection, int maximum ) {
+<span class="fc bfc" id="L131" title="All 2 branches covered.">    return !Objects.equals( this.text, text )</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        || this.textAlignment != textAlignment</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">        || !Objects.equals( this.barColor, barColor )</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        || this.selection != selection</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        || this.maximum != maximum;</span>
+  }
+
+  private static class Painter {
+    private final GC gc;
+    private final Rectangle clientArea;
+    private final String text;
+    private final Color barColor;
+    private final int barWidth;
+    private final int style;
+
+<span class="fc" id="L146">    Painter( GC gc, Rectangle clientArea, String text, Color barColor, int barWidth, int style ) {</span>
+<span class="fc" id="L147">      this.gc = gc;</span>
+<span class="fc" id="L148">      this.clientArea = clientArea;</span>
+<span class="fc" id="L149">      this.text = text;</span>
+<span class="fc" id="L150">      this.barColor = barColor;</span>
+<span class="fc" id="L151">      this.barWidth = barWidth;</span>
+<span class="fc" id="L152">      this.style = style;</span>
+<span class="fc" id="L153">    }</span>
+
+    void paint() {
+<span class="fc" id="L156">      prepareGC();</span>
+<span class="fc" id="L157">      drawBorder();</span>
+<span class="fc" id="L158">      drawBar();</span>
+<span class="fc" id="L159">      drawText();</span>
+<span class="fc" id="L160">    }</span>
+
+    private void prepareGC() {
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">      if( gc.getAdvanced() ) {</span>
+<span class="fc" id="L164">        gc.setTextAntialias( SWT.ON );</span>
+      }
+<span class="fc" id="L166">      gc.fillRectangle( clientArea );</span>
+<span class="fc" id="L167">    }</span>
+
+    private void drawBorder() {
+<span class="fc bfc" id="L170" title="All 2 branches covered.">      if( ( style &amp; SWT.BORDER ) != 0 ) {</span>
+<span class="fc" id="L171">        int x = clientArea.x;</span>
+<span class="fc" id="L172">        int y = clientArea.y;</span>
+<span class="fc" id="L173">        int width = clientArea.width - 1;</span>
+<span class="fc" id="L174">        int height = clientArea.height - 1 - 1;</span>
+<span class="fc" id="L175">        gc.setAlpha( 255 );</span>
+<span class="fc" id="L176">        gc.setForeground( getSystemColor( SWT.COLOR_WIDGET_NORMAL_SHADOW ) );</span>
+<span class="fc" id="L177">        gc.drawRoundRectangle( x, y, width, height, ARC_SIZE, ARC_SIZE );</span>
+      }
+<span class="fc" id="L179">    }</span>
+
+    private void drawBar() {
+<span class="fc bfc" id="L182" title="All 2 branches covered.">      if( barColor != null ) {</span>
+<span class="fc" id="L183">        gc.setAlpha( 200 );</span>
+<span class="fc" id="L184">        gc.setBackground( barColor );</span>
+<span class="fc" id="L185">        gc.fillRoundRectangle( 1, 1, barWidth, clientArea.height - 2 - 1, ARC_SIZE, ARC_SIZE );</span>
+      }
+<span class="fc" id="L187">    }</span>
+
+    private void drawText() {
+<span class="fc" id="L190">      gc.setAlpha( 255 );</span>
+<span class="fc" id="L191">      Rectangle rect = insideBorderArea();</span>
+<span class="fc" id="L192">      Point textLocation = getTextLocation( rect );</span>
+
+<span class="fc" id="L194">      Color defaultForeground = getSystemColor( SWT.COLOR_WIDGET_FOREGROUND );</span>
+<span class="fc" id="L195">      drawText( textLocation, defaultForeground, null );</span>
+<span class="fc" id="L196">      Color barForeground = getBarForegroundColor();</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">      if( !equals( defaultForeground, barForeground ) ) {</span>
+<span class="fc" id="L198">        Rectangle clipping = new Rectangle( rect.x, rect.y, barWidth, rect.height );</span>
+<span class="fc" id="L199">        drawText( textLocation, barForeground, clipping );</span>
+      }
+<span class="fc" id="L201">    }</span>
+
+    private void drawText( Point location, Color foreground, Rectangle clipping ) {
+<span class="fc" id="L204">      Rectangle previousClipping = gc.getClipping();</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">      if( clipping != null ) {</span>
+<span class="fc" id="L206">        gc.setClipping( clipping );</span>
+      }
+<span class="fc" id="L208">      gc.setForeground( foreground );</span>
+<span class="fc" id="L209">      gc.drawText( text, location.x, location.y, SWT.DRAW_TRANSPARENT );</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">      if( clipping != null ) {</span>
+<span class="fc" id="L211">        gc.setClipping( previousClipping );</span>
+      }
+<span class="fc" id="L213">    }</span>
+
+    private Point getTextLocation( Rectangle clientArea ) {
+<span class="fc" id="L216">      Point textSize = gc.textExtent( text );</span>
+<span class="fc" id="L217">      int x = 3;</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">      if( ( style &amp; SWT.CENTER ) != 0 ) {</span>
+<span class="fc" id="L219">        x = ( clientArea.width - textSize.x ) / 2;</span>
+      }
+<span class="fc" id="L221">      int y = ( clientArea.height - textSize.y ) / 2 + 1;</span>
+<span class="fc" id="L222">      return new Point( x, y );</span>
+    }
+
+    private Color getBarForegroundColor() {
+<span class="fc" id="L226">      Color result = getSystemColor( SWT.COLOR_WIDGET_FOREGROUND );</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">      if( barColor != null ) {</span>
+<span class="fc" id="L228">        int red = barColor.getRed();</span>
+<span class="fc" id="L229">        int green = barColor.getGreen();</span>
+<span class="fc" id="L230">        int blue = barColor.getBlue();</span>
+<span class="fc" id="L231">        double y = ( 299 * red + 587 * green + 114 * blue ) / 1000;</span>
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">        result = y &gt;= 128 ? getSystemColor( SWT.COLOR_BLACK ) : getSystemColor( SWT.COLOR_WHITE );</span>
+      }
+<span class="fc" id="L234">      return result;</span>
+    }
+
+    private Color getSystemColor( int id ) {
+<span class="fc" id="L238">      return gc.getDevice().getSystemColor( id );</span>
+    }
+
+    private Rectangle insideBorderArea() {
+<span class="fc" id="L242">      return new Rectangle( clientArea.x + 1, clientArea.y + 1, clientArea.width - 2, clientArea.height - 2 );</span>
+    }
+
+    private static boolean equals( Color color1, Color color2 ) {
+<span class="fc" id="L246">      return color1.getRGB().equals( color2.getRGB() );</span>
+    }
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

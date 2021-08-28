@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ImageDataStorage.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.imageviewer</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.imageviewer.internal</a> &gt; <span class="el_source">ImageDataStorage.java</span></div><h1>ImageDataStorage.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.imageviewer.internal;
+
+import static java.util.Objects.requireNonNull;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
+
+class ImageDataStorage {
+
+  private final ImageData[] imageDatas;
+
+<span class="fc" id="L24">  ImageDataStorage( ImageData... imageDatas ) {</span>
+<span class="fc" id="L25">    this.imageDatas = requireNonNull( imageDatas, &quot;imageDatas&quot; );</span>
+<span class="fc" id="L26">  }</span>
+
+  void save( IFile file, IProgressMonitor monitor ) throws CoreException {
+<span class="fc" id="L29">    requireNonNull( file, &quot;file&quot; );</span>
+<span class="fc" id="L30">    requireNonNull( monitor, &quot;monitor&quot; );</span>
+<span class="fc" id="L31">    int imageFormat = determineImageFormat( file.getFullPath() );</span>
+<span class="fc" id="L32">    byte[] bytes = getImageDataBytes( imageFormat );</span>
+<span class="fc" id="L33">    InputStream inputStream = new ByteArrayInputStream( bytes );</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">    if( file.exists() ) {</span>
+<span class="fc" id="L35">      file.setContents( inputStream, IResource.NONE, monitor );</span>
+<span class="fc" id="L36">    } else {</span>
+<span class="fc" id="L37">      file.create( inputStream, IResource.NONE, monitor );</span>
+    }
+<span class="fc" id="L39">  }</span>
+
+  private byte[] getImageDataBytes( int imageFormat ) {
+<span class="fc" id="L42">    ImageLoader imageLoader = new ImageLoader();</span>
+<span class="fc" id="L43">    imageLoader.data = imageDatas;</span>
+<span class="fc" id="L44">    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();</span>
+<span class="fc" id="L45">    imageLoader.save( outputStream, imageFormat );</span>
+<span class="fc" id="L46">    return outputStream.toByteArray();</span>
+  }
+
+  private static int determineImageFormat( IPath path ) {
+<span class="fc" id="L50">    int result = SWT.IMAGE_PNG;</span>
+<span class="fc" id="L51">    String fileExtension = path.getFileExtension();</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">    if( fileExtension != null ) {</span>
+<span class="fc" id="L53">      Map&lt;String,Integer&gt; imageFormatMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L54">      imageFormatMap.put( &quot;png&quot;, Integer.valueOf( SWT.IMAGE_PNG ) );</span>
+<span class="fc" id="L55">      imageFormatMap.put( &quot;gif&quot;, Integer.valueOf( SWT.IMAGE_GIF ) );</span>
+<span class="fc" id="L56">      imageFormatMap.put( &quot;jpeg&quot;, Integer.valueOf( SWT.IMAGE_JPEG ) );</span>
+<span class="fc" id="L57">      imageFormatMap.put( &quot;jpg&quot;, Integer.valueOf( SWT.IMAGE_JPEG ) );</span>
+<span class="fc" id="L58">      imageFormatMap.put( &quot;ico&quot;, Integer.valueOf( SWT.IMAGE_ICO ) );</span>
+<span class="fc" id="L59">      imageFormatMap.put( &quot;bmp&quot;, Integer.valueOf( SWT.IMAGE_BMP ) );</span>
+<span class="fc" id="L60">      imageFormatMap.put( &quot;tiff&quot;, Integer.valueOf( SWT.IMAGE_TIFF ) );</span>
+<span class="fc" id="L61">      Integer format = imageFormatMap.get( fileExtension.toLowerCase() );</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">      if( format != null ) {</span>
+<span class="fc" id="L63">        result = format.intValue();</span>
+      }
+    }
+<span class="fc" id="L66">    return result;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>CloseJUnitStatusAction.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.jdt</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.jdt.internal.junitstatus</a> &gt; <span class="el_source">CloseJUnitStatusAction.java</span></div><h1>CloseJUnitStatusAction.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.jdt.internal.junitstatus;
+
+import org.eclipse.jface.action.Action;
+import org.eclipse.ui.IWorkbench;
+
+import com.codeaffine.extras.jdt.internal.prefs.ExpressionEvaluator;
+import com.codeaffine.extras.jdt.internal.prefs.WorkspaceScopePreferences;
+
+public class CloseJUnitStatusAction extends Action {
+
+  private final IWorkbench workbench;
+  private final WorkspaceScopePreferences preferences;
+
+  public CloseJUnitStatusAction( IWorkbench workbench ) {
+<span class="fc" id="L15">    this( workbench, new WorkspaceScopePreferences() );</span>
+<span class="fc" id="L16">  }</span>
+
+  public CloseJUnitStatusAction( IWorkbench workbench, WorkspaceScopePreferences preferences ) {
+<span class="fc" id="L19">    super( &quot;Close&quot; );</span>
+<span class="fc" id="L20">    this.workbench = workbench;</span>
+<span class="fc" id="L21">    this.preferences = preferences;</span>
+<span class="fc" id="L22">  }</span>
+
+  @Override
+  public void run() {
+<span class="fc" id="L26">    closeJUnitStatusBar();</span>
+<span class="fc" id="L27">    updateWorkbench();</span>
+<span class="fc" id="L28">  }</span>
+
+  private void closeJUnitStatusBar() {
+<span class="fc" id="L31">    preferences.setShowJUnitStatusBar( false );</span>
+<span class="fc" id="L32">  }</span>
+
+  private void updateWorkbench() {
+<span class="fc" id="L35">    new ExpressionEvaluator( workbench ).evaluate();</span>
+<span class="fc" id="L36">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

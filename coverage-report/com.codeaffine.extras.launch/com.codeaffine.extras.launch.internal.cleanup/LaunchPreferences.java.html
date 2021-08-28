@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>LaunchPreferences.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.launch</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.launch.internal.cleanup</a> &gt; <span class="el_source">LaunchPreferences.java</span></div><h1>LaunchPreferences.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.launch.internal.cleanup;
+
+import static java.util.Objects.requireNonNull;
+
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
+
+import com.codeaffine.extras.launch.internal.LaunchExtrasPlugin;
+
+
+public class LaunchPreferences {
+
+  public static final String PREF_CLEANUP_TYPES = LaunchExtrasPlugin.PLUGIN_ID + &quot;.CleanUpLaunchConfigurationTypes&quot;;
+  public static final String PREF_CLEANUP = LaunchExtrasPlugin.PLUGIN_ID + &quot;.CleanUpLaunchConfigurations&quot;;
+
+  public static IPreferenceStore getPluginPreferenceStore() {
+<span class="fc" id="L18">    return new ScopedPreferenceStore( InstanceScope.INSTANCE, LaunchExtrasPlugin.PLUGIN_ID );</span>
+  }
+
+  private final IPreferenceStore preferenceStore;
+
+  public LaunchPreferences() {
+<span class="fc" id="L24">    this( getPluginPreferenceStore() );</span>
+<span class="fc" id="L25">  }</span>
+
+<span class="fc" id="L27">  public LaunchPreferences( IPreferenceStore preferenceStore ) {</span>
+<span class="fc" id="L28">    this.preferenceStore = requireNonNull( preferenceStore, &quot;preferenceStore&quot; );</span>
+<span class="fc" id="L29">  }</span>
+
+  public IPreferenceStore getPreferenceStore() {
+<span class="fc" id="L32">    return preferenceStore;</span>
+  }
+
+  public void setCleanupGeneratedLaunchConfigs( boolean value ) {
+<span class="fc" id="L36">    preferenceStore.setValue( PREF_CLEANUP, value );</span>
+<span class="fc" id="L37">  }</span>
+
+  public boolean isCleanupGeneratedLaunchConfigs() {
+<span class="fc" id="L40">    return preferenceStore.getBoolean( PREF_CLEANUP );</span>
+  }
+
+  public void setCleanupGenerateLaunchConfigTypes( String typeIds ) {
+<span class="fc" id="L44">    preferenceStore.setValue( PREF_CLEANUP_TYPES, typeIds );</span>
+<span class="fc" id="L45">  }</span>
+
+  public String getCleanupGenerateLaunchConfigTypes() {
+<span class="fc" id="L48">    return preferenceStore.getString( PREF_CLEANUP_TYPES );</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

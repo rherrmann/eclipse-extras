@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ImageViewer.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.imageviewer</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.imageviewer.internal</a> &gt; <span class="el_source">ImageViewer.java</span></div><h1>ImageViewer.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.imageviewer.internal;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
+
+public class ImageViewer {
+
+  private final ScrolledComposite scrolledComposite;
+  final Label imageLabel;
+  private ImageData[] imageDatas;
+  private Image image;
+
+<span class="fc" id="L20">  public ImageViewer( Composite parent ) {</span>
+<span class="fc" id="L21">    scrolledComposite = new ScrolledComposite( parent, SWT.H_SCROLL | SWT.V_SCROLL );</span>
+<span class="fc" id="L22">    scrolledComposite.setBackground( getBackgroundColor() );</span>
+<span class="fc" id="L23">    imageLabel = new Label( scrolledComposite, SWT.NONE );</span>
+<span class="fc" id="L24">    imageLabel.setBackground( getBackgroundColor() );</span>
+<span class="fc" id="L25">    scrolledComposite.setContent( imageLabel );</span>
+<span class="fc" id="L26">    scrolledComposite.addListener( SWT.Dispose, this::handleDispose );</span>
+<span class="fc" id="L27">  }</span>
+
+  public Control getControl() {
+<span class="fc" id="L30">    return scrolledComposite;</span>
+  }
+
+  public void setImageDatas( ImageData... imageDatas ) {
+<span class="fc bfc" id="L34" title="All 2 branches covered.">    if( image != null ) {</span>
+<span class="fc" id="L35">      image.dispose();</span>
+<span class="fc" id="L36">      image = null;</span>
+    }
+<span class="fc" id="L38">    this.imageDatas = imageDatas;</span>
+<span class="pc bpc" id="L39" title="1 of 4 branches missed.">    if( imageDatas != null &amp;&amp; imageDatas.length &gt; 0 ) {</span>
+<span class="fc" id="L40">      image = new Image( scrolledComposite.getDisplay(), imageDatas[ 0 ] );</span>
+    }
+<span class="fc" id="L42">    imageLabel.setImage( image );</span>
+<span class="fc" id="L43">    imageLabel.pack();</span>
+<span class="fc" id="L44">  }</span>
+
+  public ImageData[] getImageDatas() {
+<span class="fc" id="L47">    return imageDatas;</span>
+  }
+
+  @SuppressWarnings(&quot;unused&quot;)
+  private void handleDispose( Event event ) {
+<span class="fc" id="L52">    setImageDatas( ( ImageData[] )null );</span>
+<span class="fc" id="L53">  }</span>
+
+  private Color getBackgroundColor() {
+<span class="fc" id="L56">    return scrolledComposite.getDisplay().getSystemColor( SWT.COLOR_LIST_BACKGROUND );</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

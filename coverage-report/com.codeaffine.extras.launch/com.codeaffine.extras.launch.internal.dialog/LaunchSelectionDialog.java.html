@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>LaunchSelectionDialog.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.launch</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.launch.internal.dialog</a> &gt; <span class="el_source">LaunchSelectionDialog.java</span></div><h1>LaunchSelectionDialog.java</h1><pre class="source lang-java linenums"><span class="nc" id="L1">package com.codeaffine.extras.launch.internal.dialog;</span>
+
+import static com.codeaffine.extras.launch.internal.LaunchExtrasPlugin.PLUGIN_ID;
+import static com.codeaffine.extras.launch.internal.dialog.LaunchConfigLabelProvider.LabelMode.DETAIL;
+import static com.codeaffine.extras.launch.internal.dialog.LaunchConfigLabelProvider.LabelMode.LIST;
+import static java.util.Arrays.stream;
+import static org.eclipse.jface.action.IAction.ENABLED;
+import static org.eclipse.jface.dialogs.IDialogConstants.CANCEL_ID;
+import static org.eclipse.jface.dialogs.IDialogConstants.CANCEL_LABEL;
+import static org.eclipse.jface.dialogs.IDialogConstants.OK_ID;
+import static org.eclipse.jface.dialogs.IDialogConstants.OK_LABEL;
+
+import java.util.Comparator;
+import java.util.stream.Stream;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.ILaunchMode;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.DialogSettings;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
+
+import com.codeaffine.eclipse.swt.util.UIThreadSynchronizer;
+import com.codeaffine.extras.launch.internal.LaunchExtrasPlugin;
+import com.codeaffine.extras.launch.internal.dialog.LaunchConfigLabelProvider.LabelMode;
+import com.codeaffine.extras.launch.internal.util.LaunchAdapter;
+
+
+public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implements DuplicatesDetector {
+
+  static final int EDIT_BUTTON_ID = IDialogConstants.CLIENT_ID + 2;
+
+  private final ILaunchManager launchManager;
+  private final EditLaunchConfigAction editLaunchConfigAction;
+  private final TerminateLaunchesAction terminateLaunchesAction;
+  private final LaunchConfigSelectionHistory launchConfigHistory;
+
+  public LaunchSelectionDialog( Shell shell ) {
+<span class="fc" id="L62">    super( shell, true );</span>
+<span class="fc" id="L63">    launchManager = DebugPlugin.getDefault().getLaunchManager();</span>
+<span class="fc" id="L64">    editLaunchConfigAction = new EditLaunchConfigAction( this );</span>
+<span class="fc" id="L65">    editLaunchConfigAction.addPropertyChangeListener( new EditLaunchConfigActionListener() );</span>
+<span class="fc" id="L66">    terminateLaunchesAction = new TerminateLaunchesAction();</span>
+<span class="fc" id="L67">    launchConfigHistory = new LaunchConfigSelectionHistory();</span>
+<span class="fc" id="L68">    setTitle( &quot;Start Launch Configuration&quot; );</span>
+<span class="fc" id="L69">    setMessage( &quot;Enter a &amp;name pattern (? = any character, * = any string, CamelCase)&quot; );</span>
+<span class="fc" id="L70">    setListLabelProvider( createLaunchConfigLabelProvider( shell.getDisplay(), LIST ) );</span>
+<span class="fc" id="L71">    setDetailsLabelProvider( createLaunchConfigLabelProvider( shell.getDisplay(), DETAIL ) );</span>
+<span class="fc" id="L72">    setSelectionHistory( launchConfigHistory );</span>
+<span class="fc" id="L73">    setSeparatorLabel( &quot;Launch Configuration matches&quot; );</span>
+<span class="fc" id="L74">  }</span>
+
+  public ILaunchConfiguration[] getSelectedLaunchConfigurations() {
+<span class="nc" id="L77">    return Stream.of( getResult() )</span>
+<span class="nc" id="L78">      .map( element -&gt; ( ILaunchConfiguration )element )</span>
+<span class="nc" id="L79">      .toArray( ILaunchConfiguration[]::new );</span>
+  }
+
+  public String getLaunchModeId() {
+<span class="fc" id="L83">    return new LaunchModeSetting( launchManager, getDialogSettings() ).getLaunchModeId();</span>
+  }
+
+  public ILaunchMode getLaunchMode() {
+<span class="fc" id="L87">    return new LaunchModeSetting( launchManager, getDialogSettings() ).getLaunchMode();</span>
+  }
+
+  @Override
+  public String getElementName( Object item ) {
+<span class="fc" id="L92">    ILaunchConfiguration configuration = ( ILaunchConfiguration )item;</span>
+<span class="fc" id="L93">    return configuration.getName();</span>
+  }
+
+  @Override
+  public void create() {
+<span class="fc" id="L98">    super.create();</span>
+<span class="fc" id="L99">    registerLaunchConfigDecorationUpdater();</span>
+<span class="fc" id="L100">  }</span>
+
+  public void close( int returnCode ) {
+<span class="nc" id="L103">    setReturnCode( returnCode );</span>
+<span class="nc" id="L104">    close();</span>
+<span class="nc" id="L105">  }</span>
+
+  @Override
+  protected void fillViewMenu( IMenuManager menuManager ) {
+<span class="fc" id="L109">    super.fillViewMenu( menuManager );</span>
+<span class="fc" id="L110">    menuManager.add( new Separator() );</span>
+<span class="fc" id="L111">    menuManager.add( new ToggleTerminateBeforeRelaunchAction() );</span>
+<span class="fc" id="L112">    menuManager.add( createLaunchModeDropDownAction() );</span>
+<span class="fc" id="L113">  }</span>
+
+  @Override
+  protected void fillContextMenu( IMenuManager menuManager ) {
+<span class="fc" id="L117">    menuManager.add( editLaunchConfigAction );</span>
+<span class="fc" id="L118">    menuManager.add( new Separator() );</span>
+<span class="fc" id="L119">    menuManager.add( terminateLaunchesAction );</span>
+<span class="fc" id="L120">    menuManager.add( new Separator() );</span>
+<span class="fc" id="L121">    super.fillContextMenu( menuManager );</span>
+<span class="fc" id="L122">  }</span>
+
+  @Override
+  protected void createButtonsForButtonBar( Composite parent ) {
+<span class="fc" id="L126">    GridLayout parentLayout = ( GridLayout )parent.getLayout();</span>
+<span class="fc" id="L127">    parentLayout.makeColumnsEqualWidth = false;</span>
+<span class="fc" id="L128">    parentLayout.numColumns++;</span>
+<span class="fc" id="L129">    Button editButton = createButton( parent, EDIT_BUTTON_ID, &quot;&amp;Edit...&quot;, false );</span>
+<span class="fc" id="L130">    editButton.setEnabled( false );</span>
+<span class="fc" id="L131">    setButtonLayoutData( editButton );</span>
+<span class="fc" id="L132">    new Label( parent, SWT.NONE ).setLayoutData( new GridData( 5, 0 ) );</span>
+<span class="fc" id="L133">    createButton( parent, OK_ID, OK_LABEL, true );</span>
+<span class="fc" id="L134">    createButton( parent, CANCEL_ID, CANCEL_LABEL, false );</span>
+<span class="fc" id="L135">    updateOkButtonLabel();</span>
+<span class="fc" id="L136">  }</span>
+
+  @Override
+  protected void buttonPressed( int buttonId ) {
+<span class="nc bnc" id="L140" title="All 2 branches missed.">    if( buttonId == EDIT_BUTTON_ID ) {</span>
+<span class="nc" id="L141">      editLaunchConfigAction.run();</span>
+<span class="nc" id="L142">    } else {</span>
+<span class="nc" id="L143">      super.buttonPressed( buttonId );</span>
+    }
+<span class="nc" id="L145">  }</span>
+
+  @Override
+  protected Control createExtendedContentArea( Composite parent ) {
+<span class="fc" id="L149">    return null;</span>
+  }
+
+  @Override
+  protected IDialogSettings getDialogSettings() {
+<span class="nc" id="L154">    IDialogSettings dialogSettings = LaunchExtrasPlugin.getInstance().getDialogSettings();</span>
+<span class="nc" id="L155">    return DialogSettings.getOrCreateSection( dialogSettings, &quot;LaunchSelectionDialog&quot; );</span>
+  }
+
+  @Override
+  protected void handleSelected( StructuredSelection selection ) {
+<span class="fc" id="L160">    super.handleSelected( selection );</span>
+<span class="fc" id="L161">    editLaunchConfigAction.setSelection( selection );</span>
+<span class="fc" id="L162">    terminateLaunchesAction.setSelection( selection );</span>
+<span class="fc" id="L163">  }</span>
+
+  @Override
+  protected IStatus validateItem( Object item ) {
+<span class="fc" id="L167">    ILaunchMode preferredLaunchMode = getLaunchMode();</span>
+<span class="fc" id="L168">    ILaunchConfiguration launchConfig = ( ILaunchConfiguration )item;</span>
+<span class="fc" id="L169">    return new LaunchConfigValidator( launchConfig, preferredLaunchMode ).validate();</span>
+  }
+
+  @Override
+  protected ItemsFilter createFilter() {
+<span class="fc" id="L174">    return new LaunchConfigItemsFilter();</span>
+  }
+
+  @Override
+  protected Comparator&lt;ILaunchConfiguration&gt; getItemsComparator() {
+<span class="fc" id="L179">    return new LaunchConfigComparator( launchConfigHistory, getLaunchMode() );</span>
+  }
+
+  @Override
+  protected void fillContentProvider( AbstractContentProvider contentProvider,
+                                      ItemsFilter itemsFilter,
+                                      IProgressMonitor progressMonitor )
+    throws CoreException
+  {
+<span class="nc" id="L188">    LaunchConfigProvider launchConfigProvider = new LaunchConfigProvider( launchManager );</span>
+<span class="nc" id="L189">    stream( launchConfigProvider.getLaunchConfigurations() )</span>
+<span class="nc" id="L190">      .forEach( launchConfig -&gt; contentProvider.add( launchConfig, itemsFilter ) );</span>
+<span class="nc" id="L191">  }</span>
+
+  private void registerLaunchConfigDecorationUpdater() {
+<span class="fc" id="L194">    LaunchAdapter launchListener = new LaunchConfigDecorationUpdater();</span>
+<span class="fc" id="L195">    launchManager.addLaunchListener( launchListener );</span>
+<span class="fc" id="L196">    getShell().addListener( SWT.Dispose, event -&gt; launchManager.removeLaunchListener( launchListener ) );</span>
+<span class="fc" id="L197">  }</span>
+
+  private ILabelProvider createLaunchConfigLabelProvider( Display display, LabelMode labelMode ) {
+<span class="fc" id="L200">    return new LaunchConfigLabelProvider( display, this, labelMode );</span>
+  }
+
+  private LaunchModeDropDownAction createLaunchModeDropDownAction() {
+<span class="fc" id="L204">    LaunchModeSetting launchModeSetting = new LaunchModeSetting( launchManager, getDialogSettings() );</span>
+<span class="fc" id="L205">    LaunchModeDropDownAction result = new LaunchModeDropDownAction( launchModeSetting );</span>
+<span class="fc" id="L206">    result.addPropertyChangeListener( event -&gt; {</span>
+<span class="nc" id="L207">      updateOkButtonLabel();</span>
+<span class="nc" id="L208">      updateStatus();</span>
+<span class="nc" id="L209">    } );</span>
+<span class="fc" id="L210">    return result;</span>
+  }
+
+  private void updateOkButtonLabel() {
+<span class="fc" id="L214">    Button okButton = getButton( OK_ID );</span>
+<span class="fc" id="L215">    LaunchModeSetting launchModeSetting = new LaunchModeSetting( launchManager, getDialogSettings() );</span>
+<span class="fc" id="L216">    ILaunchMode launchMode = launchModeSetting.getLaunchMode();</span>
+<span class="pc bpc" id="L217" title="2 of 4 branches missed.">    if( okButton != null &amp;&amp; launchMode != null ) {</span>
+<span class="fc" id="L218">      okButton.setText( launchMode.getLabel() );</span>
+<span class="fc" id="L219">      okButton.getParent().layout();</span>
+    }
+<span class="fc" id="L221">  }</span>
+
+  void updateStatus() {
+<span class="fc" id="L224">    IStatus totalStatus = ( IStatus )getSelectedItems().toList().stream()</span>
+<span class="pc" id="L225">      .map( item -&gt; validateItem( item ) )</span>
+<span class="pc bnc" id="L226" title="All 2 branches missed.">      .filter( status -&gt; !( ( IStatus )status ).isOK() )</span>
+<span class="fc" id="L227">      .findFirst()</span>
+<span class="fc" id="L228">      .orElse( okStatus() );</span>
+<span class="fc" id="L229">    updateStatus( totalStatus );</span>
+<span class="fc" id="L230">  }</span>
+
+  private static Status okStatus() {
+<span class="fc" id="L233">    return new Status( OK, PLUGIN_ID, &quot;&quot; );</span>
+  }
+
+<span class="fc" id="L236">  public abstract static class AccessibleSelectionHistory extends SelectionHistory {</span>
+  }
+
+  private class LaunchConfigItemsFilter extends ItemsFilter {
+<span class="fc" id="L240">    LaunchConfigItemsFilter() {</span>
+<span class="fc" id="L241">      super( new LaunchConfigSearchPattern() );</span>
+<span class="fc" id="L242">    }</span>
+
+    @Override
+    public boolean matchItem( Object item ) {
+<span class="nc" id="L246">      boolean result = false;</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">      if( item instanceof ILaunchConfiguration ) {</span>
+<span class="nc" id="L248">        result = matchLaunchConfig( ( ILaunchConfiguration )item );</span>
+      }
+<span class="nc" id="L250">      return result;</span>
+    }
+
+    @Override
+    public boolean isConsistentItem( Object item ) {
+<span class="nc" id="L255">      boolean result = true;</span>
+<span class="nc bnc" id="L256" title="All 4 branches missed.">      if( item instanceof ILaunchConfiguration &amp;&amp; !( ( ILaunchConfiguration )item ).exists() ) {</span>
+<span class="nc" id="L257">        result = false;</span>
+      }
+<span class="nc" id="L259">      return result;</span>
+    }
+
+    private boolean matchLaunchConfig( ILaunchConfiguration launchConfig ) {
+<span class="nc" id="L263">      return matches( launchConfig.getName() );</span>
+    }
+  }
+
+<span class="fc" id="L267">  private class LaunchConfigDecorationUpdater extends LaunchAdapter {</span>
+    @Override
+    public void launchesAdded( ILaunch[] launches ) {
+<span class="nc" id="L270">      update();</span>
+<span class="nc" id="L271">    }</span>
+
+    @Override
+    public void launchesTerminated( ILaunch[] launches ) {
+<span class="nc" id="L275">      update();</span>
+<span class="nc" id="L276">    }</span>
+
+    private void update() {
+<span class="nc" id="L279">      new UIThreadSynchronizer().asyncExec( getShell(), LaunchSelectionDialog.this::refresh );</span>
+<span class="nc" id="L280">    }</span>
+  }
+
+<span class="fc" id="L283">  private class EditLaunchConfigActionListener implements IPropertyChangeListener {</span>
+    @Override
+    public void propertyChange( PropertyChangeEvent event ) {
+<span class="nc bnc" id="L286" title="All 2 branches missed.">      if( ENABLED.equals( event.getProperty() ) ) {</span>
+<span class="nc" id="L287">        updateEditButtonEnablement( ( IAction )event.getSource() );</span>
+      }
+<span class="nc" id="L289">    }</span>
+
+    private void updateEditButtonEnablement( IAction action ) {
+<span class="nc" id="L292">      Button button = getButton( EDIT_BUTTON_ID );</span>
+<span class="nc bnc" id="L293" title="All 4 branches missed.">      if( button != null &amp;&amp; !button.isDisposed() ) {</span>
+<span class="nc" id="L294">        button.setEnabled( action.isEnabled() );</span>
+      }
+<span class="nc" id="L296">    }</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>DynamicWorkingSetUpdater.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.workingset</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.workingset.internal</a> &gt; <span class="el_source">DynamicWorkingSetUpdater.java</span></div><h1>DynamicWorkingSetUpdater.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.workingset.internal;
+
+import static com.codeaffine.extras.workingset.internal.DynamicWorkingSet.ID;
+import static java.lang.Boolean.TRUE;
+import static java.util.Collections.synchronizedSet;
+import static org.eclipse.core.resources.IResourceChangeEvent.POST_CHANGE;
+import static org.eclipse.core.resources.IResourceDelta.ADDED;
+import static org.eclipse.core.resources.IResourceDelta.CHANGED;
+import static org.eclipse.core.resources.IResourceDelta.REMOVED;
+import static org.eclipse.ui.IWorkingSetManager.CHANGE_WORKING_SET_ADD;
+import static org.eclipse.ui.IWorkingSetManager.CHANGE_WORKING_SET_NAME_CHANGE;
+import static org.eclipse.ui.IWorkingSetManager.CHANGE_WORKING_SET_REMOVE;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.ui.IWorkingSet;
+import org.eclipse.ui.IWorkingSetManager;
+import org.eclipse.ui.IWorkingSetUpdater;
+import org.eclipse.ui.PlatformUI;
+
+
+public class DynamicWorkingSetUpdater
+  implements IWorkingSetUpdater, IPropertyChangeListener, IResourceChangeListener
+{
+
+  private final IWorkingSetManager workingSetManager;
+  private final IWorkspace workspace;
+  private final ThreadLocal&lt;Boolean&gt; inPropertyChange;
+  private final Set&lt;IWorkingSet&gt; workingSets;
+
+<span class="fc" id="L43">  public DynamicWorkingSetUpdater() {</span>
+<span class="fc" id="L44">    workingSetManager = PlatformUI.getWorkbench().getWorkingSetManager();</span>
+<span class="fc" id="L45">    workspace = ResourcesPlugin.getWorkspace();</span>
+<span class="fc" id="L46">    inPropertyChange = new ThreadLocal&lt;&gt;();</span>
+<span class="fc" id="L47">    workingSets = synchronizedSet( new HashSet&lt;IWorkingSet&gt;() );</span>
+<span class="fc" id="L48">    initialize();</span>
+<span class="fc" id="L49">  }</span>
+
+  private void initialize() {
+<span class="fc" id="L52">    workingSetManager.addPropertyChangeListener( this );</span>
+<span class="fc" id="L53">    workspace.addResourceChangeListener( this, POST_CHANGE );</span>
+<span class="fc" id="L54">  }</span>
+
+  @Override
+  public void add( IWorkingSet workingSet ) {
+<span class="fc" id="L58">    update( workingSet );</span>
+<span class="fc" id="L59">    workingSets.add( workingSet );</span>
+<span class="fc" id="L60">  }</span>
+
+  @Override
+  public boolean remove( IWorkingSet workingSet ) {
+<span class="fc" id="L64">    return workingSets.remove( workingSet );</span>
+  }
+
+  @Override
+  public boolean contains( IWorkingSet workingSet ) {
+<span class="fc" id="L69">    return workingSets.contains( workingSet );</span>
+  }
+
+  @Override
+  public void dispose() {
+<span class="nc" id="L74">    workspace.removeResourceChangeListener( this );</span>
+<span class="nc" id="L75">    workingSetManager.removePropertyChangeListener( this );</span>
+<span class="nc" id="L76">    workingSets.clear();</span>
+<span class="nc" id="L77">  }</span>
+
+  @Override
+  public void propertyChange( PropertyChangeEvent event ) {
+<span class="fc bfc" id="L81" title="All 2 branches covered.">    if( inPropertyChange.get() == null ) {</span>
+<span class="fc" id="L82">      inPropertyChange.set( TRUE );</span>
+      try {
+<span class="fc" id="L84">        handlePropertyChange( event );</span>
+<span class="fc" id="L85">      } finally {</span>
+<span class="fc" id="L86">        inPropertyChange.remove();</span>
+      }
+    }
+<span class="fc" id="L89">  }</span>
+
+  @Override
+  public void resourceChanged( IResourceChangeEvent event ) {
+<span class="pc bpc" id="L93" title="2 of 4 branches missed.">    if( event.getDelta() != null &amp;&amp; isUpdateNeeded( event ) ) {</span>
+<span class="fc" id="L94">      update();</span>
+    }
+<span class="fc" id="L96">  }</span>
+
+  private void handlePropertyChange( PropertyChangeEvent event ) {
+<span class="fc bfc" id="L99" title="All 2 branches covered.">    if( isWorkingSetAddEvent( event ) ) {</span>
+<span class="fc" id="L100">      add( getWorkingSet( event ) );</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">    } else if( isWorkingSetNameChangeEvent( event ) ) {</span>
+<span class="fc" id="L102">      update( getWorkingSet( event ) );</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">    } else if( isWorkingSetRemoveEvent( event ) ) {</span>
+<span class="fc" id="L104">      remove( getWorkingSet( event ) );</span>
+    }
+<span class="fc" id="L106">  }</span>
+
+  private boolean isUpdateNeeded( IResourceChangeEvent event ) {
+<span class="fc" id="L109">    ResourceDeltaVisitor visitor = new ResourceDeltaVisitor();</span>
+    try {
+<span class="fc" id="L111">      event.getDelta().accept( visitor );</span>
+<span class="pc" id="L112">    } catch( CoreException ce ) {</span>
+<span class="nc" id="L113">      throw new RuntimeException( ce );</span>
+    }
+<span class="fc" id="L115">    return visitor.isUpdateNeeded();</span>
+  }
+
+  private void update() {
+<span class="fc bfc" id="L119" title="All 2 branches covered.">    for( IWorkingSet workingSet : workingSets.toArray( new IWorkingSet[ 0 ] ) ) {</span>
+<span class="fc" id="L120">      update( workingSet );</span>
+    }
+<span class="fc" id="L122">  }</span>
+
+  private static void update( IWorkingSet workingSet ) {
+<span class="fc" id="L125">    new WorkingSetContentUpdater( workingSet ).updateElements();</span>
+<span class="fc" id="L126">  }</span>
+
+  private static boolean isWorkingSetAddEvent( PropertyChangeEvent event ) {
+<span class="fc bfc" id="L129" title="All 4 branches covered.">    return CHANGE_WORKING_SET_ADD.equals( event.getProperty() ) &amp;&amp; isDynamicWorkingSet( event );</span>
+  }
+
+  private static boolean isWorkingSetRemoveEvent( PropertyChangeEvent event ) {
+<span class="fc bfc" id="L133" title="All 4 branches covered.">    return CHANGE_WORKING_SET_REMOVE.equals( event.getProperty() ) &amp;&amp; isDynamicWorkingSet( event );</span>
+  }
+
+  private static boolean isWorkingSetNameChangeEvent( PropertyChangeEvent event ) {
+<span class="pc bpc" id="L137" title="1 of 4 branches missed.">    return CHANGE_WORKING_SET_NAME_CHANGE.equals( event.getProperty() ) &amp;&amp; isDynamicWorkingSet( event );</span>
+  }
+
+  private static boolean isDynamicWorkingSet( PropertyChangeEvent event ) {
+<span class="fc" id="L141">    IWorkingSet workingSet = getWorkingSet( event );</span>
+<span class="fc" id="L142">    return ID.equals( workingSet.getId() );</span>
+  }
+
+  private static IWorkingSet getWorkingSet( PropertyChangeEvent event ) {
+<span class="fc" id="L146">    IWorkingSet result = ( IWorkingSet )event.getNewValue();</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">    if( result == null ) {</span>
+<span class="fc" id="L148">      result = ( IWorkingSet )event.getOldValue();</span>
+    }
+<span class="fc" id="L150">    return result;</span>
+  }
+
+<span class="fc" id="L153">  private class ResourceDeltaVisitor implements IResourceDeltaVisitor {</span>
+
+    private boolean updateNeeded;
+
+    @Override
+    public boolean visit( IResourceDelta delta ) throws CoreException {
+<span class="fc" id="L159">      updateNeeded = isProjectChange( delta );</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">      return !updateNeeded;</span>
+    }
+
+    private boolean isProjectChange( IResourceDelta delta ) {
+<span class="fc" id="L164">      int kind = delta.getKind();</span>
+<span class="fc" id="L165">      IResource resource = delta.getResource();</span>
+<span class="pc bpc" id="L166" title="1 of 8 branches missed.">      return ( kind == ADDED || kind == CHANGED || kind == REMOVED ) &amp;&amp; resource instanceof IProject;</span>
+    }
+
+    boolean isUpdateNeeded() {
+<span class="fc" id="L170">      return updateNeeded;</span>
+    }
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

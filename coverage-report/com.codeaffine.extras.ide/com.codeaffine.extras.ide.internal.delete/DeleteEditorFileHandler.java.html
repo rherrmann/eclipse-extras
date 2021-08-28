@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>DeleteEditorFileHandler.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.ide</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.ide.internal.delete</a> &gt; <span class="el_source">DeleteEditorFileHandler.java</span></div><h1>DeleteEditorFileHandler.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.ide.internal.delete;
+
+import java.io.File;
+import java.text.MessageFormat;
+
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.URIUtil;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.window.IShellProvider;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.ISources;
+import org.eclipse.ui.IURIEditorInput;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.actions.DeleteResourceAction;
+import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.ide.ResourceUtil;
+
+
+public class DeleteEditorFileHandler extends AbstractHandler {
+
+  public interface DeleteEditorFilePrompter {
+    boolean confirmDelete( IShellProvider shellProvider, File file );
+    void showError( IShellProvider shellProvider, String message );
+  }
+
+  public static final String COMMAND_ID
+    = &quot;com.codeaffine.extras.ide.internal.DeleteEditorFileCommand&quot;;
+
+  private final DeleteEditorFilePrompter prompter;
+
+  public DeleteEditorFileHandler() {
+<span class="fc" id="L40">    this( new DefaultDeleteEditorFilePrompter() );</span>
+<span class="fc" id="L41">  }</span>
+
+<span class="fc" id="L43">  public DeleteEditorFileHandler( DeleteEditorFilePrompter prompter ) {</span>
+<span class="fc" id="L44">    this.prompter = prompter;</span>
+<span class="fc" id="L45">  }</span>
+
+  @Override
+  public Object execute( ExecutionEvent event ) {
+<span class="fc" id="L49">    IEditorInput editorInput = HandlerUtil.getActiveEditorInput( event );</span>
+<span class="fc" id="L50">    IFile resource = ResourceUtil.getFile( editorInput );</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">    if( resource != null ) {</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">      if( resource.isAccessible() ) {</span>
+<span class="fc" id="L53">        deleteResource( HandlerUtil.getActiveWorkbenchWindow( event ), resource );</span>
+      }
+<span class="fc" id="L55">    } else {</span>
+<span class="fc" id="L56">      File file = getFile( editorInput );</span>
+<span class="fc" id="L57">      IWorkbenchWindow workbenchWindow = HandlerUtil.getActiveWorkbenchWindow( event );</span>
+<span class="fc bfc" id="L58" title="All 4 branches covered.">      if( file != null &amp;&amp; prompter.confirmDelete( workbenchWindow, file )) {</span>
+<span class="fc" id="L59">        deleteFile( workbenchWindow, file );</span>
+      }
+    }
+<span class="fc" id="L62">    return null;</span>
+  }
+
+  @Override
+  public void setEnabled( Object evaluationContext ) {
+<span class="fc bfc" id="L67" title="All 2 branches covered.">    if( evaluationContext instanceof IEvaluationContext ) {</span>
+<span class="fc" id="L68">      setBaseEnabled( isEnabled( ( IEvaluationContext )evaluationContext ) );</span>
+<span class="fc" id="L69">    } else {</span>
+<span class="fc" id="L70">      setBaseEnabled( false );</span>
+    }
+<span class="fc" id="L72">  }</span>
+
+  protected void deleteResource( IShellProvider shellProvier, IFile file ) {
+<span class="nc" id="L75">    DeleteResourceAction deleteAction = new DeleteResourceAction( shellProvier );</span>
+<span class="nc" id="L76">    deleteAction.selectionChanged( new StructuredSelection( file ) );</span>
+<span class="nc" id="L77">    deleteAction.run();</span>
+<span class="nc" id="L78">  }</span>
+
+  private void deleteFile( IWorkbenchWindow workbenchWindow, File file ) {
+<span class="fc bfc" id="L81" title="All 2 branches covered.">    if( file.delete() ) {</span>
+<span class="fc" id="L82">      closeEditors( workbenchWindow.getWorkbench(), file );</span>
+<span class="fc" id="L83">    } else {</span>
+<span class="fc" id="L84">      String message = MessageFormat.format( &quot;The file ''{0}'' could not be deleted.&quot;, file.getName() );</span>
+<span class="fc" id="L85">      prompter.showError( workbenchWindow, message );</span>
+    }
+<span class="fc" id="L87">  }</span>
+
+  private static void closeEditors( IWorkbench workbench, File file ) {
+<span class="fc bfc" id="L90" title="All 2 branches covered.">    for( IWorkbenchWindow workbenchWindow : workbench.getWorkbenchWindows() ) {</span>
+<span class="fc" id="L91">      closeEditors( workbenchWindow, file );</span>
+    }
+<span class="fc" id="L93">  }</span>
+
+  private static void closeEditors( IWorkbenchWindow workbenchWindow, File file ) {
+<span class="fc" id="L96">    IEditorReference[] editorReferences = workbenchWindow.getActivePage().getEditorReferences();</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">    for( IEditorReference editorReference : editorReferences ) {</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">      if( file.equals( getFile( editorReference ) ) ) {</span>
+<span class="fc" id="L99">        workbenchWindow.getActivePage().closeEditors( new IEditorReference[] { editorReference }, false );</span>
+      }
+    }
+<span class="fc" id="L102">  }</span>
+
+  private static boolean isEnabled( IEvaluationContext evaluationContext ) {
+<span class="fc" id="L105">    Object variable = evaluationContext.getVariable( ISources.ACTIVE_EDITOR_INPUT_NAME );</span>
+<span class="fc" id="L106">    boolean result = false;</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">    if( variable instanceof IEditorInput ) {</span>
+<span class="fc" id="L108">      IEditorInput editorInput = ( IEditorInput )variable;</span>
+<span class="fc bfc" id="L109" title="All 4 branches covered.">      result = ResourceUtil.getFile( editorInput ) != null || getFile( editorInput ) != null;</span>
+    }
+<span class="fc" id="L111">    return result;</span>
+  }
+
+  private static File getFile( IEditorReference editorReference ) {
+    try {
+<span class="fc" id="L116">      return getFile( editorReference.getEditorInput() );</span>
+<span class="nc" id="L117">    } catch( PartInitException e ) {</span>
+<span class="nc" id="L118">      return null;</span>
+    }
+  }
+
+  private static File getFile( IEditorInput editorInput ) {
+<span class="fc" id="L123">    File result = null;</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">    if( editorInput instanceof IPathEditorInput ) {</span>
+<span class="fc" id="L125">      IPathEditorInput pathEditorInput = ( IPathEditorInput )editorInput;</span>
+<span class="fc" id="L126">      result = pathEditorInput.getPath().toFile();</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">    } else if( editorInput instanceof IURIEditorInput ) {</span>
+<span class="fc" id="L128">      IURIEditorInput uriEditorInput = ( IURIEditorInput )editorInput;</span>
+<span class="fc" id="L129">      result = URIUtil.toFile( uriEditorInput.getURI() );</span>
+    }
+<span class="fc" id="L131">    return result;</span>
+  }
+
+  private static class DefaultDeleteEditorFilePrompter implements DeleteEditorFilePrompter {
+    private static final String TITLE = &quot;Delete File&quot;;
+
+    @Override
+    public boolean confirmDelete( IShellProvider shellProvider, File file ) {
+<span class="nc" id="L139">      String text = &quot;Are you sure you want to delete ''{0}'' from the file system?&quot;;</span>
+<span class="nc" id="L140">      String message = MessageFormat.format( text, file.getName() );</span>
+<span class="nc" id="L141">      return MessageDialog.openConfirm( shellProvider.getShell(), TITLE, message );</span>
+    }
+
+    @Override
+    public void showError( IShellProvider shellProvider, String message ) {
+<span class="nc" id="L146">      MessageDialog.openError( shellProvider.getShell(), TITLE, message );</span>
+<span class="nc" id="L147">    }</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

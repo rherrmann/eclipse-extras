@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>PreferencePropertyTester.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.jdt</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.jdt.internal.prefs</a> &gt; <span class="el_source">PreferencePropertyTester.java</span></div><h1>PreferencePropertyTester.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.jdt.internal.prefs;
+
+import org.eclipse.core.expressions.PropertyTester;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.ui.services.IServiceLocator;
+
+import com.codeaffine.extras.jdt.internal.JDTExtrasPlugin;
+
+
+public class PreferencePropertyTester extends PropertyTester {
+
+  public static final String ID = &quot;com.codeaffine.extras.jdt.internal.PreferencePropertyTester&quot;;
+  public static final String NAMESPACE = &quot;com.codeaffine.extras.jdt.internal.PreferenceStore&quot;;
+  public static final String IS_TRUE = &quot;isTrue&quot;;
+  public static final String PROP_IS_TRUE = NAMESPACE + &quot;.&quot; + IS_TRUE;
+
+  private final IPreferenceStore preferenceStore;
+
+  public PreferencePropertyTester() {
+<span class="fc" id="L20">    this( JDTExtrasPlugin.getInstance().getPreferenceStore() );</span>
+<span class="fc" id="L21">  }</span>
+
+<span class="fc" id="L23">  public PreferencePropertyTester( IPreferenceStore preferenceStore ) {</span>
+<span class="fc" id="L24">    this.preferenceStore = preferenceStore;</span>
+<span class="fc" id="L25">  }</span>
+
+  @Override
+  public boolean test( Object receiver, String property, Object[] args, Object expectedValue ) {
+<span class="fc" id="L29">    boolean result = false;</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">    if( argumentsValid( receiver, property, args ) ) {</span>
+<span class="fc" id="L31">      result = test( args, expectedValue );</span>
+    }
+<span class="fc" id="L33">    return result;</span>
+  }
+
+  private boolean test( Object[] args, Object expectedValue ) {
+<span class="fc" id="L37">    return evaluateResult( expectedValue, getPreferenceValue( args ) );</span>
+  }
+
+  private static boolean argumentsValid( Object receiver, String property, Object[] args ) {
+<span class="fc bfc" id="L41" title="All 2 branches covered.">    return receiver instanceof IServiceLocator</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        &amp;&amp; IS_TRUE.equals( property )</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        &amp;&amp; args.length == 1</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        &amp;&amp; args[ 0 ] instanceof String;</span>
+  }
+
+  private boolean getPreferenceValue( Object[] args ) {
+<span class="fc" id="L48">    return preferenceStore.getBoolean( ( String )args[ 0 ] );</span>
+  }
+
+  private static boolean evaluateResult( Object expectedValue, boolean value ) {
+<span class="pc bpc" id="L52" title="1 of 4 branches missed.">    return expectedValue instanceof Boolean &amp;&amp; ( ( Boolean )expectedValue ).booleanValue() == value;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

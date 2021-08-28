@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>CleanupPreferencePage.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.launch</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.launch.internal.cleanup</a> &gt; <span class="el_source">CleanupPreferencePage.java</span></div><h1>CleanupPreferencePage.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">package com.codeaffine.extras.launch.internal.cleanup;</span>
+
+import java.util.stream.Stream;
+
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.LayoutConstants;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.model.WorkbenchViewerComparator;
+
+
+public class CleanupPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
+
+  public static final String ID = &quot;com.codeaffine.extras.launch.internal.cleanup.CleanupPreferencePage&quot;;
+
+  private final ILaunchManager launchManager;
+  private final LaunchPreferences launchPreferences;
+  Button cleanupButton;
+  Label cleanupTypesLabel;
+  CheckboxTableViewer cleanupTypesViewer;
+  Button selectAllButton;
+  Button deselectAllButton;
+  private Label notelabel;
+
+  public CleanupPreferencePage() {
+<span class="fc" id="L43">    this( LaunchPreferences.getPluginPreferenceStore() );</span>
+<span class="fc" id="L44">  }</span>
+
+  public CleanupPreferencePage( IPreferenceStore preferenceStore ) {
+<span class="fc" id="L47">    super( &quot;Clean Up&quot; );</span>
+<span class="fc" id="L48">    setPreferenceStore( preferenceStore );</span>
+<span class="fc" id="L49">    launchManager = DebugPlugin.getDefault().getLaunchManager();</span>
+<span class="fc" id="L50">    launchPreferences = new LaunchPreferences( getPreferenceStore() );</span>
+<span class="fc" id="L51">  }</span>
+
+  @Override
+  public void init( IWorkbench workbench ) {
+<span class="nc" id="L55">  }</span>
+
+  @Override
+  protected Control createContents( Composite parent ) {
+<span class="fc" id="L59">    Composite composite = new Composite( parent, SWT.NONE );</span>
+<span class="fc" id="L60">    createPageControls( composite );</span>
+<span class="fc" id="L61">    layoutPageControls( composite );</span>
+<span class="fc" id="L62">    initPageControls();</span>
+<span class="fc" id="L63">    return composite;</span>
+  }
+
+  @Override
+  protected void performDefaults() {
+<span class="fc" id="L68">    cleanupButton.setSelection( false );</span>
+<span class="fc" id="L69">    cleanupTypesViewer.setAllChecked( false );</span>
+<span class="fc" id="L70">    super.performDefaults();</span>
+<span class="fc" id="L71">  }</span>
+
+  @Override
+  public boolean performOk() {
+<span class="fc" id="L75">    ILaunchConfigurationType[] types = getCheckedLaunchConfigTypes();</span>
+<span class="fc" id="L76">    String serializedTypeIds = new LaunchConfigTypeSerializer( launchManager ).serialize( types );</span>
+<span class="fc" id="L77">    launchPreferences.setCleanupGenerateLaunchConfigTypes( serializedTypeIds );</span>
+<span class="fc" id="L78">    return super.performOk();</span>
+  }
+
+  private void createPageControls( Composite parent ) {
+<span class="fc" id="L82">    cleanupButton = new Button( parent, SWT.CHECK );</span>
+<span class="fc" id="L83">    cleanupButton.setText( &quot;Remove on-the-fly generated launch configurations when no longer needed&quot; );</span>
+<span class="fc" id="L84">    cleanupButton.addListener( SWT.Selection, this::cleanupButtonSelected );</span>
+<span class="fc" id="L85">    cleanupTypesLabel = new Label( parent, SWT.NONE );</span>
+<span class="fc" id="L86">    cleanupTypesLabel.setText( &quot;Select the launch configuration types to clean up&quot; );</span>
+<span class="fc" id="L87">    cleanupTypesViewer = CheckboxTableViewer.newCheckList( parent, SWT.BORDER );</span>
+<span class="fc" id="L88">    cleanupTypesViewer.setLabelProvider( DebugUITools.newDebugModelPresentation() );</span>
+<span class="fc" id="L89">    cleanupTypesViewer.setContentProvider( ArrayContentProvider.getInstance() );</span>
+<span class="fc" id="L90">    cleanupTypesViewer.setComparator( new WorkbenchViewerComparator() );</span>
+<span class="fc" id="L91">    cleanupTypesViewer.addFilter( new LaunchConfigTypeFilter() );</span>
+<span class="fc" id="L92">    cleanupTypesViewer.setInput( launchManager.getLaunchConfigurationTypes() );</span>
+<span class="fc" id="L93">    selectAllButton = new Button( parent, SWT.PUSH );</span>
+<span class="fc" id="L94">    selectAllButton.addListener( SWT.Selection, event -&gt; cleanupTypesViewer.setAllChecked( true ) );</span>
+<span class="fc" id="L95">    selectAllButton.setText( &quot;&amp;Select All&quot; );</span>
+<span class="fc" id="L96">    deselectAllButton = new Button( parent, SWT.PUSH );</span>
+<span class="fc" id="L97">    deselectAllButton.setText( &quot;&amp;Deselect All&quot; );</span>
+<span class="fc" id="L98">    deselectAllButton.addListener( SWT.Selection, event -&gt; cleanupTypesViewer.setAllChecked( false ) );</span>
+<span class="fc" id="L99">    notelabel = new Label( parent, SWT.WRAP );</span>
+<span class="fc" id="L100">    String text</span>
+<span class="fc" id="L101">      = &quot;Note: Launch configurations are considered as on-the-fly generated if &quot;</span>
+      + &quot;they were created outside the Run Configurations dialog without further &quot;
+      + &quot;manual changes. For example with Run As &gt; JUnit Test&quot;;
+<span class="fc" id="L104">    notelabel.setText( text );</span>
+<span class="fc" id="L105">  }</span>
+
+  private void layoutPageControls( Composite parent ) {
+<span class="fc" id="L108">    parent.setLayout( new GridLayout( 2, false ) );</span>
+<span class="fc" id="L109">    GridDataFactory.swtDefaults()</span>
+<span class="fc" id="L110">      .align( SWT.FILL, SWT.TOP )</span>
+<span class="fc" id="L111">      .grab( true, false )</span>
+<span class="fc" id="L112">      .applyTo( parent );</span>
+<span class="fc" id="L113">    GridDataFactory.swtDefaults()</span>
+<span class="fc" id="L114">      .align( SWT.FILL, SWT.TOP )</span>
+<span class="fc" id="L115">      .indent( 20, 0 )</span>
+<span class="fc" id="L116">      .span( 2, 1 )</span>
+<span class="fc" id="L117">      .applyTo( cleanupTypesLabel );</span>
+<span class="fc" id="L118">    GridDataFactory.swtDefaults()</span>
+<span class="fc" id="L119">      .align( SWT.FILL, SWT.TOP )</span>
+<span class="fc" id="L120">      .indent( 20, 0 )</span>
+<span class="fc" id="L121">      .hint( SWT.DEFAULT, cleanupTypesViewer.getTable().getItemHeight() * 14 )</span>
+<span class="fc" id="L122">      .grab( true, false )</span>
+<span class="fc" id="L123">      .span( 1, 2 )</span>
+<span class="fc" id="L124">      .applyTo( cleanupTypesViewer.getControl() );</span>
+<span class="fc" id="L125">    GridDataFactory.swtDefaults()</span>
+<span class="fc" id="L126">      .align( SWT.FILL, SWT.TOP )</span>
+<span class="fc" id="L127">      .hint( computePreferredButtonWidth( selectAllButton ), SWT.DEFAULT )</span>
+<span class="fc" id="L128">      .applyTo( selectAllButton );</span>
+<span class="fc" id="L129">    GridDataFactory.swtDefaults()</span>
+<span class="fc" id="L130">      .align( SWT.FILL, SWT.TOP )</span>
+<span class="fc" id="L131">      .hint( computePreferredButtonWidth( deselectAllButton ), SWT.DEFAULT )</span>
+<span class="fc" id="L132">      .applyTo( deselectAllButton );</span>
+<span class="fc" id="L133">    GridDataFactory.swtDefaults()</span>
+<span class="fc" id="L134">      .align( SWT.FILL, SWT.TOP )</span>
+<span class="fc" id="L135">      .hint( getTextWidth( cleanupButton.getText() ), SWT.DEFAULT )</span>
+<span class="fc" id="L136">      .span( 2, 1 )</span>
+<span class="fc" id="L137">      .applyTo( notelabel );</span>
+<span class="fc" id="L138">  }</span>
+
+  private static int computePreferredButtonWidth( Button button ) {
+<span class="fc" id="L141">    int defaultButtonWidth = getDefaultButtonWidth();</span>
+<span class="fc" id="L142">    Point minSize = button.computeSize( SWT.DEFAULT, SWT.DEFAULT, true );</span>
+<span class="fc" id="L143">    return Math.max( defaultButtonWidth, minSize.x );</span>
+  }
+
+  private static int getDefaultButtonWidth() {
+<span class="fc" id="L147">    return LayoutConstants.getMinButtonSize().x;</span>
+  }
+
+  private void initPageControls() {
+<span class="fc" id="L151">    cleanupButton.setSelection( launchPreferences.isCleanupGeneratedLaunchConfigs() );</span>
+<span class="fc" id="L152">    cleanupTypesViewer.setCheckedElements( getCleanupLaunchConfigTypes() );</span>
+<span class="fc" id="L153">    updateEnablement();</span>
+<span class="fc" id="L154">  }</span>
+
+  private void updateEnablement() {
+<span class="fc" id="L157">    boolean enabled = launchPreferences.isCleanupGeneratedLaunchConfigs();</span>
+<span class="fc" id="L158">    cleanupTypesLabel.setEnabled( enabled );</span>
+<span class="fc" id="L159">    cleanupTypesViewer.getControl().setEnabled( launchPreferences.isCleanupGeneratedLaunchConfigs() );</span>
+<span class="fc" id="L160">    selectAllButton.setEnabled( launchPreferences.isCleanupGeneratedLaunchConfigs() );</span>
+<span class="fc" id="L161">    deselectAllButton.setEnabled( launchPreferences.isCleanupGeneratedLaunchConfigs() );</span>
+<span class="fc" id="L162">  }</span>
+
+  @SuppressWarnings(&quot;unused&quot;)
+  private void cleanupButtonSelected( Event event ) {
+<span class="fc" id="L166">    launchPreferences.setCleanupGeneratedLaunchConfigs( cleanupButton.getSelection() );</span>
+<span class="fc" id="L167">    updateEnablement();</span>
+<span class="fc" id="L168">  }</span>
+
+  private ILaunchConfigurationType[] getCheckedLaunchConfigTypes() {
+<span class="fc" id="L171">    return Stream.of( cleanupTypesViewer.getCheckedElements() )</span>
+<span class="fc" id="L172">      .map( element -&gt; ( ILaunchConfigurationType )element )</span>
+<span class="fc" id="L173">      .toArray( ILaunchConfigurationType[]::new );</span>
+  }
+
+  private ILaunchConfigurationType[] getCleanupLaunchConfigTypes() {
+<span class="fc" id="L177">    String typeIds = launchPreferences.getCleanupGenerateLaunchConfigTypes();</span>
+<span class="fc" id="L178">    return new LaunchConfigTypeSerializer( launchManager ).deserialize( typeIds );</span>
+  }
+
+  private int getTextWidth( String text ) {
+<span class="fc" id="L182">    GC gc = new GC( cleanupTypesViewer.getControl() );</span>
+    try {
+<span class="fc" id="L184">      return gc.textExtent( text ).x;</span>
+    } finally {
+<span class="fc" id="L186">      gc.dispose();</span>
+    }
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

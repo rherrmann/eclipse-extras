@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>JUnitStatusBarPreferencePage.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.jdt</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.jdt.internal.junitstatus</a> &gt; <span class="el_source">JUnitStatusBarPreferencePage.java</span></div><h1>JUnitStatusBarPreferencePage.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.jdt.internal.junitstatus;
+
+import static com.codeaffine.extras.jdt.internal.prefs.WorkspaceScopePreferences.PREF_SHOW_JUNIT_STATUS_BAR;
+
+import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.FieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
+
+import com.codeaffine.extras.jdt.internal.JDTExtrasPlugin;
+import com.codeaffine.extras.jdt.internal.prefs.ExpressionEvaluator;
+
+
+public class JUnitStatusBarPreferencePage
+  extends FieldEditorPreferencePage
+  implements IWorkbenchPreferencePage
+{
+
+  public static final String ID = &quot;com.codeaffine.extras.jdt.internal.JUnitStatusBarPreferencePage&quot;;
+
+  private IWorkbench workbench;
+
+  public JUnitStatusBarPreferencePage() {
+<span class="fc" id="L27">    super( &quot;JUnit Status Bar&quot;, FieldEditorPreferencePage.GRID );</span>
+<span class="fc" id="L28">    noDefaultAndApplyButton();</span>
+<span class="fc" id="L29">  }</span>
+
+  @Override
+  public void init( IWorkbench workbench ) {
+<span class="nc" id="L33">    this.workbench = workbench;</span>
+<span class="nc" id="L34">  }</span>
+
+  @Override
+  public boolean performOk() {
+<span class="nc" id="L38">    boolean result = super.performOk();</span>
+<span class="nc" id="L39">    new ExpressionEvaluator( workbench ).evaluate();</span>
+<span class="nc" id="L40">    return result;</span>
+  }
+
+  @Override
+  protected IPreferenceStore doGetPreferenceStore() {
+<span class="fc" id="L45">    return JDTExtrasPlugin.getInstance().getPreferenceStore();</span>
+  }
+
+  @Override
+  protected void createFieldEditors() {
+<span class="nc" id="L50">    String label = &quot;&amp;Show JUnit progress in the status bar&quot;;</span>
+<span class="nc" id="L51">    createBooleanFieldEditor( getFieldEditorParent(), label, PREF_SHOW_JUNIT_STATUS_BAR );</span>
+<span class="nc" id="L52">  }</span>
+
+  private void createBooleanFieldEditor( Composite parent, String label, String preferenceName ) {
+<span class="nc" id="L55">    FieldEditor editor = new BooleanFieldEditor( preferenceName, label, parent );</span>
+<span class="nc" id="L56">    addField( editor );</span>
+<span class="nc" id="L57">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

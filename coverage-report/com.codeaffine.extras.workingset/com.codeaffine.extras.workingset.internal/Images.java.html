@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Images.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.workingset</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.workingset.internal</a> &gt; <span class="el_source">Images.java</span></div><h1>Images.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.workingset.internal;
+
+import static com.codeaffine.extras.workingset.internal.WorkingSetExtrasPlugin.PLUGIN_ID;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
+
+
+public class Images {
+
+  public static final String NEW_WORKING_SET = &quot;icons/etool16/new-working-set.gif&quot;;
+  public static final String WORKING_SET = &quot;icons/obj16/working-set.png&quot;;
+  public static final String WORKING_SET_WIZBAN = &quot;icons/wizban/working-set.png&quot;;
+
+  public static ImageDescriptor getImageDescriptor( String name ) {
+<span class="fc" id="L21">    ImageDescriptor result = null;</span>
+<span class="fc" id="L22">    ImageRegistry imageRegistry = getImageRegistry();</span>
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">    if( imageRegistry != null ) {</span>
+<span class="fc" id="L24">      result = imageRegistry.getDescriptor( name );</span>
+    }
+<span class="fc" id="L26">    return result;</span>
+  }
+
+  static void registerImages( ImageRegistry registry ) {
+<span class="fc" id="L30">    Field[] declaredFields = Images.class.getDeclaredFields();</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">    for( Field field : declaredFields ) {</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">      if( isStringConstant( field ) ) {</span>
+<span class="fc" id="L33">        registerImage( registry, getStringValue( field ) );</span>
+      }
+    }
+<span class="fc" id="L36">  }</span>
+
+  private static void registerImage( ImageRegistry registry, String imageName ) {
+<span class="fc" id="L39">    ImageDescriptor imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin( PLUGIN_ID, imageName );</span>
+<span class="fc" id="L40">    registry.put( imageName, imageDescriptor );</span>
+<span class="fc" id="L41">  }</span>
+
+  private static ImageRegistry getImageRegistry() {
+<span class="fc" id="L44">    ImageRegistry result = null;</span>
+<span class="fc" id="L45">    WorkingSetExtrasPlugin pluginInstance = WorkingSetExtrasPlugin.getInstance();</span>
+<span class="pc bpc" id="L46" title="2 of 4 branches missed.">    if( pluginInstance != null &amp;&amp; pluginInstance.getBundle().getState() == Bundle.ACTIVE ) {</span>
+<span class="fc" id="L47">      result = pluginInstance.getImageRegistry();</span>
+    }
+<span class="fc" id="L49">    return result;</span>
+  }
+
+  private static String getStringValue( Field field ) {
+    try {
+<span class="fc" id="L54">      return ( String )field.get( null );</span>
+<span class="nc" id="L55">    } catch( IllegalAccessException iae ) {</span>
+<span class="nc" id="L56">      throw new RuntimeException( iae );</span>
+    }
+  }
+
+  private static boolean isStringConstant( Field field ) {
+<span class="fc" id="L61">    int modifiers = field.getModifiers();</span>
+<span class="fc" id="L62">    Class&lt;?&gt; type = field.getType();</span>
+<span class="pc bpc" id="L63" title="3 of 6 branches missed.">    return Modifier.isFinal( modifiers ) &amp;&amp; Modifier.isStatic( modifiers ) &amp;&amp; type == String.class;</span>
+  }
+
+  private Images() { }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

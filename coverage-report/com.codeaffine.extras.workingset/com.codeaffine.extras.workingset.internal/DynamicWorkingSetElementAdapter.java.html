@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>DynamicWorkingSetElementAdapter.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.workingset</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.workingset.internal</a> &gt; <span class="el_source">DynamicWorkingSetElementAdapter.java</span></div><h1>DynamicWorkingSetElementAdapter.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.workingset.internal;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.ui.IWorkingSet;
+import org.eclipse.ui.IWorkingSetElementAdapter;
+
+
+<span class="fc" id="L12">public class DynamicWorkingSetElementAdapter implements IWorkingSetElementAdapter {</span>
+
+  @Override
+  public IAdaptable[] adaptElements( IWorkingSet workingSet, IAdaptable[] elements ) {
+<span class="fc" id="L16">    Collection&lt;IAdaptable&gt; adaptedElements = new ArrayList&lt;&gt;( elements.length + 1 );</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">    for( IAdaptable element : elements ) {</span>
+<span class="fc" id="L18">      IProject project = adaptElememt( element );</span>
+<span class="fc bfc" id="L19" title="All 2 branches covered.">      if( project != null ) {</span>
+<span class="fc" id="L20">        adaptedElements.add( project );</span>
+      }
+    }
+<span class="fc" id="L23">    return adaptedElements.toArray( new IAdaptable[ adaptedElements.size() ] );</span>
+  }
+
+  @Override
+  public void dispose() {
+<span class="nc" id="L28">  }</span>
+
+  private static IProject adaptElememt( IAdaptable element ) {
+<span class="fc bfc" id="L31" title="All 2 branches covered.">    Object adapter = element instanceof IProject ? element : element.getAdapter( IProject.class );</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">    return ( IProject )( adapter instanceof IProject ? adapter : null );</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

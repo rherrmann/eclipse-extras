@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>WorkingSetContentUpdater.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.workingset</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.workingset.internal</a> &gt; <span class="el_source">WorkingSetContentUpdater.java</span></div><h1>WorkingSetContentUpdater.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.workingset.internal;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.ui.IWorkingSet;
+
+class WorkingSetContentUpdater {
+
+  private final IWorkingSet workingSet;
+  private final ProjectsProvider projectsProvider;
+  private final ProjectPatternMatcher projectPatternMatcher;
+
+  WorkingSetContentUpdater( IWorkingSet workingSet ) {
+<span class="fc" id="L17">    this( workingSet, new WorkspaceProjectsProvider() );</span>
+<span class="fc" id="L18">  }</span>
+
+<span class="fc" id="L20">  WorkingSetContentUpdater( IWorkingSet workingSet, ProjectsProvider projectsProvider ) {</span>
+<span class="fc" id="L21">    this.workingSet = workingSet;</span>
+<span class="fc" id="L22">    this.projectsProvider = projectsProvider;</span>
+<span class="fc" id="L23">    this.projectPatternMatcher = new ProjectPatternMatcher( workingSet.getName() );</span>
+<span class="fc" id="L24">  }</span>
+
+  void updateElements() {
+<span class="fc" id="L27">    Set&lt;IProject&gt; matchingProjects = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">    for( IProject project : projectsProvider.getProjects() ) {</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">      if( projectPatternMatcher.matches( project ) ) {</span>
+<span class="fc" id="L30">        matchingProjects.add( project );</span>
+      }
+    }
+<span class="fc bfc" id="L33" title="All 2 branches covered.">    if( elementsChanged( matchingProjects ) ) {</span>
+<span class="fc" id="L34">      workingSet.setElements( matchingProjects.toArray( new IProject[ matchingProjects.size() ] ) );</span>
+    }
+<span class="fc" id="L36">  }</span>
+
+  private boolean elementsChanged( Set&lt;IProject&gt; newElements ) {
+<span class="fc" id="L39">    IAdaptable[] oldElements = workingSet.getElements();</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">    if( oldElements.length != newElements.size() ) {</span>
+<span class="fc" id="L41">      return true;</span>
+    }
+<span class="fc bfc" id="L43" title="All 2 branches covered.">    for( IAdaptable oldElement : oldElements ) {</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">      if( !newElements.contains( oldElement ) ) {</span>
+<span class="fc" id="L45">        return true;</span>
+      }
+    }
+<span class="fc" id="L48">    return false;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

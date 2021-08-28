@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>EditLaunchConfigAction.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.launch</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.launch.internal.dialog</a> &gt; <span class="el_source">EditLaunchConfigAction.java</span></div><h1>EditLaunchConfigAction.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.launch.internal.dialog;
+
+import static org.eclipse.debug.ui.DebugUITools.openLaunchConfigurationDialog;
+import static org.eclipse.jface.window.Window.OK;
+
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchMode;
+import org.eclipse.debug.ui.ILaunchGroup;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Shell;
+
+
+public class EditLaunchConfigAction extends Action {
+
+<span class="fc" id="L18">  public static final String ID = EditLaunchConfigAction.class.getName();</span>
+
+  private final LaunchSelectionDialog launchSelectionDialog;
+  private IStructuredSelection selection;
+
+  public EditLaunchConfigAction( LaunchSelectionDialog launchSelectionDialog ) {
+<span class="fc" id="L24">    super( &quot;&amp;Edit...&quot; );</span>
+<span class="fc" id="L25">    this.launchSelectionDialog = launchSelectionDialog;</span>
+<span class="fc" id="L26">    this.selection = StructuredSelection.EMPTY;</span>
+<span class="fc" id="L27">    setId( ID );</span>
+<span class="fc" id="L28">    setEnabled( false );</span>
+<span class="fc" id="L29">  }</span>
+
+  public void setSelection( IStructuredSelection selection ) {
+<span class="fc" id="L32">    this.selection = selection;</span>
+<span class="fc bfc" id="L33" title="All 4 branches covered.">    setEnabled( selection.size() == 1 &amp;&amp; selection.getFirstElement() instanceof ILaunchConfiguration );</span>
+<span class="fc" id="L34">  }</span>
+
+  public IStructuredSelection getSelection() {
+<span class="fc" id="L37">    return selection;</span>
+  }
+
+  @Override
+  public void run() {
+<span class="fc bfc" id="L42" title="All 2 branches covered.">    if( isEnabled() ) {</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">      if( editLaunchConfig( getSelectedLaunchConfig() ) ) {</span>
+<span class="fc" id="L44">        launchSelectionDialog.close( Window.CANCEL );</span>
+<span class="fc" id="L45">      } else {</span>
+<span class="fc" id="L46">        launchSelectionDialog.refresh();</span>
+      }
+    }
+<span class="fc" id="L49">  }</span>
+
+  protected boolean editLaunchConfig( ILaunchConfiguration launchConfig ) {
+<span class="nc" id="L52">    Shell shell = launchSelectionDialog.getShell();</span>
+<span class="nc" id="L53">    String launchGroupId = getLaunchGroupId( launchConfig );</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">    return openLaunchConfigurationDialog( shell, launchConfig, launchGroupId, null ) == OK;</span>
+  }
+
+  private String getLaunchGroupId( ILaunchConfiguration launchConfig ) {
+<span class="nc" id="L58">    ILaunchMode preferredLaunchMode = launchSelectionDialog.getLaunchMode();</span>
+<span class="nc" id="L59">    LaunchModeComputer launchModeComputer = new LaunchModeComputer( launchConfig, preferredLaunchMode );</span>
+<span class="nc" id="L60">    ILaunchGroup launchGroup = launchModeComputer.computeLaunchGroup();</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">    return launchGroup == null ? null : launchGroup.getIdentifier();</span>
+  }
+
+  private ILaunchConfiguration getSelectedLaunchConfig() {
+<span class="fc" id="L65">    return ( ILaunchConfiguration )selection.getFirstElement();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

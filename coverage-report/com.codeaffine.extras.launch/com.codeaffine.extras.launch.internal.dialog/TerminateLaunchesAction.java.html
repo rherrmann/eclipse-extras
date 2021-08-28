@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>TerminateLaunchesAction.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.launch</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.launch.internal.dialog</a> &gt; <span class="el_source">TerminateLaunchesAction.java</span></div><h1>TerminateLaunchesAction.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.launch.internal.dialog;
+
+import static com.codeaffine.extras.launch.internal.LaunchExtrasPlugin.PLUGIN_ID;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+
+import com.codeaffine.extras.launch.internal.Images;
+
+public class TerminateLaunchesAction extends Action {
+
+<span class="fc" id="L26">  public static final String ID = TerminateLaunchesAction.class.getName();</span>
+
+  private IStructuredSelection selection;
+
+  public TerminateLaunchesAction() {
+<span class="fc" id="L31">    super( &quot;&amp;Terminate All&quot; );</span>
+<span class="fc" id="L32">    this.selection = StructuredSelection.EMPTY;</span>
+<span class="fc" id="L33">    setId( ID );</span>
+<span class="fc" id="L34">    setImageDescriptor( Images.getImageDescriptor( Images.TERMINATE_ALL ) );</span>
+<span class="fc" id="L35">    setEnabled( false );</span>
+<span class="fc" id="L36">  }</span>
+
+  public void setSelection( IStructuredSelection selection ) {
+<span class="fc" id="L39">    this.selection = selection;</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">    setEnabled( !getTerminatableLaunches().isEmpty() );</span>
+<span class="fc" id="L41">  }</span>
+
+  public IStructuredSelection getSelection() {
+<span class="fc" id="L44">    return selection;</span>
+  }
+
+  @Override
+  public void run() {
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">    if( isEnabled() ) {</span>
+<span class="fc" id="L50">      new TerminateLaunchesJob( getTerminatableLaunches() ).schedule();</span>
+    }
+<span class="fc" id="L52">  }</span>
+
+  private List&lt;ILaunch&gt; getTerminatableLaunches() {
+<span class="fc" id="L55">    Collection&lt;ILaunchConfiguration&gt; selectedLaunchConfigs = getSelectedLaunchConfigs();</span>
+<span class="fc" id="L56">    return Stream.of( DebugPlugin.getDefault().getLaunchManager().getLaunches() )</span>
+<span class="fc" id="L57">      .filter( launch -&gt; selectedLaunchConfigs.contains( launch.getLaunchConfiguration() ) )</span>
+<span class="fc" id="L58">      .filter( ILaunch::canTerminate )</span>
+<span class="fc" id="L59">      .collect( Collectors.toList() );</span>
+  }
+
+  @SuppressWarnings(&quot;unchecked&quot;)
+  private Collection&lt;ILaunchConfiguration&gt; getSelectedLaunchConfigs() {
+<span class="fc" id="L64">    return ( Collection&lt;ILaunchConfiguration&gt; )selection.toList().stream()</span>
+<span class="fc" id="L65">      .filter( element -&gt; element instanceof ILaunchConfiguration )</span>
+<span class="fc" id="L66">      .collect( Collectors.toList() );</span>
+  }
+
+  static class TerminateLaunchesJob extends Job {
+<span class="fc" id="L70">    static final Class&lt;TerminateLaunchesJob&gt; FAMILY = TerminateLaunchesJob.class;</span>
+
+    private final MultiStatus status;
+    private final Collection&lt;ILaunch&gt; launches;
+
+    public TerminateLaunchesJob( Collection&lt;ILaunch&gt; launches ) {
+<span class="fc" id="L76">      super( &quot;Terminate Launches&quot; );</span>
+<span class="fc" id="L77">      this.status = new MultiStatus( PLUGIN_ID, 0, &quot;Failed to terminate launch&quot;, null );</span>
+<span class="fc" id="L78">      this.launches = launches;</span>
+<span class="fc" id="L79">      setSystem( true );</span>
+<span class="fc" id="L80">    }</span>
+
+    @Override
+    public boolean belongsTo( Object family ) {
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">      return family == FAMILY;</span>
+    }
+
+    @Override
+    protected IStatus run( IProgressMonitor monitor ) {
+<span class="fc" id="L89">      launches.forEach( this::terminateLaunch );</span>
+<span class="fc" id="L90">      return status;</span>
+    }
+
+    private void terminateLaunch( ILaunch launch ) {
+      try {
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if( launch.canTerminate() ) {</span>
+<span class="fc" id="L96">          launch.terminate();</span>
+        }
+<span class="pc" id="L98">      } catch( DebugException e ) {</span>
+<span class="nc" id="L99">        status.merge( e.getStatus() );</span>
+      }
+<span class="fc" id="L101">    }</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

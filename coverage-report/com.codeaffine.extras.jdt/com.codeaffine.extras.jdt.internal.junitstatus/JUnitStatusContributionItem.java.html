@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>JUnitStatusContributionItem.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.jdt</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.jdt.internal.junitstatus</a> &gt; <span class="el_source">JUnitStatusContributionItem.java</span></div><h1>JUnitStatusContributionItem.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.jdt.internal.junitstatus;
+
+import org.eclipse.jdt.junit.JUnitCore;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.menus.WorkbenchWindowControlContribution;
+
+
+<span class="fc" id="L18">public class JUnitStatusContributionItem extends WorkbenchWindowControlContribution {</span>
+
+  private ResourceManager resourceManager;
+  private JUnitTestRunListener testRunListener;
+  private JUnitProgressBar progressBar;
+
+  @Override
+  protected Control createControl( Composite parent ) {
+<span class="fc" id="L26">    resourceManager = new LocalResourceManager( JFaceResources.getResources( parent.getDisplay() ) );</span>
+<span class="fc" id="L27">    Composite result = createControls( parent );</span>
+<span class="fc" id="L28">    layoutControls( result );</span>
+<span class="fc" id="L29">    attachContextMenu();</span>
+<span class="fc" id="L30">    JUnitCore.addTestRunListener( testRunListener );</span>
+<span class="fc" id="L31">    return result;</span>
+  }
+
+  @Override
+  public void dispose() {
+<span class="fc" id="L36">    detachTestRunListener();</span>
+<span class="fc" id="L37">    disposeResourceManager();</span>
+<span class="fc" id="L38">    super.dispose();</span>
+<span class="fc" id="L39">  }</span>
+
+  private Composite createControls( Composite parent ) {
+<span class="fc" id="L42">    Composite result = new StatusComposite( parent, SWT.NONE );</span>
+<span class="fc" id="L43">    progressBar = new JUnitProgressBar( result );</span>
+<span class="fc" id="L44">    testRunListener = new JUnitTestRunListener( resourceManager, new JUnitProgressUI( progressBar ) );</span>
+<span class="fc" id="L45">    return result;</span>
+  }
+
+  private void layoutControls( Composite composite ) {
+<span class="fc" id="L49">    composite.setLayout( GridLayoutFactory.fillDefaults().margins( 3, 0 ).create() );</span>
+<span class="fc" id="L50">    progressBar.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );</span>
+<span class="fc" id="L51">  }</span>
+
+  private void attachContextMenu() {
+<span class="fc" id="L54">    attachContextMenu( progressBar );</span>
+<span class="fc" id="L55">  }</span>
+
+  private void attachContextMenu( Control control ) {
+<span class="fc" id="L58">    MenuManager menuManager = new MenuManager();</span>
+<span class="fc" id="L59">    menuManager.add( new ActivateJUnitViewOnFailureAction() );</span>
+<span class="fc" id="L60">    menuManager.add( new Separator() );</span>
+<span class="fc" id="L61">    menuManager.add( new CloseJUnitStatusAction( getWorkbenchWindow().getWorkbench() ) );</span>
+<span class="fc" id="L62">    Menu contextMenu = menuManager.createContextMenu( control );</span>
+<span class="fc" id="L63">    control.setMenu( contextMenu );</span>
+<span class="fc" id="L64">  }</span>
+
+  private void detachTestRunListener() {
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">    if( testRunListener != null ) {</span>
+<span class="fc" id="L68">      JUnitCore.removeTestRunListener( testRunListener );</span>
+<span class="fc" id="L69">      testRunListener.dispose();</span>
+<span class="fc" id="L70">      testRunListener = null;</span>
+    }
+<span class="fc" id="L72">  }</span>
+
+  private void disposeResourceManager() {
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">    if( resourceManager != null ) {</span>
+<span class="fc" id="L76">      resourceManager.dispose();</span>
+<span class="fc" id="L77">      resourceManager = null;</span>
+    }
+<span class="fc" id="L79">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Validator.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.workingset</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.workingset.internal</a> &gt; <span class="el_source">Validator.java</span></div><h1>Validator.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.workingset.internal;
+
+import static com.codeaffine.extras.workingset.internal.ValidationStatus.Severity.ERROR;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.ui.IWorkingSet;
+
+import com.codeaffine.extras.workingset.internal.ValidationStatus.Severity;
+
+
+public class Validator {
+
+  static final String MSG_NAME_EMPTY = &quot;Please enter a name for the working set&quot;;
+  static final String MSG_NAME_EXISTS = &quot;A working set with the same name already exists&quot;;
+  static final String MSG_PATTERN_EMPTY = &quot;Please enter a regular expression pattern&quot;;
+  static final String MSG_PATTERN_INVALID = &quot;The regular expression is not valid&quot;;
+  static final String MSG_JDT_RESTRICTION
+    = &quot;Due to a restriction in the Java Tools, working &quot;
+    + &quot;sets that are initially empty are not shown in the Package Explorer.&quot;;
+
+  private final WorkingSetsProvider workingSetsProvider;
+  private final ProjectsProvider projectsProvider;
+  private final JdtFeature jdtFeature;
+
+  public Validator( ProjectsProvider projectsProvider, JdtFeature jdtFeature ) {
+<span class="fc" id="L26">    this( new WorbenchWorkingSetsProvider(), projectsProvider, jdtFeature );</span>
+<span class="fc" id="L27">  }</span>
+
+<span class="fc" id="L29">  public Validator( WorkingSetsProvider workingSetsProvider,</span>
+                    ProjectsProvider projectsProvider,
+                    JdtFeature jdtFeature )
+  {
+<span class="fc" id="L33">    this.workingSetsProvider = workingSetsProvider;</span>
+<span class="fc" id="L34">    this.projectsProvider = projectsProvider;</span>
+<span class="fc" id="L35">    this.jdtFeature = jdtFeature;</span>
+<span class="fc" id="L36">  }</span>
+
+  public ValidationStatus validate( IWorkingSet editedWorkingSet, String name, String pattern ) {
+<span class="fc bfc" id="L39" title="All 2 branches covered.">    if( name.isEmpty() ) {</span>
+<span class="fc" id="L40">      return new ValidationStatus( ERROR, MSG_NAME_EMPTY );</span>
+    }
+<span class="fc bfc" id="L42" title="All 2 branches covered.">    if( pattern.isEmpty() ) {</span>
+<span class="fc" id="L43">      return new ValidationStatus( ERROR, MSG_PATTERN_EMPTY );</span>
+    }
+<span class="fc bfc" id="L45" title="All 2 branches covered.">    if( !isPatternValid( pattern ) ) {</span>
+<span class="fc" id="L46">      return new ValidationStatus( ERROR, MSG_PATTERN_INVALID );</span>
+    }
+<span class="fc bfc" id="L48" title="All 2 branches covered.">    if( nameExists( editedWorkingSet, name ) ) {</span>
+<span class="fc" id="L49">      return new ValidationStatus( Severity.WARNING, MSG_NAME_EXISTS );</span>
+    }
+<span class="pc bpc" id="L51" title="1 of 6 branches missed.">    if( !pattern.isEmpty() &amp;&amp; jdtFeature.isInstalled() &amp;&amp; !patternMatchesAnyProject( pattern ) ) {</span>
+<span class="fc" id="L52">      return new ValidationStatus( Severity.WARNING, MSG_JDT_RESTRICTION );</span>
+    }
+<span class="fc" id="L54">    return new ValidationStatus( Severity.NONE, &quot;&quot; );</span>
+  }
+
+  private boolean patternMatchesAnyProject( String pattern ) {
+<span class="fc" id="L58">    boolean result = false;</span>
+<span class="fc" id="L59">    ProjectPatternMatcher projectPatternMatcher = new ProjectPatternMatcher( pattern );</span>
+<span class="fc" id="L60">    IProject[] projects = projectsProvider.getProjects();</span>
+<span class="fc bfc" id="L61" title="All 4 branches covered.">    for( int i = 0; !result &amp;&amp; i &lt; projects.length; i++ ) {</span>
+<span class="fc" id="L62">      IProject project = projects[ i ];</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">      if( projectPatternMatcher.matches( project ) ) {</span>
+<span class="fc" id="L64">        result = true;</span>
+      }
+    }
+<span class="fc" id="L67">    return result;</span>
+  }
+
+  private static boolean isPatternValid( String pattern ) {
+<span class="fc" id="L71">    return new ProjectPatternMatcher( pattern ).isPatternValid();</span>
+  }
+
+  private boolean nameExists( IWorkingSet editedWorkingSet, String name ) {
+<span class="fc" id="L75">    IWorkingSet[] workingSets = workingSetsProvider.getWorkingSets();</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">    for( IWorkingSet workingSet : workingSets ) {</span>
+<span class="fc bfc" id="L77" title="All 4 branches covered.">      if( !workingSet.equals( editedWorkingSet ) &amp;&amp; name.equals( workingSet.getLabel() ) ) {</span>
+<span class="fc" id="L78">        return true;</span>
+      }
+    }
+<span class="fc" id="L81">    return false;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

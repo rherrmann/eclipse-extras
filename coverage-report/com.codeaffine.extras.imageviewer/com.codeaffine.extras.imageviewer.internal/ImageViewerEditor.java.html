@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ImageViewerEditor.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Extras for Eclipse Test Coverage</a> &gt; <a href="../index.html" class="el_bundle">com.codeaffine.extras.imageviewer</a> &gt; <a href="index.source.html" class="el_package">com.codeaffine.extras.imageviewer.internal</a> &gt; <span class="el_source">ImageViewerEditor.java</span></div><h1>ImageViewerEditor.java</h1><pre class="source lang-java linenums">package com.codeaffine.extras.imageviewer.internal;
+
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.action.IStatusLineManager;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.IReusableEditor;
+import org.eclipse.ui.IStorageEditorInput;
+import org.eclipse.ui.IURIEditorInput;
+import org.eclipse.ui.IWorkbenchPartConstants;
+import org.eclipse.ui.dialogs.SaveAsDialog;
+import org.eclipse.ui.ide.ResourceUtil;
+import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.statushandlers.StatusManager;
+
+
+<span class="fc" id="L34">public class ImageViewerEditor extends EditorPart implements IReusableEditor {</span>
+
+  public static final String ID = &quot;com.codeaffine.extras.imageviewer.internal.ImageViewerEditor&quot;;
+
+  ImageViewer imageCanvas;
+
+  @Override
+  public void init( IEditorSite site, IEditorInput input ) {
+<span class="fc" id="L42">    setSite( site );</span>
+<span class="fc" id="L43">    setInput( input );</span>
+<span class="fc" id="L44">  }</span>
+
+  @Override
+  public void createPartControl( Composite parent ) {
+<span class="fc" id="L48">    parent.setLayout( FillLayoutFactory.newFillLayout( 0 ) );</span>
+<span class="fc" id="L49">    imageCanvas = new ImageViewer( parent );</span>
+<span class="fc" id="L50">    addPropertyListener( ( source, propertyId ) -&gt; handlePropertyChangedEvent( propertyId ) );</span>
+<span class="fc" id="L51">    updateContent();</span>
+<span class="fc" id="L52">  }</span>
+
+  @Override
+  public void setFocus() {
+<span class="fc" id="L56">    imageCanvas.getControl().forceFocus();</span>
+<span class="fc" id="L57">  }</span>
+
+  @Override
+  public void setInput( IEditorInput editorInput ) {
+<span class="fc" id="L61">    checkEditorInput( editorInput );</span>
+<span class="fc" id="L62">    setInputWithNotify( editorInput );</span>
+<span class="fc" id="L63">  }</span>
+
+  @Override
+  public void doSave( IProgressMonitor monitor ) {
+<span class="nc" id="L67">    throw new UnsupportedOperationException();</span>
+  }
+
+  @Override
+  public void doSaveAs() {
+<span class="nc" id="L72">    IPath filePath = querySaveAsFilePath();</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">    if( filePath != null ) {</span>
+<span class="nc" id="L74">      IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile( filePath );</span>
+      try {
+<span class="nc" id="L76">        new ImageDataStorage( imageCanvas.getImageDatas() ).save( file, getProgressMonitor() );</span>
+<span class="nc" id="L77">        setInput( new FileEditorInput( file ) );</span>
+<span class="nc" id="L78">      } catch( CoreException exception ) {</span>
+<span class="nc" id="L79">        StatusManager.getManager().handle( exception, ImageViewerPlugin.ID );</span>
+<span class="nc" id="L80">        StatusManager.getManager().handle( exception.getStatus(), StatusManager.SHOW );</span>
+      }
+    }
+<span class="nc" id="L83">  }</span>
+
+  @Override
+  public boolean isDirty() {
+<span class="fc" id="L87">    return false;</span>
+  }
+
+  @Override
+  public boolean isSaveAsAllowed() {
+<span class="pc bpc" id="L92" title="1 of 4 branches missed.">    return imageCanvas != null &amp;&amp; imageCanvas.getImageDatas() != null;</span>
+  }
+
+  private IPath querySaveAsFilePath() {
+<span class="nc" id="L96">    SaveAsDialog dialog = new SaveAsDialog( getSite().getShell() );</span>
+<span class="nc" id="L97">    IEditorInput editorInput = getEditorInput();</span>
+<span class="nc" id="L98">    IFile originalFile = ResourceUtil.getFile( editorInput );</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">    if( originalFile != null ) {</span>
+<span class="nc" id="L100">      dialog.setOriginalFile( originalFile );</span>
+<span class="nc" id="L101">    } else {</span>
+<span class="nc" id="L102">      dialog.setOriginalName( editorInput.getName() );</span>
+    }
+<span class="nc" id="L104">    int dialogResult = dialog.open();</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">    return dialogResult == Window.OK ? dialog.getResult() : null;</span>
+  }
+
+  private IProgressMonitor getProgressMonitor() {
+<span class="nc" id="L109">    IProgressMonitor monitor = null;</span>
+<span class="nc" id="L110">    IStatusLineManager manager = getEditorSite().getActionBars().getStatusLineManager();</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">    if( manager != null ) {</span>
+<span class="nc" id="L112">      monitor = manager.getProgressMonitor();</span>
+    }
+<span class="nc bnc" id="L114" title="All 2 branches missed.">    return monitor != null ? monitor : new NullProgressMonitor();</span>
+  }
+
+  private void handlePropertyChangedEvent( int propertyId ) {
+<span class="fc bfc" id="L118" title="All 2 branches covered.">    if( propertyId == IWorkbenchPartConstants.PROP_INPUT ) {</span>
+<span class="fc" id="L119">      updateContent();</span>
+    }
+<span class="fc" id="L121">  }</span>
+
+  private void updateContent() {
+<span class="fc" id="L124">    setPartName( getEditorInput().getName() );</span>
+<span class="fc" id="L125">    try( InputStream inputStream = openEditorInput() ) {</span>
+<span class="fc" id="L126">      ImageData[] imageDatas = new ImageLoader().load( inputStream );</span>
+<span class="fc" id="L127">      imageCanvas.setImageDatas( imageDatas );</span>
+<span class="nc" id="L128">    } catch( IOException ignoreCloseProblem ) {</span>
+    }
+<span class="fc" id="L130">  }</span>
+
+  private InputStream openEditorInput() {
+<span class="fc" id="L133">    InputStream result = new ByteArrayInputStream( new byte[ 0 ] );</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">    if( getEditorInput() instanceof IStorageEditorInput ) {</span>
+<span class="fc" id="L135">      IStorageEditorInput storageEditorInput = ( IStorageEditorInput )getEditorInput();</span>
+      try {
+<span class="fc" id="L137">        result = storageEditorInput.getStorage().getContents();</span>
+<span class="pc" id="L138">      } catch( CoreException ignore ) {</span>
+      }
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">    } else if( getEditorInput() instanceof IPathEditorInput ) {</span>
+<span class="nc" id="L141">      IPathEditorInput pathEditorInput = ( IPathEditorInput )getEditorInput();</span>
+      try {
+<span class="nc" id="L143">        result = new FileInputStream( pathEditorInput.getPath().toFile() );</span>
+<span class="nc" id="L144">      } catch( FileNotFoundException ignore ) {</span>
+      }
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">    } else if( getEditorInput() instanceof IURIEditorInput ) {</span>
+<span class="fc" id="L147">      IURIEditorInput uriEditorInput = ( IURIEditorInput )getEditorInput();</span>
+      try {
+<span class="fc" id="L149">        result = uriEditorInput.getURI().toURL().openStream();</span>
+<span class="pc" id="L150">      } catch( IOException ignore ) {</span>
+      }
+    }
+<span class="fc" id="L153">    return result;</span>
+  }
+
+  private static void checkEditorInput( IEditorInput input ) {
+<span class="fc bfc" id="L157" title="All 2 branches covered.">    if(    !( input instanceof IStorageEditorInput )</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">        &amp;&amp; !( input instanceof IPathEditorInput )</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        &amp;&amp; !( input instanceof IURIEditorInput ) )</span>
+    {
+<span class="fc" id="L161">      throw new IllegalArgumentException( &quot;Invalid input: &quot; + input );</span>
+    }
+<span class="fc" id="L163">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
