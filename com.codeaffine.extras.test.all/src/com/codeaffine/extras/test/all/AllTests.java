@@ -10,8 +10,7 @@ import com.codeaffine.osgi.testuite.BundleTestSuite.TestBundles;
   "com.codeaffine.extras.ide",
   "com.codeaffine.extras.imageviewer",
   "com.codeaffine.extras.jdt",
-  "com.codeaffine.extras.launch",
-  "com.codeaffine.extras.workingset",
+  "com.codeaffine.extras.launch"
 } )
 public class AllTests {
 }

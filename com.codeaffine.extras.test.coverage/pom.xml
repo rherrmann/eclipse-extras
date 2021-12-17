@@ -58,12 +58,6 @@
     </dependency>
     <dependency>
       <groupId>com.codeaffine.extras</groupId>
-      <artifactId>com.codeaffine.extras.workingset</artifactId>
-      <version>${project.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.codeaffine.extras</groupId>
       <artifactId>com.codeaffine.extras.ide.test</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
@@ -83,12 +77,6 @@
     <dependency>
       <groupId>com.codeaffine.extras</groupId>
       <artifactId>com.codeaffine.extras.launch.test</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.codeaffine.extras</groupId>
-      <artifactId>com.codeaffine.extras.workingset.test</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>

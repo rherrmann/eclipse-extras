@@ -59,9 +59,6 @@
     <module>com.codeaffine.extras.launch</module>
     <module>com.codeaffine.extras.launch.test</module>
     <module>com.codeaffine.extras.launch.feature</module>
-    <module>com.codeaffine.extras.workingset</module>
-    <module>com.codeaffine.extras.workingset.test</module>
-    <module>com.codeaffine.extras.workingset.feature</module>
     <module>com.codeaffine.extras.test.util</module>
     <module>com.codeaffine.extras.branding</module>
     <module>com.codeaffine.extras.license.feature</module>
