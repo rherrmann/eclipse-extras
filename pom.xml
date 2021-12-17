@@ -191,7 +191,7 @@
         <artifactId>tycho-surefire-plugin</artifactId>
         <version>${tycho-version}</version>
         <configuration>
-          <argLine>${os-jvm-flags}</argLine>
+          <argLine>${os-jvm-flags} --add-opens java.base/java.lang=ALL-UNNAMED</argLine>
           <useUIHarness>true</useUIHarness>
           <appArgLine>-nl en -consolelog</appArgLine>
           <forkedProcessTimeoutInSeconds>1200</forkedProcessTimeoutInSeconds>
