@@ -14,21 +14,17 @@ public class ImageViewerEditorExtensionPDETest {
   public void testEditorExtension() {
     Extension actual = readEditorsExtension();
 
-    ExtensionAssert.assertThat( actual )
-      .isInstantiable( "class", ImageViewerEditor.class )
-      .hasNoAttributeValueFor( "contributorClass" )
-      .hasAttributeValue( "icon", "$nl$/icons/eview16/image-viewer-editor.gif" )
-      .hasAttributeValue( "default", Boolean.TRUE.toString() )
-      .hasNonEmptyAttributeValueFor( "name" )
-      .hasNoAttributeValueFor( "matchingStrategy" )
-      .hasChildWithAttributeValue( "contentTypeId", ImageViewerPlugin.IMAGE_CONTENT_TYPE_ID );
+    ExtensionAssert.assertThat(actual).isInstantiable("class", ImageViewerEditor.class)
+        .hasNoAttributeValueFor("contributorClass")
+        .hasAttributeValue("icon", "$nl$/icons/eview16/image-viewer-editor.gif")
+        .hasAttributeValue("default", Boolean.TRUE.toString()).hasNonEmptyAttributeValueFor("name")
+        .hasNoAttributeValueFor("matchingStrategy")
+        .hasChildWithAttributeValue("contentTypeId", ImageViewerPlugin.IMAGE_CONTENT_TYPE_ID);
   }
 
   private static Extension readEditorsExtension() {
-    return new RegistryAdapter()
-      .readExtension( "org.eclipse.ui.editors" )
-      .thatMatches( attribute( "id", ImageViewerEditor.ID ) )
-      .process();
+    return new RegistryAdapter().readExtension("org.eclipse.ui.editors")
+        .thatMatches(attribute("id", ImageViewerEditor.ID)).process();
   }
 
 }

@@ -15,25 +15,25 @@ public class WorkspaceScopePreferencesTest {
   @Before
   public void setUp() {
     store = new PreferenceStore();
-    workspaceScopePreferences = new WorkspaceScopePreferences( store );
+    workspaceScopePreferences = new WorkspaceScopePreferences(store);
   }
 
   @Test
   public void testSetShowJUnitStatusBar() {
-    workspaceScopePreferences.setShowJUnitStatusBar( true );
+    workspaceScopePreferences.setShowJUnitStatusBar(true);
 
-    assertThat( store.getBoolean( PREF_SHOW_JUNIT_STATUS_BAR ) ).isTrue();
+    assertThat(store.getBoolean(PREF_SHOW_JUNIT_STATUS_BAR)).isTrue();
   }
 
   @Test
   public void testIsShowJUnitStatusBar() {
-    store.setValue( PREF_SHOW_JUNIT_STATUS_BAR, true );
+    store.setValue(PREF_SHOW_JUNIT_STATUS_BAR, true);
 
-    assertThat( workspaceScopePreferences.isShowJUnitStatusBar() ).isTrue();
+    assertThat(workspaceScopePreferences.isShowJUnitStatusBar()).isTrue();
   }
 
   @Test
   public void testGetPreferenceStore() {
-    assertThat( workspaceScopePreferences.getPreferenceStore() ).isSameAs( store );
+    assertThat(workspaceScopePreferences.getPreferenceStore()).isSameAs(store);
   }
 }

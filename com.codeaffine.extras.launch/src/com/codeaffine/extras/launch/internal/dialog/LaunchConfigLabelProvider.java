@@ -36,42 +36,39 @@ public class LaunchConfigLabelProvider extends LabelProvider implements IStyledL
   private final LabelMode labelMode;
   private final IDebugModelPresentation debugModelPresentation;
 
-  public LaunchConfigLabelProvider( Display display,
-                                    DuplicatesDetector duplicatesDetector,
-                                    LabelMode labelMode )
-  {
-    this.resourceManager = new LocalResourceManager( JFaceResources.getResources( display ) );
+  public LaunchConfigLabelProvider(Display display, DuplicatesDetector duplicatesDetector, LabelMode labelMode) {
+    this.resourceManager = new LocalResourceManager(JFaceResources.getResources(display));
     this.duplicatesDetector = duplicatesDetector;
     this.labelMode = labelMode;
     this.debugModelPresentation = DebugUITools.newDebugModelPresentation();
   }
 
   @Override
-  public Image getImage( Object element ) {
+  public Image getImage(Object element) {
     Image result;
-    if( isNonExistingLaunchConfig( element ) ) {
+    if (isNonExistingLaunchConfig(element)) {
       result = null;
     } else {
-      result = debugModelPresentation.getImage( element );
+      result = debugModelPresentation.getImage(element);
     }
-    if( isRunning( element ) ) {
-      result = decorateImage( result );
+    if (isRunning(element)) {
+      result = decorateImage(result);
     }
     return result;
   }
 
   @Override
-  public String getText( Object element ) {
-    return getStyledText( element ).toString();
+  public String getText(Object element) {
+    return getStyledText(element).toString();
   }
 
   @Override
-  public StyledString getStyledText( Object element ) {
+  public StyledString getStyledText(Object element) {
     StyledString result;
-    if( element instanceof ILaunchConfiguration ) {
-      result = getStyledString( ( ILaunchConfiguration )element );
+    if (element instanceof ILaunchConfiguration) {
+      result = getStyledString((ILaunchConfiguration) element);
     } else {
-      result = new StyledString( String.valueOf( element ) );
+      result = new StyledString(String.valueOf(element));
     }
     return result;
   }
@@ -82,75 +79,75 @@ public class LaunchConfigLabelProvider extends LabelProvider implements IStyledL
     super.dispose();
   }
 
-  protected boolean isRunning( Object element ) {
+  protected boolean isRunning(Object element) {
     boolean result = false;
-    if( element instanceof ILaunchConfiguration ) {
-      result = LaunchConfigs.isRunning( ( ILaunchConfiguration )element );
+    if (element instanceof ILaunchConfiguration) {
+      result = LaunchConfigs.isRunning((ILaunchConfiguration) element);
     }
     return result;
   }
 
-  private static boolean isNonExistingLaunchConfig( Object element ) {
-    return element instanceof ILaunchConfiguration && !( ( ILaunchConfiguration )element ).exists();
+  private static boolean isNonExistingLaunchConfig(Object element) {
+    return element instanceof ILaunchConfiguration && !((ILaunchConfiguration) element).exists();
   }
 
-  private Image decorateImage( Image image ) {
+  private Image decorateImage(Image image) {
     Image result = null;
-    if( image != null ) {
-      ImageDescriptor imageDescriptor = Images.getImageDescriptor( RUNNING );
-      DecorationOverlayIcon overlay = new DecorationOverlayIcon( image, imageDescriptor, BOTTOM_RIGHT );
-      result = resourceManager.createImage( overlay );
+    if (image != null) {
+      ImageDescriptor imageDescriptor = Images.getImageDescriptor(RUNNING);
+      DecorationOverlayIcon overlay = new DecorationOverlayIcon(image, imageDescriptor, BOTTOM_RIGHT);
+      result = resourceManager.createImage(overlay);
     }
     return result;
   }
 
-  private StyledString getStyledString( ILaunchConfiguration launchConfig ) {
+  private StyledString getStyledString(ILaunchConfiguration launchConfig) {
     StyledString result;
-    if( labelMode == LIST ) {
-      result = getListStyledString( launchConfig );
+    if (labelMode == LIST) {
+      result = getListStyledString(launchConfig);
     } else {
-      result = getDetailStyledString( launchConfig );
+      result = getDetailStyledString(launchConfig);
     }
     return result;
   }
 
-  private StyledString getListStyledString( ILaunchConfiguration launchConfig ) {
+  private StyledString getListStyledString(ILaunchConfiguration launchConfig) {
     StyledString result;
-    result = new StyledString( debugModelPresentation.getText( launchConfig ) );
-    if( duplicatesDetector.isDuplicateElement( launchConfig ) ) {
-      result.append( " - ", ADDITIONAL_INFO_STYLER );
-      if( launchConfig.getFile() != null ) {
-        result.append( getContainerName( launchConfig ), ADDITIONAL_INFO_STYLER );
+    result = new StyledString(debugModelPresentation.getText(launchConfig));
+    if (duplicatesDetector.isDuplicateElement(launchConfig)) {
+      result.append(" - ", ADDITIONAL_INFO_STYLER);
+      if (launchConfig.getFile() != null) {
+        result.append(getContainerName(launchConfig), ADDITIONAL_INFO_STYLER);
       } else {
-        result.append( getTypeName( launchConfig ), ADDITIONAL_INFO_STYLER );
+        result.append(getTypeName(launchConfig), ADDITIONAL_INFO_STYLER);
       }
     }
     return result;
   }
 
-  private StyledString getDetailStyledString( ILaunchConfiguration launchConfig ) {
+  private StyledString getDetailStyledString(ILaunchConfiguration launchConfig) {
     StyledString result;
-    result = new StyledString( debugModelPresentation.getText( launchConfig ) );
-    result.append( " - ", ADDITIONAL_INFO_STYLER );
-    result.append( getTypeName( launchConfig ), ADDITIONAL_INFO_STYLER );
-    if( launchConfig.getFile() != null ) {
-      result.append( " (", ADDITIONAL_INFO_STYLER );
-      result.append( getContainerName( launchConfig ), ADDITIONAL_INFO_STYLER );
-      result.append( ")", ADDITIONAL_INFO_STYLER );
+    result = new StyledString(debugModelPresentation.getText(launchConfig));
+    result.append(" - ", ADDITIONAL_INFO_STYLER);
+    result.append(getTypeName(launchConfig), ADDITIONAL_INFO_STYLER);
+    if (launchConfig.getFile() != null) {
+      result.append(" (", ADDITIONAL_INFO_STYLER);
+      result.append(getContainerName(launchConfig), ADDITIONAL_INFO_STYLER);
+      result.append(")", ADDITIONAL_INFO_STYLER);
     }
     return result;
   }
 
-  private static String getTypeName( ILaunchConfiguration configuration ) {
+  private static String getTypeName(ILaunchConfiguration configuration) {
     String result = "Unknown Launch Configuration Type";
     try {
       result = configuration.getType().getName();
-    } catch( CoreException ignore ) {
+    } catch (CoreException ignore) {
     }
     return result;
   }
 
-  private static String getContainerName( ILaunchConfiguration launchConfig ) {
+  private static String getContainerName(ILaunchConfiguration launchConfig) {
     return launchConfig.getFile().getParent().getFullPath().makeRelative().toPortableString();
   }
 }

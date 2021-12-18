@@ -25,16 +25,14 @@ public class LaunchConfigStarter {
   private final ILaunchConfiguration[] launchConfigs;
   private final DebugUIPreferences preferences;
 
-  public LaunchConfigStarter( ILaunchMode launchMode, ILaunchConfiguration... launchConfigs ) {
-    this( new DebugUIPreferences(), launchMode, launchConfigs );
+  public LaunchConfigStarter(ILaunchMode launchMode, ILaunchConfiguration... launchConfigs) {
+    this(new DebugUIPreferences(), launchMode, launchConfigs);
   }
 
-  public LaunchConfigStarter( DebugUIPreferences preferences,
-                              ILaunchMode launchMode,
-                              ILaunchConfiguration... launchConfigs )
-  {
-    this.preferences = requireNonNull( preferences );
-    this.preferredLaunchMode = requireNonNull( launchMode );
+  public LaunchConfigStarter(DebugUIPreferences preferences, ILaunchMode launchMode,
+      ILaunchConfiguration... launchConfigs) {
+    this.preferences = requireNonNull(preferences);
+    this.preferredLaunchMode = requireNonNull(launchMode);
     this.launchConfigs = launchConfigs;
   }
 
@@ -44,54 +42,54 @@ public class LaunchConfigStarter {
   }
 
   private void terminateLaunches() {
-    if( preferences.isTerminateBeforeRelaunch() ) {
+    if (preferences.isTerminateBeforeRelaunch()) {
       IProgressService progressService = PlatformUI.getWorkbench().getProgressService();
       try {
-        progressService.busyCursorWhile( this::terminateLaunches );
-      } catch( InvocationTargetException ite ) {
-        handleException( ite.getCause() );
-      } catch( InterruptedException ignore ) {
+        progressService.busyCursorWhile(this::terminateLaunches);
+      } catch (InvocationTargetException ite) {
+        handleException(ite.getCause());
+      } catch (InterruptedException ignore) {
         Thread.interrupted();
       }
     }
   }
 
   private void startLaunchConfigs() {
-    stream( launchConfigs ).forEach( this::startLaunchConfig );
+    stream(launchConfigs).forEach(this::startLaunchConfig);
   }
 
-  private void startLaunchConfig( ILaunchConfiguration launchConfig ) {
-    ILaunchMode launchMode = new LaunchModeComputer( launchConfig, preferredLaunchMode ).computeLaunchMode();
-    DebugUITools.launch( launchConfig, launchMode.getIdentifier() );
+  private void startLaunchConfig(ILaunchConfiguration launchConfig) {
+    ILaunchMode launchMode = new LaunchModeComputer(launchConfig, preferredLaunchMode).computeLaunchMode();
+    DebugUITools.launch(launchConfig, launchMode.getIdentifier());
   }
 
-  private void terminateLaunches( IProgressMonitor monitor ) {
-    monitor.beginTask( "Terminate previous launches...", launchConfigs.length );
-    for( ILaunchConfiguration launchConfig : launchConfigs ) {
-      new LaunchTerminator( launchConfig ).terminateLaunches();
-      monitor.worked( 1 );
+  private void terminateLaunches(IProgressMonitor monitor) {
+    monitor.beginTask("Terminate previous launches...", launchConfigs.length);
+    for (ILaunchConfiguration launchConfig : launchConfigs) {
+      new LaunchTerminator(launchConfig).terminateLaunches();
+      monitor.worked(1);
     }
     monitor.done();
   }
 
-  private void handleException( Throwable exception ) {
+  private void handleException(Throwable exception) {
     IStatus status;
-    if( exception instanceof CoreException ) {
-      status = ( ( CoreException )exception ).getStatus();
+    if (exception instanceof CoreException) {
+      status = ((CoreException) exception).getStatus();
     } else {
       String message;
-      if( launchConfigs.length == 1 ) {
+      if (launchConfigs.length == 1) {
         message = "Failed to start launch configuration: " + getLaunchConfigNames();
       } else {
         message = "Failed to start launch configurations: " + getLaunchConfigNames();
       }
-      status = new Status( ERROR, PLUGIN_ID, message, exception );
+      status = new Status(ERROR, PLUGIN_ID, message, exception);
     }
-    StatusManager.getManager().handle( status, StatusManager.LOG );
+    StatusManager.getManager().handle(status, StatusManager.LOG);
   }
 
   private String getLaunchConfigNames() {
-    return stream( launchConfigs ).map( ILaunchConfiguration::getName ).collect( joining( ", " ) );
+    return stream(launchConfigs).map(ILaunchConfiguration::getName).collect(joining(", "));
   }
 
 }

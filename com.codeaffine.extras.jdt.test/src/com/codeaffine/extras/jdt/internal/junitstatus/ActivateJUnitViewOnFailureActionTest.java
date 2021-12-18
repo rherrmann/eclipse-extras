@@ -20,46 +20,46 @@ public class ActivateJUnitViewOnFailureActionTest {
 
   @Before
   public void setUp() {
-    preferences = mock( IEclipsePreferences.class );
-    when( preferences.getBoolean( PREF_SHOW_ON_ERROR_ONLY, false ) ).thenReturn( true );
-    action = new ActivateJUnitViewOnFailureAction( preferences );
+    preferences = mock(IEclipsePreferences.class);
+    when(preferences.getBoolean(PREF_SHOW_ON_ERROR_ONLY, false)).thenReturn(true);
+    action = new ActivateJUnitViewOnFailureAction(preferences);
   }
 
   @Test
   public void testPreferenceConstant() {
-    assertThat( PREF_SHOW_ON_ERROR_ONLY ).isEqualTo( JUnitPreferencesConstants.SHOW_ON_ERROR_ONLY );
+    assertThat(PREF_SHOW_ON_ERROR_ONLY).isEqualTo(JUnitPreferencesConstants.SHOW_ON_ERROR_ONLY);
   }
 
-  @Test(expected=NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void testConstructorWithNullArgument() {
-    new ActivateJUnitViewOnFailureAction( null );
+    new ActivateJUnitViewOnFailureAction(null);
   }
 
   @Test
   public void testGetStyle() {
     int style = action.getStyle();
 
-    assertThat( style ).isEqualTo( IAction.AS_CHECK_BOX );
+    assertThat(style).isEqualTo(IAction.AS_CHECK_BOX);
   }
 
   @Test
   public void testGetText() {
     String text = action.getText();
 
-    assertThat( text ).isNotEmpty();
+    assertThat(text).isNotEmpty();
   }
 
   @Test
   public void testInitialCheckState() {
     boolean checked = action.isChecked();
 
-    assertThat( checked ).isTrue();
+    assertThat(checked).isTrue();
   }
 
   @Test
   public void testRun() {
     action.run();
 
-    verify( preferences ).putBoolean( PREF_SHOW_ON_ERROR_ONLY, false );
+    verify(preferences).putBoolean(PREF_SHOW_ON_ERROR_ONLY, false);
   }
 }

@@ -15,54 +15,54 @@ public class LaunchConfigComparator implements Comparator<ILaunchConfiguration> 
   private final List<Object> launchConfigHistory;
   private final ILaunchMode launchMode;
 
-  public LaunchConfigComparator( LaunchConfigSelectionHistory launchConfigHistory, ILaunchMode launchMode ) {
-    requireNonNull( launchConfigHistory );
-    this.launchConfigHistory = asList( launchConfigHistory.getHistoryItems() );
+  public LaunchConfigComparator(LaunchConfigSelectionHistory launchConfigHistory, ILaunchMode launchMode) {
+    requireNonNull(launchConfigHistory);
+    this.launchConfigHistory = asList(launchConfigHistory.getHistoryItems());
     this.launchMode = launchMode;
   }
 
   @Override
-  public int compare( ILaunchConfiguration launchConfig1, ILaunchConfiguration launchConfig2 ) {
-    requireNonNull( launchConfig1, "launchConfig1" );
-    requireNonNull( launchConfig2, "launchConfig2" );
+  public int compare(ILaunchConfiguration launchConfig1, ILaunchConfiguration launchConfig2) {
+    requireNonNull(launchConfig1, "launchConfig1");
+    requireNonNull(launchConfig2, "launchConfig2");
     int result;
-    if( isHistoryElement( launchConfig1 ) && isHistoryElement( launchConfig2 ) ) {
-      result = compareHistoryElements( launchConfig1, launchConfig2 );
+    if (isHistoryElement(launchConfig1) && isHistoryElement(launchConfig2)) {
+      result = compareHistoryElements(launchConfig1, launchConfig2);
     } else {
-      result = launchConfig1.getName().compareTo( launchConfig2.getName() );
+      result = launchConfig1.getName().compareTo(launchConfig2.getName());
     }
     return result;
   }
 
-  private int compareHistoryElements( ILaunchConfiguration launchConfig1, ILaunchConfiguration launchConfig2 ) {
+  private int compareHistoryElements(ILaunchConfiguration launchConfig1, ILaunchConfiguration launchConfig2) {
     int result;
-    if( isLastLaunchedConfig( launchConfig1 ) ) {
+    if (isLastLaunchedConfig(launchConfig1)) {
       result = -1;
-    } else if( isLastLaunchedConfig( launchConfig2 ) ) {
+    } else if (isLastLaunchedConfig(launchConfig2)) {
       result = 1;
     } else {
-      result = launchConfigHistory.indexOf( launchConfig1 ) - launchConfigHistory.indexOf( launchConfig2 );
+      result = launchConfigHistory.indexOf(launchConfig1) - launchConfigHistory.indexOf(launchConfig2);
     }
     return result;
   }
 
-  private boolean isLastLaunchedConfig( ILaunchConfiguration launchConfig ) {
-    ILaunchConfiguration lastLaunchedConfig = getLastLaunchConfig( launchConfig );
-    return launchConfig.equals( lastLaunchedConfig );
+  private boolean isLastLaunchedConfig(ILaunchConfiguration launchConfig) {
+    ILaunchConfiguration lastLaunchedConfig = getLastLaunchConfig(launchConfig);
+    return launchConfig.equals(lastLaunchedConfig);
   }
 
-  private ILaunchConfiguration getLastLaunchConfig( ILaunchConfiguration launchConfig ) {
+  private ILaunchConfiguration getLastLaunchConfig(ILaunchConfiguration launchConfig) {
     ILaunchConfiguration result = null;
-    if( launchMode != null ) {
-      ILaunchGroup launchGroup = DebugUITools.getLaunchGroup( launchConfig, launchMode.getIdentifier() );
-      if( launchGroup != null ) {
-        result = DebugUITools.getLastLaunch( launchGroup.getIdentifier() );
+    if (launchMode != null) {
+      ILaunchGroup launchGroup = DebugUITools.getLaunchGroup(launchConfig, launchMode.getIdentifier());
+      if (launchGroup != null) {
+        result = DebugUITools.getLastLaunch(launchGroup.getIdentifier());
       }
     }
     return result;
   }
 
-  private boolean isHistoryElement( ILaunchConfiguration launchConfig ) {
-    return launchConfigHistory.contains( launchConfig );
+  private boolean isHistoryElement(ILaunchConfiguration launchConfig) {
+    return launchConfigHistory.contains(launchConfig);
   }
 }

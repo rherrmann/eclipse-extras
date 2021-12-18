@@ -30,101 +30,99 @@ public class PreferencePropertyTesterPDETest {
 
   @Before
   public void setUp() {
-    serviceLocator = mock( IServiceLocator.class );
+    serviceLocator = mock(IServiceLocator.class);
     preferenceStore = new PreferenceStore();
-    propertyTester = new PreferencePropertyTester( preferenceStore );
+    propertyTester = new PreferencePropertyTester(preferenceStore);
   }
 
   @Test
   public void testExtension() {
     Extension actual = readPropertyTesterExtension();
 
-    ExtensionAssert.assertThat( actual )
-      .hasAttributeValue( "namespace", NAMESPACE )
-      .hasAttributeValue( "properties", IS_TRUE )
-      .isInstantiable( "class", PreferencePropertyTester.class );
+    ExtensionAssert.assertThat(actual).hasAttributeValue("namespace", NAMESPACE)
+        .hasAttributeValue("properties", IS_TRUE).isInstantiable("class", PreferencePropertyTester.class);
   }
 
   @Test
   public void testPropertyWhenTrue() {
-    preferenceStore.setValue( PREF_NAME, true );
+    preferenceStore.setValue(PREF_NAME, true);
 
-    boolean test = propertyTester.test( serviceLocator, IS_TRUE, new String[] { PREF_NAME }, TRUE );
+    boolean test = propertyTester.test(serviceLocator, IS_TRUE, new String[] {PREF_NAME}, TRUE);
 
-    assertThat( test ).isTrue();
+    assertThat(test).isTrue();
   }
 
   @Test
   public void testPropertyWhenFalse() {
-    preferenceStore.setValue( PREF_NAME, false );
+    preferenceStore.setValue(PREF_NAME, false);
 
-    boolean test = propertyTester.test( serviceLocator, IS_TRUE, new String[] { PREF_NAME }, FALSE );
+    boolean test = propertyTester.test(serviceLocator, IS_TRUE, new String[] {PREF_NAME}, FALSE);
 
-    assertThat( test ).isTrue();
+    assertThat(test).isTrue();
   }
 
   @Test
   public void testPropertyWhenNotSet() {
-    boolean test = propertyTester.test( serviceLocator, IS_TRUE, new String[] { PREF_NAME }, FALSE );
+    boolean test = propertyTester.test(serviceLocator, IS_TRUE, new String[] {PREF_NAME}, FALSE);
 
-    assertThat( test ).isTrue();
+    assertThat(test).isTrue();
   }
 
   @Test
   public void testTestWithNonServiceLocatorReceiver() {
-    preferenceStore.setValue( PREF_NAME, true );
+    preferenceStore.setValue(PREF_NAME, true);
 
-    boolean test = propertyTester.test( new Object(), IS_TRUE, new String[] { PREF_NAME }, TRUE );
+    boolean test = propertyTester.test(new Object(), IS_TRUE, new String[] {PREF_NAME}, TRUE);
 
-    assertThat( test ).isFalse();
+    assertThat(test).isFalse();
   }
 
   @Test
   public void testTestWithUnknownProperty() {
-    preferenceStore.setValue( PREF_NAME, true );
+    preferenceStore.setValue(PREF_NAME, true);
 
-    boolean test = propertyTester.test( serviceLocator, "foo", new String[] { PREF_NAME }, TRUE );
+    boolean test = propertyTester.test(serviceLocator, "foo", new String[] {PREF_NAME}, TRUE);
 
-    assertThat( test ).isFalse();
+    assertThat(test).isFalse();
   }
 
-  @Test(expected=NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void testTestWithWithArgumentsNull() {
-    propertyTester.test( serviceLocator, IS_TRUE, null, TRUE );
+    propertyTester.test(serviceLocator, IS_TRUE, null, TRUE);
   }
 
   @Test
   public void testTestWithArgumentsEmpty() {
-    preferenceStore.setValue( PREF_NAME, true );
+    preferenceStore.setValue(PREF_NAME, true);
 
-    boolean test = propertyTester.test( serviceLocator, IS_TRUE, new String[ 0 ], TRUE );
+    boolean test = propertyTester.test(serviceLocator, IS_TRUE, new String[0], TRUE);
 
-    assertThat( test ).isFalse();
+    assertThat(test).isFalse();
   }
 
   @Test
   public void testTestWithArgumentsNotString() {
-    preferenceStore.setValue( PREF_NAME, true );
+    preferenceStore.setValue(PREF_NAME, true);
 
-    boolean test = propertyTester.test( serviceLocator, IS_TRUE, new Object[] { new Object() }, TRUE );
+    boolean test = propertyTester.test(serviceLocator, IS_TRUE, new Object[] {new Object()}, TRUE);
 
-    assertThat( test ).isFalse();
+    assertThat(test).isFalse();
   }
 
   @Test
   public void testTestWithExpectedValueNull() {
-    preferenceStore.setValue( PREF_NAME, true );
+    preferenceStore.setValue(PREF_NAME, true);
 
-    boolean test = propertyTester.test( serviceLocator, IS_TRUE, new Object[] { PREF_NAME }, null );
+    boolean test = propertyTester.test(serviceLocator, IS_TRUE, new Object[] {PREF_NAME}, null);
 
-    assertThat( test ).isFalse();
+    assertThat(test).isFalse();
   }
 
   private static Extension readPropertyTesterExtension() {
-    return readExtension( "org.eclipse.core.expressions.propertyTesters", attribute( "id", ID ) );
+    return readExtension("org.eclipse.core.expressions.propertyTesters", attribute("id", ID));
   }
 
-  private static Extension readExtension( String extensionPoint, Predicate<Extension> predicate ) {
-    return new RegistryAdapter().readExtension( extensionPoint ).thatMatches( predicate ).process();
+  private static Extension readExtension(String extensionPoint, Predicate<Extension> predicate) {
+    return new RegistryAdapter().readExtension(extensionPoint).thatMatches(predicate).process();
   }
 }

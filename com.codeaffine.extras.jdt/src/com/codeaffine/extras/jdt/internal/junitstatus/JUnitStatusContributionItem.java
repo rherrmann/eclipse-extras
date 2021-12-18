@@ -22,12 +22,12 @@ public class JUnitStatusContributionItem extends WorkbenchWindowControlContribut
   private JUnitProgressBar progressBar;
 
   @Override
-  protected Control createControl( Composite parent ) {
-    resourceManager = new LocalResourceManager( JFaceResources.getResources( parent.getDisplay() ) );
-    Composite result = createControls( parent );
-    layoutControls( result );
+  protected Control createControl(Composite parent) {
+    resourceManager = new LocalResourceManager(JFaceResources.getResources(parent.getDisplay()));
+    Composite result = createControls(parent);
+    layoutControls(result);
     attachContextMenu();
-    JUnitCore.addTestRunListener( testRunListener );
+    JUnitCore.addTestRunListener(testRunListener);
     return result;
   }
 
@@ -38,41 +38,41 @@ public class JUnitStatusContributionItem extends WorkbenchWindowControlContribut
     super.dispose();
   }
 
-  private Composite createControls( Composite parent ) {
-    Composite result = new StatusComposite( parent, SWT.NONE );
-    progressBar = new JUnitProgressBar( result );
-    testRunListener = new JUnitTestRunListener( resourceManager, new JUnitProgressUI( progressBar ) );
+  private Composite createControls(Composite parent) {
+    Composite result = new StatusComposite(parent, SWT.NONE);
+    progressBar = new JUnitProgressBar(result);
+    testRunListener = new JUnitTestRunListener(resourceManager, new JUnitProgressUI(progressBar));
     return result;
   }
 
-  private void layoutControls( Composite composite ) {
-    composite.setLayout( GridLayoutFactory.fillDefaults().margins( 3, 0 ).create() );
-    progressBar.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+  private void layoutControls(Composite composite) {
+    composite.setLayout(GridLayoutFactory.fillDefaults().margins(3, 0).create());
+    progressBar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
   }
 
   private void attachContextMenu() {
-    attachContextMenu( progressBar );
+    attachContextMenu(progressBar);
   }
 
-  private void attachContextMenu( Control control ) {
+  private void attachContextMenu(Control control) {
     MenuManager menuManager = new MenuManager();
-    menuManager.add( new ActivateJUnitViewOnFailureAction() );
-    menuManager.add( new Separator() );
-    menuManager.add( new CloseJUnitStatusAction( getWorkbenchWindow().getWorkbench() ) );
-    Menu contextMenu = menuManager.createContextMenu( control );
-    control.setMenu( contextMenu );
+    menuManager.add(new ActivateJUnitViewOnFailureAction());
+    menuManager.add(new Separator());
+    menuManager.add(new CloseJUnitStatusAction(getWorkbenchWindow().getWorkbench()));
+    Menu contextMenu = menuManager.createContextMenu(control);
+    control.setMenu(contextMenu);
   }
 
   private void detachTestRunListener() {
-    if( testRunListener != null ) {
-      JUnitCore.removeTestRunListener( testRunListener );
+    if (testRunListener != null) {
+      JUnitCore.removeTestRunListener(testRunListener);
       testRunListener.dispose();
       testRunListener = null;
     }
   }
 
   private void disposeResourceManager() {
-    if( resourceManager != null ) {
+    if (resourceManager != null) {
       resourceManager.dispose();
       resourceManager = null;
     }

@@ -27,46 +27,46 @@ public class LaunchExtrasPlugin extends AbstractUIPlugin {
   }
 
   @Override
-  public void start( BundleContext context ) throws Exception {
-    super.start( context );
+  public void start(BundleContext context) throws Exception {
+    super.start(context);
     instance = this;
     installLaunchConfigCleaner();
   }
 
   @Override
-  public void stop( BundleContext context ) throws Exception {
+  public void stop(BundleContext context) throws Exception {
     uninstallLaunchConfigCleaner();
-    super.stop( context );
+    super.stop(context);
     instance = null;
   }
 
   @Override
-  protected void initializeImageRegistry( ImageRegistry registry ) {
-    Images.registerImages( registry );
+  protected void initializeImageRegistry(ImageRegistry registry) {
+    Images.registerImages(registry);
   }
 
   private void installLaunchConfigCleaner() {
     launchConfigCleaner.install();
-    if( hasStateLocation() ) {
-      launchConfigCleaner.restoreState( getLaunchConfigCleanerStateFile() );
+    if (hasStateLocation()) {
+      launchConfigCleaner.restoreState(getLaunchConfigCleanerStateFile());
     }
   }
 
   private void uninstallLaunchConfigCleaner() {
-    if( hasStateLocation() ) {
-      launchConfigCleaner.saveState( getLaunchConfigCleanerStateFile() );
+    if (hasStateLocation()) {
+      launchConfigCleaner.saveState(getLaunchConfigCleanerStateFile());
     }
     launchConfigCleaner.uninstall();
   }
 
   private File getLaunchConfigCleanerStateFile() {
-    return getStateLocation().append( LaunchConfigCleanerState.DEFAULT_FILE_NAME ).toFile();
+    return getStateLocation().append(LaunchConfigCleanerState.DEFAULT_FILE_NAME).toFile();
   }
 
   private boolean hasStateLocation() {
     try {
       return getLaunchConfigCleanerStateFile() != null;
-    } catch( IllegalStateException noStateLocation ) {
+    } catch (IllegalStateException noStateLocation) {
       return false;
     }
   }

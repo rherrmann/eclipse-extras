@@ -16,40 +16,38 @@ import org.eclipse.core.runtime.Path;
 
 public class NestedProjectFilter extends AbstractFileInfoMatcher {
 
-  public static final String ID
-    = "com.codeaffine.extras.ide.internal.resourcefilter.NestedProjectFilter";
+  public static final String ID = "com.codeaffine.extras.ide.internal.resourcefilter.NestedProjectFilter";
 
-  private static RecursionGuard recursionGuard = new RecursionGuard();
+  private static final RecursionGuard recursionGuard = new RecursionGuard();
 
   private IProject project;
 
   @Override
-  public void initialize( IProject project, Object arguments ) {
+  public void initialize(IProject project, Object arguments) {
     this.project = project;
   }
 
   @Override
-  public boolean matches( IContainer parent, IFileInfo fileInfo ) {
-    if( !fileInfo.isDirectory() || recursionGuard.isInUse( project )) {
+  public boolean matches(IContainer parent, IFileInfo fileInfo) {
+    if (!fileInfo.isDirectory() || recursionGuard.isInUse(project)) {
       return false;
     }
-    recursionGuard.enter( project );
+    recursionGuard.enter(project);
     try {
-      return findContainer( parent, fileInfo.getName() )
-        .stream()
-        .anyMatch( container -> container.getType() == PROJECT && !container.equals( project ) );
+      return findContainer(parent, fileInfo.getName()).stream()
+          .anyMatch(container -> container.getType() == PROJECT && !container.equals(project));
     } finally {
-      recursionGuard.leave( project );
+      recursionGuard.leave(project);
     }
   }
 
-  private Collection<IContainer> findContainer( IContainer parent, String folderName ) {
-    URI locationURI = parent.getFolder( new Path( folderName ) ).getLocationURI();
-    return locationURI == null ? Collections.emptyList() : findContainers( locationURI );
+  private Collection<IContainer> findContainer(IContainer parent, String folderName) {
+    URI locationURI = parent.getFolder(new Path(folderName)).getLocationURI();
+    return locationURI == null ? Collections.emptyList() : findContainers(locationURI);
   }
 
-  private Collection<IContainer> findContainers( URI locationURI ) {
-    return asList( project.getWorkspace().getRoot().findContainersForLocationURI( locationURI ) );
+  private Collection<IContainer> findContainers(URI locationURI) {
+    return asList(project.getWorkspace().getRoot().findContainersForLocationURI(locationURI));
   }
 
 }

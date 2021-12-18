@@ -1,10 +1,9 @@
 package com.codeaffine.extras.imageviewer.internal;
 
-import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Collection;
-
+import java.util.stream.Stream;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.ui.IEditorDescriptor;
@@ -16,20 +15,14 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
-@RunWith( value = Parameterized.class )
+@RunWith(value = Parameterized.class)
 public class ContentTypeExtensionPDETest {
 
   @Parameters(name = "{0}")
   public static Collection<Object[]> parameters() {
-    return asList(
-      new Object[] { "gif" },
-      new Object[] { "jpg" },
-      new Object[] { "jpeg" },
-      new Object[] { "png" },
-      new Object[] { "bmp" },
-      new Object[] { "ico" },
-      new Object[] { "tiff" }
-    );
+    return Stream.of("gif", "jpg", "jpeg", "png", "bmp", "ico", "tiff")
+        .map(param -> new Object[] {param})
+        .collect(toList());
   }
 
   @Parameter
@@ -43,17 +36,16 @@ public class ContentTypeExtensionPDETest {
 
   @Test
   public void testContentTypes() {
-    IContentType contentType = Platform.getContentTypeManager().findContentTypeFor( fileName );
+    IContentType contentType = Platform.getContentTypeManager().findContentTypeFor(fileName);
 
-    assertThat( contentType.getId() ).isEqualTo( ImageViewerPlugin.IMAGE_CONTENT_TYPE_ID );
+    assertThat(contentType.getId()).isEqualTo(ImageViewerPlugin.IMAGE_CONTENT_TYPE_ID);
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void testDefaultEditorBinding() throws Exception {
-    IEditorDescriptor editorDescriptor = IDE.getEditorDescriptor( fileName, true );
+    IEditorDescriptor editorDescriptor = IDE.getEditorDescriptor(fileName, true, false);
 
-    assertThat( editorDescriptor.getId() ).isEqualTo( ImageViewerEditor.ID );
+    assertThat(editorDescriptor.getId()).isEqualTo(ImageViewerEditor.ID);
   }
 
 }

@@ -10,18 +10,18 @@ public class ToggleTerminateBeforeRelaunchAction extends Action {
   private final DebugUIPreferences preferences;
 
   public ToggleTerminateBeforeRelaunchAction() {
-    this( new DebugUIPreferences() );
+    this(new DebugUIPreferences());
   }
 
-  public ToggleTerminateBeforeRelaunchAction( DebugUIPreferences preferences ) {
-    super( "Terminate before Relaunch", IAction.AS_CHECK_BOX );
+  public ToggleTerminateBeforeRelaunchAction(DebugUIPreferences preferences) {
+    super("Terminate before Relaunch", IAction.AS_CHECK_BOX);
     this.preferences = preferences;
-    setId( ID );
-    setChecked( preferences.isTerminateBeforeRelaunch() );
+    setId(ID);
+    setChecked(preferences.isTerminateBeforeRelaunch());
   }
 
   @Override
   public void run() {
-    preferences.setTerminateBeforeRelaunch( !preferences.isTerminateBeforeRelaunch() );
+    preferences.setTerminateBeforeRelaunch(!preferences.isTerminateBeforeRelaunch());
   }
 }

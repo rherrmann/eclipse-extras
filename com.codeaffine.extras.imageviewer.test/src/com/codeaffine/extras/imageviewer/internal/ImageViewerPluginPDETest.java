@@ -10,8 +10,8 @@ public class ImageViewerPluginPDETest {
 
   @Test
   public void testID() {
-    Bundle imageViewerBundle = FrameworkUtil.getBundle( ImageViewerPlugin.class );
+    Bundle imageViewerBundle = FrameworkUtil.getBundle(ImageViewerPlugin.class);
 
-    assertThat( ImageViewerPlugin.ID ).isEqualTo( imageViewerBundle.getSymbolicName() );
+    assertThat(ImageViewerPlugin.ID).isEqualTo(imageViewerBundle.getSymbolicName());
   }
 }

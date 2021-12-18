@@ -13,11 +13,11 @@ public class DebugUIPreferences {
   private final IPreferenceStore preferenceStore;
 
   public DebugUIPreferences() {
-    this( DebugUITools.getPreferenceStore() );
+    this(DebugUITools.getPreferenceStore());
   }
 
-  public DebugUIPreferences( IPreferenceStore preferenceStore ) {
-    this.preferenceStore = requireNonNull( preferenceStore );
+  public DebugUIPreferences(IPreferenceStore preferenceStore) {
+    this.preferenceStore = requireNonNull(preferenceStore);
   }
 
   public IPreferenceStore getPreferenceStore() {
@@ -25,10 +25,10 @@ public class DebugUIPreferences {
   }
 
   public boolean isTerminateBeforeRelaunch() {
-    return preferenceStore.getBoolean( PREF_TERMINATE_AND_RELAUNCH );
+    return preferenceStore.getBoolean(PREF_TERMINATE_AND_RELAUNCH);
   }
 
-  public void setTerminateBeforeRelaunch( boolean value ) {
-    preferenceStore.setValue( PREF_TERMINATE_AND_RELAUNCH, value );
+  public void setTerminateBeforeRelaunch(boolean value) {
+    preferenceStore.setValue(PREF_TERMINATE_AND_RELAUNCH, value);
   }
 }

@@ -22,8 +22,8 @@ public class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
   private ILaunchConfiguration[] launchConfigHistory;
 
   @Override
-  public synchronized boolean contains( Object object ) {
-    return asList( getLaunchConfigHistory() ).contains( object );
+  public synchronized boolean contains(Object object) {
+    return asList(getLaunchConfigHistory()).contains(object);
   }
 
   @Override
@@ -32,13 +32,13 @@ public class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
   }
 
   @Override
-  public synchronized boolean remove( Object element ) {
+  public synchronized boolean remove(Object element) {
     boolean removed = false;
-    if( contains( element ) ) {
-      for( ILaunchGroup launchGroup : DebugUITools.getLaunchGroups() ) {
-        LaunchHistory launchHistory = getLaunchHistory( launchGroup );
-        if( launchHistory != null ) {
-          launchHistory.removeFromHistory( ( ILaunchConfiguration )element );
+    if (contains(element)) {
+      for (ILaunchGroup launchGroup : DebugUITools.getLaunchGroups()) {
+        LaunchHistory launchHistory = getLaunchHistory(launchGroup);
+        if (launchHistory != null) {
+          launchHistory.removeFromHistory((ILaunchConfiguration) element);
         }
       }
       removed = true;
@@ -53,23 +53,22 @@ public class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
   }
 
   @Override
-  protected Object restoreItemFromMemento( IMemento memento ) {
+  protected Object restoreItemFromMemento(IMemento memento) {
     return null;
   }
 
   @Override
-  protected void storeItemToMemento( Object item, IMemento memento ) {
-  }
+  protected void storeItemToMemento(Object item, IMemento memento) {}
 
   private ILaunchConfiguration[] getLaunchConfigHistory() {
-    if( launchConfigHistory == null ) {
+    if (launchConfigHistory == null) {
       launchConfigHistory = new LaunchConfigHistoryCollector().collect();
     }
     return launchConfigHistory;
   }
 
-  private static LaunchHistory getLaunchHistory( ILaunchGroup launchGroup ) {
-    LaunchHistoryAction launchHistoryAction = new LaunchHistoryAction( launchGroup );
+  private static LaunchHistory getLaunchHistory(ILaunchGroup launchGroup) {
+    LaunchHistoryAction launchHistoryAction = new LaunchHistoryAction(launchGroup);
     try {
       return launchHistoryAction.getLaunchHistory();
     } finally {
@@ -86,16 +85,16 @@ public class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
 
     ILaunchConfiguration[] collect() {
       launchConfigHistory.clear();
-      Stream.of( DebugUITools.getLaunchGroups() ).forEach( this::collect );
-      return launchConfigHistory.toArray( new ILaunchConfiguration[ launchConfigHistory.size() ] );
+      Stream.of(DebugUITools.getLaunchGroups()).forEach(this::collect);
+      return launchConfigHistory.toArray(new ILaunchConfiguration[launchConfigHistory.size()]);
     }
 
-    private void collect( ILaunchGroup launchGroup ) {
-      LaunchHistoryAction launchHistoryAction = new LaunchHistoryAction( launchGroup );
+    private void collect(ILaunchGroup launchGroup) {
+      LaunchHistoryAction launchHistoryAction = new LaunchHistoryAction(launchGroup);
       try {
-        if( launchHistoryAction.getLastLaunch() != null ) {
-          addAll( launchConfigHistory, launchHistoryAction.getFavorites() );
-          addAll( launchConfigHistory, launchHistoryAction.getHistory() );
+        if (launchHistoryAction.getLastLaunch() != null) {
+          addAll(launchConfigHistory, launchHistoryAction.getFavorites());
+          addAll(launchConfigHistory, launchHistoryAction.getHistory());
         }
       } finally {
         launchHistoryAction.dispose();
@@ -104,8 +103,8 @@ public class LaunchConfigSelectionHistory extends AccessibleSelectionHistory {
   }
 
   private static class LaunchHistoryAction extends AbstractLaunchHistoryAction {
-    LaunchHistoryAction( ILaunchGroup launchGroup ) {
-      super( launchGroup.getIdentifier() );
+    LaunchHistoryAction(ILaunchGroup launchGroup) {
+      super(launchGroup.getIdentifier());
     }
 
     @SuppressWarnings("deprecation")

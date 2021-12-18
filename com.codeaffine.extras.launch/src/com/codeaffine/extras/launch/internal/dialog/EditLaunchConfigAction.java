@@ -20,17 +20,17 @@ public class EditLaunchConfigAction extends Action {
   private final LaunchSelectionDialog launchSelectionDialog;
   private IStructuredSelection selection;
 
-  public EditLaunchConfigAction( LaunchSelectionDialog launchSelectionDialog ) {
-    super( "&Edit..." );
+  public EditLaunchConfigAction(LaunchSelectionDialog launchSelectionDialog) {
+    super("&Edit...");
     this.launchSelectionDialog = launchSelectionDialog;
     this.selection = StructuredSelection.EMPTY;
-    setId( ID );
-    setEnabled( false );
+    setId(ID);
+    setEnabled(false);
   }
 
-  public void setSelection( IStructuredSelection selection ) {
+  public void setSelection(IStructuredSelection selection) {
     this.selection = selection;
-    setEnabled( selection.size() == 1 && selection.getFirstElement() instanceof ILaunchConfiguration );
+    setEnabled(selection.size() == 1 && selection.getFirstElement() instanceof ILaunchConfiguration);
   }
 
   public IStructuredSelection getSelection() {
@@ -39,29 +39,29 @@ public class EditLaunchConfigAction extends Action {
 
   @Override
   public void run() {
-    if( isEnabled() ) {
-      if( editLaunchConfig( getSelectedLaunchConfig() ) ) {
-        launchSelectionDialog.close( Window.CANCEL );
+    if (isEnabled()) {
+      if (editLaunchConfig(getSelectedLaunchConfig())) {
+        launchSelectionDialog.close(Window.CANCEL);
       } else {
         launchSelectionDialog.refresh();
       }
     }
   }
 
-  protected boolean editLaunchConfig( ILaunchConfiguration launchConfig ) {
+  protected boolean editLaunchConfig(ILaunchConfiguration launchConfig) {
     Shell shell = launchSelectionDialog.getShell();
-    String launchGroupId = getLaunchGroupId( launchConfig );
-    return openLaunchConfigurationDialog( shell, launchConfig, launchGroupId, null ) == OK;
+    String launchGroupId = getLaunchGroupId(launchConfig);
+    return openLaunchConfigurationDialog(shell, launchConfig, launchGroupId, null) == OK;
   }
 
-  private String getLaunchGroupId( ILaunchConfiguration launchConfig ) {
+  private String getLaunchGroupId(ILaunchConfiguration launchConfig) {
     ILaunchMode preferredLaunchMode = launchSelectionDialog.getLaunchMode();
-    LaunchModeComputer launchModeComputer = new LaunchModeComputer( launchConfig, preferredLaunchMode );
+    LaunchModeComputer launchModeComputer = new LaunchModeComputer(launchConfig, preferredLaunchMode);
     ILaunchGroup launchGroup = launchModeComputer.computeLaunchGroup();
     return launchGroup == null ? null : launchGroup.getIdentifier();
   }
 
   private ILaunchConfiguration getSelectedLaunchConfig() {
-    return ( ILaunchConfiguration )selection.getFirstElement();
+    return (ILaunchConfiguration) selection.getFirstElement();
   }
 }

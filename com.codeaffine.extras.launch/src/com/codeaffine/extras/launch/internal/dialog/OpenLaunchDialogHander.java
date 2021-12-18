@@ -15,23 +15,21 @@ public class OpenLaunchDialogHander extends AbstractHandler {
   public static final String COMMAND_ID = "com.codeaffine.extras.launch.internal.OpenLaunchDialogCommand";
 
   @Override
-  public Object execute( ExecutionEvent event ) {
-    LaunchSelectionDialog dialog = createDialog( event );
-    if( dialog.open() == OK ) {
-      startLaunchConfigs( dialog.getLaunchMode(), dialog.getSelectedLaunchConfigurations() );
+  public Object execute(ExecutionEvent event) {
+    LaunchSelectionDialog dialog = createDialog(event);
+    if (dialog.open() == OK) {
+      startLaunchConfigs(dialog.getLaunchMode(), dialog.getSelectedLaunchConfigurations());
     }
     return null;
   }
 
-  private static void startLaunchConfigs( ILaunchMode launchMode,
-                                          ILaunchConfiguration[] launchConfigs )
-  {
-    new LaunchConfigStarter( launchMode, launchConfigs ).start();
+  private static void startLaunchConfigs(ILaunchMode launchMode, ILaunchConfiguration[] launchConfigs) {
+    new LaunchConfigStarter(launchMode, launchConfigs).start();
   }
 
-  protected LaunchSelectionDialog createDialog( ExecutionEvent event ) {
-    Shell shell = HandlerUtil.getActiveWorkbenchWindow( event ).getShell();
-    return new LaunchSelectionDialog( shell );
+  protected LaunchSelectionDialog createDialog(ExecutionEvent event) {
+    Shell shell = HandlerUtil.getActiveWorkbenchWindow(event).getShell();
+    return new LaunchSelectionDialog(shell);
   }
 
 }

@@ -13,18 +13,18 @@ public class JDTExtrasPluginPDETest {
 
   @Before
   public void setUp() {
-    bundle = FrameworkUtil.getBundle( JDTExtrasPlugin.class );
+    bundle = FrameworkUtil.getBundle(JDTExtrasPlugin.class);
   }
 
   @Test
   public void testPluginId() {
-    assertThat( JDTExtrasPlugin.PLUGIN_ID ).isEqualTo( bundle.getSymbolicName() );
+    assertThat(JDTExtrasPlugin.PLUGIN_ID).isEqualTo(bundle.getSymbolicName());
   }
 
   @Test
   public void testGetInstance() {
     JDTExtrasPlugin instance = JDTExtrasPlugin.getInstance();
 
-    assertThat( instance.getBundle() ).isEqualTo( bundle );
+    assertThat(instance.getBundle()).isEqualTo(bundle);
   }
 }

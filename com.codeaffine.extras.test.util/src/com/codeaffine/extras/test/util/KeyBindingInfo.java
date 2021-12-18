@@ -8,14 +8,14 @@ public class KeyBindingInfo {
   private ParameterInfo[] parameters;
 
   public KeyBindingInfo() {
-    parameters = new ParameterInfo[ 0 ];
+    parameters = new ParameterInfo[0];
   }
 
   public String getSchemeId() {
     return schemeId;
   }
 
-  void setSchemeId( String schemeId ) {
+  void setSchemeId(String schemeId) {
     this.schemeId = schemeId;
   }
 
@@ -23,7 +23,7 @@ public class KeyBindingInfo {
     return commandId;
   }
 
-  void setCommandId( String commandId ) {
+  void setCommandId(String commandId) {
     this.commandId = commandId;
   }
 
@@ -31,7 +31,7 @@ public class KeyBindingInfo {
     return contextId;
   }
 
-  void setContextId( String contextId ) {
+  void setContextId(String contextId) {
     this.contextId = contextId;
   }
 
@@ -39,11 +39,11 @@ public class KeyBindingInfo {
     return platform;
   }
 
-  void setPlatform( String platform ) {
+  void setPlatform(String platform) {
     this.platform = platform;
   }
 
-  void setParameters( ParameterInfo[] parameters ) {
+  void setParameters(ParameterInfo[] parameters) {
     this.parameters = parameters;
   }
 

@@ -40,64 +40,64 @@ public class OpenWithQuickMenuHandlerPDETest {
 
   @Test
   public void testEnablementWithNullEvaluationContext() {
-    handler.setEnabled( new Object() );
+    handler.setEnabled(new Object());
 
-    assertThat( handler.isEnabled() ).isFalse();
+    assertThat(handler.isEnabled()).isFalse();
   }
 
   @Test
   public void testEnablementWithIrregularEvaluationContext() {
-    handler.setEnabled( new Object() );
+    handler.setEnabled(new Object());
 
-    assertThat( handler.isEnabled() ).isFalse();
+    assertThat(handler.isEnabled()).isFalse();
   }
 
   @Test
   public void testEnablementWithSingleFile() throws CoreException {
-    IFile file = projectHelper.createFile( "file.txt", "content" );
+    IFile file = projectHelper.createFile("file.txt", "content");
 
-    handler.setEnabled( createEvaluationContext( file ) );
+    handler.setEnabled(createEvaluationContext(file));
 
-    assertThat( handler.isEnabled() ).isTrue();
+    assertThat(handler.isEnabled()).isTrue();
   }
 
   @Test
   public void testEnablementWithMultipleFiles() throws CoreException {
-    IFile file1 = projectHelper.createFile( "file1.txt", "content" );
-    IFile file2 = projectHelper.createFile( "file2.txt", "content" );
+    IFile file1 = projectHelper.createFile("file1.txt", "content");
+    IFile file2 = projectHelper.createFile("file2.txt", "content");
 
-    handler.setEnabled( createEvaluationContext( file1, file2 ) );
+    handler.setEnabled(createEvaluationContext(file1, file2));
 
-    assertThat( handler.isEnabled() ).isFalse();
+    assertThat(handler.isEnabled()).isFalse();
   }
 
   @Test
   public void testEnablementWithEmptySelection() {
-    handler.setEnabled( createEvaluationContext( StructuredSelection.EMPTY ) );
+    handler.setEnabled(createEvaluationContext(StructuredSelection.EMPTY));
 
-    assertThat( handler.isEnabled() ).isFalse();
+    assertThat(handler.isEnabled()).isFalse();
   }
 
   @Test
   public void testEnablementWithNonStructuredSelection() {
-    handler.setEnabled( createEvaluationContext( mock( ISelection.class ) ) );
+    handler.setEnabled(createEvaluationContext(mock(ISelection.class)));
 
-    assertThat( handler.isEnabled() ).isFalse();
+    assertThat(handler.isEnabled()).isFalse();
   }
 
   @Test
   public void testExecute() throws CoreException {
-    handler = spy( handler );
-    doNothing().when( handler ).showMenu( any( IWorkbenchPage.class ), any( IFile.class ) );
-    IFile file = projectHelper.createFile( "file.txt", "content" );
+    handler = spy(handler);
+    doNothing().when(handler).showMenu(any(IWorkbenchPage.class), any(IFile.class));
+    IFile file = projectHelper.createFile("file.txt", "content");
     Command command = getOpenWithQuickMenuCommand();
-    IEvaluationContext evaluationContext = createEvaluationContext( file );
-    ExecutionEvent event = new ExecutionEvent( command, emptyMap(), null, evaluationContext );
+    IEvaluationContext evaluationContext = createEvaluationContext(file);
+    ExecutionEvent event = new ExecutionEvent(command, emptyMap(), null, evaluationContext);
 
-    Object executionResult = handler.execute( event );
+    Object executionResult = handler.execute(event);
 
-    assertThat( executionResult ).isNull();
-    verify( handler ).showMenu( workbench.getActiveWorkbenchWindow().getActivePage(), file );
+    assertThat(executionResult).isNull();
+    verify(handler).showMenu(workbench.getActiveWorkbenchWindow().getActivePage(), file);
   }
 
   @Before
@@ -107,20 +107,20 @@ public class OpenWithQuickMenuHandlerPDETest {
   }
 
   private Command getOpenWithQuickMenuCommand() {
-    ICommandService commandService = ServiceHelper.getService( workbench, ICommandService.class );
-    return commandService.getCommand( OpenWithQuickMenuHandler.COMMAND_ID );
+    ICommandService commandService = ServiceHelper.getService(workbench, ICommandService.class);
+    return commandService.getCommand(OpenWithQuickMenuHandler.COMMAND_ID);
   }
 
-  private IEvaluationContext createEvaluationContext( Object... selectedElements ) {
-    ISelection selection = new StructuredSelection( selectedElements );
-    return createEvaluationContext( selection );
+  private IEvaluationContext createEvaluationContext(Object... selectedElements) {
+    ISelection selection = new StructuredSelection(selectedElements);
+    return createEvaluationContext(selection);
   }
 
-  private IEvaluationContext createEvaluationContext( ISelection selection ) {
+  private IEvaluationContext createEvaluationContext(ISelection selection) {
     IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
-    IEvaluationContext result = new EvaluationContext( null, new Object() );
-    result.addVariable( ISources.ACTIVE_WORKBENCH_WINDOW_NAME, activeWorkbenchWindow );
-    result.addVariable( ISources.ACTIVE_CURRENT_SELECTION_NAME, selection );
+    IEvaluationContext result = new EvaluationContext(null, new Object());
+    result.addVariable(ISources.ACTIVE_WORKBENCH_WINDOW_NAME, activeWorkbenchWindow);
+    result.addVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME, selection);
     return result;
   }
 }

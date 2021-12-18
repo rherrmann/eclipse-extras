@@ -15,17 +15,13 @@ public class ImageContentTypePDETest {
   public void testExtension() {
     Extension actual = readEditorsExtension();
 
-    ExtensionAssert.assertThat( actual )
-      .hasAttributeValue( "name", "Image" )
-      .hasAttributeValue( "priority", "normal" )
-      .hasAttributeValue( "file-extensions", "gif,jpg,jpeg,png,bmp,ico,tiff" );
+    ExtensionAssert.assertThat(actual).hasAttributeValue("name", "Image").hasAttributeValue("priority", "normal")
+        .hasAttributeValue("file-extensions", "gif,jpg,jpeg,png,bmp,ico,tiff");
   }
 
   private static Extension readEditorsExtension() {
-    return new RegistryAdapter()
-      .readExtension( "org.eclipse.core.contenttype.contentTypes" )
-      .thatMatches( attribute( "id", IMAGE_CONTENT_TYPE_ID ) )
-      .process();
+    return new RegistryAdapter().readExtension("org.eclipse.core.contenttype.contentTypes")
+        .thatMatches(attribute("id", IMAGE_CONTENT_TYPE_ID)).process();
   }
 
 }

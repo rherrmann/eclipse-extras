@@ -15,14 +15,14 @@ public class JDTExtrasPlugin extends AbstractUIPlugin {
   private static JDTExtrasPlugin instance;
 
   @Override
-  public void start( BundleContext context ) throws Exception {
-    super.start( context );
+  public void start(BundleContext context) throws Exception {
+    super.start(context);
     instance = this;
   }
 
   @Override
-  public void stop( BundleContext context ) throws Exception {
+  public void stop(BundleContext context) throws Exception {
     instance = null;
-    super.stop( context );
+    super.stop(context);
   }
 }

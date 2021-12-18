@@ -6,6 +6,5 @@ import org.eclipse.ui.IStartup;
 public class LaunchExtrasStartup implements IStartup {
 
   @Override
-  public void earlyStartup() {
-  }
+  public void earlyStartup() {}
 }

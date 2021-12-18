@@ -17,18 +17,16 @@ public class DeleteEditorFileCommandPDETest {
   public void testExtension() {
     Extension extension = readCommandExtension();
 
-    assertThat( extension.getAttribute( "name" ) ).isNotEmpty();
-    assertThat( extension.getAttribute( "description" ) ).isNotEmpty();
-    assertThat( extension.getAttribute( "categoryId" ) ).isEqualTo( "org.eclipse.ui.category.file" );
-    IHandler handler = extension.createExecutableExtension( "defaultHandler", IHandler.class );
-    assertThat( handler ).isInstanceOf( DeleteEditorFileHandler.class );
+    assertThat(extension.getAttribute("name")).isNotEmpty();
+    assertThat(extension.getAttribute("description")).isNotEmpty();
+    assertThat(extension.getAttribute("categoryId")).isEqualTo("org.eclipse.ui.category.file");
+    IHandler handler = extension.createExecutableExtension("defaultHandler", IHandler.class);
+    assertThat(handler).isInstanceOf(DeleteEditorFileHandler.class);
   }
 
   private static Extension readCommandExtension() {
-    return new RegistryAdapter()
-      .readExtension( "org.eclipse.ui.commands" )
-      .thatMatches( Predicates.attribute( "id", DeleteEditorFileHandler.COMMAND_ID ) )
-      .process();
+    return new RegistryAdapter().readExtension("org.eclipse.ui.commands")
+        .thatMatches(Predicates.attribute("id", DeleteEditorFileHandler.COMMAND_ID)).process();
   }
 
 }

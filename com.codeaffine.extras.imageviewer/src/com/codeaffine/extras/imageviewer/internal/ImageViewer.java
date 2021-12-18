@@ -17,29 +17,29 @@ public class ImageViewer {
   private ImageData[] imageDatas;
   private Image image;
 
-  public ImageViewer( Composite parent ) {
-    scrolledComposite = new ScrolledComposite( parent, SWT.H_SCROLL | SWT.V_SCROLL );
-    scrolledComposite.setBackground( getBackgroundColor() );
-    imageLabel = new Label( scrolledComposite, SWT.NONE );
-    imageLabel.setBackground( getBackgroundColor() );
-    scrolledComposite.setContent( imageLabel );
-    scrolledComposite.addListener( SWT.Dispose, this::handleDispose );
+  public ImageViewer(Composite parent) {
+    scrolledComposite = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+    scrolledComposite.setBackground(getBackgroundColor());
+    imageLabel = new Label(scrolledComposite, SWT.NONE);
+    imageLabel.setBackground(getBackgroundColor());
+    scrolledComposite.setContent(imageLabel);
+    scrolledComposite.addListener(SWT.Dispose, this::handleDispose);
   }
 
   public Control getControl() {
     return scrolledComposite;
   }
 
-  public void setImageDatas( ImageData... imageDatas ) {
-    if( image != null ) {
+  public void setImageDatas(ImageData... imageDatas) {
+    if (image != null) {
       image.dispose();
       image = null;
     }
     this.imageDatas = imageDatas;
-    if( imageDatas != null && imageDatas.length > 0 ) {
-      image = new Image( scrolledComposite.getDisplay(), imageDatas[ 0 ] );
+    if (imageDatas != null && imageDatas.length > 0) {
+      image = new Image(scrolledComposite.getDisplay(), imageDatas[0]);
     }
-    imageLabel.setImage( image );
+    imageLabel.setImage(image);
     imageLabel.pack();
   }
 
@@ -48,12 +48,12 @@ public class ImageViewer {
   }
 
   @SuppressWarnings("unused")
-  private void handleDispose( Event event ) {
-    setImageDatas( ( ImageData[] )null );
+  private void handleDispose(Event event) {
+    setImageDatas((ImageData[]) null);
   }
 
   private Color getBackgroundColor() {
-    return scrolledComposite.getDisplay().getSystemColor( SWT.COLOR_LIST_BACKGROUND );
+    return scrolledComposite.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND);
   }
 
 }

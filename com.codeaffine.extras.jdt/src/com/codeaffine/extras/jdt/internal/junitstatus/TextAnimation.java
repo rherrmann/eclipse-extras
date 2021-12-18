@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Widget;
 public class TextAnimation implements Runnable {
 
   public interface TextAnimationPainter {
-    void drawText( TextAnimation textAnimation );
+    void drawText(TextAnimation textAnimation);
   }
 
   private static final String DOTS = "...";
@@ -21,24 +21,24 @@ public class TextAnimation implements Runnable {
   private String text;
   private int dotCount;
 
-  public TextAnimation( Widget widget, TextAnimationPainter textAnimationPainter  ) {
-    this( widget, textAnimationPainter, DEFAULT_ANIMATION_INTERVAL );
+  public TextAnimation(Widget widget, TextAnimationPainter textAnimationPainter) {
+    this(widget, textAnimationPainter, DEFAULT_ANIMATION_INTERVAL);
   }
 
-  public TextAnimation( Widget widget , TextAnimationPainter textAnimationPainter , int animationInterval  ) {
+  public TextAnimation(Widget widget, TextAnimationPainter textAnimationPainter, int animationInterval) {
     this.animationInterval = animationInterval;
     this.textAnimationPainter = textAnimationPainter;
     this.widget = widget;
     this.text = "";
-    this.widget.addDisposeListener( event -> disable() );
+    this.widget.addDisposeListener(event -> disable());
   }
 
   public void disable() {
-    widget.getDisplay().timerExec( -1, this );
+    widget.getDisplay().timerExec(-1, this);
   }
 
-  public void setText( String text ) {
-    if( !this.text.equals( text ) ) {
+  public void setText(String text) {
+    if (!this.text.equals(text)) {
       disable();
       this.text = text;
       updateAnimation();
@@ -50,42 +50,42 @@ public class TextAnimation implements Runnable {
   }
 
   public String getAnimatedText() {
-    return getUnanimatedText() + repeat( ".", dotCount );
+    return getUnanimatedText() + repeat(".", dotCount);
   }
 
   @Override
   public void run() {
-    if( !widget.isDisposed() ) {
+    if (!widget.isDisposed()) {
       increaseDotCount();
-      textAnimationPainter.drawText( this );
-      widget.getDisplay().timerExec( animationInterval, this );
+      textAnimationPainter.drawText(this);
+      widget.getDisplay().timerExec(animationInterval, this);
     }
   }
 
   private void updateAnimation() {
     dotCount = 0;
-    if( text.endsWith( DOTS ) ) {
-      widget.getDisplay().timerExec( animationInterval, this );
+    if (text.endsWith(DOTS)) {
+      widget.getDisplay().timerExec(animationInterval, this);
     }
   }
 
   private String getUnanimatedText() {
     String result = text;
-    if( result.endsWith( DOTS ) ) {
-      result = result.substring( 0, text.length() - 3 );
+    if (result.endsWith(DOTS)) {
+      result = result.substring(0, text.length() - 3);
     }
     return result;
   }
 
   private void increaseDotCount() {
     dotCount++;
-    if( dotCount > 3 ) {
+    if (dotCount > 3) {
       dotCount = 0;
     }
   }
 
-  private static String repeat( String string, int times ) {
-    return Stream.generate( () -> string ).limit( times ).collect( joining() );
+  private static String repeat(String string, int times) {
+    return Stream.generate(() -> string).limit(times).collect(joining());
   }
 
 }

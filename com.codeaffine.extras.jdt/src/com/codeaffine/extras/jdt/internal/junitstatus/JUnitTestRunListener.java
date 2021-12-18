@@ -21,9 +21,9 @@ import org.eclipse.swt.graphics.RGB;
 
 public class JUnitTestRunListener extends TestRunListener {
 
-  static final RGB ERROR_RGB = new RGB( 159, 63, 63 );
-  static final RGB SUCCESS_RGB = new RGB( 95, 191, 95 );
-  static final RGB STOPPED_RGB = new RGB( 120, 120, 120 );
+  static final RGB ERROR_RGB = new RGB(159, 63, 63);
+  static final RGB SUCCESS_RGB = new RGB(95, 191, 95);
+  static final RGB STOPPED_RGB = new RGB(120, 120, 120);
   static final String STARTING = "Starting...";
 
   private final LaunchesAdapter launchListener;
@@ -32,151 +32,146 @@ public class JUnitTestRunListener extends TestRunListener {
   private final ProgressUI progressUI;
   private volatile TestRunSessionInfo currentSession;
 
-  public JUnitTestRunListener( ResourceManager resourceManager, ProgressUI progressUI ) {
-    this( DebugPlugin.getDefault().getLaunchManager(), resourceManager, progressUI );
+  public JUnitTestRunListener(ResourceManager resourceManager, ProgressUI progressUI) {
+    this(DebugPlugin.getDefault().getLaunchManager(), resourceManager, progressUI);
   }
 
-  public JUnitTestRunListener( ILaunchManager launchManager,
-                               ResourceManager resourceManager,
-                               ProgressUI progressUI )
-  {
+  public JUnitTestRunListener(ILaunchManager launchManager, ResourceManager resourceManager, ProgressUI progressUI) {
     this.launchListener = new LaunchTerminatedListener();
     this.resourceManager = resourceManager;
     this.progressUI = progressUI;
     this.launchManager = launchManager;
-    this.launchManager.addLaunchListener( launchListener );
+    this.launchManager.addLaunchListener(launchListener);
   }
 
   public void dispose() {
-    launchManager.removeLaunchListener( launchListener );
+    launchManager.removeLaunchListener(launchListener);
   }
 
   @Override
-  public void sessionLaunched( ITestRunSession testRunSession ) {
-    currentSession = new TestRunSessionInfo( testRunSession );
-    updateProgressUI( STARTING );
+  public void sessionLaunched(ITestRunSession testRunSession) {
+    currentSession = new TestRunSessionInfo(testRunSession);
+    updateProgressUI(STARTING);
   }
 
   @Override
-  public void sessionStarted( ITestRunSession testRunSession ) {
-    currentSession = new TestRunSessionInfo( testRunSession );
-    updateProgressUI( currentSession );
+  public void sessionStarted(ITestRunSession testRunSession) {
+    currentSession = new TestRunSessionInfo(testRunSession);
+    updateProgressUI(currentSession);
   }
 
   @Override
-  public void sessionFinished( ITestRunSession testRunSession ) {
-    if( belongsToCurrentSession( testRunSession ) ) {
+  public void sessionFinished(ITestRunSession testRunSession) {
+    if (belongsToCurrentSession(testRunSession)) {
       finishSession();
     }
   }
 
   @Override
-  public void testCaseFinished( ITestCaseElement testCaseElement ) {
-    if( belongsToCurrentSession( testCaseElement ) ) {
-      initializeCurrentSession( testCaseElement );
+  public void testCaseFinished(ITestCaseElement testCaseElement) {
+    if (belongsToCurrentSession(testCaseElement)) {
+      initializeCurrentSession(testCaseElement);
       currentSession.incExecutedTestCount();
-      if( TestRunSessionInfo.isTestFailed( testCaseElement.getTestResult( false ) ) ) {
+      if (TestRunSessionInfo.isTestFailed(testCaseElement.getTestResult(false))) {
         currentSession.incFailedTestCount();
       }
-      updateProgressUI( currentSession );
+      updateProgressUI(currentSession);
     }
   }
 
-  private boolean belongsToCurrentSession( ITestElement testElement ) {
-    return currentSession == null
-        || currentSession.equalsSession( testElement.getTestRunSession() );
+  private boolean belongsToCurrentSession(ITestElement testElement) {
+    return currentSession == null || currentSession.equalsSession(testElement.getTestRunSession());
   }
 
-  private void initializeCurrentSession( ITestElement testElement ) {
-    if( currentSession == null ) {
-      currentSession = new TestRunSessionInfo( testElement );
+  private void initializeCurrentSession(ITestElement testElement) {
+    if (currentSession == null) {
+      currentSession = new TestRunSessionInfo(testElement);
     }
   }
 
   private void finishSession() {
-    if( currentSession != null && currentSession.getTotalTestCount() == 0 ) {
-      updateProgressUI( "" );
+    if (currentSession != null && currentSession.getTotalTestCount() == 0) {
+      updateProgressUI("");
     }
     currentSession = null;
   }
 
-  private void updateProgressUI( TestRunSessionInfo testRunSessionInfo ) {
-    Color barColor = getProgressBarColor( testRunSessionInfo );
-    String text = getProgressBarText( testRunSessionInfo );
+  private void updateProgressUI(TestRunSessionInfo testRunSessionInfo) {
+    Color barColor = getProgressBarColor(testRunSessionInfo);
+    String text = getProgressBarText(testRunSessionInfo);
     int executedTestCount = testRunSessionInfo.getExecutedTestCount();
     int totalTestCount = testRunSessionInfo.getTotalTestCount();
-    progressUI.update( text, SWT.CENTER, barColor, executedTestCount, totalTestCount );
-    progressUI.setToolTipText( getToolTipText() );
+    progressUI.update(text, SWT.CENTER, barColor, executedTestCount, totalTestCount);
+    progressUI.setToolTipText(getToolTipText());
   }
 
-  private void updateProgressUI( String text ) {
-    progressUI.update( text, SWT.LEFT, null, 0, 0 );
-    if( text.isEmpty() ) {
-      progressUI.setToolTipText( "" );
+  private void updateProgressUI(String text) {
+    progressUI.update(text, SWT.LEFT, null, 0, 0);
+    if (text.isEmpty()) {
+      progressUI.setToolTipText("");
     } else {
-      progressUI.setToolTipText( getToolTipText() );
+      progressUI.setToolTipText(getToolTipText());
     }
   }
 
   private String getToolTipText() {
     String result = "";
-    if( currentSession != null ) {
+    if (currentSession != null) {
       result = currentSession.getName();
       int failedTestCount = currentSession.getFailedTestCount();
-      if( failedTestCount > 0 ) {
-        result = format( "{0} ({1} failed)", currentSession.getName(), valueOf( failedTestCount ) );
+      if (failedTestCount > 0) {
+        result = format("{0} ({1} failed)", currentSession.getName(), valueOf(failedTestCount));
       }
     }
     return result;
   }
 
-  private static String getProgressBarText( TestRunSessionInfo testRunSessionInfo ) {
+  private static String getProgressBarText(TestRunSessionInfo testRunSessionInfo) {
     int executedTestCount = testRunSessionInfo.getExecutedTestCount();
     int totalTestCount = testRunSessionInfo.getTotalTestCount();
-    return format( "{0} / {1}", valueOf( executedTestCount ), valueOf( totalTestCount ) );
+    return format("{0} / {1}", valueOf(executedTestCount), valueOf(totalTestCount));
   }
 
-  private Color getProgressBarColor( TestRunSessionInfo testRunSessionInfo ) {
+  private Color getProgressBarColor(TestRunSessionInfo testRunSessionInfo) {
     RGB rgb;
     TestRunState testRunState = testRunSessionInfo.getTestRunState();
-    switch( testRunState ) {
+    switch (testRunState) {
       case STOPPED:
         rgb = STOPPED_RGB;
-      break;
+        break;
       case FAILED:
         rgb = ERROR_RGB;
-      break;
+        break;
       case SUCCESS:
         rgb = SUCCESS_RGB;
-      break;
+        break;
       default:
-        throw new UnsupportedOperationException( "Unsupported TestRunState: " + testRunState );
+        throw new UnsupportedOperationException("Unsupported TestRunState: " + testRunState);
     }
-    return getColor( rgb );
+    return getColor(rgb);
   }
 
-  private Color getColor( RGB rgb ) {
-    return resourceManager.createColor( ColorDescriptor.createFrom( rgb ) );
+  private Color getColor(RGB rgb) {
+    return resourceManager.createColor(ColorDescriptor.createFrom(rgb));
   }
 
   private class LaunchTerminatedListener extends LaunchesAdapter {
     @Override
-    public void launchesTerminated( ILaunch[] launches ) {
-      for( ILaunch launch : launches ) {
-        launchTerminated( launch );
+    public void launchesTerminated(ILaunch[] launches) {
+      for (ILaunch launch : launches) {
+        launchTerminated(launch);
       }
     }
 
-    private void launchTerminated( ILaunch launch ) {
-      if( matchesCurrentSession( launch.getLaunchConfiguration() ) ) {
+    private void launchTerminated(ILaunch launch) {
+      if (matchesCurrentSession(launch.getLaunchConfiguration())) {
         finishSession();
       }
     }
 
-    private boolean matchesCurrentSession( ILaunchConfiguration launchConfig ) {
-      return launchConfig != null
-          && currentSession != null
-          && Objects.equals( launchConfig.getName(), currentSession.getName() );
+    private boolean matchesCurrentSession(ILaunchConfiguration launchConfig) {
+      return launchConfig != null && currentSession != null
+          && Objects.equals(launchConfig.getName(), currentSession.getName());
     }
   }
 

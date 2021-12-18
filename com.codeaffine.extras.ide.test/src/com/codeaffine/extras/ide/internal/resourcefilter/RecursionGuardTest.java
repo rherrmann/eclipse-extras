@@ -18,86 +18,86 @@ public class RecursionGuardTest {
   public void testIsInUseBeforeEnter() {
     Object resource = new Object();
 
-    boolean inUse = recursionGuard.isInUse( resource );
+    boolean inUse = recursionGuard.isInUse(resource);
 
-    assertThat( inUse ).isFalse();
+    assertThat(inUse).isFalse();
   }
 
   @Test
   public void testIsInUseAfterEnter() {
     Object resource = new Object();
-    recursionGuard.enter( resource );
+    recursionGuard.enter(resource);
 
-    boolean inUse = recursionGuard.isInUse( resource );
+    boolean inUse = recursionGuard.isInUse(resource);
 
-    assertThat( inUse ).isTrue();
+    assertThat(inUse).isTrue();
   }
 
   @Test
   public void testIsInUseAfterLeave() {
     Object resource = new Object();
-    recursionGuard.enter( resource );
-    recursionGuard.leave( resource );
+    recursionGuard.enter(resource);
+    recursionGuard.leave(resource);
 
-    boolean inUse = recursionGuard.isInUse( resource );
+    boolean inUse = recursionGuard.isInUse(resource);
 
-    assertThat( inUse ).isFalse();
+    assertThat(inUse).isFalse();
   }
 
   @Test
   public void testLeaveWithoutEnter() {
     Object resource = new Object();
-    recursionGuard.leave( resource );
+    recursionGuard.leave(resource);
 
-    boolean inUse = recursionGuard.isInUse( resource );
+    boolean inUse = recursionGuard.isInUse(resource);
 
-    assertThat( inUse ).isFalse();
+    assertThat(inUse).isFalse();
   }
 
   @Test
   public void testEnterTwice() {
     Object resource = new Object();
-    recursionGuard.enter( resource );
-    recursionGuard.enter( resource );
+    recursionGuard.enter(resource);
+    recursionGuard.enter(resource);
 
-    boolean inUse = recursionGuard.isInUse( resource );
+    boolean inUse = recursionGuard.isInUse(resource);
 
-    assertThat( inUse ).isTrue();
+    assertThat(inUse).isTrue();
   }
 
   @Test
   public void testLeaveTwice() {
     Object resource = new Object();
-    recursionGuard.enter( resource );
-    recursionGuard.leave( resource );
-    recursionGuard.leave( resource );
+    recursionGuard.enter(resource);
+    recursionGuard.leave(resource);
+    recursionGuard.leave(resource);
 
-    boolean inUse = recursionGuard.isInUse( resource );
+    boolean inUse = recursionGuard.isInUse(resource);
 
-    assertThat( inUse ).isFalse();
+    assertThat(inUse).isFalse();
   }
 
   @Test
   public void testLeaveAfterDuplicateEnter() {
     Object resource = new Object();
-    recursionGuard.enter( resource );
-    recursionGuard.enter( resource );
-    recursionGuard.leave( resource );
+    recursionGuard.enter(resource);
+    recursionGuard.enter(resource);
+    recursionGuard.leave(resource);
 
-    boolean inUse = recursionGuard.isInUse( resource );
+    boolean inUse = recursionGuard.isInUse(resource);
 
-    assertThat( inUse ).isFalse();
+    assertThat(inUse).isFalse();
   }
 
   @Test
   public void testLeaveDifferentResource() {
     Object resource = new Object();
-    recursionGuard.enter( resource );
-    recursionGuard.leave( new Object() );
+    recursionGuard.enter(resource);
+    recursionGuard.leave(new Object());
 
-    boolean inUse = recursionGuard.isInUse( resource );
+    boolean inUse = recursionGuard.isInUse(resource);
 
-    assertThat( inUse ).isTrue();
+    assertThat(inUse).isTrue();
   }
 
 }

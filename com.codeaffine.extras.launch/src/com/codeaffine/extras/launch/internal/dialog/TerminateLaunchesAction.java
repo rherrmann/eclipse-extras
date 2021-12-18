@@ -28,16 +28,16 @@ public class TerminateLaunchesAction extends Action {
   private IStructuredSelection selection;
 
   public TerminateLaunchesAction() {
-    super( "&Terminate All" );
+    super("&Terminate All");
     this.selection = StructuredSelection.EMPTY;
-    setId( ID );
-    setImageDescriptor( Images.getImageDescriptor( Images.TERMINATE_ALL ) );
-    setEnabled( false );
+    setId(ID);
+    setImageDescriptor(Images.getImageDescriptor(Images.TERMINATE_ALL));
+    setEnabled(false);
   }
 
-  public void setSelection( IStructuredSelection selection ) {
+  public void setSelection(IStructuredSelection selection) {
     this.selection = selection;
-    setEnabled( !getTerminatableLaunches().isEmpty() );
+    setEnabled(!getTerminatableLaunches().isEmpty());
   }
 
   public IStructuredSelection getSelection() {
@@ -46,24 +46,22 @@ public class TerminateLaunchesAction extends Action {
 
   @Override
   public void run() {
-    if( isEnabled() ) {
-      new TerminateLaunchesJob( getTerminatableLaunches() ).schedule();
+    if (isEnabled()) {
+      new TerminateLaunchesJob(getTerminatableLaunches()).schedule();
     }
   }
 
   private List<ILaunch> getTerminatableLaunches() {
     Collection<ILaunchConfiguration> selectedLaunchConfigs = getSelectedLaunchConfigs();
-    return Stream.of( DebugPlugin.getDefault().getLaunchManager().getLaunches() )
-      .filter( launch -> selectedLaunchConfigs.contains( launch.getLaunchConfiguration() ) )
-      .filter( ILaunch::canTerminate )
-      .collect( Collectors.toList() );
+    return Stream.of(DebugPlugin.getDefault().getLaunchManager().getLaunches())
+        .filter(launch -> selectedLaunchConfigs.contains(launch.getLaunchConfiguration())).filter(ILaunch::canTerminate)
+        .collect(Collectors.toList());
   }
 
   @SuppressWarnings("unchecked")
   private Collection<ILaunchConfiguration> getSelectedLaunchConfigs() {
-    return ( Collection<ILaunchConfiguration> )selection.toList().stream()
-      .filter( element -> element instanceof ILaunchConfiguration )
-      .collect( Collectors.toList() );
+    return (Collection<ILaunchConfiguration>) selection.toList().stream()
+        .filter(element -> element instanceof ILaunchConfiguration).collect(Collectors.toList());
   }
 
   static class TerminateLaunchesJob extends Job {
@@ -72,31 +70,31 @@ public class TerminateLaunchesAction extends Action {
     private final MultiStatus status;
     private final Collection<ILaunch> launches;
 
-    public TerminateLaunchesJob( Collection<ILaunch> launches ) {
-      super( "Terminate Launches" );
-      this.status = new MultiStatus( PLUGIN_ID, 0, "Failed to terminate launch", null );
+    public TerminateLaunchesJob(Collection<ILaunch> launches) {
+      super("Terminate Launches");
+      this.status = new MultiStatus(PLUGIN_ID, 0, "Failed to terminate launch", null);
       this.launches = launches;
-      setSystem( true );
+      setSystem(true);
     }
 
     @Override
-    public boolean belongsTo( Object family ) {
+    public boolean belongsTo(Object family) {
       return family == FAMILY;
     }
 
     @Override
-    protected IStatus run( IProgressMonitor monitor ) {
-      launches.forEach( this::terminateLaunch );
+    protected IStatus run(IProgressMonitor monitor) {
+      launches.forEach(this::terminateLaunch);
       return status;
     }
 
-    private void terminateLaunch( ILaunch launch ) {
+    private void terminateLaunch(ILaunch launch) {
       try {
-        if( launch.canTerminate() ) {
+        if (launch.canTerminate()) {
           launch.terminate();
         }
-      } catch( DebugException e ) {
-        status.merge( e.getStatus() );
+      } catch (DebugException e) {
+        status.merge(e.getStatus());
       }
     }
   }

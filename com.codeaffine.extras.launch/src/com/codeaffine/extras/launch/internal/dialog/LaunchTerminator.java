@@ -16,26 +16,25 @@ public class LaunchTerminator {
 
   private final ILaunchConfiguration launchConfig;
 
-  public LaunchTerminator( ILaunchConfiguration launchConfig ) {
-    this.launchConfig = requireNonNull( launchConfig );
+  public LaunchTerminator(ILaunchConfiguration launchConfig) {
+    this.launchConfig = requireNonNull(launchConfig);
   }
 
   public void terminateLaunches() {
-    getLaunches().stream()
-      .filter( launch -> launchConfig.contentsEqual( launch.getLaunchConfiguration() ) )
-      .forEach( LaunchTerminator::terminateLaunch );
+    getLaunches().stream().filter(launch -> launchConfig.contentsEqual(launch.getLaunchConfiguration()))
+        .forEach(LaunchTerminator::terminateLaunch);
   }
 
   private static List<ILaunch> getLaunches() {
     ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-    return Arrays.asList( launchManager.getLaunches() );
+    return Arrays.asList(launchManager.getLaunches());
   }
 
-  private static void terminateLaunch( ILaunch launch ) {
+  private static void terminateLaunch(ILaunch launch) {
     try {
       launch.terminate();
-    } catch( DebugException debugException ) {
-      StatusManager.getManager().handle( debugException.getStatus(), StatusManager.LOG );
+    } catch (DebugException debugException) {
+      StatusManager.getManager().handle(debugException.getStatus(), StatusManager.LOG);
     }
   }
 }

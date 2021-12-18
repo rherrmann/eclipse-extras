@@ -38,16 +38,16 @@ public class ImageViewerEditor extends EditorPart implements IReusableEditor {
   ImageViewer imageCanvas;
 
   @Override
-  public void init( IEditorSite site, IEditorInput input ) {
-    setSite( site );
-    setInput( input );
+  public void init(IEditorSite site, IEditorInput input) {
+    setSite(site);
+    setInput(input);
   }
 
   @Override
-  public void createPartControl( Composite parent ) {
-    parent.setLayout( FillLayoutFactory.newFillLayout( 0 ) );
-    imageCanvas = new ImageViewer( parent );
-    addPropertyListener( ( source, propertyId ) -> handlePropertyChangedEvent( propertyId ) );
+  public void createPartControl(Composite parent) {
+    parent.setLayout(FillLayoutFactory.newFillLayout(0));
+    imageCanvas = new ImageViewer(parent);
+    addPropertyListener((source, propertyId) -> handlePropertyChangedEvent(propertyId));
     updateContent();
   }
 
@@ -57,27 +57,27 @@ public class ImageViewerEditor extends EditorPart implements IReusableEditor {
   }
 
   @Override
-  public void setInput( IEditorInput editorInput ) {
-    checkEditorInput( editorInput );
-    setInputWithNotify( editorInput );
+  public void setInput(IEditorInput editorInput) {
+    checkEditorInput(editorInput);
+    setInputWithNotify(editorInput);
   }
 
   @Override
-  public void doSave( IProgressMonitor monitor ) {
+  public void doSave(IProgressMonitor monitor) {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void doSaveAs() {
     IPath filePath = querySaveAsFilePath();
-    if( filePath != null ) {
-      IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile( filePath );
+    if (filePath != null) {
+      IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(filePath);
       try {
-        new ImageDataStorage( imageCanvas.getImageDatas() ).save( file, getProgressMonitor() );
-        setInput( new FileEditorInput( file ) );
-      } catch( CoreException exception ) {
-        StatusManager.getManager().handle( exception, ImageViewerPlugin.ID );
-        StatusManager.getManager().handle( exception.getStatus(), StatusManager.SHOW );
+        new ImageDataStorage(imageCanvas.getImageDatas()).save(file, getProgressMonitor());
+        setInput(new FileEditorInput(file));
+      } catch (CoreException exception) {
+        StatusManager.getManager().handle(exception, ImageViewerPlugin.ID);
+        StatusManager.getManager().handle(exception.getStatus(), StatusManager.SHOW);
       }
     }
   }
@@ -93,13 +93,13 @@ public class ImageViewerEditor extends EditorPart implements IReusableEditor {
   }
 
   private IPath querySaveAsFilePath() {
-    SaveAsDialog dialog = new SaveAsDialog( getSite().getShell() );
+    SaveAsDialog dialog = new SaveAsDialog(getSite().getShell());
     IEditorInput editorInput = getEditorInput();
-    IFile originalFile = ResourceUtil.getFile( editorInput );
-    if( originalFile != null ) {
-      dialog.setOriginalFile( originalFile );
+    IFile originalFile = ResourceUtil.getFile(editorInput);
+    if (originalFile != null) {
+      dialog.setOriginalFile(originalFile);
     } else {
-      dialog.setOriginalName( editorInput.getName() );
+      dialog.setOriginalName(editorInput.getName());
     }
     int dialogResult = dialog.open();
     return dialogResult == Window.OK ? dialog.getResult() : null;
@@ -108,57 +108,55 @@ public class ImageViewerEditor extends EditorPart implements IReusableEditor {
   private IProgressMonitor getProgressMonitor() {
     IProgressMonitor monitor = null;
     IStatusLineManager manager = getEditorSite().getActionBars().getStatusLineManager();
-    if( manager != null ) {
+    if (manager != null) {
       monitor = manager.getProgressMonitor();
     }
     return monitor != null ? monitor : new NullProgressMonitor();
   }
 
-  private void handlePropertyChangedEvent( int propertyId ) {
-    if( propertyId == IWorkbenchPartConstants.PROP_INPUT ) {
+  private void handlePropertyChangedEvent(int propertyId) {
+    if (propertyId == IWorkbenchPartConstants.PROP_INPUT) {
       updateContent();
     }
   }
 
   private void updateContent() {
-    setPartName( getEditorInput().getName() );
-    try( InputStream inputStream = openEditorInput() ) {
-      ImageData[] imageDatas = new ImageLoader().load( inputStream );
-      imageCanvas.setImageDatas( imageDatas );
-    } catch( IOException ignoreCloseProblem ) {
+    setPartName(getEditorInput().getName());
+    try (InputStream inputStream = openEditorInput()) {
+      ImageData[] imageDatas = new ImageLoader().load(inputStream);
+      imageCanvas.setImageDatas(imageDatas);
+    } catch (IOException ignoreCloseProblem) {
     }
   }
 
   private InputStream openEditorInput() {
-    InputStream result = new ByteArrayInputStream( new byte[ 0 ] );
-    if( getEditorInput() instanceof IStorageEditorInput ) {
-      IStorageEditorInput storageEditorInput = ( IStorageEditorInput )getEditorInput();
+    InputStream result = new ByteArrayInputStream(new byte[0]);
+    if (getEditorInput() instanceof IStorageEditorInput) {
+      IStorageEditorInput storageEditorInput = (IStorageEditorInput) getEditorInput();
       try {
         result = storageEditorInput.getStorage().getContents();
-      } catch( CoreException ignore ) {
+      } catch (CoreException ignore) {
       }
-    } else if( getEditorInput() instanceof IPathEditorInput ) {
-      IPathEditorInput pathEditorInput = ( IPathEditorInput )getEditorInput();
+    } else if (getEditorInput() instanceof IPathEditorInput) {
+      IPathEditorInput pathEditorInput = (IPathEditorInput) getEditorInput();
       try {
-        result = new FileInputStream( pathEditorInput.getPath().toFile() );
-      } catch( FileNotFoundException ignore ) {
+        result = new FileInputStream(pathEditorInput.getPath().toFile());
+      } catch (FileNotFoundException ignore) {
       }
-    } else if( getEditorInput() instanceof IURIEditorInput ) {
-      IURIEditorInput uriEditorInput = ( IURIEditorInput )getEditorInput();
+    } else if (getEditorInput() instanceof IURIEditorInput) {
+      IURIEditorInput uriEditorInput = (IURIEditorInput) getEditorInput();
       try {
         result = uriEditorInput.getURI().toURL().openStream();
-      } catch( IOException ignore ) {
+      } catch (IOException ignore) {
       }
     }
     return result;
   }
 
-  private static void checkEditorInput( IEditorInput input ) {
-    if(    !( input instanceof IStorageEditorInput )
-        && !( input instanceof IPathEditorInput )
-        && !( input instanceof IURIEditorInput ) )
-    {
-      throw new IllegalArgumentException( "Invalid input: " + input );
+  private static void checkEditorInput(IEditorInput input) {
+    if (!(input instanceof IStorageEditorInput) && !(input instanceof IPathEditorInput)
+        && !(input instanceof IURIEditorInput)) {
+      throw new IllegalArgumentException("Invalid input: " + input);
     }
   }
 }

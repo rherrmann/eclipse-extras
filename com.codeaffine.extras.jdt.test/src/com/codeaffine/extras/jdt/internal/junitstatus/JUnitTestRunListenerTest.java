@@ -58,249 +58,245 @@ public class JUnitTestRunListenerTest {
 
   @Test
   public void testSessionLaunched() {
-    ITestRunSession testRunSession = mockTestRunSession( OK );
+    ITestRunSession testRunSession = mockTestRunSession(OK);
 
-    testRunListener.sessionLaunched( testRunSession );
+    testRunListener.sessionLaunched(testRunSession);
 
-    verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
-    verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
+    verify(progressUI).update(STARTING, SWT.LEFT, null, 0, 0);
+    verify(progressUI).setToolTipText(testRunSession.getTestRunName());
   }
 
   @Test
   public void testSessionStarted() {
-    ITestRunSession testRunSession = mockTestRunSession( OK, mockTestCaseElement() );
-    testRunListener.sessionLaunched( testRunSession );
+    ITestRunSession testRunSession = mockTestRunSession(OK, mockTestCaseElement());
+    testRunListener.sessionLaunched(testRunSession);
 
-    testRunListener.sessionStarted( testRunSession );
+    testRunListener.sessionStarted(testRunSession);
 
-    InOrder order = inOrder( progressUI );
-    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
-    order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
-    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
+    InOrder order = inOrder(progressUI);
+    order.verify(progressUI).update(STARTING, SWT.LEFT, null, 0, 0);
+    order.verify(progressUI).update("0 / 1", SWT.CENTER, successColor(), 0, 1);
+    order.verify(progressUI).setToolTipText(testRunSession.getTestRunName());
   }
 
   @Test
   public void testStoppedSessionFinished() {
     ITestCaseElement testCaseElement = mockTestCaseElement();
-    ITestRunSession testRunSession = mockTestRunSession( OK, testCaseElement );
-    testRunListener.sessionLaunched( testRunSession );
-    testRunListener.sessionStarted( testRunSession );
+    ITestRunSession testRunSession = mockTestRunSession(OK, testCaseElement);
+    testRunListener.sessionLaunched(testRunSession);
+    testRunListener.sessionStarted(testRunSession);
 
-    when( testRunSession.getProgressState() ).thenReturn( STOPPED );
-    testRunListener.sessionFinished( testCaseElement.getTestRunSession() );
+    when(testRunSession.getProgressState()).thenReturn(STOPPED);
+    testRunListener.sessionFinished(testCaseElement.getTestRunSession());
 
-    InOrder order = inOrder( progressUI );
-    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
-    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
-    order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
+    InOrder order = inOrder(progressUI);
+    order.verify(progressUI).update(STARTING, SWT.LEFT, null, 0, 0);
+    order.verify(progressUI).setToolTipText(testRunSession.getTestRunName());
+    order.verify(progressUI).update("0 / 1", SWT.CENTER, successColor(), 0, 1);
   }
 
   @Test
   public void testStoppedSessionFinishedWithFailingTest() {
     ITestCaseElement testCaseElement = mockTestCaseElement();
-    ITestRunSession testRunSession = mockTestRunSession( OK, testCaseElement );
-    testRunListener.sessionLaunched( testRunSession );
-    testRunListener.sessionStarted( testRunSession );
-    setTestCaseResult( testCaseElement, ERROR );
-    testRunListener.testCaseFinished( testCaseElement );
+    ITestRunSession testRunSession = mockTestRunSession(OK, testCaseElement);
+    testRunListener.sessionLaunched(testRunSession);
+    testRunListener.sessionStarted(testRunSession);
+    setTestCaseResult(testCaseElement, ERROR);
+    testRunListener.testCaseFinished(testCaseElement);
 
-    when( testCaseElement.getTestRunSession().getProgressState() ).thenReturn( STOPPED );
-    testRunListener.sessionFinished( testCaseElement.getTestRunSession() );
+    when(testCaseElement.getTestRunSession().getProgressState()).thenReturn(STOPPED);
+    testRunListener.sessionFinished(testCaseElement.getTestRunSession());
 
-    InOrder order = inOrder( progressUI );
-    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
-    order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
-    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
-    order.verify( progressUI ).update( "1 / 1", SWT.CENTER, errorColor(), 1, 1 );
+    InOrder order = inOrder(progressUI);
+    order.verify(progressUI).update(STARTING, SWT.LEFT, null, 0, 0);
+    order.verify(progressUI).update("0 / 1", SWT.CENTER, successColor(), 0, 1);
+    order.verify(progressUI).setToolTipText(testRunSession.getTestRunName());
+    order.verify(progressUI).update("1 / 1", SWT.CENTER, errorColor(), 1, 1);
   }
 
   @Test
   public void testObsoleteSessionFinished() {
-    ITestRunSession testRunSession1 = mockTestRunSession( OK, mockTestCaseElement() );
-    testRunListener.sessionLaunched( testRunSession1 );
-    testRunListener.sessionStarted( testRunSession1 );
-    ITestRunSession testRunSession2
-      = mockTestRunSession( OK, mockTestCaseElement(), mockTestCaseElement() );
-    testRunListener.sessionLaunched( testRunSession2 );
-    testRunListener.sessionStarted( testRunSession2 );
-    setTestCaseResult( ( ITestCaseElement )testRunSession1.getChildren()[ 0 ], OK );
-    testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession1.getChildren()[ 0 ] );
-    testRunListener.sessionFinished( testRunSession1 );
-    setTestCaseResult( ( ITestCaseElement )testRunSession2.getChildren()[ 0 ], OK );
-    testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession2.getChildren()[ 0 ] );
-    setTestCaseResult( ( ITestCaseElement )testRunSession2.getChildren()[ 1 ], OK );
-    testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession2.getChildren()[ 1 ] );
+    ITestRunSession testRunSession1 = mockTestRunSession(OK, mockTestCaseElement());
+    testRunListener.sessionLaunched(testRunSession1);
+    testRunListener.sessionStarted(testRunSession1);
+    ITestRunSession testRunSession2 = mockTestRunSession(OK, mockTestCaseElement(), mockTestCaseElement());
+    testRunListener.sessionLaunched(testRunSession2);
+    testRunListener.sessionStarted(testRunSession2);
+    setTestCaseResult((ITestCaseElement) testRunSession1.getChildren()[0], OK);
+    testRunListener.testCaseFinished((ITestCaseElement) testRunSession1.getChildren()[0]);
+    testRunListener.sessionFinished(testRunSession1);
+    setTestCaseResult((ITestCaseElement) testRunSession2.getChildren()[0], OK);
+    testRunListener.testCaseFinished((ITestCaseElement) testRunSession2.getChildren()[0]);
+    setTestCaseResult((ITestCaseElement) testRunSession2.getChildren()[1], OK);
+    testRunListener.testCaseFinished((ITestCaseElement) testRunSession2.getChildren()[1]);
 
-    testRunListener.sessionFinished( testRunSession2 );
+    testRunListener.sessionFinished(testRunSession2);
 
-    InOrder order = inOrder( progressUI );
-    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
-    order.verify( progressUI ).setToolTipText( testRunSession1.getTestRunName() );
-    order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
-    order.verify( progressUI ).setToolTipText( testRunSession1.getTestRunName() );
-    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
-    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
-    order.verify( progressUI).update( "0 / 2", SWT.CENTER, successColor(), 0, 2 );
-    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
-    order.verify( progressUI).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
-    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
-    order.verify( progressUI ).update( "2 / 2", SWT.CENTER, successColor(), 2, 2 );
-    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
+    InOrder order = inOrder(progressUI);
+    order.verify(progressUI).update(STARTING, SWT.LEFT, null, 0, 0);
+    order.verify(progressUI).setToolTipText(testRunSession1.getTestRunName());
+    order.verify(progressUI).update("0 / 1", SWT.CENTER, successColor(), 0, 1);
+    order.verify(progressUI).setToolTipText(testRunSession1.getTestRunName());
+    order.verify(progressUI).update(STARTING, SWT.LEFT, null, 0, 0);
+    order.verify(progressUI).setToolTipText(testRunSession2.getTestRunName());
+    order.verify(progressUI).update("0 / 2", SWT.CENTER, successColor(), 0, 2);
+    order.verify(progressUI).setToolTipText(testRunSession2.getTestRunName());
+    order.verify(progressUI).update("1 / 2", SWT.CENTER, successColor(), 1, 2);
+    order.verify(progressUI).setToolTipText(testRunSession2.getTestRunName());
+    order.verify(progressUI).update("2 / 2", SWT.CENTER, successColor(), 2, 2);
+    order.verify(progressUI).setToolTipText(testRunSession2.getTestRunName());
     order.verifyNoMoreInteractions();
   }
 
   @Test
   public void testLaunchTerminatedBeforeSessionStarted() {
-    ITestRunSession testRunSession = mockTestRunSession( OK );
-    testRunListener.sessionLaunched( testRunSession );
+    ITestRunSession testRunSession = mockTestRunSession(OK);
+    testRunListener.sessionLaunched(testRunSession);
 
-    ILaunch launch = mockLaunch( testRunSession.getTestRunName() );
-    fireLaunchTerminated( launch );
+    ILaunch launch = mockLaunch(testRunSession.getTestRunName());
+    fireLaunchTerminated(launch);
 
-    InOrder order = inOrder( progressUI );
-    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
-    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
-    order.verify( progressUI ).update( "", SWT.LEFT, null, 0, 0 );
-    order.verify( progressUI ).setToolTipText( "" );
+    InOrder order = inOrder(progressUI);
+    order.verify(progressUI).update(STARTING, SWT.LEFT, null, 0, 0);
+    order.verify(progressUI).setToolTipText(testRunSession.getTestRunName());
+    order.verify(progressUI).update("", SWT.LEFT, null, 0, 0);
+    order.verify(progressUI).setToolTipText("");
     order.verifyNoMoreInteractions();
   }
 
   @Test
   public void testLaunchTerminatedAfterSessionStarted() {
-    ITestRunSession testRunSession = mockTestRunSession( OK, mockTestCaseElement() );
-    testRunListener.sessionLaunched( testRunSession );
-    testRunListener.sessionStarted( testRunSession );
+    ITestRunSession testRunSession = mockTestRunSession(OK, mockTestCaseElement());
+    testRunListener.sessionLaunched(testRunSession);
+    testRunListener.sessionStarted(testRunSession);
 
-    ILaunch launch = mockLaunch( testRunSession.getTestRunName() );
-    fireLaunchTerminated( launch );
+    ILaunch launch = mockLaunch(testRunSession.getTestRunName());
+    fireLaunchTerminated(launch);
 
-    InOrder order = inOrder( progressUI );
-    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
-    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
-    order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
-    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
+    InOrder order = inOrder(progressUI);
+    order.verify(progressUI).update(STARTING, SWT.LEFT, null, 0, 0);
+    order.verify(progressUI).setToolTipText(testRunSession.getTestRunName());
+    order.verify(progressUI).update("0 / 1", SWT.CENTER, successColor(), 0, 1);
+    order.verify(progressUI).setToolTipText(testRunSession.getTestRunName());
     order.verifyNoMoreInteractions();
   }
 
   @Test
   public void testTestCaseStarted() {
     ITestCaseElement testCaseElement = mockTestCaseElement();
-    mockTestRunSession( OK, testCaseElement );
+    mockTestRunSession(OK, testCaseElement);
 
-    testRunListener.testCaseStarted( testCaseElement );
+    testRunListener.testCaseStarted(testCaseElement);
 
-    verify( progressUI, never() )
-      .update( anyString(), anyInt(), any( Color.class ), anyInt(), anyInt() );
+    verify(progressUI, never()).update(anyString(), anyInt(), any(Color.class), anyInt(), anyInt());
   }
 
   @Test
   public void testTestCaseFinished() {
     ITestCaseElement testCaseElement = mockTestCaseElement();
-    ITestRunSession testRunSession = mockTestRunSession( OK, testCaseElement );
-    testRunListener.sessionLaunched( testRunSession );
-    testRunListener.sessionStarted( testRunSession );
+    ITestRunSession testRunSession = mockTestRunSession(OK, testCaseElement);
+    testRunListener.sessionLaunched(testRunSession);
+    testRunListener.sessionStarted(testRunSession);
 
-    setTestCaseResult( testCaseElement, OK );
-    testRunListener.testCaseFinished( testCaseElement );
+    setTestCaseResult(testCaseElement, OK);
+    testRunListener.testCaseFinished(testCaseElement);
 
-    InOrder order = inOrder( progressUI );
-    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
-    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
-    order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
-    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
-    order.verify( progressUI ).update( "1 / 1", SWT.CENTER, successColor(), 1, 1 );
-    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
+    InOrder order = inOrder(progressUI);
+    order.verify(progressUI).update(STARTING, SWT.LEFT, null, 0, 0);
+    order.verify(progressUI).setToolTipText(testRunSession.getTestRunName());
+    order.verify(progressUI).update("0 / 1", SWT.CENTER, successColor(), 0, 1);
+    order.verify(progressUI).setToolTipText(testRunSession.getTestRunName());
+    order.verify(progressUI).update("1 / 1", SWT.CENTER, successColor(), 1, 1);
+    order.verify(progressUI).setToolTipText(testRunSession.getTestRunName());
   }
 
   @Test
   public void testTestCaseFinishedWithFailure() {
     ITestCaseElement testCaseElement = mockTestCaseElement();
-    ITestRunSession testRunSession = mockTestRunSession( FAILURE, testCaseElement );
-    testRunListener.sessionLaunched( testRunSession );
-    testRunListener.sessionStarted( testRunSession );
-    setTestCaseResult( testCaseElement, FAILURE );
+    ITestRunSession testRunSession = mockTestRunSession(FAILURE, testCaseElement);
+    testRunListener.sessionLaunched(testRunSession);
+    testRunListener.sessionStarted(testRunSession);
+    setTestCaseResult(testCaseElement, FAILURE);
 
-    testRunListener.testCaseFinished( testCaseElement );
+    testRunListener.testCaseFinished(testCaseElement);
 
-    verify( progressUI ).update( "1 / 1", SWT.CENTER, errorColor(), 1, 1 );
-    verify( progressUI ).setToolTipText( getToolTipText( testRunSession, 1 ) );
+    verify(progressUI).update("1 / 1", SWT.CENTER, errorColor(), 1, 1);
+    verify(progressUI).setToolTipText(getToolTipText(testRunSession, 1));
   }
 
   @Test
   public void testTestCaseFinishedWithError() {
     ITestCaseElement testCaseElement = mockTestCaseElement();
-    ITestRunSession testRunSession = mockTestRunSession( FAILURE, testCaseElement );
-    testRunListener.sessionLaunched( testRunSession );
-    testRunListener.sessionStarted( testRunSession );
-    setTestCaseResult( testCaseElement, ERROR );
+    ITestRunSession testRunSession = mockTestRunSession(FAILURE, testCaseElement);
+    testRunListener.sessionLaunched(testRunSession);
+    testRunListener.sessionStarted(testRunSession);
+    setTestCaseResult(testCaseElement, ERROR);
 
-    testRunListener.testCaseFinished( testCaseElement );
+    testRunListener.testCaseFinished(testCaseElement);
 
-    verify( progressUI ).update( "1 / 1", SWT.CENTER, errorColor(), 1, 1 );
-    verify( progressUI ).setToolTipText( getToolTipText( testRunSession, 1 ) );
+    verify(progressUI).update("1 / 1", SWT.CENTER, errorColor(), 1, 1);
+    verify(progressUI).setToolTipText(getToolTipText(testRunSession, 1));
   }
 
   @Test
   public void testSecondSessionLaunched() {
-    ITestRunSession testRunSession1 = mockTestRunSession( OK, mockTestCaseElement() );
-    testRunListener.sessionLaunched( testRunSession1 );
-    testRunListener.sessionStarted( testRunSession1 );
-    ITestRunSession testRunSession2
-      = mockTestRunSession( OK, mockTestCaseElement(), mockTestCaseElement() );
-    testRunListener.sessionLaunched( testRunSession2 );
-    testRunListener.sessionStarted( testRunSession2 );
-    setTestCaseResult( ( ITestCaseElement )testRunSession1.getChildren()[ 0 ], OK );
-    testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession1.getChildren()[ 0 ] );
-    setTestCaseResult( ( ITestCaseElement )testRunSession2.getChildren()[ 0 ], OK );
-    testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession2.getChildren()[ 0 ] );
+    ITestRunSession testRunSession1 = mockTestRunSession(OK, mockTestCaseElement());
+    testRunListener.sessionLaunched(testRunSession1);
+    testRunListener.sessionStarted(testRunSession1);
+    ITestRunSession testRunSession2 = mockTestRunSession(OK, mockTestCaseElement(), mockTestCaseElement());
+    testRunListener.sessionLaunched(testRunSession2);
+    testRunListener.sessionStarted(testRunSession2);
+    setTestCaseResult((ITestCaseElement) testRunSession1.getChildren()[0], OK);
+    testRunListener.testCaseFinished((ITestCaseElement) testRunSession1.getChildren()[0]);
+    setTestCaseResult((ITestCaseElement) testRunSession2.getChildren()[0], OK);
+    testRunListener.testCaseFinished((ITestCaseElement) testRunSession2.getChildren()[0]);
 
-    InOrder order = inOrder( progressUI );
-    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
-    order.verify( progressUI ).setToolTipText( testRunSession1.getTestRunName() );
-    order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
-    order.verify( progressUI ).setToolTipText( testRunSession1.getTestRunName() );
-    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
-    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
-    order.verify( progressUI ).update( "0 / 2", SWT.CENTER, successColor(), 0, 2 );
-    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
-    order.verify( progressUI ).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
-    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
+    InOrder order = inOrder(progressUI);
+    order.verify(progressUI).update(STARTING, SWT.LEFT, null, 0, 0);
+    order.verify(progressUI).setToolTipText(testRunSession1.getTestRunName());
+    order.verify(progressUI).update("0 / 1", SWT.CENTER, successColor(), 0, 1);
+    order.verify(progressUI).setToolTipText(testRunSession1.getTestRunName());
+    order.verify(progressUI).update(STARTING, SWT.LEFT, null, 0, 0);
+    order.verify(progressUI).setToolTipText(testRunSession2.getTestRunName());
+    order.verify(progressUI).update("0 / 2", SWT.CENTER, successColor(), 0, 2);
+    order.verify(progressUI).setToolTipText(testRunSession2.getTestRunName());
+    order.verify(progressUI).update("1 / 2", SWT.CENTER, successColor(), 1, 2);
+    order.verify(progressUI).setToolTipText(testRunSession2.getTestRunName());
     order.verifyNoMoreInteractions();
   }
 
   @Test
   public void testRunTwoSessionsFromStartToEnd() {
-    ITestRunSession testRunSession1 = mockTestRunSession( OK, mockTestCaseElement() );
-    testRunListener.sessionLaunched( testRunSession1 );
-    testRunListener.sessionStarted( testRunSession1 );
-    setTestCaseResult( ( ITestCaseElement )testRunSession1.getChildren()[ 0 ], OK );
-    testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession1.getChildren()[ 0 ] );
-    testRunListener.sessionFinished( testRunSession1 );
-    ITestRunSession testRunSession2
-      = mockTestRunSession( OK, mockTestCaseElement(), mockTestCaseElement() );
-    testRunListener.sessionLaunched( testRunSession2 );
-    testRunListener.sessionStarted( testRunSession2 );
-    setTestCaseResult( ( ITestCaseElement )testRunSession2.getChildren()[ 0 ], OK );
-    testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession2.getChildren()[ 0 ] );
-    setTestCaseResult( ( ITestCaseElement )testRunSession2.getChildren()[ 1 ], OK );
-    testRunListener.testCaseFinished( ( ITestCaseElement )testRunSession2.getChildren()[ 1 ] );
-    testRunListener.sessionFinished( testRunSession2 );
+    ITestRunSession testRunSession1 = mockTestRunSession(OK, mockTestCaseElement());
+    testRunListener.sessionLaunched(testRunSession1);
+    testRunListener.sessionStarted(testRunSession1);
+    setTestCaseResult((ITestCaseElement) testRunSession1.getChildren()[0], OK);
+    testRunListener.testCaseFinished((ITestCaseElement) testRunSession1.getChildren()[0]);
+    testRunListener.sessionFinished(testRunSession1);
+    ITestRunSession testRunSession2 = mockTestRunSession(OK, mockTestCaseElement(), mockTestCaseElement());
+    testRunListener.sessionLaunched(testRunSession2);
+    testRunListener.sessionStarted(testRunSession2);
+    setTestCaseResult((ITestCaseElement) testRunSession2.getChildren()[0], OK);
+    testRunListener.testCaseFinished((ITestCaseElement) testRunSession2.getChildren()[0]);
+    setTestCaseResult((ITestCaseElement) testRunSession2.getChildren()[1], OK);
+    testRunListener.testCaseFinished((ITestCaseElement) testRunSession2.getChildren()[1]);
+    testRunListener.sessionFinished(testRunSession2);
 
-    InOrder order = inOrder( progressUI );
-    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
-    order.verify( progressUI ).setToolTipText( testRunSession1.getTestRunName() );
-    order.verify( progressUI ).update( "0 / 1", SWT.CENTER, successColor(), 0, 1 );
-    order.verify( progressUI ).setToolTipText( testRunSession1.getTestRunName() );
-    order.verify( progressUI ).update( "1 / 1", SWT.CENTER, successColor(), 1, 1 );
-    order.verify( progressUI ).setToolTipText( testRunSession1.getTestRunName() );
-    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
-    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
-    order.verify( progressUI ).update( "0 / 2", SWT.CENTER, successColor(), 0, 2 );
-    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
-    order.verify( progressUI ).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
-    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
-    order.verify( progressUI ).update( "2 / 2", SWT.CENTER, successColor(), 2, 2 );
-    order.verify( progressUI ).setToolTipText( testRunSession2.getTestRunName() );
+    InOrder order = inOrder(progressUI);
+    order.verify(progressUI).update(STARTING, SWT.LEFT, null, 0, 0);
+    order.verify(progressUI).setToolTipText(testRunSession1.getTestRunName());
+    order.verify(progressUI).update("0 / 1", SWT.CENTER, successColor(), 0, 1);
+    order.verify(progressUI).setToolTipText(testRunSession1.getTestRunName());
+    order.verify(progressUI).update("1 / 1", SWT.CENTER, successColor(), 1, 1);
+    order.verify(progressUI).setToolTipText(testRunSession1.getTestRunName());
+    order.verify(progressUI).update(STARTING, SWT.LEFT, null, 0, 0);
+    order.verify(progressUI).setToolTipText(testRunSession2.getTestRunName());
+    order.verify(progressUI).update("0 / 2", SWT.CENTER, successColor(), 0, 2);
+    order.verify(progressUI).setToolTipText(testRunSession2.getTestRunName());
+    order.verify(progressUI).update("1 / 2", SWT.CENTER, successColor(), 1, 2);
+    order.verify(progressUI).setToolTipText(testRunSession2.getTestRunName());
+    order.verify(progressUI).update("2 / 2", SWT.CENTER, successColor(), 2, 2);
+    order.verify(progressUI).setToolTipText(testRunSession2.getTestRunName());
     order.verifyNoMoreInteractions();
   }
 
@@ -308,26 +304,25 @@ public class JUnitTestRunListenerTest {
   public void testOutOfOrderEvents() {
     ITestCaseElement testCaseElement1 = mockTestCaseElement();
     ITestCaseElement testCaseElement2 = mockTestCaseElement();
-    ITestRunSession testRunSession
-      = mockTestRunSession( OK, testCaseElement1, testCaseElement2 );
-    testRunListener.sessionLaunched( testRunSession );
-    testRunListener.sessionStarted( testRunSession );
-    testRunListener.sessionFinished( testRunSession );
-    setTestCaseResult( testCaseElement1, OK );
-    testRunListener.testCaseFinished( testCaseElement1 );
-    setTestCaseResult( testCaseElement2, OK );
-    testRunListener.testCaseFinished( testCaseElement2 );
-    testRunListener.sessionFinished( testRunSession );
+    ITestRunSession testRunSession = mockTestRunSession(OK, testCaseElement1, testCaseElement2);
+    testRunListener.sessionLaunched(testRunSession);
+    testRunListener.sessionStarted(testRunSession);
+    testRunListener.sessionFinished(testRunSession);
+    setTestCaseResult(testCaseElement1, OK);
+    testRunListener.testCaseFinished(testCaseElement1);
+    setTestCaseResult(testCaseElement2, OK);
+    testRunListener.testCaseFinished(testCaseElement2);
+    testRunListener.sessionFinished(testRunSession);
 
-    InOrder order = inOrder( progressUI );
-    order.verify( progressUI ).update( STARTING, SWT.LEFT, null, 0, 0 );
-    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
-    order.verify( progressUI ).update( "0 / 2", SWT.CENTER, successColor(), 0, 2 );
-    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
-    order.verify( progressUI ).update( "1 / 2", SWT.CENTER, successColor(), 1, 2 );
-    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
-    order.verify( progressUI ).update( "2 / 2", SWT.CENTER, successColor(), 2, 2 );
-    order.verify( progressUI ).setToolTipText( testRunSession.getTestRunName() );
+    InOrder order = inOrder(progressUI);
+    order.verify(progressUI).update(STARTING, SWT.LEFT, null, 0, 0);
+    order.verify(progressUI).setToolTipText(testRunSession.getTestRunName());
+    order.verify(progressUI).update("0 / 2", SWT.CENTER, successColor(), 0, 2);
+    order.verify(progressUI).setToolTipText(testRunSession.getTestRunName());
+    order.verify(progressUI).update("1 / 2", SWT.CENTER, successColor(), 1, 2);
+    order.verify(progressUI).setToolTipText(testRunSession.getTestRunName());
+    order.verify(progressUI).update("2 / 2", SWT.CENTER, successColor(), 2, 2);
+    order.verify(progressUI).setToolTipText(testRunSession.getTestRunName());
     order.verifyNoMoreInteractions();
   }
 
@@ -335,9 +330,9 @@ public class JUnitTestRunListenerTest {
   public void setUp() {
     launchesListeners = new ArrayList<>();
     launchManager = mockLaunchManager();
-    resourceManager = new LocalResourceManager( getResources( displayHelper.getDisplay() ) );
-    progressUI = mock( ProgressUI.class );
-    testRunListener = new JUnitTestRunListener( launchManager, resourceManager, progressUI );
+    resourceManager = new LocalResourceManager(getResources(displayHelper.getDisplay()));
+    progressUI = mock(ProgressUI.class);
+    testRunListener = new JUnitTestRunListener(launchManager, resourceManager, progressUI);
   }
 
   @After
@@ -346,68 +341,67 @@ public class JUnitTestRunListenerTest {
   }
 
   private ILaunchManager mockLaunchManager() {
-    ILaunchManager result = mock( ILaunchManager.class );
-    doAnswer( new Answer<Object>() {
+    ILaunchManager result = mock(ILaunchManager.class);
+    doAnswer(new Answer<Object>() {
       @Override
-      public Object answer( InvocationOnMock invocation ) {
-        launchesListeners.add( ( ILaunchesListener2 )invocation.getArguments()[ 0 ] );
+      public Object answer(InvocationOnMock invocation) {
+        launchesListeners.add((ILaunchesListener2) invocation.getArguments()[0]);
         return null;
       }
-    } ).when( result ).addLaunchListener( any( ILaunchesListener2.class ) );
+    }).when(result).addLaunchListener(any(ILaunchesListener2.class));
     return result;
   }
 
-  private static ITestRunSession mockTestRunSession( Result testResult, ITestElement... children )
-  {
-    ITestRunSession result = mock( ITestRunSession.class );
-    when( result.getTestRunSession() ).thenReturn( result );
-    when( result.getTestRunName() ).thenReturn( "test-run-" + new Object().hashCode() );
-    when( result.getTestResult( true ) ).thenReturn( testResult );
-    when( result.getChildren() ).thenReturn( children );
-    for( ITestElement child : children ) {
-      when( child.getTestRunSession() ).thenReturn( result );
+  private static ITestRunSession mockTestRunSession(Result testResult, ITestElement... children) {
+    ITestRunSession result = mock(ITestRunSession.class);
+    when(result.getTestRunSession()).thenReturn(result);
+    when(result.getTestRunName()).thenReturn("test-run-" + new Object().hashCode());
+    when(result.getTestResult(true)).thenReturn(testResult);
+    when(result.getChildren()).thenReturn(children);
+    for (ITestElement child : children) {
+      when(child.getTestRunSession()).thenReturn(result);
     }
     return result;
   }
 
   private static ITestCaseElement mockTestCaseElement() {
-    return mockTestCaseElement( Result.UNDEFINED );
+    return mockTestCaseElement(Result.UNDEFINED);
   }
 
-  private static ITestCaseElement mockTestCaseElement( Result testResult ) {
-    ITestCaseElement result = mock( ITestCaseElement.class );
-    when( result.getTestResult( false ) ).thenReturn( testResult );
+  private static ITestCaseElement mockTestCaseElement(Result testResult) {
+    ITestCaseElement result = mock(ITestCaseElement.class);
+    when(result.getTestResult(false)).thenReturn(testResult);
     return result;
   }
 
-  private static void setTestCaseResult( ITestCaseElement testCaseElement, Result testResult ) {
-    when( testCaseElement.getTestResult( false ) ).thenReturn( testResult );
-    when( testCaseElement.getTestRunSession().getTestResult( true ) ).thenReturn( testResult );
+  private static void setTestCaseResult(ITestCaseElement testCaseElement, Result testResult) {
+    when(testCaseElement.getTestResult(false)).thenReturn(testResult);
+    when(testCaseElement.getTestRunSession().getTestResult(true)).thenReturn(testResult);
   }
 
-  private static ILaunch mockLaunch( String launchConfigName ) {
-    ILaunch result = mock( ILaunch.class );
-    ILaunchConfiguration launchConfig = mock( ILaunchConfiguration.class );
-    when( launchConfig.getName() ).thenReturn( launchConfigName );
-    when( result.getLaunchConfiguration() ).thenReturn( launchConfig );
+  private static ILaunch mockLaunch(String launchConfigName) {
+    ILaunch result = mock(ILaunch.class);
+    ILaunchConfiguration launchConfig = mock(ILaunchConfiguration.class);
+    when(launchConfig.getName()).thenReturn(launchConfigName);
+    when(result.getLaunchConfiguration()).thenReturn(launchConfig);
     return result;
   }
 
-  private void fireLaunchTerminated( ILaunch launch ) {
-    for( ILaunchesListener2 launchesListener : launchesListeners ) {
-      launchesListener.launchesTerminated( new ILaunch[] { launch } );
+  private void fireLaunchTerminated(ILaunch launch) {
+    for (ILaunchesListener2 launchesListener : launchesListeners) {
+      launchesListener.launchesTerminated(new ILaunch[] {launch});
     }
   }
 
-  private static String getToolTipText( ITestRunSession testRunSession, int failedTests ) {
-    return format( "{0} ({1} failed)", testRunSession.getTestRunName(), valueOf( failedTests ) );
+  private static String getToolTipText(ITestRunSession testRunSession, int failedTests) {
+    return format("{0} ({1} failed)", testRunSession.getTestRunName(), valueOf(failedTests));
   }
 
   private Color successColor() {
-    return resourceManager.createColor( SUCCESS_RGB );
+    return resourceManager.createColor(SUCCESS_RGB);
   }
 
   private Color errorColor() {
-    return resourceManager.createColor( ERROR_RGB );
+    return resourceManager.createColor(ERROR_RGB);
   }
 }

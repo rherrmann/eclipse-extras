@@ -16,14 +16,11 @@ public class WorkspaceScopePreferenceInitializerPDETest {
   public void testExtension() {
     AbstractPreferenceInitializer actual = createExtension();
 
-    assertThat( actual )
-      .isInstanceOf( WorkspaceScopePreferenceInitializer.class );
+    assertThat(actual).isInstanceOf(WorkspaceScopePreferenceInitializer.class);
   }
 
   private static AbstractPreferenceInitializer createExtension() {
-    return new RegistryAdapter()
-      .createExecutableExtension( EXTENION_POINT_ID, AbstractPreferenceInitializer.class )
-      .thatMatches( attribute( "class", WorkspaceScopePreferenceInitializer.class.getName() ) )
-      .process();
+    return new RegistryAdapter().createExecutableExtension(EXTENION_POINT_ID, AbstractPreferenceInitializer.class)
+        .thatMatches(attribute("class", WorkspaceScopePreferenceInitializer.class.getName())).process();
   }
 }

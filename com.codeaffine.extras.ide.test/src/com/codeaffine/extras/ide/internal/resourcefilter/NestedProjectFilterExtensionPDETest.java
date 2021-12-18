@@ -14,17 +14,15 @@ public class NestedProjectFilterExtensionPDETest {
   public void testFilterMatcherExtension() {
     Extension extension = readFilterMatchersExtension();
 
-    assertThat( extension.createExecutableExtension( NestedProjectFilter.class ) ).isNotNull();
-    assertThat( extension.getAttribute( "name" ) ).isNotEmpty();
-    assertThat( extension.getAttribute( "description" ) ).isNotEmpty();
-    assertThat( extension.getAttribute( "argumentType" ) ).isEqualTo( "none" );
-    assertThat( extension.getAttribute( "ordering" ) ).isEqualTo( "first" );
+    assertThat(extension.createExecutableExtension(NestedProjectFilter.class)).isNotNull();
+    assertThat(extension.getAttribute("name")).isNotEmpty();
+    assertThat(extension.getAttribute("description")).isNotEmpty();
+    assertThat(extension.getAttribute("argumentType")).isEqualTo("none");
+    assertThat(extension.getAttribute("ordering")).isEqualTo("first");
   }
 
   private static Extension readFilterMatchersExtension() {
-    return new RegistryAdapter()
-      .readExtension( "org.eclipse.core.resources.filterMatchers" )
-      .thatMatches( attribute( "id", NestedProjectFilter.ID ) )
-      .process();
+    return new RegistryAdapter().readExtension("org.eclipse.core.resources.filterMatchers")
+        .thatMatches(attribute("id", NestedProjectFilter.ID)).process();
   }
 }

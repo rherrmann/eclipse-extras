@@ -51,71 +51,69 @@ public class ImageViewerEditorPDETest {
 
   @Test
   public void testOpenFromJaredImage() throws PartInitException {
-    ImageViewerEditor editor = openImageViewerEditor( new ImageEditorInput() );
+    ImageViewerEditor editor = openImageViewerEditor(new ImageEditorInput());
 
-    assertThat( editor.imageCanvas.getImageDatas() ).isNotEmpty();
+    assertThat(editor.imageCanvas.getImageDatas()).isNotEmpty();
   }
 
   @Test
   public void testOpenFromWorkspaceImage() throws CoreException {
-    IFile file = projectHelper.getProject().getFile( "image.gif" );
-    file.create( getClass().getResourceAsStream( GIF_IMAGE ), NONE, null );
+    IFile file = projectHelper.getProject().getFile("image.gif");
+    file.create(getClass().getResourceAsStream(GIF_IMAGE), NONE, null);
 
-    IEditorInput editorInput = new FileEditorInput( file );
-    ImageViewerEditor editor = openImageViewerEditor( editorInput );
+    IEditorInput editorInput = new FileEditorInput(file);
+    ImageViewerEditor editor = openImageViewerEditor(editorInput);
 
-    assertThat( editor.imageCanvas.getImageDatas() ).isNotEmpty();
+    assertThat(editor.imageCanvas.getImageDatas()).isNotEmpty();
   }
 
   @Test
   public void testOpenFromFilesystemFile() throws Exception {
-    Path file = new File( tempFolder.getRoot(), "image.gif" ).toPath();
-    Files.copy( getClass().getResourceAsStream( GIF_IMAGE ), file );
+    Path file = new File(tempFolder.getRoot(), "image.gif").toPath();
+    Files.copy(getClass().getResourceAsStream(GIF_IMAGE), file);
 
     URI uri = file.toUri();
-    ImageViewerEditor editor = openImageViewerEditor( uri );
+    ImageViewerEditor editor = openImageViewerEditor(uri);
 
-    assertThat( editor.imageCanvas.getImageDatas() ).isNotEmpty();
+    assertThat(editor.imageCanvas.getImageDatas()).isNotEmpty();
   }
 
   @Test
   public void testOpenWithUnsupportedEditorInput() throws PartInitException {
     IEditorInput editorInput = new UnsupportedEditorInput();
 
-    IEditorPart editor = IDE.openEditor( activePage, editorInput, ID, true );
+    IEditorPart editor = IDE.openEditor(activePage, editorInput, ID, true);
 
-    assertThat( editor ).isNotInstanceOf( ImageViewerEditor.class );
+    assertThat(editor).isNotInstanceOf(ImageViewerEditor.class);
   }
 
   @Test
   public void testReopen() throws CoreException {
-    IFile file1 = projectHelper.getProject().getFile( "image.gif" );
-    file1.create( getClass().getResourceAsStream( GIF_IMAGE ), NONE, null );
-    IFile file2 = projectHelper.getProject().getFile( "image.png" );
-    file2.create( getClass().getResourceAsStream( PNG_IMAGE ), NONE, null );
+    IFile file1 = projectHelper.getProject().getFile("image.gif");
+    file1.create(getClass().getResourceAsStream(GIF_IMAGE), NONE, null);
+    IFile file2 = projectHelper.getProject().getFile("image.png");
+    file2.create(getClass().getResourceAsStream(PNG_IMAGE), NONE, null);
 
-    ImageViewerEditor editor = openImageViewerEditor( new FileEditorInput( file1 ) );
+    ImageViewerEditor editor = openImageViewerEditor(new FileEditorInput(file1));
     ImageData[] imageDatas1 = editor.imageCanvas.getImageDatas();
-    editor.getSite().getPage().reuseEditor( editor, new FileEditorInput( file2 ) );
+    editor.getSite().getPage().reuseEditor(editor, new FileEditorInput(file2));
     ImageData[] imageDatas2 = editor.imageCanvas.getImageDatas();
 
-    assertThat( imageDatas1 ).isNotEqualTo( imageDatas2 );
+    assertThat(imageDatas1).isNotEqualTo(imageDatas2);
   }
 
-  private ImageViewerEditor openImageViewerEditor( URI uri ) throws PartInitException {
-    return ( ImageViewerEditor )IDE.openEditor( activePage, uri, ID, true );
+  private ImageViewerEditor openImageViewerEditor(URI uri) throws PartInitException {
+    return (ImageViewerEditor) IDE.openEditor(activePage, uri, ID, true);
   }
 
-  private ImageViewerEditor openImageViewerEditor( IEditorInput editorInput )
-    throws PartInitException
-  {
-    return ( ImageViewerEditor )IDE.openEditor( activePage, editorInput, ID, true );
+  private ImageViewerEditor openImageViewerEditor(IEditorInput editorInput) throws PartInitException {
+    return (ImageViewerEditor) IDE.openEditor(activePage, editorInput, ID, true);
   }
 
   private static class UnsupportedEditorInput implements IEditorInput {
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public Object getAdapter( Class adapter ) {
+    public Object getAdapter(Class adapter) {
       return null;
     }
 
@@ -171,10 +169,10 @@ public class ImageViewerEditorPDETest {
       return "";
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public Object getAdapter( Class adapter ) {
-      return Platform.getAdapterManager().getAdapter( this, adapter );
+    public Object getAdapter(Class adapter) {
+      return Platform.getAdapterManager().getAdapter(this, adapter);
     }
 
     @Override
@@ -185,10 +183,10 @@ public class ImageViewerEditorPDETest {
   }
 
   private static class ImageStorage implements IStorage {
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public Object getAdapter( Class adapter ) {
-      return Platform.getAdapterManager().getAdapter( this, adapter );
+    public Object getAdapter(Class adapter) {
+      return Platform.getAdapterManager().getAdapter(this, adapter);
     }
 
     @Override
@@ -208,7 +206,7 @@ public class ImageViewerEditorPDETest {
 
     @Override
     public InputStream getContents() {
-      return getClass().getResourceAsStream( GIF_IMAGE );
+      return getClass().getResourceAsStream(GIF_IMAGE);
     }
   }
 }

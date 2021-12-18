@@ -31,7 +31,7 @@ public class NestedProjectFilterIntegrationPDETest {
     createNestedProjectFilter();
     createNestedProject();
 
-    assertThat( project.members() ).containsOnly( project.getFile( DESCRIPTION_FILE_NAME ) );
+    assertThat(project.members()).containsOnly(project.getFile(DESCRIPTION_FILE_NAME));
   }
 
   @Test
@@ -39,9 +39,9 @@ public class NestedProjectFilterIntegrationPDETest {
     IProject project = projectHelper.getProject();
     IProject nestedProject = createNestedProject();
 
-    IResource projectDescription = project.getFile( DESCRIPTION_FILE_NAME );
-    IResource nestedProjectFolder = project.getFolder( nestedProject.getName() );
-    assertThat( project.members() ).containsOnly( projectDescription, nestedProjectFolder );
+    IResource projectDescription = project.getFile(DESCRIPTION_FILE_NAME);
+    IResource nestedProjectFolder = project.getFolder(nestedProject.getName());
+    assertThat(project.members()).containsOnly(projectDescription, nestedProjectFolder);
   }
 
   @Test
@@ -49,18 +49,18 @@ public class NestedProjectFilterIntegrationPDETest {
     IProject project = projectHelper.getProject();
     createNestedProjectFilter();
 
-    assertThat( project.members() ).containsOnly( project.getFile( DESCRIPTION_FILE_NAME ) );
+    assertThat(project.members()).containsOnly(project.getFile(DESCRIPTION_FILE_NAME));
   }
 
   private void createNestedProjectFilter() throws CoreException {
     IProject project = projectHelper.getProject();
-    FileInfoMatcherDescription matcherDescription = new FileInfoMatcherDescription( ID, null );
-    project.createFilter( FILTER_TYPE, matcherDescription, NONE, new NullProgressMonitor() );
+    FileInfoMatcherDescription matcherDescription = new FileInfoMatcherDescription(ID, null);
+    project.createFilter(FILTER_TYPE, matcherDescription, NONE, new NullProgressMonitor());
   }
 
   private IProject createNestedProject() throws CoreException {
     IProject result = projectHelper.createNestedProject().getProject();
-    projectHelper.getProject().refreshLocal( IResource.DEPTH_INFINITE, new NullProgressMonitor() );
+    projectHelper.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
     return result;
   }
 

@@ -8,43 +8,43 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ConcurrentHelper {
 
-  public static Thread startThread( Runnable runnable ) throws InterruptedException {
-    RunnableWrapper runnableWrapper = new RunnableWrapper( runnable );
-    Thread result = startDaemonThread( runnableWrapper );
+  public static Thread startThread(Runnable runnable) throws InterruptedException {
+    RunnableWrapper runnableWrapper = new RunnableWrapper(runnable);
+    Thread result = startDaemonThread(runnableWrapper);
     runnableWrapper.awaitRunning();
     return result;
   }
 
-  public static void runInThread( Runnable runnable ) {
-    AtomicReference<Throwable> exception = new AtomicReference<Throwable>();
+  public static void runInThread(Runnable runnable) {
+    AtomicReference<Throwable> exception = new AtomicReference<>();
     Runnable exceptionGuard = new Runnable() {
       @Override
       public void run() {
         try {
           runnable.run();
-        } catch( Throwable thr ) {
-          exception.set( thr );
+        } catch (Throwable thr) {
+          exception.set(thr);
         }
       }
     };
-    run( exceptionGuard );
-    if( exception.get() != null ) {
-      throw new RuntimeException( "Caught exception in thread", exception.get() );
+    run(exceptionGuard);
+    if (exception.get() != null) {
+      throw new RuntimeException("Caught exception in thread", exception.get());
     }
   }
 
-  private static void run( Runnable runnable ) {
-    Thread thread = startDaemonThread( runnable );
+  private static void run(Runnable runnable) {
+    Thread thread = startDaemonThread(runnable);
     try {
       thread.join();
-    } catch( InterruptedException ie ) {
-      throw new RuntimeException( ie );
+    } catch (InterruptedException ie) {
+      throw new RuntimeException(ie);
     }
   }
 
-  private static Thread startDaemonThread( Runnable runnable ) {
-    Thread result = new Thread( runnable );
-    result.setDaemon( true );
+  private static Thread startDaemonThread(Runnable runnable) {
+    Thread result = new Thread(runnable);
+    result.setDaemon(true);
     result.start();
     return result;
   }
@@ -56,7 +56,7 @@ public class ConcurrentHelper {
     private final Lock lock;
     private final Condition running;
 
-    RunnableWrapper( Runnable runnable ) {
+    RunnableWrapper(Runnable runnable) {
       this.runnable = runnable;
       lock = new ReentrantLock();
       running = lock.newCondition();

@@ -9,17 +9,17 @@ public class WorkspaceScopePreferences {
 
   public static final String PREF_SHOW_JUNIT_STATUS_BAR = "show_junit_status_bar";
 
-  public static void initializeDefaults( IPreferenceStore preferenceStore ) {
-    preferenceStore.setDefault( PREF_SHOW_JUNIT_STATUS_BAR, true );
+  public static void initializeDefaults(IPreferenceStore preferenceStore) {
+    preferenceStore.setDefault(PREF_SHOW_JUNIT_STATUS_BAR, true);
   }
 
   private final IPreferenceStore preferenceStore;
 
   public WorkspaceScopePreferences() {
-    this( JDTExtrasPlugin.getInstance().getPreferenceStore() );
+    this(JDTExtrasPlugin.getInstance().getPreferenceStore());
   }
 
-  public WorkspaceScopePreferences( IPreferenceStore preferenceStore ) {
+  public WorkspaceScopePreferences(IPreferenceStore preferenceStore) {
     this.preferenceStore = preferenceStore;
   }
 
@@ -27,11 +27,11 @@ public class WorkspaceScopePreferences {
     return preferenceStore;
   }
 
-  public void setShowJUnitStatusBar( boolean value ) {
-    preferenceStore.setValue( PREF_SHOW_JUNIT_STATUS_BAR, value );
+  public void setShowJUnitStatusBar(boolean value) {
+    preferenceStore.setValue(PREF_SHOW_JUNIT_STATUS_BAR, value);
   }
 
   public boolean isShowJUnitStatusBar() {
-    return preferenceStore.getBoolean( PREF_SHOW_JUNIT_STATUS_BAR );
+    return preferenceStore.getBoolean(PREF_SHOW_JUNIT_STATUS_BAR);
   }
 }

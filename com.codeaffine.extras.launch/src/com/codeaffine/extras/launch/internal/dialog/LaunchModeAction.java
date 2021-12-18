@@ -9,8 +9,8 @@ public class LaunchModeAction extends Action {
   private final LaunchModeSetting launchModeSetting;
   private final ILaunchMode launchMode;
 
-  public LaunchModeAction( LaunchModeSetting launchModeSetting, ILaunchMode launchMode ) {
-    super( launchMode.getLabel(), IAction.AS_RADIO_BUTTON );
+  public LaunchModeAction(LaunchModeSetting launchModeSetting, ILaunchMode launchMode) {
+    super(launchMode.getLabel(), IAction.AS_RADIO_BUTTON);
     this.launchModeSetting = launchModeSetting;
     this.launchMode = launchMode;
     update();
@@ -22,11 +22,11 @@ public class LaunchModeAction extends Action {
 
   @Override
   public void run() {
-    launchModeSetting.setLaunchModeId( launchMode.getIdentifier() );
+    launchModeSetting.setLaunchModeId(launchMode.getIdentifier());
     update();
   }
 
   public void update() {
-    setChecked( launchMode.equals( launchModeSetting.getLaunchMode() ) );
+    setChecked(launchMode.equals(launchModeSetting.getLaunchMode()));
   }
 }

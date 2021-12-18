@@ -7,9 +7,9 @@ import org.eclipse.ui.IPersistableElement;
 
 public class TestEditorInput implements IEditorInput {
 
-  @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SuppressWarnings({"rawtypes", "unchecked"})
   @Override
-  public Object getAdapter( Class adapter ) {
+  public Object getAdapter(Class adapter) {
     return null;
   }
 

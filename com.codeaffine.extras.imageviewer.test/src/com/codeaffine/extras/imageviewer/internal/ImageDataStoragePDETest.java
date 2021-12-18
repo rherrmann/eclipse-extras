@@ -26,53 +26,53 @@ public class ImageDataStoragePDETest {
 
   @Before
   public void setUp() throws IOException {
-    try( InputStream inputStream = getClass().getResourceAsStream( Images.GIF_IMAGE ) ) {
-      imageData = new ImageLoader().load( inputStream )[ 0 ];
+    try (InputStream inputStream = getClass().getResourceAsStream(Images.GIF_IMAGE)) {
+      imageData = new ImageLoader().load(inputStream)[0];
     }
   }
 
-  @Test(expected=NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void testConstructorWithNullImageDatas() {
-    new ImageDataStorage( ( ImageData[] )null );
+    new ImageDataStorage((ImageData[]) null);
   }
 
   @Test
   public void testLoadWithNullFile() {
-    ImageDataStorage storage = new ImageDataStorage( imageData );
+    ImageDataStorage storage = new ImageDataStorage(imageData);
     NullProgressMonitor monitor = new NullProgressMonitor();
 
-    Throwable throwable = ThrowableCaptor.thrownBy( () -> storage.save( null, monitor ) );
+    Throwable throwable = ThrowableCaptor.thrownBy(() -> storage.save(null, monitor));
 
-    assertThat( throwable ).isInstanceOf( NullPointerException.class );
+    assertThat(throwable).isInstanceOf(NullPointerException.class);
   }
 
   @Test
   public void testLoadWithNullMonitor() {
-    ImageDataStorage storage = new ImageDataStorage( imageData );
-    IFile file = projectHelper.getProject().getFile( "file" );
+    ImageDataStorage storage = new ImageDataStorage(imageData);
+    IFile file = projectHelper.getProject().getFile("file");
 
-    Throwable throwable = ThrowableCaptor.thrownBy( () -> storage.save( file, null ) );
+    Throwable throwable = ThrowableCaptor.thrownBy(() -> storage.save(file, null));
 
-    assertThat( throwable ).isInstanceOf( NullPointerException.class );
+    assertThat(throwable).isInstanceOf(NullPointerException.class);
   }
 
   @Test
   public void testSaveWithExistingFile() throws CoreException {
-    ImageDataStorage storage = new ImageDataStorage( imageData );
-    IFile file = projectHelper.createFile( "image.gif", "" );
+    ImageDataStorage storage = new ImageDataStorage(imageData);
+    IFile file = projectHelper.createFile("image.gif", "");
 
-    storage.save( file, new NullProgressMonitor() );
+    storage.save(file, new NullProgressMonitor());
 
-    assertThat( file.getLocation().toFile().length() ).isGreaterThan( 0 );
+    assertThat(file.getLocation().toFile().length()).isGreaterThan(0);
   }
 
   @Test
   public void testSaveWithNonExistingFile() throws CoreException {
-    ImageDataStorage storage = new ImageDataStorage( imageData );
-    IFile file = projectHelper.getProject().getFile( "image.gif" );
+    ImageDataStorage storage = new ImageDataStorage(imageData);
+    IFile file = projectHelper.getProject().getFile("image.gif");
 
-    storage.save( file, new NullProgressMonitor() );
+    storage.save(file, new NullProgressMonitor());
 
-    assertThat( file.getLocation().toFile().length() ).isGreaterThan( 0 );
+    assertThat(file.getLocation().toFile().length()).isGreaterThan(0);
   }
 }

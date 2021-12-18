@@ -37,66 +37,66 @@ public class CloseViewHandlerPDETest {
   public void testSetEnabledWithActiveView() throws PartInitException {
     IViewPart view = openView();
 
-    handler.setEnabled( createEvaluationContext( view ) );
+    handler.setEnabled(createEvaluationContext(view));
 
-    assertThat( handler.isEnabled() ).isTrue();
+    assertThat(handler.isEnabled()).isTrue();
   }
 
   @Test
   public void testSetEnabledWithActiveEditor() throws PartInitException {
     IEditorPart editor = openEditor();
 
-    handler.setEnabled( createEvaluationContext( editor ) );
+    handler.setEnabled(createEvaluationContext(editor));
 
-    assertThat( handler.isEnabled() ).isFalse();
+    assertThat(handler.isEnabled()).isFalse();
   }
 
   @Test
   public void testSetEnabledWithoutActivePart() {
-    handler.setEnabled( createEvaluationContext( null ) );
+    handler.setEnabled(createEvaluationContext(null));
 
-    assertThat( handler.isEnabled() ).isFalse();
+    assertThat(handler.isEnabled()).isFalse();
   }
 
   @Test
   public void testSetEnabledWithNullArgument() {
-    handler.setEnabled( null );
+    handler.setEnabled(null);
 
-    assertThat( handler.isEnabled() ).isFalse();
+    assertThat(handler.isEnabled()).isFalse();
   }
 
   @Test
   public void testSetEnabledWithNonEvaluationContext() {
-    handler.setEnabled( new Object() );
+    handler.setEnabled(new Object());
 
-    assertThat( handler.isEnabled() ).isFalse();
+    assertThat(handler.isEnabled()).isFalse();
   }
 
   @Test
   public void testExecuteWithActiveView() throws PartInitException {
     IViewPart view = openView();
 
-    handler.execute( createExecutionEvent( createEvaluationContext( view ) ) );
+    handler.execute(createExecutionEvent(createEvaluationContext(view)));
 
-    assertThat( workbenchPage.findView( TestViewPart.ID ) ).isNull();
+    assertThat(workbenchPage.findView(TestViewPart.ID)).isNull();
   }
 
   @Test
   public void testExecuteWithActiveEditor() throws PartInitException {
     IEditorPart editor = openEditor();
 
-    handler.execute( createExecutionEvent( createEvaluationContext( editor ) ) );
+    handler.execute(createExecutionEvent(createEvaluationContext(editor)));
 
-    assertThat( workbenchPage.getEditorReferences() ).hasSize( 1 );
+    assertThat(workbenchPage.getEditorReferences()).hasSize(1);
   }
 
   @Test
   public void testExecuteWithoutActivePart() {
-    ExecutionEvent executionEvent = createExecutionEvent( createEvaluationContext( null ) );
+    ExecutionEvent executionEvent = createExecutionEvent(createEvaluationContext(null));
 
-    Object executeResult = handler.execute( executionEvent );
+    Object executeResult = handler.execute(executionEvent);
 
-    assertThat( executeResult ).isNull();
+    assertThat(executeResult).isNull();
   }
 
   @Before
@@ -112,42 +112,42 @@ public class CloseViewHandlerPDETest {
   }
 
   private IViewPart openView() throws PartInitException {
-    return workbenchPage.showView( TestViewPart.ID );
+    return workbenchPage.showView(TestViewPart.ID);
   }
 
   private IEditorPart openEditor() throws PartInitException {
-    return IDE.openEditor( workbenchPage, new TestEditorInput(), TestEditorPart.ID );
+    return IDE.openEditor(workbenchPage, new TestEditorInput(), TestEditorPart.ID);
   }
 
   private void closeEditors() {
-    workbenchPage.closeAllEditors( false );
+    workbenchPage.closeAllEditors(false);
   }
 
   private void hideView() {
-    IViewPart view = workbenchPage.findView( TestViewPart.ID );
-    if( view != null ) {
-      workbenchPage.hideView( view );
+    IViewPart view = workbenchPage.findView(TestViewPart.ID);
+    if (view != null) {
+      workbenchPage.hideView(view);
     }
   }
 
-  private IEvaluationContext createEvaluationContext( IWorkbenchPart activePart ) {
+  private IEvaluationContext createEvaluationContext(IWorkbenchPart activePart) {
     IWorkbenchWindow activeWorkbenchWindow = workbenchPage.getWorkbenchWindow();
-    IEvaluationContext result = new EvaluationContext( null, new Object() );
-    result.addVariable( ISources.ACTIVE_WORKBENCH_WINDOW_NAME, activeWorkbenchWindow );
-    if( activePart != null ) {
-      result.addVariable( ISources.ACTIVE_PART_NAME, activePart );
+    IEvaluationContext result = new EvaluationContext(null, new Object());
+    result.addVariable(ISources.ACTIVE_WORKBENCH_WINDOW_NAME, activeWorkbenchWindow);
+    if (activePart != null) {
+      result.addVariable(ISources.ACTIVE_PART_NAME, activePart);
     }
     return result;
   }
 
-  private ExecutionEvent createExecutionEvent( IEvaluationContext evaluationContext ) {
-    return new ExecutionEvent( getDeleteEditorFileCommand(), emptyMap(), null, evaluationContext );
+  private ExecutionEvent createExecutionEvent(IEvaluationContext evaluationContext) {
+    return new ExecutionEvent(getDeleteEditorFileCommand(), emptyMap(), null, evaluationContext);
   }
 
   private Command getDeleteEditorFileCommand() {
     IWorkbench workbench = workbenchPage.getWorkbenchWindow().getWorkbench();
-    ICommandService commandService = ServiceHelper.getService( workbench, ICommandService.class );
-    return commandService.getCommand( DeleteEditorFileHandler.COMMAND_ID );
+    ICommandService commandService = ServiceHelper.getService(workbench, ICommandService.class);
+    return commandService.getCommand(DeleteEditorFileHandler.COMMAND_ID);
   }
 
 }

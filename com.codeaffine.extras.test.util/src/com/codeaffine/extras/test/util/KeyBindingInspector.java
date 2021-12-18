@@ -26,41 +26,40 @@ public class KeyBindingInspector {
   private static final String VALUE = "value";
 
 
-  public static KeyBindingInfo keyBindingFor( String keySequence ) {
-    return keyBindingFor( keySequence, null );
+  public static KeyBindingInfo keyBindingFor(String keySequence) {
+    return keyBindingFor(keySequence, null);
   }
 
-  public static KeyBindingInfo keyBindingFor( String keySequence, String platform ) {
-    Extension extension = readKeyBindingExtension( keySequence, platform );
+  public static KeyBindingInfo keyBindingFor(String keySequence, String platform) {
+    Extension extension = readKeyBindingExtension(keySequence, platform);
     KeyBindingInfo result = null;
-    if( extension != null ) {
+    if (extension != null) {
       result = new KeyBindingInfo();
-      result.setSchemeId( extension.getAttribute( SCHEME_ID ) );
-      result.setCommandId( extension.getAttribute( COMMAND_ID ) );
-      result.setContextId( extension.getAttribute( CONTEXT_ID ) );
-      result.setPlatform( extension.getAttribute( PLATFORM ) );
-      result.setParameters( getParameters( extension ) );
+      result.setSchemeId(extension.getAttribute(SCHEME_ID));
+      result.setCommandId(extension.getAttribute(COMMAND_ID));
+      result.setContextId(extension.getAttribute(CONTEXT_ID));
+      result.setPlatform(extension.getAttribute(PLATFORM));
+      result.setParameters(getParameters(extension));
     }
     return result;
   }
 
-  private static ParameterInfo[] getParameters( Extension extension ) {
-    Collection<Extension> elements = extension.getChildren( PARAMETER );
-    List<ParameterInfo> list
-      = elements.stream().map( KeyBindingInspector::toParameterInfo ).collect( toList() );
-    return list.toArray( new ParameterInfo[ list.size() ] );
+  private static ParameterInfo[] getParameters(Extension extension) {
+    Collection<Extension> elements = extension.getChildren(PARAMETER);
+    List<ParameterInfo> list = elements.stream().map(KeyBindingInspector::toParameterInfo).collect(toList());
+    return list.toArray(new ParameterInfo[list.size()]);
   }
 
-  private static Extension readKeyBindingExtension( String keySequence, String platform ) {
-    return readKeyBindingExtension( new KeyBindingPredicate( keySequence, platform ) );
+  private static Extension readKeyBindingExtension(String keySequence, String platform) {
+    return readKeyBindingExtension(new KeyBindingPredicate(keySequence, platform));
   }
 
-  private static Extension readKeyBindingExtension( Predicate<Extension> predicate ) {
-    return new RegistryAdapter().readExtension( BINDINGS_EP ).thatMatches( predicate ).process();
+  private static Extension readKeyBindingExtension(Predicate<Extension> predicate) {
+    return new RegistryAdapter().readExtension(BINDINGS_EP).thatMatches(predicate).process();
   }
 
-  private static ParameterInfo toParameterInfo( Extension extension ) {
-    return new ParameterInfo( extension.getAttribute( ID ), extension.getAttribute( VALUE ) );
+  private static ParameterInfo toParameterInfo(Extension extension) {
+    return new ParameterInfo(extension.getAttribute(ID), extension.getAttribute(VALUE));
   }
 
   private KeyBindingInspector() {}
@@ -69,17 +68,16 @@ public class KeyBindingInspector {
     private final String keySequence;
     private final String platform;
 
-    KeyBindingPredicate( String keySequence, String platform ) {
+    KeyBindingPredicate(String keySequence, String platform) {
       this.keySequence = keySequence;
       this.platform = platform;
     }
 
     @Override
-    public boolean test( Extension input ) {
-      String keySequenceAttr = input.getAttribute( SEQUENCE );
-      String platformAttr = input.getAttribute( PLATFORM );
-      return Objects.equals( keySequence, keySequenceAttr )
-          && Objects.equals( platform, platformAttr );
+    public boolean test(Extension input) {
+      String keySequenceAttr = input.getAttribute(SEQUENCE);
+      String platformAttr = input.getAttribute(PLATFORM);
+      return Objects.equals(keySequence, keySequenceAttr) && Objects.equals(platform, platformAttr);
     }
   }
 

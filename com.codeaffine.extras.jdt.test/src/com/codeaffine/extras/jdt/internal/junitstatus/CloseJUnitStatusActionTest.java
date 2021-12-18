@@ -23,35 +23,35 @@ public class CloseJUnitStatusActionTest {
 
   @Before
   public void setUp() {
-    evaluationService = mock( IEvaluationService.class );
-    workbench = mock( IWorkbench.class );
-    when( workbench.getService( IEvaluationService.class ) ).thenReturn( evaluationService );
-    preferences = new WorkspaceScopePreferences( new PreferenceStore() );
-    action = new CloseJUnitStatusAction( workbench, preferences );
+    evaluationService = mock(IEvaluationService.class);
+    workbench = mock(IWorkbench.class);
+    when(workbench.getService(IEvaluationService.class)).thenReturn(evaluationService);
+    preferences = new WorkspaceScopePreferences(new PreferenceStore());
+    action = new CloseJUnitStatusAction(workbench, preferences);
   }
 
   @Test
   public void testGetText() {
-    assertThat( action.getText() ).isNotEmpty();
+    assertThat(action.getText()).isNotEmpty();
   }
 
   @Test
   public void testRun() {
-    preferences.setShowJUnitStatusBar( true );
+    preferences.setShowJUnitStatusBar(true);
 
     action.run();
 
-    assertThat( preferences.isShowJUnitStatusBar() ).isFalse();
-    verify( evaluationService ).requestEvaluation( PreferencePropertyTester.PROP_IS_TRUE );
+    assertThat(preferences.isShowJUnitStatusBar()).isFalse();
+    verify(evaluationService).requestEvaluation(PreferencePropertyTester.PROP_IS_TRUE);
   }
 
   @Test
   public void testRunWhileHidden() {
-    preferences.setShowJUnitStatusBar( false );
+    preferences.setShowJUnitStatusBar(false);
 
     action.run();
 
-    assertThat( preferences.isShowJUnitStatusBar() ).isFalse();
-    verify( evaluationService ).requestEvaluation( PreferencePropertyTester.PROP_IS_TRUE );
+    assertThat(preferences.isShowJUnitStatusBar()).isFalse();
+    verify(evaluationService).requestEvaluation(PreferencePropertyTester.PROP_IS_TRUE);
   }
 }

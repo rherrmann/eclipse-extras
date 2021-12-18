@@ -53,131 +53,131 @@ public class DeleteEditorFileHandler_ResourcePDETest {
   @Before
   public void setUp() {
     workbenchPage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-    prompter = mock( DeleteEditorFilePrompter.class );
-    handler = spy( new DeleteEditorFileHandler( prompter ) );
-    doNothing().when( handler ).deleteResource( any(), any() );
+    prompter = mock(DeleteEditorFilePrompter.class);
+    handler = spy(new DeleteEditorFileHandler(prompter));
+    doNothing().when(handler).deleteResource(any(), any());
   }
 
   @Test
   public void testEnablementWithFileEditor() throws CoreException {
-    IFile file = projectHelper.createFile( "file.txt", "content" );
-    IEvaluationContext evaluationContext = createEvaluationContext( new FileEditorInput( file ) );
+    IFile file = projectHelper.createFile("file.txt", "content");
+    IEvaluationContext evaluationContext = createEvaluationContext(new FileEditorInput(file));
 
-    handler.setEnabled( evaluationContext );
+    handler.setEnabled(evaluationContext);
 
-    assertThat( handler.isEnabled() ).isTrue();
+    assertThat(handler.isEnabled()).isTrue();
   }
 
   @Test
   public void testEnablementWithFolderEditor() throws CoreException {
-    IFolder folder = projectHelper.createFolder( "folder" );
-    IEditorInput editorInput = mock( IEditorInput.class );
-    when( editorInput.getAdapter( IResource.class ) ).thenReturn( folder );
-    IEvaluationContext evaluationContext = createEvaluationContext( editorInput );
+    IFolder folder = projectHelper.createFolder("folder");
+    IEditorInput editorInput = mock(IEditorInput.class);
+    when(editorInput.getAdapter(IResource.class)).thenReturn(folder);
+    IEvaluationContext evaluationContext = createEvaluationContext(editorInput);
 
-    handler.setEnabled( evaluationContext );
+    handler.setEnabled(evaluationContext);
 
-    assertThat( handler.isEnabled() ).isFalse();
+    assertThat(handler.isEnabled()).isFalse();
   }
 
   @Test
   public void testEnablementWithNonResourceEditor() {
-    IEvaluationContext evaluationContext = createEvaluationContext( new NonFileEditorInput() );
+    IEvaluationContext evaluationContext = createEvaluationContext(new NonFileEditorInput());
 
-    handler.setEnabled( evaluationContext );
+    handler.setEnabled(evaluationContext);
 
-    assertThat( handler.isEnabled() ).isFalse();
+    assertThat(handler.isEnabled()).isFalse();
   }
 
   @Test
   public void testEnablementWithoutActiveEditor() {
-    IEvaluationContext evaluationContext = createEvaluationContext( null );
+    IEvaluationContext evaluationContext = createEvaluationContext(null);
 
-    handler.setEnabled( evaluationContext );
+    handler.setEnabled(evaluationContext);
 
-    assertThat( handler.isEnabled() ).isFalse();
+    assertThat(handler.isEnabled()).isFalse();
   }
 
   @Test
   public void testEnablementWithNullEvaluationContext() {
-    handler.setEnabled( new Object() );
+    handler.setEnabled(new Object());
 
-    assertThat( handler.isEnabled() ).isFalse();
+    assertThat(handler.isEnabled()).isFalse();
   }
 
   @Test
   public void testEnablementWithIrregularEvaluationContext() {
-    handler.setEnabled( new Object() );
+    handler.setEnabled(new Object());
 
-    assertThat( handler.isEnabled() ).isFalse();
+    assertThat(handler.isEnabled()).isFalse();
   }
 
   @Test
   public void testEnablementWithObjectAsEditorInput() {
-    IEvaluationContext evaluationContext = createEvaluationContext( new Object() );
+    IEvaluationContext evaluationContext = createEvaluationContext(new Object());
 
-    handler.setEnabled( evaluationContext );
+    handler.setEnabled(evaluationContext);
 
-    assertThat( handler.isEnabled() ).isFalse();
+    assertThat(handler.isEnabled()).isFalse();
   }
 
   @Test
   public void testExecuteWithExistingResource() throws CoreException {
-    IFile file = projectHelper.createFile( "file.txt", "content" );
-    IEvaluationContext evaluationContext = createEvaluationContext( new FileEditorInput( file ) );
-    ExecutionEvent event = createExecutionEvent( evaluationContext );
+    IFile file = projectHelper.createFile("file.txt", "content");
+    IEvaluationContext evaluationContext = createEvaluationContext(new FileEditorInput(file));
+    ExecutionEvent event = createExecutionEvent(evaluationContext);
 
-    handler.execute( event );
+    handler.execute(event);
 
-    verify( handler ).deleteResource( workbenchPage.getWorkbenchWindow(), file );
+    verify(handler).deleteResource(workbenchPage.getWorkbenchWindow(), file);
   }
 
   @Test
   public void testExecuteWithNonExistingResource() throws CoreException {
-    IFile file = projectHelper.createFile( "file.txt", "content" );
-    file.delete( true, new NullProgressMonitor() );
-    IEvaluationContext evaluationContext = createEvaluationContext( new FileEditorInput( file ) );
-    ExecutionEvent event = createExecutionEvent( evaluationContext );
+    IFile file = projectHelper.createFile("file.txt", "content");
+    file.delete(true, new NullProgressMonitor());
+    IEvaluationContext evaluationContext = createEvaluationContext(new FileEditorInput(file));
+    ExecutionEvent event = createExecutionEvent(evaluationContext);
 
-    handler.execute( event );
+    handler.execute(event);
 
-    verify( handler, never() ).deleteResource( any(), any() );
+    verify(handler, never()).deleteResource(any(), any());
   }
 
   @Test
   public void testExecuteWithNonResourceEditor() {
-    IEvaluationContext evaluationContext = createEvaluationContext( new NonFileEditorInput() );
-    ExecutionEvent event = createExecutionEvent( evaluationContext );
+    IEvaluationContext evaluationContext = createEvaluationContext(new NonFileEditorInput());
+    ExecutionEvent event = createExecutionEvent(evaluationContext);
 
-    handler.execute( event );
+    handler.execute(event);
 
-    verify( handler, never() ).deleteResource( any(), any() );
+    verify(handler, never()).deleteResource(any(), any());
   }
 
-  private ExecutionEvent createExecutionEvent( IEvaluationContext evaluationContext ) {
-    return new ExecutionEvent( getDeleteEditorFileCommand(), emptyMap(), null, evaluationContext );
+  private ExecutionEvent createExecutionEvent(IEvaluationContext evaluationContext) {
+    return new ExecutionEvent(getDeleteEditorFileCommand(), emptyMap(), null, evaluationContext);
   }
 
   private Command getDeleteEditorFileCommand() {
     IWorkbench workbench = workbenchPage.getWorkbenchWindow().getWorkbench();
-    ICommandService commandService = ServiceHelper.getService( workbench, ICommandService.class );
-    return commandService.getCommand( DeleteEditorFileHandler.COMMAND_ID );
+    ICommandService commandService = ServiceHelper.getService(workbench, ICommandService.class);
+    return commandService.getCommand(DeleteEditorFileHandler.COMMAND_ID);
   }
 
-  private IEvaluationContext createEvaluationContext( Object editorInput ) {
+  private IEvaluationContext createEvaluationContext(Object editorInput) {
     IWorkbenchWindow activeWorkbenchWindow = workbenchPage.getWorkbenchWindow();
-    IEvaluationContext result = new EvaluationContext( null, new Object() );
-    result.addVariable( ISources.ACTIVE_WORKBENCH_WINDOW_NAME, activeWorkbenchWindow );
-    if( editorInput != null ) {
-      result.addVariable( ISources.ACTIVE_EDITOR_INPUT_NAME, editorInput );
+    IEvaluationContext result = new EvaluationContext(null, new Object());
+    result.addVariable(ISources.ACTIVE_WORKBENCH_WINDOW_NAME, activeWorkbenchWindow);
+    if (editorInput != null) {
+      result.addVariable(ISources.ACTIVE_EDITOR_INPUT_NAME, editorInput);
     }
     return result;
   }
 
   private static class NonFileEditorInput implements IEditorInput {
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
-    public Object getAdapter( Class adapter ) {
+    public Object getAdapter(Class adapter) {
       return null;
     }
 

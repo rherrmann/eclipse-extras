@@ -10,12 +10,12 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 
 public class LaunchConfigs {
 
-  public static boolean isRunning( ILaunchConfiguration launchConfig ) {
-    requireNonNull( launchConfig, "launchConfig" );
+  public static boolean isRunning(ILaunchConfiguration launchConfig) {
+    requireNonNull(launchConfig, "launchConfig");
     ILaunch[] launches = DebugPlugin.getDefault().getLaunchManager().getLaunches();
-    return Stream.of( launches )
-      .anyMatch( launch -> !launch.isTerminated() && launchConfig.equals( launch.getLaunchConfiguration() ) );
+    return Stream.of(launches)
+        .anyMatch(launch -> !launch.isTerminated() && launchConfig.equals(launch.getLaunchConfiguration()));
   }
 
-  private LaunchConfigs() { }
+  private LaunchConfigs() {}
 }

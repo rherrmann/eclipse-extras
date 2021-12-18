@@ -15,61 +15,60 @@ import org.eclipse.ui.ide.ResourceUtil;
 
 public class OpenWithQuickMenuHandler extends AbstractHandler {
 
-  public static final String COMMAND_ID
-    = "com.codeaffine.extras.ide.internal.OpenWithQuickMenu";
+  public static final String COMMAND_ID = "com.codeaffine.extras.ide.internal.OpenWithQuickMenu";
 
   @Override
-  public Object execute( ExecutionEvent event ) {
-    IWorkbenchWindow workbenchWindow = HandlerUtil.getActiveWorkbenchWindow( event );
-    IFile file = extractFileFromSelection( getStructuredSelection( event ) );
-    showMenu( workbenchWindow.getActivePage(), file );
+  public Object execute(ExecutionEvent event) {
+    IWorkbenchWindow workbenchWindow = HandlerUtil.getActiveWorkbenchWindow(event);
+    IFile file = extractFileFromSelection(getStructuredSelection(event));
+    showMenu(workbenchWindow.getActivePage(), file);
     return null;
   }
 
   @Override
-  public void setEnabled( Object evaluationContext ) {
-    if( evaluationContext instanceof IEvaluationContext ) {
-      setEnabled( ( IEvaluationContext )evaluationContext );
+  public void setEnabled(Object evaluationContext) {
+    if (evaluationContext instanceof IEvaluationContext) {
+      setEnabled((IEvaluationContext) evaluationContext);
     } else {
-      setBaseEnabled( false );
+      setBaseEnabled(false);
     }
   }
 
-  protected void showMenu( IWorkbenchPage workbenchPage, IFile file ) {
-    new OpenWithQuickMenu( workbenchPage, file ).show();
+  protected void showMenu(IWorkbenchPage workbenchPage, IFile file) {
+    new OpenWithQuickMenu(workbenchPage, file).show();
   }
 
-  private void setEnabled( IEvaluationContext evaluationContext ) {
-    IStructuredSelection selection = getSelection( evaluationContext );
-    setBaseEnabled( isEnabled( selection ) );
+  private void setEnabled(IEvaluationContext evaluationContext) {
+    IStructuredSelection selection = getSelection(evaluationContext);
+    setBaseEnabled(isEnabled(selection));
   }
 
-  private static boolean isEnabled( IStructuredSelection selection ) {
-    return extractFileFromSelection( selection ) != null;
+  private static boolean isEnabled(IStructuredSelection selection) {
+    return extractFileFromSelection(selection) != null;
   }
 
-  private static IStructuredSelection getSelection( IEvaluationContext evaluationContext ) {
+  private static IStructuredSelection getSelection(IEvaluationContext evaluationContext) {
     IStructuredSelection result = StructuredSelection.EMPTY;
-    Object variable = evaluationContext.getVariable( ISources.ACTIVE_CURRENT_SELECTION_NAME );
-    if( variable instanceof IStructuredSelection ) {
-      result = ( IStructuredSelection )variable;
+    Object variable = evaluationContext.getVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME);
+    if (variable instanceof IStructuredSelection) {
+      result = (IStructuredSelection) variable;
     }
     return result;
   }
 
-  private static IStructuredSelection getStructuredSelection( ExecutionEvent event ) {
+  private static IStructuredSelection getStructuredSelection(ExecutionEvent event) {
     IStructuredSelection result = StructuredSelection.EMPTY;
-    ISelection selection = HandlerUtil.getCurrentSelection( event );
-    if( selection instanceof IStructuredSelection ) {
-      result = ( IStructuredSelection )selection;
+    ISelection selection = HandlerUtil.getCurrentSelection(event);
+    if (selection instanceof IStructuredSelection) {
+      result = (IStructuredSelection) selection;
     }
     return result;
   }
 
-  private static IFile extractFileFromSelection( IStructuredSelection selection ) {
+  private static IFile extractFileFromSelection(IStructuredSelection selection) {
     IFile result = null;
-    if( selection.size() == 1 ) {
-      result = ResourceUtil.getFile( selection.getFirstElement() );
+    if (selection.size() == 1) {
+      result = ResourceUtil.getFile(selection.getFirstElement());
     }
     return result;
   }

@@ -15,18 +15,18 @@ public class ActivateJUnitViewOnFailureAction extends Action {
   private final IEclipsePreferences junitPreferences;
 
   public ActivateJUnitViewOnFailureAction() {
-    this( InstanceScope.INSTANCE.getNode( JUNIT_CORE_PLUGIN_ID ) );
+    this(InstanceScope.INSTANCE.getNode(JUNIT_CORE_PLUGIN_ID));
   }
 
-  public ActivateJUnitViewOnFailureAction( IEclipsePreferences junitPreferences ) {
-    super( "Activate JUnit View on Failure Only", IAction.AS_CHECK_BOX );
-    this.junitPreferences = requireNonNull( junitPreferences );
-    setChecked( junitPreferences.getBoolean( PREF_SHOW_ON_ERROR_ONLY, false ) );
+  public ActivateJUnitViewOnFailureAction(IEclipsePreferences junitPreferences) {
+    super("Activate JUnit View on Failure Only", IAction.AS_CHECK_BOX);
+    this.junitPreferences = requireNonNull(junitPreferences);
+    setChecked(junitPreferences.getBoolean(PREF_SHOW_ON_ERROR_ONLY, false));
   }
 
   @Override
   public void run() {
-    boolean checked = junitPreferences.getBoolean( PREF_SHOW_ON_ERROR_ONLY, false );
-    junitPreferences.putBoolean( PREF_SHOW_ON_ERROR_ONLY, !checked );
+    boolean checked = junitPreferences.getBoolean(PREF_SHOW_ON_ERROR_ONLY, false);
+    junitPreferences.putBoolean(PREF_SHOW_ON_ERROR_ONLY, !checked);
   }
 }

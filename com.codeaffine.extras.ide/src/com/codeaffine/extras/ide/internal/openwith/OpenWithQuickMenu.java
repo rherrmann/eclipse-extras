@@ -21,71 +21,71 @@ public class OpenWithQuickMenu {
   private final IWorkbenchPage workbenchPage;
   private final IFile file;
 
-  public OpenWithQuickMenu( IWorkbenchPage workbenchPage, IFile file ) {
+  public OpenWithQuickMenu(IWorkbenchPage workbenchPage, IFile file) {
     this.workbenchPage = workbenchPage;
     this.file = file;
   }
 
   public void show() {
     Control focusControl = getFocusControl();
-    if( focusControl != null && !focusControl.isDisposed() ) {
-      Point location = computeMenuLocation( focusControl );
-      if( location != null ) {
-        show( focusControl, location );
+    if (focusControl != null && !focusControl.isDisposed()) {
+      Point location = computeMenuLocation(focusControl);
+      if (location != null) {
+        show(focusControl, location);
       }
     }
   }
 
-  private void show( Control focusControl, Point location ) {
-    Menu quickMenu = new Menu( focusControl.getShell() );
-    OpenWithMenu openWithMenu = new OpenWithMenu( workbenchPage, file );
-    openWithMenu.fill( quickMenu, 0 );
-    quickMenu.setLocation( location );
-    quickMenu.addListener( SWT.Hide, createMenuCloseListener( openWithMenu ) );
-    quickMenu.setVisible( true );
+  private void show(Control focusControl, Point location) {
+    Menu quickMenu = new Menu(focusControl.getShell());
+    OpenWithMenu openWithMenu = new OpenWithMenu(workbenchPage, file);
+    openWithMenu.fill(quickMenu, 0);
+    quickMenu.setLocation(location);
+    quickMenu.addListener(SWT.Hide, createMenuCloseListener(openWithMenu));
+    quickMenu.setVisible(true);
   }
 
-  private MenuCloseListener createMenuCloseListener( OpenWithMenu openWithMenu ) {
-    return new MenuCloseListener( workbenchPage.getWorkbenchWindow().getShell(), openWithMenu );
+  private MenuCloseListener createMenuCloseListener(OpenWithMenu openWithMenu) {
+    return new MenuCloseListener(workbenchPage.getWorkbenchWindow().getShell(), openWithMenu);
   }
 
   private Control getFocusControl() {
     return workbenchPage.getWorkbenchWindow().getShell().getDisplay().getFocusControl();
   }
 
-  private static Point computeMenuLocation( Control focusControl ) {
-    return new MenuLocationComputer().computeMenuLocation( focusControl );
+  private static Point computeMenuLocation(Control focusControl) {
+    return new MenuLocationComputer().computeMenuLocation(focusControl);
   }
 
   private static class MenuCloseListener implements Listener {
     private final Shell shell;
     private final OpenWithMenu openWithMenu;
 
-    MenuCloseListener( Shell shell, OpenWithMenu openWithMenu ) {
+    MenuCloseListener(Shell shell, OpenWithMenu openWithMenu) {
       this.shell = shell;
       this.openWithMenu = openWithMenu;
     }
 
     @Override
-    public void handleEvent( Event event ) {
-      new UIThreadSynchronizer().asyncExec( shell, new Runnable() {
+    public void handleEvent(Event event) {
+      new UIThreadSynchronizer().asyncExec(shell, new Runnable() {
         @Override
         public void run() {
           openWithMenu.dispose();
         }
-      } );
+      });
     }
   }
 
   private static class MenuLocationComputer extends QuickMenuCreator {
     @Override
-    protected void fillMenu( IMenuManager menu ) {
+    protected void fillMenu(IMenuManager menu) {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public Point computeMenuLocation( Control focusControl ) {
-      return super.computeMenuLocation( focusControl );
+    public Point computeMenuLocation(Control focusControl) {
+      return super.computeMenuLocation(focusControl);
     }
   }
 }

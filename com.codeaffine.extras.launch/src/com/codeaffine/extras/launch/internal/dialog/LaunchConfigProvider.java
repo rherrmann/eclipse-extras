@@ -11,12 +11,12 @@ public class LaunchConfigProvider {
 
   private final ILaunchManager launchManager;
 
-  public LaunchConfigProvider( ILaunchManager launchManager ) {
+  public LaunchConfigProvider(ILaunchManager launchManager) {
     this.launchManager = launchManager;
   }
 
   public ILaunchConfiguration[] getLaunchConfigurations() throws CoreException {
-    return LaunchConfigurationManager.filterConfigs( launchManager.getLaunchConfigurations() );
+    return LaunchConfigurationManager.filterConfigs(launchManager.getLaunchConfigurations());
   }
 
 }

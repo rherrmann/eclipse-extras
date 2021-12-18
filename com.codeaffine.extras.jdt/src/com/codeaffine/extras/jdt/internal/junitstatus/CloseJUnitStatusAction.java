@@ -11,12 +11,12 @@ public class CloseJUnitStatusAction extends Action {
   private final IWorkbench workbench;
   private final WorkspaceScopePreferences preferences;
 
-  public CloseJUnitStatusAction( IWorkbench workbench ) {
-    this( workbench, new WorkspaceScopePreferences() );
+  public CloseJUnitStatusAction(IWorkbench workbench) {
+    this(workbench, new WorkspaceScopePreferences());
   }
 
-  public CloseJUnitStatusAction( IWorkbench workbench, WorkspaceScopePreferences preferences ) {
-    super( "Close" );
+  public CloseJUnitStatusAction(IWorkbench workbench, WorkspaceScopePreferences preferences) {
+    super("Close");
     this.workbench = workbench;
     this.preferences = preferences;
   }
@@ -28,10 +28,10 @@ public class CloseJUnitStatusAction extends Action {
   }
 
   private void closeJUnitStatusBar() {
-    preferences.setShowJUnitStatusBar( false );
+    preferences.setShowJUnitStatusBar(false);
   }
 
   private void updateWorkbench() {
-    new ExpressionEvaluator( workbench ).evaluate();
+    new ExpressionEvaluator(workbench).evaluate();
   }
 }

@@ -28,46 +28,53 @@ public class TextAnimationTest {
   private Shell widget;
   private TextAnimation textAnimation;
 
+  @Before
+  public void setUp() {
+    textAnimationPainter = mock(TextAnimationPainter.class);
+    widget = displayHelper.createShell();
+    textAnimation = new TextAnimation(widget, textAnimationPainter, 1);
+  }
+
   @Test
   public void testSetTextWithDots() {
-    textAnimation.setText( TEXT_WITH_DOTS );
+    textAnimation.setText(TEXT_WITH_DOTS);
 
-    waitFor( 300 );
+    waitFor(300);
 
-    verify( textAnimationPainter, atLeast( 3 ) ).drawText( textAnimation );
+    verify(textAnimationPainter, atLeast(3)).drawText(textAnimation);
   }
 
   @Test
   public void testSetTextWithoutDots() {
-    textAnimation.setText( "foo" );
+    textAnimation.setText("foo");
 
-    waitFor( 300 );
+    waitFor(300);
 
-    verify( textAnimationPainter, never() ).drawText( any( TextAnimation.class ) );
+    verify(textAnimationPainter, never()).drawText(any(TextAnimation.class));
   }
 
   @Test
   public void testGetTextWidthDots() {
     String text = TEXT_WITH_DOTS;
-    textAnimation.setText( text );
+    textAnimation.setText(text);
 
     String returnedText = textAnimation.getText();
 
-    assertThat( returnedText ).isEqualTo( text );
+    assertThat(returnedText).isEqualTo(text);
   }
 
   @Test
   public void testGetAnimatedText() {
-    textAnimation.setText( "Running..." );
+    textAnimation.setText("Running...");
 
     String animatedText = textAnimation.getAnimatedText();
 
-    assertThat( animatedText ).isEqualTo( "Running" );
+    assertThat(animatedText).isEqualTo("Running");
   }
 
   @Test
   public void testAnimationCycle() {
-    textAnimation.setText( "Running..." );
+    textAnimation.setText("Running...");
 
     String animatedText1 = triggerAnimationCycle();
     String animatedText2 = triggerAnimationCycle();
@@ -75,46 +82,39 @@ public class TextAnimationTest {
     String animatedText4 = triggerAnimationCycle();
     String animatedText5 = triggerAnimationCycle();
 
-    assertThat( animatedText1 ).isEqualTo( "Running." );
-    assertThat( animatedText2 ).isEqualTo( "Running.." );
-    assertThat( animatedText3 ).isEqualTo( "Running..." );
-    assertThat( animatedText4 ).isEqualTo( "Running" );
-    assertThat( animatedText5 ).isEqualTo( "Running." );
+    assertThat(animatedText1).isEqualTo("Running.");
+    assertThat(animatedText2).isEqualTo("Running..");
+    assertThat(animatedText3).isEqualTo("Running...");
+    assertThat(animatedText4).isEqualTo("Running");
+    assertThat(animatedText5).isEqualTo("Running.");
   }
 
   @Test
   public void testDisable() {
-    textAnimation.setText( TEXT_WITH_DOTS );
+    textAnimation.setText(TEXT_WITH_DOTS);
 
     textAnimation.disable();
-    waitFor( 300 );
+    waitFor(300);
 
-    verify( textAnimationPainter, never() ).drawText( any( TextAnimation.class ) );
+    verify(textAnimationPainter, never()).drawText(any(TextAnimation.class));
   }
 
   @Test
   public void testDisposeWidgetDisablesAnimation() {
-    textAnimation.setText( TEXT_WITH_DOTS );
+    textAnimation.setText(TEXT_WITH_DOTS);
 
     widget.dispose();
-    waitFor( 300 );
+    waitFor(300);
 
-    verify( textAnimationPainter, never() ).drawText( any( TextAnimation.class ) );
+    verify(textAnimationPainter, never()).drawText(any(TextAnimation.class));
   }
 
-  @Before
-  public void setUp() {
-    textAnimationPainter = mock( TextAnimationPainter.class );
-    widget = displayHelper.createShell();
-    textAnimation = new TextAnimation( widget, textAnimationPainter, 1 );
-  }
-
-  private static void waitFor( long milliseconds ) {
+  private static void waitFor(long milliseconds) {
     long start = System.currentTimeMillis();
-    while( System.currentTimeMillis() - start <= milliseconds ) {
+    while (System.currentTimeMillis() - start <= milliseconds) {
       try {
-        Thread.sleep( 1 );
-      } catch( InterruptedException ignore ) {
+        Thread.sleep(1);
+      } catch (InterruptedException ignore) {
         Thread.interrupted();
       }
       DisplayHelper.flushPendingEvents();

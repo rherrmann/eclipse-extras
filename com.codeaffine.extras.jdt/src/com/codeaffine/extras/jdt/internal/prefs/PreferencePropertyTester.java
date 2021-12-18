@@ -17,38 +17,36 @@ public class PreferencePropertyTester extends PropertyTester {
   private final IPreferenceStore preferenceStore;
 
   public PreferencePropertyTester() {
-    this( JDTExtrasPlugin.getInstance().getPreferenceStore() );
+    this(JDTExtrasPlugin.getInstance().getPreferenceStore());
   }
 
-  public PreferencePropertyTester( IPreferenceStore preferenceStore ) {
+  public PreferencePropertyTester(IPreferenceStore preferenceStore) {
     this.preferenceStore = preferenceStore;
   }
 
   @Override
-  public boolean test( Object receiver, String property, Object[] args, Object expectedValue ) {
+  public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
     boolean result = false;
-    if( argumentsValid( receiver, property, args ) ) {
-      result = test( args, expectedValue );
+    if (argumentsValid(receiver, property, args)) {
+      result = test(args, expectedValue);
     }
     return result;
   }
 
-  private boolean test( Object[] args, Object expectedValue ) {
-    return evaluateResult( expectedValue, getPreferenceValue( args ) );
+  private boolean test(Object[] args, Object expectedValue) {
+    return evaluateResult(expectedValue, getPreferenceValue(args));
   }
 
-  private static boolean argumentsValid( Object receiver, String property, Object[] args ) {
-    return receiver instanceof IServiceLocator
-        && IS_TRUE.equals( property )
-        && args.length == 1
-        && args[ 0 ] instanceof String;
+  private static boolean argumentsValid(Object receiver, String property, Object[] args) {
+    return receiver instanceof IServiceLocator && IS_TRUE.equals(property) && args.length == 1
+        && args[0] instanceof String;
   }
 
-  private boolean getPreferenceValue( Object[] args ) {
-    return preferenceStore.getBoolean( ( String )args[ 0 ] );
+  private boolean getPreferenceValue(Object[] args) {
+    return preferenceStore.getBoolean((String) args[0]);
   }
 
-  private static boolean evaluateResult( Object expectedValue, boolean value ) {
-    return expectedValue instanceof Boolean && ( ( Boolean )expectedValue ).booleanValue() == value;
+  private static boolean evaluateResult(Object expectedValue, boolean value) {
+    return expectedValue instanceof Boolean && ((Boolean) expectedValue).booleanValue() == value;
   }
 }

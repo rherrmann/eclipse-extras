@@ -16,25 +16,21 @@ public class LaunchConfigTypeSerializer {
 
   private final ILaunchManager launchManager;
 
-  public LaunchConfigTypeSerializer( ILaunchManager launchManager ) {
+  public LaunchConfigTypeSerializer(ILaunchManager launchManager) {
     this.launchManager = launchManager;
   }
 
-  public String serialize( ILaunchConfigurationType... types ) {
-    return Stream.of( types ).map( type -> type.getIdentifier() ).collect( joining( DELIMITER ) );
+  public String serialize(ILaunchConfigurationType... types) {
+    return Stream.of(types).map(type -> type.getIdentifier()).collect(joining(DELIMITER));
   }
 
-  public ILaunchConfigurationType[] deserialize( String string ) {
-    return Stream.of( string.split( ESCAPED_DELIMITER ) )
-      .map( typeId -> findType( typeId ) )
-      .filter( type -> type != null )
-      .toArray( ILaunchConfigurationType[]::new );
+  public ILaunchConfigurationType[] deserialize(String string) {
+    return Stream.of(string.split(ESCAPED_DELIMITER)).map(typeId -> findType(typeId)).filter(type -> type != null)
+        .toArray(ILaunchConfigurationType[]::new);
   }
 
-  private ILaunchConfigurationType findType( String typeId ) {
-    return Stream.of( launchManager.getLaunchConfigurationTypes() )
-      .filter( type -> Objects.equals( type.getIdentifier(), typeId ) )
-      .findFirst()
-      .orElse( null );
+  private ILaunchConfigurationType findType(String typeId) {
+    return Stream.of(launchManager.getLaunchConfigurationTypes())
+        .filter(type -> Objects.equals(type.getIdentifier(), typeId)).findFirst().orElse(null);
   }
 }

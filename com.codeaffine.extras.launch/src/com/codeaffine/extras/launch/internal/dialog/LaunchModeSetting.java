@@ -15,7 +15,7 @@ public class LaunchModeSetting {
   private final ILaunchManager launchManager;
   private final IDialogSettings settings;
 
-  public LaunchModeSetting( ILaunchManager launchManager, IDialogSettings settings ) {
+  public LaunchModeSetting(ILaunchManager launchManager, IDialogSettings settings) {
     this.launchManager = launchManager;
     this.settings = settings;
   }
@@ -26,24 +26,24 @@ public class LaunchModeSetting {
 
   public String getLaunchModeId() {
     String result = DEBUG_MODE;
-    String storedLaunchMode = settings.get( SETTING_LAUNCH_MODE );
-    if( isValidLaunchMode( storedLaunchMode ) ) {
+    String storedLaunchMode = settings.get(SETTING_LAUNCH_MODE);
+    if (isValidLaunchMode(storedLaunchMode)) {
       result = storedLaunchMode;
     }
     return result;
   }
 
   public ILaunchMode getLaunchMode() {
-    return launchManager.getLaunchMode( getLaunchModeId() );
+    return launchManager.getLaunchMode(getLaunchModeId());
   }
 
-  public void setLaunchModeId( String launchModeId ) {
-    settings.put( SETTING_LAUNCH_MODE, launchModeId );
+  public void setLaunchModeId(String launchModeId) {
+    settings.put(SETTING_LAUNCH_MODE, launchModeId);
   }
 
-  private boolean isValidLaunchMode( String launchModeId ) {
+  private boolean isValidLaunchMode(String launchModeId) {
     ILaunchMode[] launchModes = launchManager.getLaunchModes();
-    return stream( launchModes ).anyMatch( input -> input.getIdentifier().equals( launchModeId ) );
+    return stream(launchModes).anyMatch(input -> input.getIdentifier().equals(launchModeId));
   }
 
 }

@@ -11,6 +11,6 @@ public class WorkspaceScopePreferenceInitializer extends AbstractPreferenceIniti
   @Override
   public void initializeDefaultPreferences() {
     IPreferenceStore preferenceStore = JDTExtrasPlugin.getInstance().getPreferenceStore();
-    WorkspaceScopePreferences.initializeDefaults( preferenceStore );
+    WorkspaceScopePreferences.initializeDefaults(preferenceStore);
   }
 }

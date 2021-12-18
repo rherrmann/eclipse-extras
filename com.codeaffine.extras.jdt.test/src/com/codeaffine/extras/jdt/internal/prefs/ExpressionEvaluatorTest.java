@@ -17,31 +17,31 @@ public class ExpressionEvaluatorTest {
 
   @Before
   public void setUp() {
-    workbench = mock( IWorkbench.class );
+    workbench = mock(IWorkbench.class);
   }
 
   @Test
   public void testEvaluate() {
-    IEvaluationService evaluationService = mock( IEvaluationService.class );
-    when( workbench.getService( IEvaluationService.class ) ).thenReturn( evaluationService );
+    IEvaluationService evaluationService = mock(IEvaluationService.class);
+    when(workbench.getService(IEvaluationService.class)).thenReturn(evaluationService);
 
-    new ExpressionEvaluator( workbench ).evaluate();
+    new ExpressionEvaluator(workbench).evaluate();
 
-    verify( evaluationService ).requestEvaluation( PreferencePropertyTester.PROP_IS_TRUE );
+    verify(evaluationService).requestEvaluation(PreferencePropertyTester.PROP_IS_TRUE);
   }
 
   @Test
   public void testEvaluateWithNullWorkbench() {
-    Throwable throwable = thrownBy( () -> new ExpressionEvaluator( null ).evaluate() );
+    Throwable throwable = thrownBy(() -> new ExpressionEvaluator(null).evaluate());
 
-    assertThat( throwable ).isNull();
+    assertThat(throwable).isNull();
   }
 
   @Test
   public void testEvaluateWithoutEvaluationService() {
-    new ExpressionEvaluator( workbench ).evaluate();
+    new ExpressionEvaluator(workbench).evaluate();
 
-    verify( workbench ).getService( IEvaluationService.class );
+    verify(workbench).getService(IEvaluationService.class);
   }
 
 }

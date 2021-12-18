@@ -11,9 +11,9 @@ public class FillLayoutFactoryTest {
   public void testNewFillLayout() {
     int margin = 2;
 
-    FillLayout fillLayout = FillLayoutFactory.newFillLayout( margin );
+    FillLayout fillLayout = FillLayoutFactory.newFillLayout(margin);
 
-    assertThat( fillLayout.marginHeight ).isEqualTo( margin );
-    assertThat( fillLayout.marginWidth  ).isEqualTo( margin );
+    assertThat(fillLayout.marginHeight).isEqualTo(margin);
+    assertThat(fillLayout.marginWidth).isEqualTo(margin);
   }
 }
