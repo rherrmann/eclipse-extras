@@ -24,7 +24,7 @@
 		<link>
 			<name>eclipse-latest.target</name>
 			<type>1</type>
-			<locationURI>PROJECT_LOC/eclipse-4.20.target</locationURI>
+			<locationURI>PROJECT_LOC/eclipse-4.22.target</locationURI>
 		</link>
 	</linkedResources>
 	<filteredResources>
