@@ -1,10 +1,9 @@
 package com.codeaffine.extras.imageviewer.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.catchThrowable;
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -13,9 +12,7 @@ import org.eclipse.swt.graphics.ImageLoader;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
 import com.codeaffine.extras.test.util.ProjectHelper;
-import com.codeaffine.test.util.lang.ThrowableCaptor;
 
 public class ImageDataStoragePDETest {
 
@@ -41,7 +38,7 @@ public class ImageDataStoragePDETest {
     ImageDataStorage storage = new ImageDataStorage(imageData);
     NullProgressMonitor monitor = new NullProgressMonitor();
 
-    Throwable throwable = ThrowableCaptor.thrownBy(() -> storage.save(null, monitor));
+    Throwable throwable = catchThrowable(() -> storage.save(null, monitor));
 
     assertThat(throwable).isInstanceOf(NullPointerException.class);
   }
@@ -51,7 +48,7 @@ public class ImageDataStoragePDETest {
     ImageDataStorage storage = new ImageDataStorage(imageData);
     IFile file = projectHelper.getProject().getFile("file");
 
-    Throwable throwable = ThrowableCaptor.thrownBy(() -> storage.save(file, null));
+    Throwable throwable = catchThrowable(() -> storage.save(file, null));
 
     assertThat(throwable).isInstanceOf(NullPointerException.class);
   }

@@ -1,15 +1,13 @@
 package com.codeaffine.extras.launch.internal.dialog;
 
-import static com.codeaffine.test.util.lang.ThrowableCaptor.thrownBy;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
 import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 import java.util.LinkedList;
 import java.util.List;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -18,7 +16,6 @@ import org.eclipse.debug.core.ILaunchMode;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
 import com.codeaffine.extras.launch.test.LaunchConfigRule;
 
 public class LaunchConfigComparatorPDETest {
@@ -113,7 +110,7 @@ public class LaunchConfigComparatorPDETest {
 
   @Test
   public void testCompareWithNullLaunchConfigs() {
-    Throwable throwable = thrownBy( () -> compare( null, null ) );
+    Throwable throwable = catchThrowable( () -> compare( null, null ) );
 
     assertThat( throwable ).isInstanceOf( NullPointerException.class );
   }

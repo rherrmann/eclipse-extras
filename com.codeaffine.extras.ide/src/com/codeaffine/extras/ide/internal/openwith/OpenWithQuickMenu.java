@@ -68,12 +68,7 @@ public class OpenWithQuickMenu {
 
     @Override
     public void handleEvent(Event event) {
-      new UIThreadSynchronizer().asyncExec(shell, new Runnable() {
-        @Override
-        public void run() {
-          openWithMenu.dispose();
-        }
-      });
+      new UIThreadSynchronizer().asyncExec(shell, () -> openWithMenu.dispose());
     }
   }
 

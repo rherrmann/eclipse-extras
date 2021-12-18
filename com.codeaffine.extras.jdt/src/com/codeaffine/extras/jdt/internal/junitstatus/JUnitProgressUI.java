@@ -20,12 +20,9 @@ public class JUnitProgressUI implements ProgressUI {
 
   @Override
   public void update(String text, int textAlignment, Color barColor, int selection, int maximum) {
-    uiThreadSynchronizer.asyncExec(progressBar, new Runnable() {
-      @Override
-      public void run() {
-        progressBar.setValues(text, textAlignment, barColor, selection, maximum);
-      }
-    });
+    uiThreadSynchronizer.asyncExec(
+        progressBar,
+        () -> progressBar.setValues(text, textAlignment, barColor, selection, maximum));
   }
 
   @Override
@@ -36,13 +33,8 @@ public class JUnitProgressUI implements ProgressUI {
     }
   }
 
-  private void execSetToolTipText(final String toolTipText) {
-    uiThreadSynchronizer.asyncExec(progressBar, new Runnable() {
-      @Override
-      public void run() {
-        progressBar.setToolTipText(toolTipText);
-      }
-    });
+  private void execSetToolTipText(String toolTipText) {
+    uiThreadSynchronizer.asyncExec(progressBar, () -> progressBar.setToolTipText(toolTipText));
   }
 
 }

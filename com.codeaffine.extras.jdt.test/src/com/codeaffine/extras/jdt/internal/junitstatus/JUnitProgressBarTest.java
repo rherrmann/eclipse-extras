@@ -1,9 +1,9 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
@@ -12,12 +12,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
 import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
 import com.codeaffine.eclipse.swt.test.util.SWTIgnoreConditions.NonWindowsPlatform;
 import com.codeaffine.test.util.junit.ConditionalIgnoreRule;
 import com.codeaffine.test.util.junit.ConditionalIgnoreRule.ConditionalIgnore;
-import com.codeaffine.test.util.lang.ThrowableCaptor;
 
 
 public class JUnitProgressBarTest {
@@ -189,7 +187,7 @@ public class JUnitProgressBarTest {
   public void testRedrawWithInitialValues() {
     progressBar.getParent().setVisible(true);
 
-    Throwable throwable = ThrowableCaptor.thrownBy(() -> progressBar.redraw());
+    Throwable throwable = catchThrowable(() -> progressBar.redraw());
 
     assertThat(throwable).isNull();
   }
@@ -200,7 +198,7 @@ public class JUnitProgressBarTest {
     Color barColor = displayHelper.getSystemColor(SWT.COLOR_BLUE);
     progressBar.setValues("text", SWT.CENTER, barColor, 4, 5);
 
-    Throwable throwable = ThrowableCaptor.thrownBy(() -> progressBar.redraw());
+    Throwable throwable = catchThrowable(() -> progressBar.redraw());
 
     assertThat(throwable).isNull();
   }

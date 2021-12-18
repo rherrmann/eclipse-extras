@@ -1,11 +1,10 @@
 package com.codeaffine.extras.jdt.internal.prefs;
 
-import static com.codeaffine.test.util.lang.ThrowableCaptor.thrownBy;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.services.IEvaluationService;
 import org.junit.Before;
@@ -32,7 +31,7 @@ public class ExpressionEvaluatorTest {
 
   @Test
   public void testEvaluateWithNullWorkbench() {
-    Throwable throwable = thrownBy(() -> new ExpressionEvaluator(null).evaluate());
+    Throwable throwable = catchThrowable(() -> new ExpressionEvaluator(null).evaluate());
 
     assertThat(throwable).isNull();
   }
