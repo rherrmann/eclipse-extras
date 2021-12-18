@@ -38,8 +38,8 @@
     </license>
   </licenses>
   <properties>
-    <tycho-version>2.3.0</tycho-version>
-    <tycho-extras-version>2.3.0</tycho-extras-version>
+    <tycho-version>2.5.0</tycho-version>
+    <tycho-extras-version>2.5.0</tycho-extras-version>
     <jacoco-version>0.8.7</jacoco-version>
     <target-platform-classifier>eclipse-4.20</target-platform-classifier>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -152,10 +152,6 @@
           <sourceReferences>
             <generate>true</generate>
           </sourceReferences>
-          <manifest>
-            <addDefaultImplementationEntries>false</addDefaultImplementationEntries>
-            <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
-          </manifest>
           <archive>
             <manifestEntries>
               <Built-By>codeaffine.com</Built-By>
@@ -277,12 +273,32 @@
                     <versionRange>[1.1.0,)</versionRange>
                     <goals>
                       <goal>compile</goal>
+                      <goal>testCompile</goal>
                     </goals>
                   </pluginExecutionFilter>
                   <action>
                     <ignore></ignore>
                   </action>
                 </pluginExecution>
+				<pluginExecution>
+					<pluginExecutionFilter>
+						<groupId>
+							org.eclipse.tycho
+						</groupId>
+						<artifactId>
+							target-platform-configuration
+						</artifactId>
+						<versionRange>
+							[2.5.0,)
+						</versionRange>
+						<goals>
+							<goal>target-platform</goal>
+						</goals>
+					</pluginExecutionFilter>
+					<action>
+						<ignore></ignore>
+					</action>
+				</pluginExecution>
               </pluginExecutions>
             </lifecycleMappingMetadata>
           </configuration>
