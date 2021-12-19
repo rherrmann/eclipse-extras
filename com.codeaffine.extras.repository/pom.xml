@@ -23,7 +23,6 @@
           <repositoryName>Extras for Eclipse Software Repository</repositoryName>
           <includeAllDependencies>false</includeAllDependencies>
           <compress>true</compress>
-          <xzCompress>false</xzCompress>
           <extraArtifactRepositoryProperties>
             <p2.statsURI>https://www.codeaffine.com/p2-stats</p2.statsURI>
           </extraArtifactRepositoryProperties>          
@@ -32,7 +31,7 @@
       
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.0.2</version>
+        <version>3.2.0</version>
         <executions>
           <execution>
             <id>copy-resources</id>
@@ -53,74 +52,7 @@
           </execution>
         </executions>
       </plugin>
-      
-      <plugin>
-        <groupId>org.eclipse.tycho.extras</groupId>
-        <artifactId>tycho-p2-extras-plugin</artifactId>
-        <version>${tycho-extras-version}</version>
-        <executions>
-          <execution>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>mirror</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <source>
-            <!-- Repository for Xiliary -->
-            <repository>
-              <url>https://fappel.github.io/xiliary/</url>
-              <layout>p2</layout>
-            </repository>
-          </source>
-          <ius>
-            <iu>
-              <query>
-                <expression>
-                  id == $0 &amp;&amp; version &gt;= $1 &amp;&amp; version &lt; $2
-                </expression>
-                <parameters>com.codeaffine.util,0.1.0,1.0.0</parameters>
-              </query>
-            </iu>
-            <iu>
-              <query>
-                <expression>
-                  id == $0 &amp;&amp; version &gt;= $1 &amp;&amp; version &lt; $2
-                </expression>
-                <parameters>com.codeaffine.eclipse.core.runtime,0.1.0,1.0.0</parameters>
-              </query>
-            </iu>
-            <iu>
-              <query>
-                <expression>
-                  id == $0 &amp;&amp; version &gt;= $1 &amp;&amp; version &lt; $2
-                </expression>
-                <parameters>com.codeaffine.eclipse.swt,0.1.0,1.0.0</parameters>
-              </query>
-            </iu>
-            <iu>
-              <query>
-                <expression>
-                  id == $0 &amp;&amp; version &gt;= $1 &amp;&amp; version &lt; $2
-                </expression>
-                <parameters>com.codeaffine.eclipse.ui,0.1.0,1.0.0</parameters>
-              </query>
-            </iu>
-          </ius>
-          <destination>${project.build.directory}/repository</destination>
-          <followOnlyFilteredRequirements>true</followOnlyFilteredRequirements>
-          <followStrictOnly>false</followStrictOnly>
-          <includeOptional>false</includeOptional>
-          <includeNonGreedy>false</includeNonGreedy>
-          <latestVersionOnly>true</latestVersionOnly>
-          <mirrorMetadataOnly>false</mirrorMetadataOnly>
-          <compress>true</compress>
-          <includePacked>false</includePacked>
-          <append>true</append>
-        </configuration>
-      </plugin>
-            
+       
     </plugins>
   </build>
 

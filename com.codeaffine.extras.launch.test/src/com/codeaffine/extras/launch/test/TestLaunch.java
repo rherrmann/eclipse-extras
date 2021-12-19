@@ -10,8 +10,8 @@ public class TestLaunch extends Launch {
 
   private volatile boolean terminated;
 
-  public TestLaunch( ILaunchConfiguration launchConfiguration, String mode, ISourceLocator locator ) {
-    super( launchConfiguration, mode, locator );
+  public TestLaunch(ILaunchConfiguration launchConfiguration, String mode, ISourceLocator locator) {
+    super(launchConfiguration, mode, locator);
   }
 
   @Override

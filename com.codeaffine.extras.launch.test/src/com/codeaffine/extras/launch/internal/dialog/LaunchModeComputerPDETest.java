@@ -31,32 +31,32 @@ public class LaunchModeComputerPDETest {
 
   @Test(expected = NullPointerException.class)
   public void testConstructorWithNullLaunchConfig() {
-    new LaunchModeComputer( null, getSupportedMode() );
+    new LaunchModeComputer(null, getSupportedMode());
   }
 
   @Test
   public void testComputeLaunchModeWithSupportedMode() {
     ILaunchMode supportedMode = getSupportedMode();
 
-    ILaunchMode launchMode = computeLaunchMode( supportedMode );
+    ILaunchMode launchMode = computeLaunchMode(supportedMode);
 
-    assertThat( launchMode ).isEqualTo( supportedMode );
+    assertThat(launchMode).isEqualTo(supportedMode);
   }
 
   @Test
   public void testComputeLaunchModeWithUnsupportedMode() {
     ILaunchMode unsupportedMode = getUnsupportedMode();
 
-    ILaunchMode launchMode = computeLaunchMode( unsupportedMode );
+    ILaunchMode launchMode = computeLaunchMode(unsupportedMode);
 
-    assertThat( launchMode ).isEqualTo( getSupportedMode() );
+    assertThat(launchMode).isEqualTo(getSupportedMode());
   }
 
   @Test
   public void testComputeLaunchModeWithNullLaunchMode() {
-    ILaunchMode launchMode = computeLaunchMode( null );
+    ILaunchMode launchMode = computeLaunchMode(null);
 
-    assertThat( launchMode ).isEqualTo( getSupportedMode() );
+    assertThat(launchMode).isEqualTo(getSupportedMode());
   }
 
   @Test
@@ -65,34 +65,34 @@ public class LaunchModeComputerPDETest {
     ILaunchConfiguration deletedLaunchConfig = launchConfig.doSave();
     deletedLaunchConfig.delete();
 
-    ILaunchMode launchMode = new LaunchModeComputer( deletedLaunchConfig, supportedMode ).computeLaunchMode();
+    ILaunchMode launchMode = new LaunchModeComputer(deletedLaunchConfig, supportedMode).computeLaunchMode();
 
-    assertThat( launchMode ).isNull();
+    assertThat(launchMode).isNull();
   }
 
   @Test
   public void testComputeLaunchGroupWithSupportedMode() {
     ILaunchMode supportedMode = getSupportedMode();
 
-    ILaunchGroup launchMode = computeLaunchGroup( supportedMode );
+    ILaunchGroup launchMode = computeLaunchGroup(supportedMode);
 
-    assertThat( launchMode.getMode() ).isEqualTo( supportedMode.getIdentifier() );
+    assertThat(launchMode.getMode()).isEqualTo(supportedMode.getIdentifier());
   }
 
   @Test
   public void testComputeLaunchGroupWithUnsupportedMode() {
     ILaunchMode unsupportedMode = getUnsupportedMode();
 
-    ILaunchGroup launchMode = computeLaunchGroup( unsupportedMode );
+    ILaunchGroup launchMode = computeLaunchGroup(unsupportedMode);
 
-    assertThat( launchMode.getMode() ).isEqualTo( getSupportedMode().getIdentifier() );
+    assertThat(launchMode.getMode()).isEqualTo(getSupportedMode().getIdentifier());
   }
 
   @Test
   public void testComputeLaunchGroupWithNullLaunchMode() {
-    ILaunchGroup launchGroup = computeLaunchGroup( null );
+    ILaunchGroup launchGroup = computeLaunchGroup(null);
 
-    assertThat( launchGroup.getMode() ).isEqualTo( getSupportedMode().getIdentifier() );
+    assertThat(launchGroup.getMode()).isEqualTo(getSupportedMode().getIdentifier());
   }
 
   @Test
@@ -101,24 +101,24 @@ public class LaunchModeComputerPDETest {
     ILaunchConfiguration deletedLaunchConfig = launchConfig.doSave();
     deletedLaunchConfig.delete();
 
-    ILaunchGroup launchGroup = new LaunchModeComputer( deletedLaunchConfig, supportedMode ).computeLaunchGroup();
+    ILaunchGroup launchGroup = new LaunchModeComputer(deletedLaunchConfig, supportedMode).computeLaunchGroup();
 
-    assertThat( launchGroup ).isNull();
+    assertThat(launchGroup).isNull();
   }
 
-  private ILaunchMode computeLaunchMode( ILaunchMode preferredLaunchMode ) {
-    return new LaunchModeComputer( launchConfig, preferredLaunchMode ).computeLaunchMode();
+  private ILaunchMode computeLaunchMode(ILaunchMode preferredLaunchMode) {
+    return new LaunchModeComputer(launchConfig, preferredLaunchMode).computeLaunchMode();
   }
 
-  private ILaunchGroup computeLaunchGroup( ILaunchMode preferredLaunchMode ) {
-    return new LaunchModeComputer( launchConfig, preferredLaunchMode ).computeLaunchGroup();
+  private ILaunchGroup computeLaunchGroup(ILaunchMode preferredLaunchMode) {
+    return new LaunchModeComputer(launchConfig, preferredLaunchMode).computeLaunchGroup();
   }
 
   private static ILaunchMode getSupportedMode() {
-    return DebugPlugin.getDefault().getLaunchManager().getLaunchMode( DEBUG_MODE );
+    return DebugPlugin.getDefault().getLaunchManager().getLaunchMode(DEBUG_MODE);
   }
 
   private static ILaunchMode getUnsupportedMode() {
-    return DebugPlugin.getDefault().getLaunchManager().getLaunchMode( TEST_LAUNCH_MODE );
+    return DebugPlugin.getDefault().getLaunchManager().getLaunchMode(TEST_LAUNCH_MODE);
   }
 }

@@ -18,27 +18,27 @@ public class LaunchConfigsPDETest {
 
   @Test(expected = NullPointerException.class)
   public void testIsRunningWithNullArgument() {
-    LaunchConfigs.isRunning( null );
+    LaunchConfigs.isRunning(null);
   }
 
   @Test
   public void testIsRunning() throws CoreException {
     ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
 
-    boolean running = LaunchConfigs.isRunning( launchConfig );
+    boolean running = LaunchConfigs.isRunning(launchConfig);
 
-    assertThat( running ).isFalse();
+    assertThat(running).isFalse();
   }
 
   @Test
   public void testIsRunningWithLaunchedLaunchConfig() throws CoreException {
     ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
-    ILaunch launch = launchConfig.launch( RUN_MODE, null );
+    ILaunch launch = launchConfig.launch(RUN_MODE, null);
 
-    boolean running = LaunchConfigs.isRunning( launchConfig );
+    boolean running = LaunchConfigs.isRunning(launchConfig);
     launch.terminate();
 
-    assertThat( running ).isTrue();
+    assertThat(running).isTrue();
   }
 
 }

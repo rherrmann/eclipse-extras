@@ -38,18 +38,18 @@ public class LaunchConfigProviderPDETest {
 
   @Before
   public void setUp() {
-    preferenceStore = new ScopedPreferenceStore( InstanceScope.INSTANCE, DEBUG_PLUGIN_ID );
+    preferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, DEBUG_PLUGIN_ID);
     launchManager = DebugPlugin.getDefault().getLaunchManager();
-    setFilterLaunchConfigsInClosedProjects( false );
-    setFilterLaunchConfigsInDeletedProjects( false );
-    launchConfigProvider = new LaunchConfigProvider( launchManager );
+    setFilterLaunchConfigsInClosedProjects(false);
+    setFilterLaunchConfigsInDeletedProjects(false);
+    launchConfigProvider = new LaunchConfigProvider(launchManager);
   }
 
   @Test
   public void testNoLaunchConfigs() throws CoreException {
     ILaunchConfiguration[] launchConfigs = launchConfigProvider.getLaunchConfigurations();
 
-    assertThat( launchConfigs ).isEmpty();
+    assertThat(launchConfigs).isEmpty();
   }
 
   @Test
@@ -58,76 +58,76 @@ public class LaunchConfigProviderPDETest {
 
     ILaunchConfiguration[] launchConfigs = launchConfigProvider.getLaunchConfigurations();
 
-    assertThat( launchConfigs ).containsOnly( launchConfig );
+    assertThat(launchConfigs).containsOnly(launchConfig);
   }
 
   @Test
   public void testKeepWhenPrivate() throws CoreException {
     ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
-    launchConfig.setAttribute( ATTR_PRIVATE, true );
+    launchConfig.setAttribute(ATTR_PRIVATE, true);
     launchConfig.doSave();
 
     ILaunchConfiguration[] launchConfigs = launchConfigProvider.getLaunchConfigurations();
 
-    assertThat( launchConfigs ).hasSize( 1 );
+    assertThat(launchConfigs).hasSize(1);
   }
 
   @Test
   public void testFilterWhenMappedProjectWasDeleted() throws CoreException {
-    setFilterLaunchConfigsInDeletedProjects( true );
+    setFilterLaunchConfigsInDeletedProjects(true);
     IResource resource = createLaunchConfigForResource();
-    ProjectHelper.delete( resource.getProject() );
+    ProjectHelper.delete(resource.getProject());
 
     ILaunchConfiguration[] launchConfigs = launchConfigProvider.getLaunchConfigurations();
 
-    assertThat( launchConfigs ).isEmpty();
+    assertThat(launchConfigs).isEmpty();
   }
 
   @Test
   public void testFilterWhenMappedProjectWasClosed() throws CoreException {
-    setFilterLaunchConfigsInClosedProjects( true );
+    setFilterLaunchConfigsInClosedProjects(true);
     IResource resource = createLaunchConfigForResource();
-    resource.getProject().close( null );
+    resource.getProject().close(null);
 
     ILaunchConfiguration[] launchConfigs = launchConfigProvider.getLaunchConfigurations();
 
-    assertThat( launchConfigs ).isEmpty();
+    assertThat(launchConfigs).isEmpty();
   }
 
   @Test
   public void testKeepWhenMappedProjectWasDeletedAndFilterClosedOptionOn() throws CoreException {
-    setFilterLaunchConfigsInClosedProjects( true );
+    setFilterLaunchConfigsInClosedProjects(true);
     IResource resource = createLaunchConfigForResource();
-    ProjectHelper.delete( resource.getProject() );
+    ProjectHelper.delete(resource.getProject());
 
     ILaunchConfiguration[] launchConfigs = launchConfigProvider.getLaunchConfigurations();
 
-    assertThat( launchConfigs ).hasSize( 1 );
+    assertThat(launchConfigs).hasSize(1);
   }
 
   @Test
   public void testKeepWhenMappedProjectWasClosedAndFilterDeletedOptionOn() throws CoreException {
-    setFilterLaunchConfigsInDeletedProjects( true );
+    setFilterLaunchConfigsInDeletedProjects(true);
     IResource resource = createLaunchConfigForResource();
-    resource.getProject().close( null );
+    resource.getProject().close(null);
 
     ILaunchConfiguration[] launchConfigs = launchConfigProvider.getLaunchConfigurations();
 
-    assertThat( launchConfigs ).hasSize( 1 );
+    assertThat(launchConfigs).hasSize(1);
   }
 
-  private void setFilterLaunchConfigsInDeletedProjects( boolean value ) {
-    preferenceStore.setValue( PREF_FILTER_LAUNCH_DELETED, value );
+  private void setFilterLaunchConfigsInDeletedProjects(boolean value) {
+    preferenceStore.setValue(PREF_FILTER_LAUNCH_DELETED, value);
   }
 
-  private void setFilterLaunchConfigsInClosedProjects( boolean value ) {
-    preferenceStore.setValue( PREF_FILTER_LAUNCH_CLOSED, value );
+  private void setFilterLaunchConfigsInClosedProjects(boolean value) {
+    preferenceStore.setValue(PREF_FILTER_LAUNCH_CLOSED, value);
   }
 
   private IResource createLaunchConfigForResource() throws CoreException {
     ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
     IFile resource = projectHelper.createFile();
-    launchConfig.setMappedResources( new IResource[] { resource } );
+    launchConfig.setMappedResources(new IResource[] {resource});
     launchConfig.doSave();
     return resource;
   }

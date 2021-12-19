@@ -35,18 +35,18 @@ public class LaunchConfigSelectionHistoryPDETest {
 
   @Test
   public void testRestoreFromMemento() {
-    Object restoredItem = history.restoreItemFromMemento( XMLMemento.createWriteRoot( "foo" ) );
+    Object restoredItem = history.restoreItemFromMemento(XMLMemento.createWriteRoot("foo"));
 
-    assertThat( restoredItem ).isNull();
+    assertThat(restoredItem).isNull();
   }
 
   @Test
   public void testStoreItemToMemento() {
-    IMemento memento = mock( IMemento.class );
+    IMemento memento = mock(IMemento.class);
 
-    history.storeItemToMemento( new Object(), memento );
+    history.storeItemToMemento(new Object(), memento);
 
-    verifyZeroInteractions( memento );
+    verifyZeroInteractions(memento);
   }
 
   @Test
@@ -55,7 +55,7 @@ public class LaunchConfigSelectionHistoryPDETest {
 
     Object[] historyItems = history.getHistoryItems();
 
-    assertThat( historyItems ).containsOnly( launchConfig );
+    assertThat(historyItems).containsOnly(launchConfig);
   }
 
   @Test
@@ -65,20 +65,20 @@ public class LaunchConfigSelectionHistoryPDETest {
     Object[] historyItems1 = history.getHistoryItems();
     Object[] historyItems2 = history.getHistoryItems();
 
-    assertThat( historyItems1 ).isNotSameAs( historyItems2 );
-    assertThat( historyItems1[ 0 ] ).isEqualTo( historyItems2[ 0 ] );
+    assertThat(historyItems1).isNotSameAs(historyItems2);
+    assertThat(historyItems1[0]).isEqualTo(historyItems2[0]);
   }
 
   @Test
   public void testGetHistoryItemsAfterRenamingLaunchConfig() throws CoreException {
     runLaunchConfig();
     ILaunchConfigurationWorkingCopy workingCopy = launchConfig.getWorkingCopy();
-    workingCopy.rename( launchConfig.getName() + "-renamed" );
+    workingCopy.rename(launchConfig.getName() + "-renamed");
     ILaunchConfiguration renamedLaunchConfig = workingCopy.doSave();
 
     Object[] historyItems = history.getHistoryItems();
 
-    assertThat( historyItems ).containsOnly( renamedLaunchConfig );
+    assertThat(historyItems).containsOnly(renamedLaunchConfig);
   }
 
   @Test
@@ -88,14 +88,14 @@ public class LaunchConfigSelectionHistoryPDETest {
 
     Object[] historyItems = history.getHistoryItems();
 
-    assertThat( historyItems ).containsOnly( launchConfig );
+    assertThat(historyItems).containsOnly(launchConfig);
   }
 
   @Test
   public void testGetHistoryItemsWhenNoHistory() {
     Object[] historyItems = history.getHistoryItems();
 
-    assertThat( historyItems ).isEmpty();
+    assertThat(historyItems).isEmpty();
   }
 
   @Test
@@ -104,37 +104,37 @@ public class LaunchConfigSelectionHistoryPDETest {
 
     boolean empty = history.isEmpty();
 
-    assertThat( empty ).isFalse();
+    assertThat(empty).isFalse();
   }
 
   @Test
   public void testIsEmptyWhenNoHistory() {
     boolean empty = history.isEmpty();
 
-    assertThat( empty ).isTrue();
+    assertThat(empty).isTrue();
   }
 
   @Test
   public void testContains() {
     runLaunchConfig();
 
-    boolean contains = history.contains( launchConfig );
+    boolean contains = history.contains(launchConfig);
 
-    assertThat( contains ).isTrue();
+    assertThat(contains).isTrue();
   }
 
   @Test
   public void testContainsWhenNoHistory() {
-    boolean contains = history.contains( launchConfig );
+    boolean contains = history.contains(launchConfig);
 
-    assertThat( contains ).isFalse();
+    assertThat(contains).isFalse();
   }
 
   @Test
   public void testContainsWithNullArgument() {
-    boolean contains = history.contains( null );
+    boolean contains = history.contains(null);
 
-    assertThat( contains ).isFalse();
+    assertThat(contains).isFalse();
   }
 
   @Test
@@ -142,30 +142,30 @@ public class LaunchConfigSelectionHistoryPDETest {
     runLaunchConfig();
     Object[] historyItems = history.getHistoryItems();
 
-    history.remove( historyItems[ 0 ] );
+    history.remove(historyItems[0]);
 
-    assertThat( history.getHistoryItems() ).extracting( "name" ).doesNotContain( launchConfig.getName() );
+    assertThat(history.getHistoryItems()).extracting("name").doesNotContain(launchConfig.getName());
   }
 
   @Test
   public void testRemoveWithNonLaunchConfig() {
-    boolean removed = history.remove( new Object() );
+    boolean removed = history.remove(new Object());
 
-    assertThat( removed ).isFalse();
+    assertThat(removed).isFalse();
   }
 
   @Test
   public void testRemoveWithNonFavouriteLaunchConfig() {
-    boolean removed = history.remove( launchConfig );
+    boolean removed = history.remove(launchConfig);
 
-    assertThat( removed ).isFalse();
+    assertThat(removed).isFalse();
   }
 
   private void runLaunchConfig() {
-    DebugUITools.launch( launchConfig, RUN_MODE );
+    DebugUITools.launch(launchConfig, RUN_MODE);
   }
 
   private void debugLaunchConfig() {
-    DebugUITools.launch( launchConfig, DEBUG_MODE );
+    DebugUITools.launch(launchConfig, DEBUG_MODE);
   }
 }

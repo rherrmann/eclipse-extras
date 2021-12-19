@@ -30,57 +30,57 @@ public class EditLaunchConfigActionPDETest {
 
   @Before
   public void setUp() {
-    dialog = mock( LaunchSelectionDialog.class );
-    action = spy( new EditLaunchConfigAction( dialog ) );
+    dialog = mock(LaunchSelectionDialog.class);
+    action = spy(new EditLaunchConfigAction(dialog));
   }
 
   @Test
   public void testGetId() {
-    assertThat( action.getId() ).isEqualTo( EditLaunchConfigAction.ID );
+    assertThat(action.getId()).isEqualTo(EditLaunchConfigAction.ID);
   }
 
   @Test
   public void testGetText() {
     String text = action.getText();
 
-    assertThat( text ).isNotEmpty();
+    assertThat(text).isNotEmpty();
   }
 
   @Test
   public void testGetImageDescriptor() {
     ImageDescriptor imageDescriptor = action.getImageDescriptor();
 
-    assertThat( imageDescriptor ).isNull();
+    assertThat(imageDescriptor).isNull();
   }
 
   @Test
   public void testInitialEnablement() {
-    assertThat( action.isEnabled() ).isFalse();
+    assertThat(action.isEnabled()).isFalse();
   }
 
   @Test
   public void testInitialSelection() {
-    assertThat( action.getSelection().isEmpty() ).isTrue();
+    assertThat(action.getSelection().isEmpty()).isTrue();
   }
 
   @SuppressWarnings("unchecked")
   @Test
   public void testGetSelection() {
     StructuredSelection selection = new StructuredSelection();
-    action.setSelection( selection );
+    action.setSelection(selection);
 
     IStructuredSelection returnedSelection = action.getSelection();
 
-    assertThat( returnedSelection ).isSameAs( selection );
+    assertThat(returnedSelection).isSameAs(selection);
   }
 
   @Test
   public void testSetSelectionWithSingleLaunchConfig() throws CoreException {
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig();
 
-    action.setSelection( new StructuredSelection( launchConfig ) );
+    action.setSelection(new StructuredSelection(launchConfig));
 
-    assertThat( action.isEnabled() ).isTrue();
+    assertThat(action.isEnabled()).isTrue();
   }
 
   @Test
@@ -88,48 +88,48 @@ public class EditLaunchConfigActionPDETest {
     ILaunchConfiguration launchConfig1 = launchConfigRule.createPublicLaunchConfig();
     ILaunchConfiguration launchConfig2 = launchConfigRule.createPublicLaunchConfig();
 
-    action.setSelection( new StructuredSelection( new Object[] { launchConfig1, launchConfig2 } ) );
+    action.setSelection(new StructuredSelection(new Object[] {launchConfig1, launchConfig2}));
 
-    assertThat( action.isEnabled() ).isFalse();
+    assertThat(action.isEnabled()).isFalse();
   }
 
   @Test
   public void testSetSelectionWithNonLaunchConfig() {
-    action.setSelection( new StructuredSelection( new Object() ) );
+    action.setSelection(new StructuredSelection(new Object()));
 
-    assertThat( action.isEnabled() ).isFalse();
+    assertThat(action.isEnabled()).isFalse();
   }
 
   @Test
   public void testRun() throws CoreException {
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig();
-    action.setSelection( new StructuredSelection( launchConfig ) );
-    doReturn( true ).when( action ).editLaunchConfig( launchConfig );
+    action.setSelection(new StructuredSelection(launchConfig));
+    doReturn(true).when(action).editLaunchConfig(launchConfig);
 
     action.run();
 
-    verify( action ).editLaunchConfig( launchConfig );
-    verify( dialog ).close( Window.CANCEL );
+    verify(action).editLaunchConfig(launchConfig);
+    verify(dialog).close(Window.CANCEL);
   }
 
   @Test
   public void testRunWhenDialogIsCancelled() throws CoreException {
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig();
-    action.setSelection( new StructuredSelection( launchConfig ) );
-    doReturn( false ).when( action ).editLaunchConfig( launchConfig );
+    action.setSelection(new StructuredSelection(launchConfig));
+    doReturn(false).when(action).editLaunchConfig(launchConfig);
 
     action.run();
 
-    verify( action ).editLaunchConfig( launchConfig );
-    verify( dialog ).refresh();
+    verify(action).editLaunchConfig(launchConfig);
+    verify(dialog).refresh();
   }
 
   @Test
   public void testRunWhileDisabled() {
-    action.setSelection( new StructuredSelection( new Object() ) );
+    action.setSelection(new StructuredSelection(new Object()));
 
     action.run();
 
-    verify( action, never() ).editLaunchConfig( any( ILaunchConfiguration.class ) );
+    verify(action, never()).editLaunchConfig(any(ILaunchConfiguration.class));
   }
 }

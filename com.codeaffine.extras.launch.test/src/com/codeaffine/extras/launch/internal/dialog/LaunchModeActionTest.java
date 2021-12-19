@@ -25,7 +25,7 @@ public class LaunchModeActionTest {
 
     String text = action.getText();
 
-    assertThat( text ).isNotEmpty();
+    assertThat(text).isNotEmpty();
   }
 
   @Test
@@ -34,7 +34,7 @@ public class LaunchModeActionTest {
 
     int style = action.getStyle();
 
-    assertThat( style ).isEqualTo( IAction.AS_RADIO_BUTTON );
+    assertThat(style).isEqualTo(IAction.AS_RADIO_BUTTON);
   }
 
   @Test
@@ -43,37 +43,37 @@ public class LaunchModeActionTest {
 
     IMenuCreator menuCreator = action.getMenuCreator();
 
-    assertThat( menuCreator ).isNull();
+    assertThat(menuCreator).isNull();
   }
 
   @Test
   public void testInitialCheckState() {
-    changeCurrentLaunchMode( launchMode );
+    changeCurrentLaunchMode(launchMode);
     LaunchModeAction action = createLaunchModeAction();
 
-    assertThat( action.isChecked() ).isTrue();
+    assertThat(action.isChecked()).isTrue();
   }
 
   @Test
   public void testUpdateForCurrentLaunchMode() {
-    changeCurrentLaunchMode( createLaunchMode( DEBUG_MODE ) );
+    changeCurrentLaunchMode(createLaunchMode(DEBUG_MODE));
 
     LaunchModeAction action = createLaunchModeAction();
-    changeCurrentLaunchMode( launchMode );
+    changeCurrentLaunchMode(launchMode);
 
     action.update();
 
-    assertThat( action.isChecked() ).isTrue();
+    assertThat(action.isChecked()).isTrue();
   }
 
   @Test
   public void testUpdateForNonCurrentLaunchMode() {
     LaunchModeAction action = createLaunchModeAction();
-    changeCurrentLaunchMode( createLaunchMode( DEBUG_MODE ) );
+    changeCurrentLaunchMode(createLaunchMode(DEBUG_MODE));
 
     action.update();
 
-    assertThat( action.isChecked() ).isFalse();
+    assertThat(action.isChecked()).isFalse();
   }
 
   @Test
@@ -82,21 +82,21 @@ public class LaunchModeActionTest {
 
     action.run();
 
-    verify( launchModeSetting ).setLaunchModeId( launchMode.getIdentifier() );
+    verify(launchModeSetting).setLaunchModeId(launchMode.getIdentifier());
   }
 
   @Before
   public void setUp() {
-    launchModeSetting = mock( LaunchModeSetting.class );
-    launchMode = createLaunchMode( RUN_MODE );
+    launchModeSetting = mock(LaunchModeSetting.class);
+    launchMode = createLaunchMode(RUN_MODE);
   }
 
   private LaunchModeAction createLaunchModeAction() {
-    return new LaunchModeAction( launchModeSetting, launchMode );
+    return new LaunchModeAction(launchModeSetting, launchMode);
   }
 
-  private void changeCurrentLaunchMode( ILaunchMode currentLaunchMode ) {
-    when( launchModeSetting.getLaunchMode() ).thenReturn( currentLaunchMode );
+  private void changeCurrentLaunchMode(ILaunchMode currentLaunchMode) {
+    when(launchModeSetting.getLaunchMode()).thenReturn(currentLaunchMode);
   }
 
 }

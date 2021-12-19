@@ -12,8 +12,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.actions.OpenWithMenu;
 import org.eclipse.ui.actions.QuickMenuCreator;
-
-import com.codeaffine.eclipse.swt.util.UIThreadSynchronizer;
+import com.codeaffine.extras.util.swt.UIThreadSynchronizer;
 
 
 public class OpenWithQuickMenu {

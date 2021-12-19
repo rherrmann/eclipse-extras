@@ -18,75 +18,75 @@ public class LaunchTerminatorPDETest {
   @Rule
   public final LaunchConfigRule launchConfigRule = new LaunchConfigRule();
 
-  @Test(expected=NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void testConstructorWithNullArgument() {
-    new LaunchTerminator( null );
+    new LaunchTerminator(null);
   }
 
   @Test
   public void testTerminateLaunches() throws CoreException {
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
-    ILaunch launch = launchConfig.launch( RUN_MODE, new NullProgressMonitor() );
+    ILaunch launch = launchConfig.launch(RUN_MODE, new NullProgressMonitor());
 
-    new LaunchTerminator( launchConfig ).terminateLaunches();
+    new LaunchTerminator(launchConfig).terminateLaunches();
 
-    assertThat( launch.isTerminated() ).isTrue();
+    assertThat(launch.isTerminated()).isTrue();
   }
 
   @Test
   public void testTerminateLaunchesWithMultipleLaunches() throws CoreException {
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
-    ILaunch launch1 = launchConfig.launch( RUN_MODE, new NullProgressMonitor() );
-    ILaunch launch2 = launchConfig.launch( DEBUG_MODE, new NullProgressMonitor() );
+    ILaunch launch1 = launchConfig.launch(RUN_MODE, new NullProgressMonitor());
+    ILaunch launch2 = launchConfig.launch(DEBUG_MODE, new NullProgressMonitor());
 
-    new LaunchTerminator( launchConfig ).terminateLaunches();
+    new LaunchTerminator(launchConfig).terminateLaunches();
 
-    assertThat( launch1.isTerminated() ).isTrue();
-    assertThat( launch2.isTerminated() ).isTrue();
+    assertThat(launch1.isTerminated()).isTrue();
+    assertThat(launch2.isTerminated()).isTrue();
   }
 
   @Test
   public void testTerminateLaunchesWithTerminatedLaunch() throws CoreException {
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
-    ILaunch launch = launchConfig.launch( RUN_MODE, new NullProgressMonitor() );
+    ILaunch launch = launchConfig.launch(RUN_MODE, new NullProgressMonitor());
     launch.terminate();
 
-    new LaunchTerminator( launchConfig ).terminateLaunches();
+    new LaunchTerminator(launchConfig).terminateLaunches();
 
-    assertThat( launch.isTerminated() ).isTrue();
+    assertThat(launch.isTerminated()).isTrue();
   }
 
   @Test
   public void testTerminateLaunchesWithUnrelatedLaunch() throws CoreException {
     ILaunchConfiguration unrelatedLaunchConfig = launchConfigRule.createPrivateLaunchConfig().doSave();
-    ILaunch unrelatedLaunch = unrelatedLaunchConfig.launch( RUN_MODE, new NullProgressMonitor() );
+    ILaunch unrelatedLaunch = unrelatedLaunchConfig.launch(RUN_MODE, new NullProgressMonitor());
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
-    new LaunchTerminator( launchConfig ).terminateLaunches();
+    new LaunchTerminator(launchConfig).terminateLaunches();
 
-    assertThat( unrelatedLaunch.isTerminated() ).isFalse();
+    assertThat(unrelatedLaunch.isTerminated()).isFalse();
   }
 
   @Test
   public void testTerminateLaunchesWithDeletedLaunchConfig() throws CoreException {
     ILaunchConfiguration unrelatedLaunchConfig = launchConfigRule.createPrivateLaunchConfig().doSave();
-    ILaunch unrelatedLaunch = unrelatedLaunchConfig.launch( RUN_MODE, new NullProgressMonitor() );
+    ILaunch unrelatedLaunch = unrelatedLaunchConfig.launch(RUN_MODE, new NullProgressMonitor());
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
     unrelatedLaunchConfig.delete();
 
-    new LaunchTerminator( launchConfig ).terminateLaunches();
+    new LaunchTerminator(launchConfig).terminateLaunches();
 
-    assertThat( unrelatedLaunch.isTerminated() ).isFalse();
+    assertThat(unrelatedLaunch.isTerminated()).isFalse();
   }
 
   @Test
   public void testTerminateLaunchesWithRenamedLaunchConfig() throws CoreException {
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
-    ILaunch launch = launchConfig.launch( RUN_MODE, new NullProgressMonitor() );
-    launchConfigRule.renameLaunchConfig( launchConfig );
+    ILaunch launch = launchConfig.launch(RUN_MODE, new NullProgressMonitor());
+    launchConfigRule.renameLaunchConfig(launchConfig);
 
-    new LaunchTerminator( launchConfig ).terminateLaunches();
+    new LaunchTerminator(launchConfig).terminateLaunches();
 
-    assertThat( launch.isTerminated() ).isFalse();
+    assertThat(launch.isTerminated()).isFalse();
   }
 }

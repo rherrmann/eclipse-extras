@@ -19,45 +19,45 @@ public class LaunchConfigTypeSerializerPDETest {
 
   @Before
   public void setUp() {
-    serializer = new LaunchConfigTypeSerializer( DebugPlugin.getDefault().getLaunchManager() );
+    serializer = new LaunchConfigTypeSerializer(DebugPlugin.getDefault().getLaunchManager());
   }
 
   @Test
   public void testSerialize() {
     ILaunchConfigurationType type = launchConfigRule.getPublicTestLaunchConfigType();
 
-    String serialized = serializer.serialize( type );
+    String serialized = serializer.serialize(type);
 
-    assertThat( serialized ).isEqualTo( type.getIdentifier() );
+    assertThat(serialized).isEqualTo(type.getIdentifier());
   }
 
   @Test
   public void testSerializeMultipleTypes() {
     ILaunchConfigurationType type = launchConfigRule.getPublicTestLaunchConfigType();
 
-    String serialized = serializer.serialize( type, type );
+    String serialized = serializer.serialize(type, type);
 
-    assertThat( serialized ).isEqualTo( type.getIdentifier() + "," + type.getIdentifier() );
+    assertThat(serialized).isEqualTo(type.getIdentifier() + "," + type.getIdentifier());
   }
 
   @Test
   public void testDeserializeEmptyString() {
-    ILaunchConfigurationType[] types = serializer.deserialize( "" );
+    ILaunchConfigurationType[] types = serializer.deserialize("");
 
-    assertThat( types ).isEmpty();
+    assertThat(types).isEmpty();
   }
 
   @Test
   public void testDeserializeNonExistingType() {
-    ILaunchConfigurationType[] types = serializer.deserialize( "foo" );
+    ILaunchConfigurationType[] types = serializer.deserialize("foo");
 
-    assertThat( types ).isEmpty();
+    assertThat(types).isEmpty();
   }
 
   @Test
   public void testDeserializeMalformedInput() {
-    ILaunchConfigurationType[] types = serializer.deserialize( ",,foo, ,bar," );
+    ILaunchConfigurationType[] types = serializer.deserialize(",,foo, ,bar,");
 
-    assertThat( types ).isEmpty();
+    assertThat(types).isEmpty();
   }
 }

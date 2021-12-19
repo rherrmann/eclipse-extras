@@ -5,7 +5,7 @@ You have to follow two rules only when contributing:
 * **No Tests -> No Merge!**
 
 # Development Environment Setup
-If you plan to contribute a feature or bugfix to this project or just the want to have a closer look at the sources,
+If you plan to contribute a feature or bugfix to this project or just want to have a closer look at the sources,
 the following steps describe the setup of the development environment.
 
 1. Start a recent version of the Eclipse IDE that has the [Plug-in Development Environment (PDE)](https://www.eclipse.org/pde/) installed.
@@ -24,7 +24,7 @@ Open one of them and select the _Set as Target Platform_ link.
 Now you are ready to hack the sources.
 If you wish to verify the setup, you can run the test suite. The launch configuration to run all tests is called _All Tests_
 
-Extras for Eclipse uses Maven/Tycho to build, the [main pom](https://github.com/rherrmann/eclipse-extras/blob/main/pom.xml) file can be found at the root of the repository.
+Extras for Eclipse uses the Maven/Tycho build tool, the [main pom](https://github.com/rherrmann/eclipse-extras/blob/main/pom.xml) file can be found at the root of the repository.
 
 
 # Project License:  Eclipse Public License

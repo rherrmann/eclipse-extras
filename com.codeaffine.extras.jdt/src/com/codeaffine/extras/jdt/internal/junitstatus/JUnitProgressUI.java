@@ -1,10 +1,8 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
 import java.util.Objects;
-
 import org.eclipse.swt.graphics.Color;
-
-import com.codeaffine.eclipse.swt.util.UIThreadSynchronizer;
+import com.codeaffine.extras.util.swt.UIThreadSynchronizer;
 
 public class JUnitProgressUI implements ProgressUI {
 

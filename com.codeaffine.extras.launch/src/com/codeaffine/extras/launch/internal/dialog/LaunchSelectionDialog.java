@@ -9,10 +9,8 @@ import static org.eclipse.jface.dialogs.IDialogConstants.CANCEL_ID;
 import static org.eclipse.jface.dialogs.IDialogConstants.CANCEL_LABEL;
 import static org.eclipse.jface.dialogs.IDialogConstants.OK_ID;
 import static org.eclipse.jface.dialogs.IDialogConstants.OK_LABEL;
-
 import java.util.Comparator;
 import java.util.stream.Stream;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -42,11 +40,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
-
-import com.codeaffine.eclipse.swt.util.UIThreadSynchronizer;
 import com.codeaffine.extras.launch.internal.LaunchExtrasPlugin;
 import com.codeaffine.extras.launch.internal.dialog.LaunchConfigLabelProvider.LabelMode;
 import com.codeaffine.extras.launch.internal.util.LaunchAdapter;
+import com.codeaffine.extras.util.swt.UIThreadSynchronizer;
 
 
 public class LaunchSelectionDialog extends FilteredItemsSelectionDialog implements DuplicatesDetector {

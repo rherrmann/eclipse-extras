@@ -29,33 +29,33 @@ public class LaunchConfigValidatorPDETest {
 
   @Test(expected = NullPointerException.class)
   public void testConstructorWithNullLaunchConfig() {
-    new LaunchConfigValidator( null, getSupportedMode() );
+    new LaunchConfigValidator(null, getSupportedMode());
   }
 
   @Test
   public void testValidate() throws CoreException {
     launchConfig.doSave();
 
-    IStatus status = new LaunchConfigValidator( launchConfig, getSupportedMode() ).validate();
+    IStatus status = new LaunchConfigValidator(launchConfig, getSupportedMode()).validate();
 
-    assertThat( status.isOK() ).isTrue();
+    assertThat(status.isOK()).isTrue();
   }
 
   @Test
   public void testValidateWithTransientLaunchConfig() {
-    IStatus status = new LaunchConfigValidator( launchConfig, getSupportedMode() ).validate();
+    IStatus status = new LaunchConfigValidator(launchConfig, getSupportedMode()).validate();
 
-    assertThat( status.matches( IStatus.ERROR ) ).isTrue();
-    assertThat( status.getMessage() ).isEqualTo( LaunchConfigValidator.LAUNCH_CONFIG_NOT_FOUND );
+    assertThat(status.matches(IStatus.ERROR)).isTrue();
+    assertThat(status.getMessage()).isEqualTo(LaunchConfigValidator.LAUNCH_CONFIG_NOT_FOUND);
   }
 
   @Test
   public void testValidateWithUnsupportedLaunchMode() throws CoreException {
     launchConfig.doSave();
 
-    IStatus status = new LaunchConfigValidator( launchConfig, getUnsupportedMode() ).validate();
+    IStatus status = new LaunchConfigValidator(launchConfig, getUnsupportedMode()).validate();
 
-    assertThat( status.isOK() ).isFalse();
+    assertThat(status.isOK()).isFalse();
   }
 
   @Test
@@ -63,17 +63,17 @@ public class LaunchConfigValidatorPDETest {
     ILaunchConfiguration deletedLaunchConfig = launchConfig.doSave();
     deletedLaunchConfig.delete();
 
-    IStatus status = new LaunchConfigValidator( deletedLaunchConfig, getSupportedMode() ).validate();
+    IStatus status = new LaunchConfigValidator(deletedLaunchConfig, getSupportedMode()).validate();
 
-    assertThat( status.matches( IStatus.ERROR ) ).isTrue();
-    assertThat( status.getMessage() ).isEqualTo( LaunchConfigValidator.LAUNCH_CONFIG_NOT_FOUND );
+    assertThat(status.matches(IStatus.ERROR)).isTrue();
+    assertThat(status.getMessage()).isEqualTo(LaunchConfigValidator.LAUNCH_CONFIG_NOT_FOUND);
   }
 
   private static ILaunchMode getSupportedMode() {
-    return DebugPlugin.getDefault().getLaunchManager().getLaunchMode( DEBUG_MODE );
+    return DebugPlugin.getDefault().getLaunchManager().getLaunchMode(DEBUG_MODE);
   }
 
   private static ILaunchMode getUnsupportedMode() {
-    return DebugPlugin.getDefault().getLaunchManager().getLaunchMode( TEST_LAUNCH_MODE );
+    return DebugPlugin.getDefault().getLaunchManager().getLaunchMode(TEST_LAUNCH_MODE);
   }
 }

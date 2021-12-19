@@ -6,16 +6,13 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-
+import java.time.Duration;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
 import com.codeaffine.extras.jdt.internal.junitstatus.TextAnimation.TextAnimationPainter;
-
-
+import com.codeaffine.extras.test.util.DisplayHelper;
 
 public class TextAnimationTest {
 
@@ -109,15 +106,15 @@ public class TextAnimationTest {
     verify(textAnimationPainter, never()).drawText(any(TextAnimation.class));
   }
 
-  private static void waitFor(long milliseconds) {
-    long start = System.currentTimeMillis();
-    while (System.currentTimeMillis() - start <= milliseconds) {
+  private void waitFor(long milliseconds) {
+    long start = System.nanoTime();
+    while (Duration.ofNanos(System.nanoTime() - start).toMillis() <= milliseconds) {
       try {
-        Thread.sleep(1);
+        Thread.sleep(10);
       } catch (InterruptedException ignore) {
         Thread.interrupted();
       }
-      DisplayHelper.flushPendingEvents();
+      displayHelper.flushPendingEvents();
     }
   }
 

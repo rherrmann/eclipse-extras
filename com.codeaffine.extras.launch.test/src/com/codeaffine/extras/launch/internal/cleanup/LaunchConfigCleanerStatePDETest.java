@@ -35,54 +35,54 @@ public class LaunchConfigCleanerStatePDETest {
 
   @Test
   public void testSave() throws CoreException {
-    File file = new File( tempFolder.getRoot(), "state.txt" );
+    File file = new File(tempFolder.getRoot(), "state.txt");
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
-    new LaunchConfigCleanerState( launchManager, file ).save( launchConfig );
+    new LaunchConfigCleanerState(launchManager, file).save(launchConfig);
 
-    assertThat( restore( file ) ).containsOnly( launchConfig );
+    assertThat(restore(file)).containsOnly(launchConfig);
   }
 
   @Test
   public void testSaveWithExistingFile() throws IOException, CoreException {
     File file = tempFolder.newFile();
-    Files.write( file.toPath(), asList( "foo\nbar\n" ), UTF_8 );
+    Files.write(file.toPath(), asList("foo\nbar\n"), UTF_8);
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
-    new LaunchConfigCleanerState( launchManager, file ).save( launchConfig );
+    new LaunchConfigCleanerState(launchManager, file).save(launchConfig);
 
-    assertThat( restore( file ) ).containsOnly( launchConfig );
+    assertThat(restore(file)).containsOnly(launchConfig);
   }
 
   @Test
   public void testRestoreWithNonExistingFile() {
-    File file = new File( tempFolder.getRoot(), "does-not-exist" );
+    File file = new File(tempFolder.getRoot(), "does-not-exist");
 
-    ILaunchConfiguration[] launchConfigs = restore( file );
+    ILaunchConfiguration[] launchConfigs = restore(file);
 
-    assertThat( launchConfigs ).isEmpty();
+    assertThat(launchConfigs).isEmpty();
   }
 
   @Test
   public void testRestoreWithEmptyFile() throws IOException {
     File file = tempFolder.newFile();
 
-    ILaunchConfiguration[] launchConfigs = restore( file );
+    ILaunchConfiguration[] launchConfigs = restore(file);
 
-    assertThat( launchConfigs ).isEmpty();
+    assertThat(launchConfigs).isEmpty();
   }
 
   @Test
   public void testRestoreWithNonExistingLaunchConfigName() throws IOException {
     File file = tempFolder.newFile();
-    Files.write( file.toPath(), asList( "LC-does-not-exist" ), UTF_8 );
+    Files.write(file.toPath(), asList("LC-does-not-exist"), UTF_8);
 
-    ILaunchConfiguration[] launchConfigs = restore( file );
+    ILaunchConfiguration[] launchConfigs = restore(file);
 
-    assertThat( launchConfigs ).isEmpty();
+    assertThat(launchConfigs).isEmpty();
   }
 
-  private ILaunchConfiguration[] restore( File file ) {
-    return new LaunchConfigCleanerState( launchManager, file ).restore();
+  private ILaunchConfiguration[] restore(File file) {
+    return new LaunchConfigCleanerState(launchManager, file).restore();
   }
 }

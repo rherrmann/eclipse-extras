@@ -6,7 +6,6 @@ import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
 import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchMode;
 import org.eclipse.jface.action.IAction;
@@ -17,10 +16,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
-import com.codeaffine.extras.launch.internal.dialog.LaunchModeDropDownAction;
-import com.codeaffine.extras.launch.internal.dialog.LaunchModeSetting;
+import com.codeaffine.extras.test.util.DisplayHelper;
 
 public class LaunchModeDropDownActionTest {
 
@@ -32,77 +28,77 @@ public class LaunchModeDropDownActionTest {
 
   @Before
   public void setUp() {
-    launchManager = mock( ILaunchManager.class );
-    when( launchManager.getLaunchModes() ).thenReturn( new ILaunchMode[ 0 ] );
-    DialogSettings dialogSettings = new DialogSettings( "section-name" );
-    launchModeSetting = new LaunchModeSetting( launchManager, dialogSettings );
+    launchManager = mock(ILaunchManager.class);
+    when(launchManager.getLaunchModes()).thenReturn(new ILaunchMode[0]);
+    DialogSettings dialogSettings = new DialogSettings("section-name");
+    launchModeSetting = new LaunchModeSetting(launchManager, dialogSettings);
   }
 
   @Test
   public void testMenuCreator() {
-    LaunchModeDropDownAction action = new LaunchModeDropDownAction( launchModeSetting );
+    LaunchModeDropDownAction action = new LaunchModeDropDownAction(launchModeSetting);
 
     IMenuCreator menuCreator = action.getMenuCreator();
 
-    assertThat( menuCreator ).isSameAs( action );
+    assertThat(menuCreator).isSameAs(action);
   }
 
   @Test
   public void testText() {
-    LaunchModeDropDownAction action = new LaunchModeDropDownAction( launchModeSetting );
+    LaunchModeDropDownAction action = new LaunchModeDropDownAction(launchModeSetting);
 
     String text = action.getText();
 
-    assertThat( text ).isNotEmpty();
+    assertThat(text).isNotEmpty();
   }
 
   @Test
   public void testId() {
-    LaunchModeDropDownAction action = new LaunchModeDropDownAction( launchModeSetting );
+    LaunchModeDropDownAction action = new LaunchModeDropDownAction(launchModeSetting);
 
     String id = action.getId();
 
-    assertThat( id ).isEqualTo( LaunchModeDropDownAction.ID );
+    assertThat(id).isEqualTo(LaunchModeDropDownAction.ID);
   }
 
   @Test
   public void testStyle() {
-    LaunchModeDropDownAction action = new LaunchModeDropDownAction( launchModeSetting );
+    LaunchModeDropDownAction action = new LaunchModeDropDownAction(launchModeSetting);
 
     int style = action.getStyle();
 
-    assertThat( style ).isEqualTo( IAction.AS_DROP_DOWN_MENU );
+    assertThat(style).isEqualTo(IAction.AS_DROP_DOWN_MENU);
   }
 
-  @Test(expected=UnsupportedOperationException.class)
+  @Test(expected = UnsupportedOperationException.class)
   public void testGetMenuForControl() {
-    LaunchModeDropDownAction action = new LaunchModeDropDownAction( launchModeSetting );
-    action.getMenu( ( Control )null );
+    LaunchModeDropDownAction action = new LaunchModeDropDownAction(launchModeSetting);
+    action.getMenu((Control) null);
   }
 
   @Test
   public void testGetMenuForMenu() {
-    ILaunchMode run = createLaunchMode( RUN_MODE );
-    ILaunchMode debug = createLaunchMode( DEBUG_MODE );
-    when( launchManager.getLaunchModes() ).thenReturn( new ILaunchMode[]{ run, debug } );
-    LaunchModeDropDownAction action = new LaunchModeDropDownAction( launchModeSetting );
+    ILaunchMode run = createLaunchMode(RUN_MODE);
+    ILaunchMode debug = createLaunchMode(DEBUG_MODE);
+    when(launchManager.getLaunchModes()).thenReturn(new ILaunchMode[] {run, debug});
+    LaunchModeDropDownAction action = new LaunchModeDropDownAction(launchModeSetting);
 
-    Menu menu = action.getMenu( new Menu( displayHelper.createShell() ) );
+    Menu menu = action.getMenu(new Menu(displayHelper.createShell()));
 
-    assertThat( menu.getItemCount() ).isEqualTo( 2 );
-    assertThat( menu.getItem( 0 ).getText() ).isNotEmpty();
-    assertThat( menu.getItem( 0 ).getImage() ).isNull();
+    assertThat(menu.getItemCount()).isEqualTo(2);
+    assertThat(menu.getItem(0).getText()).isNotEmpty();
+    assertThat(menu.getItem(0).getImage()).isNull();
   }
 
   @Test
   public void testDispose() {
-    ILaunchMode run = createLaunchMode( RUN_MODE );
-    when( launchManager.getLaunchModes() ).thenReturn( new ILaunchMode[]{ run } );
-    LaunchModeDropDownAction action = new LaunchModeDropDownAction( launchModeSetting );
-    Menu menu = action.getMenu( new Menu( displayHelper.createShell() ) );
+    ILaunchMode run = createLaunchMode(RUN_MODE);
+    when(launchManager.getLaunchModes()).thenReturn(new ILaunchMode[] {run});
+    LaunchModeDropDownAction action = new LaunchModeDropDownAction(launchModeSetting);
+    Menu menu = action.getMenu(new Menu(displayHelper.createShell()));
 
     action.dispose();
 
-    assertThat( menu.isDisposed() ).isTrue();
+    assertThat(menu.isDisposed()).isTrue();
   }
 }

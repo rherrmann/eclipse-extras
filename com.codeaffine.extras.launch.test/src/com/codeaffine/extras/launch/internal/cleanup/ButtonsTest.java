@@ -1,14 +1,12 @@
 package com.codeaffine.extras.launch.internal.cleanup;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
+import com.codeaffine.extras.test.util.DisplayHelper;
 
 public class ButtonsTest {
 
@@ -19,27 +17,27 @@ public class ButtonsTest {
 
   @Before
   public void setUp() {
-    button = new Button( displayHelper.createShell(), SWT.PUSH );
+    button = new Button(displayHelper.createShell(), SWT.PUSH);
   }
 
   @Test
   public void testComputePreferredButtonWidth() {
-    int width = Buttons.computePreferredButtonWidth( button );
+    int width = Buttons.computePreferredButtonWidth(button);
 
-    assertThat( width ).isGreaterThan( 0 );
+    assertThat(width).isGreaterThan(0);
   }
 
   @Test
   public void testComputePreferredButtonWidthForWideButton() {
-    int emptyWidth = Buttons.computePreferredButtonWidth( button );
-    button.setText( longText() );
+    int emptyWidth = Buttons.computePreferredButtonWidth(button);
+    button.setText(longText());
 
-    int width = Buttons.computePreferredButtonWidth( button );
+    int width = Buttons.computePreferredButtonWidth(button);
 
-    assertThat( width ).isGreaterThan( emptyWidth );
+    assertThat(width).isGreaterThan(emptyWidth);
   }
 
   private static String longText() {
-    return new String( new char[ 500 ] ).replace( "\0", "X" );
+    return new String(new char[500]).replace("\0", "X");
   }
 }

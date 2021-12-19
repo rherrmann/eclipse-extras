@@ -1,17 +1,14 @@
 package com.codeaffine.extras.jdt.internal.junitstatus;
 
-import static com.codeaffine.eclipse.swt.test.util.DisplayHelper.flushPendingEvents;
 import static com.codeaffine.extras.test.util.ConcurrentHelper.runInThread;
 import static org.assertj.core.api.Assertions.assertThat;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
+import com.codeaffine.extras.test.util.DisplayHelper;
 
 public class JUnitProgressUITest {
 
@@ -20,6 +17,12 @@ public class JUnitProgressUITest {
 
   private TestableJUnitProgressBar progressBar;
   private JUnitProgressUI progressUI;
+
+  @Before
+  public void setUp() {
+    progressBar = new TestableJUnitProgressBar(displayHelper.createShell());
+    progressUI = new JUnitProgressUI(progressBar);
+  }
 
   @Test
   public void testUpdate() {
@@ -30,7 +33,7 @@ public class JUnitProgressUITest {
     int maximum = 2;
 
     progressUI.update(text, textAslignment, color, selection, maximum);
-    flushPendingEvents();
+    displayHelper.flushPendingEvents();
 
     assertThat(progressBar.getText()).isEqualTo(text);
     assertThat(progressBar.getTextAlignment()).isEqualTo(textAslignment);
@@ -53,7 +56,7 @@ public class JUnitProgressUITest {
         progressUI.update(text, textAslignment, color, selection, maximum);
       }
     });
-    flushPendingEvents();
+    displayHelper.flushPendingEvents();
 
     assertThat(progressBar.getText()).isEqualTo(text);
     assertThat(progressBar.getTextAlignment()).isEqualTo(textAslignment);
@@ -67,7 +70,7 @@ public class JUnitProgressUITest {
     String toolTipText = "tooltip-text";
 
     progressUI.setToolTipText(toolTipText);
-    flushPendingEvents();
+    displayHelper.flushPendingEvents();
 
     assertThat(progressBar.getToolTipText()).isEqualTo(toolTipText);
   }
@@ -82,7 +85,7 @@ public class JUnitProgressUITest {
         progressUI.setToolTipText(text);
       }
     });
-    flushPendingEvents();
+    displayHelper.flushPendingEvents();
 
     assertThat(progressBar.getToolTipText()).isEqualTo(text);
   }
@@ -92,7 +95,7 @@ public class JUnitProgressUITest {
     progressUI.setToolTipText("text");
 
     progressUI.setToolTipText("text");
-    flushPendingEvents();
+    displayHelper.flushPendingEvents();
 
     assertThat(progressBar.setToolTipTextInvocationCount).isEqualTo(1);
   }
@@ -103,19 +106,12 @@ public class JUnitProgressUITest {
     progressUI.setToolTipText("text");
 
     progressUI.setToolTipText(otherText);
-    flushPendingEvents();
+    displayHelper.flushPendingEvents();
 
     assertThat(progressBar.getToolTipText()).isEqualTo(otherText);
   }
 
-  @Before
-  public void setUp() {
-    progressBar = new TestableJUnitProgressBar(displayHelper.createShell());
-    progressUI = new JUnitProgressUI(progressBar);
-  }
-
   private static class TestableJUnitProgressBar extends JUnitProgressBar {
-
     int setToolTipTextInvocationCount;
 
     TestableJUnitProgressBar(Composite parent) {
@@ -127,6 +123,6 @@ public class JUnitProgressUITest {
       setToolTipTextInvocationCount++;
       super.setToolTipText(string);
     }
-
   }
+
 }

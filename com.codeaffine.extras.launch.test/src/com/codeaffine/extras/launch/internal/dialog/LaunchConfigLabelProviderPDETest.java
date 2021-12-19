@@ -6,10 +6,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -19,10 +17,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
 import com.codeaffine.extras.launch.internal.dialog.LaunchConfigLabelProvider.LabelMode;
 import com.codeaffine.extras.launch.test.LaunchConfigRule;
+import com.codeaffine.extras.test.util.DisplayHelper;
 import com.codeaffine.extras.test.util.ProjectHelper;
 
 public class LaunchConfigLabelProviderPDETest {
@@ -39,12 +36,12 @@ public class LaunchConfigLabelProviderPDETest {
 
   @Before
   public void setUp() {
-    duplicatesDetector = mock( DuplicatesDetector.class );
+    duplicatesDetector = mock(DuplicatesDetector.class);
   }
 
   @After
   public void tearDown() {
-    for( LaunchConfigLabelProvider labelProvider : labelProviders ) {
+    for (LaunchConfigLabelProvider labelProvider : labelProviders) {
       labelProvider.dispose();
     }
   }
@@ -52,143 +49,141 @@ public class LaunchConfigLabelProviderPDETest {
   @Test
   public void testGetImage() throws CoreException {
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
-    LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
+    LaunchConfigLabelProvider labelProvider = createLabelProvider(LIST);
 
-    Image image = labelProvider.getImage( launchConfig );
+    Image image = labelProvider.getImage(launchConfig);
 
-    assertThat( image ).isNotNull();
+    assertThat(image).isNotNull();
   }
 
   @Test
   public void testGetImageForDeletedLaunchConfig() throws CoreException {
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
     launchConfig.delete();
-    LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
+    LaunchConfigLabelProvider labelProvider = createLabelProvider(LIST);
 
-    Image image = labelProvider.getImage( launchConfig );
+    Image image = labelProvider.getImage(launchConfig);
 
-    assertThat( image ).isNull();
+    assertThat(image).isNull();
   }
 
   @Test
   public void testGetImageForRunningLaunchConfig() throws CoreException {
-    LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
+    LaunchConfigLabelProvider labelProvider = createLabelProvider(LIST);
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
-    Image image = labelProvider.getImage( launchConfig );
-    launchConfig.launch( RUN_MODE, null );
-    Image runningImage = labelProvider.getImage( launchConfig );
+    Image image = labelProvider.getImage(launchConfig);
+    launchConfig.launch(RUN_MODE, null);
+    Image runningImage = labelProvider.getImage(launchConfig);
 
-    assertThat( runningImage ).isNotNull();
-    assertThat( runningImage ).isNotEqualTo( image );
+    assertThat(runningImage).isNotNull();
+    assertThat(runningImage).isNotEqualTo(image);
   }
 
   @Test
   public void testGetImageForArbitraryObject() {
-    LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
+    LaunchConfigLabelProvider labelProvider = createLabelProvider(LIST);
 
-    Image image = labelProvider.getImage( new Object() );
+    Image image = labelProvider.getImage(new Object());
 
-    assertThat( image ).isNull();
+    assertThat(image).isNull();
   }
 
   @Test
   public void testGetListText() throws CoreException {
     ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
-    LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
+    LaunchConfigLabelProvider labelProvider = createLabelProvider(LIST);
 
-    String text = labelProvider.getText( launchConfig );
+    String text = labelProvider.getText(launchConfig);
 
-    assertThat( text ).isEqualTo( launchConfig.getName() );
+    assertThat(text).isEqualTo(launchConfig.getName());
   }
 
   @Test
   public void testGetListTextForDuplicate() throws CoreException {
     ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
-    when( duplicatesDetector.isDuplicateElement( launchConfig ) ).thenReturn( true );
-    LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
+    when(duplicatesDetector.isDuplicateElement(launchConfig)).thenReturn(true);
+    LaunchConfigLabelProvider labelProvider = createLabelProvider(LIST);
 
-    String text = labelProvider.getText( launchConfig );
+    String text = labelProvider.getText(launchConfig);
 
-    assertThat( text ).isEqualTo( launchConfig.getName() + " - " + launchConfig.getType().getName() );
+    assertThat(text).isEqualTo(launchConfig.getName() + " - " + launchConfig.getType().getName());
   }
 
   @Test
   public void testGetListTextForDuplicateInContainer() throws CoreException {
     ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
-    saveToContainer( launchConfig );
-    when( duplicatesDetector.isDuplicateElement( launchConfig ) ).thenReturn( true );
-    LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
+    saveToContainer(launchConfig);
+    when(duplicatesDetector.isDuplicateElement(launchConfig)).thenReturn(true);
+    LaunchConfigLabelProvider labelProvider = createLabelProvider(LIST);
 
-    String text = labelProvider.getText( launchConfig );
+    String text = labelProvider.getText(launchConfig);
 
-    assertThat( text ).isEqualTo( launchConfig.getName() + " - " + launchConfig.getFile().getParent().getName() );
+    assertThat(text).isEqualTo(launchConfig.getName() + " - " + launchConfig.getFile().getParent().getName());
   }
 
   @Test
   public void testGetDetailText() throws CoreException {
     ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
-    LaunchConfigLabelProvider labelProvider = createLabelProvider( DETAIL );
+    LaunchConfigLabelProvider labelProvider = createLabelProvider(DETAIL);
 
-    String text = labelProvider.getText( launchConfig );
+    String text = labelProvider.getText(launchConfig);
 
-    assertThat( text ).isEqualTo( launchConfig.getName() + " - " + launchConfig.getType().getName() );
+    assertThat(text).isEqualTo(launchConfig.getName() + " - " + launchConfig.getType().getName());
   }
 
   @Test
   public void testGetDetailTextForDuplicate() throws CoreException {
     ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
-    when( duplicatesDetector.isDuplicateElement( launchConfig ) ).thenReturn( true );
-    LaunchConfigLabelProvider labelProvider = createLabelProvider( DETAIL );
+    when(duplicatesDetector.isDuplicateElement(launchConfig)).thenReturn(true);
+    LaunchConfigLabelProvider labelProvider = createLabelProvider(DETAIL);
 
-    String text = labelProvider.getText( launchConfig );
+    String text = labelProvider.getText(launchConfig);
 
-    assertThat( text ).isEqualTo( launchConfig.getName() + " - " + launchConfig.getType().getName() );
+    assertThat(text).isEqualTo(launchConfig.getName() + " - " + launchConfig.getType().getName());
   }
 
   @Test
   public void testGetDetailTextForContainerLaunchConfig() throws CoreException {
     ILaunchConfigurationWorkingCopy launchConfig = launchConfigRule.createPublicLaunchConfig();
-    saveToContainer( launchConfig );
-    LaunchConfigLabelProvider labelProvider = createLabelProvider( DETAIL );
+    saveToContainer(launchConfig);
+    LaunchConfigLabelProvider labelProvider = createLabelProvider(DETAIL);
 
-    String text = labelProvider.getText( launchConfig );
+    String text = labelProvider.getText(launchConfig);
 
-    String expected
-      = launchConfig.getName()
-      + " - " + launchConfig.getType().getName()
-      + " (" + launchConfig.getFile().getParent().getName() + ")";
-    assertThat( text ).isEqualTo( expected );
+    String expected = launchConfig.getName() + " - " + launchConfig.getType().getName() + " ("
+        + launchConfig.getFile().getParent().getName() + ")";
+    assertThat(text).isEqualTo(expected);
   }
 
   @Test
   public void testGetTextForNullArgument() {
-    LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
+    LaunchConfigLabelProvider labelProvider = createLabelProvider(LIST);
 
-    String text = labelProvider.getText( null );
+    String text = labelProvider.getText(null);
 
-    assertThat( text ).isNotNull();
+    assertThat(text).isNotNull();
   }
 
   @Test
   public void testGetTextForArbitraryObject() {
-    LaunchConfigLabelProvider labelProvider = createLabelProvider( LIST );
+    LaunchConfigLabelProvider labelProvider = createLabelProvider(LIST);
 
-    String text = labelProvider.getText( new Object() );
+    String text = labelProvider.getText(new Object());
 
-    assertThat( text ).isNotNull();
+    assertThat(text).isNotNull();
   }
 
-  private LaunchConfigLabelProvider createLabelProvider( LabelMode labelMode ) {
+  private LaunchConfigLabelProvider createLabelProvider(LabelMode labelMode) {
     labelProviders = new ArrayList<>();
     Display display = displayHelper.getDisplay();
-    LaunchConfigLabelProvider result = new LaunchConfigLabelProvider( display, duplicatesDetector, labelMode );
-    labelProviders.add( result );
+    LaunchConfigLabelProvider result = new LaunchConfigLabelProvider(display, duplicatesDetector, labelMode);
+    labelProviders.add(result);
     return result;
   }
 
-  private void saveToContainer( ILaunchConfigurationWorkingCopy launchConfig ) throws CoreException {
-    launchConfig.setContainer( projectHelper.getProject() );
+  private void saveToContainer(ILaunchConfigurationWorkingCopy launchConfig) throws CoreException {
+    launchConfig.setContainer(projectHelper.getProject());
     launchConfig.doSave();
   }
 

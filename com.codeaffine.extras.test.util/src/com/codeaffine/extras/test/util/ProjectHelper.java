@@ -4,14 +4,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.eclipse.core.resources.IContainer.INCLUDE_HIDDEN;
 import static org.eclipse.core.resources.IResource.ALWAYS_DELETE_PROJECT_CONTENT;
 import static org.eclipse.core.resources.IResource.FORCE;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -19,7 +17,6 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -31,7 +28,7 @@ import org.junit.rules.ExternalResource;
 
 public class ProjectHelper extends ExternalResource {
 
-  private static int uniqueProjectId;
+  private static int uniqueProjectId = -1;
   private static List<ProjectHelper> projects = new LinkedList<>();
 
   public static void cleanWorkspace() throws CoreException {
@@ -39,7 +36,7 @@ public class ProjectHelper extends ExternalResource {
     IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects(INCLUDE_HIDDEN);
     for (IProject project : allProjects) {
       delete(project);
-      project.refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
+      project.refreshLocal(IResource.DEPTH_ZERO, newProgressMonitor());
     }
   }
 
@@ -48,7 +45,7 @@ public class ProjectHelper extends ExternalResource {
     boolean success = false;
     while (!success) {
       try {
-        resource.delete(FORCE | ALWAYS_DELETE_PROJECT_CONTENT, new NullProgressMonitor());
+        resource.delete(FORCE | ALWAYS_DELETE_PROJECT_CONTENT, newProgressMonitor());
         success = true;
         numAttempts++;
       } catch (CoreException ce) {
@@ -174,8 +171,7 @@ public class ProjectHelper extends ExternalResource {
   }
 
   private IProjectDescription createProjectDescription() {
-    IWorkspace workspace = ResourcesPlugin.getWorkspace();
-    IProjectDescription result = workspace.newProjectDescription(projectName);
+    IProjectDescription result = ResourcesPlugin.getWorkspace().newProjectDescription(projectName);
     result.setLocation(projectLocation);
     return result;
   }
@@ -185,9 +181,8 @@ public class ProjectHelper extends ExternalResource {
   }
 
   private static String uniqueProjectName() {
-    String result = "test.project." + uniqueProjectId;
     uniqueProjectId++;
-    return result;
+    return "test-project." + uniqueProjectId;
   }
 
 }

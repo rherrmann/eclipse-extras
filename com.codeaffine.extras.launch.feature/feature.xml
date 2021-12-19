@@ -11,7 +11,7 @@
    <description url="%descriptionURL">
       %description
    </description>
-   
+
    <copyright>
       %copyright
    </copyright>
@@ -31,7 +31,7 @@
       <import plugin="org.eclipse.debug.core" version="3.7.0" match="compatible"/>
       <import plugin="org.eclipse.debug.ui" version="3.7.0" match="compatible"/>
       <import plugin="org.eclipse.core.commands" version="3.6.0" match="compatible"/>
-      <import plugin="com.codeaffine.eclipse.swt" version="0.1.0" match="compatible"/>
+      <import plugin="com.codeaffine.extras.util"/>
    </requires>
 
    <plugin

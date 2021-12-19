@@ -13,73 +13,73 @@ public class ToggleTerminateBeforeRelaunchActionTest {
 
   @Before
   public void setUp() {
-    preferences = new DebugUIPreferences( new PreferenceStore() );
+    preferences = new DebugUIPreferences(new PreferenceStore());
   }
 
   @Test
   public void testText() {
-    ToggleTerminateBeforeRelaunchAction action = new ToggleTerminateBeforeRelaunchAction( preferences );
+    ToggleTerminateBeforeRelaunchAction action = new ToggleTerminateBeforeRelaunchAction(preferences);
 
     String text = action.getText();
 
-    assertThat( text ).isNotEmpty();
+    assertThat(text).isNotEmpty();
   }
 
   @Test
   public void testId() {
-    ToggleTerminateBeforeRelaunchAction action = new ToggleTerminateBeforeRelaunchAction( preferences );
+    ToggleTerminateBeforeRelaunchAction action = new ToggleTerminateBeforeRelaunchAction(preferences);
 
     String id = action.getId();
 
-    assertThat( id ).isEqualTo( ToggleTerminateBeforeRelaunchAction.ID );
+    assertThat(id).isEqualTo(ToggleTerminateBeforeRelaunchAction.ID);
   }
 
   @Test
   public void testStyle() {
-    ToggleTerminateBeforeRelaunchAction action = new ToggleTerminateBeforeRelaunchAction( preferences );
+    ToggleTerminateBeforeRelaunchAction action = new ToggleTerminateBeforeRelaunchAction(preferences);
 
     int style = action.getStyle();
 
-    assertThat( style ).isEqualTo( IAction.AS_CHECK_BOX );
+    assertThat(style).isEqualTo(IAction.AS_CHECK_BOX);
   }
 
   @Test
   public void testIsCheckedWhenDisabled() {
-    preferences.setTerminateBeforeRelaunch( false );
-    ToggleTerminateBeforeRelaunchAction action = new ToggleTerminateBeforeRelaunchAction( preferences );
+    preferences.setTerminateBeforeRelaunch(false);
+    ToggleTerminateBeforeRelaunchAction action = new ToggleTerminateBeforeRelaunchAction(preferences);
 
     boolean checked = action.isChecked();
 
-    assertThat( checked ).isFalse();
+    assertThat(checked).isFalse();
   }
 
   @Test
   public void testIsCheckedWhenEnabled() {
-    preferences.setTerminateBeforeRelaunch( true );
-    ToggleTerminateBeforeRelaunchAction action = new ToggleTerminateBeforeRelaunchAction( preferences );
+    preferences.setTerminateBeforeRelaunch(true);
+    ToggleTerminateBeforeRelaunchAction action = new ToggleTerminateBeforeRelaunchAction(preferences);
 
     boolean checked = action.isChecked();
 
-    assertThat( checked ).isTrue();
+    assertThat(checked).isTrue();
   }
 
   @Test
   public void testRunWhileDisabled() {
-    preferences.setTerminateBeforeRelaunch( false );
-    ToggleTerminateBeforeRelaunchAction action = new ToggleTerminateBeforeRelaunchAction( preferences );
+    preferences.setTerminateBeforeRelaunch(false);
+    ToggleTerminateBeforeRelaunchAction action = new ToggleTerminateBeforeRelaunchAction(preferences);
 
     action.run();
 
-    assertThat( preferences.isTerminateBeforeRelaunch() ).isTrue();
+    assertThat(preferences.isTerminateBeforeRelaunch()).isTrue();
   }
 
   @Test
   public void testRunWhileEnabled() {
-    preferences.setTerminateBeforeRelaunch( true );
-    ToggleTerminateBeforeRelaunchAction action = new ToggleTerminateBeforeRelaunchAction( preferences );
+    preferences.setTerminateBeforeRelaunch(true);
+    ToggleTerminateBeforeRelaunchAction action = new ToggleTerminateBeforeRelaunchAction(preferences);
 
     action.run();
 
-    assertThat( preferences.isTerminateBeforeRelaunch() ).isFalse();
+    assertThat(preferences.isTerminateBeforeRelaunch()).isFalse();
   }
 }

@@ -25,48 +25,48 @@ public class LaunchModeSettingTest {
 
   @Test
   public void testGetLaunchManager() {
-    assertThat( launchModeSetting.getLaunchManager() ).isSameAs( launchManager );
+    assertThat(launchModeSetting.getLaunchManager()).isSameAs(launchManager);
   }
 
   @Test
   public void testDefaultLaunchMode() {
-    ILaunchMode debug = createLaunchMode( DEBUG_MODE );
-    setSupportedLaunchModes( debug );
+    ILaunchMode debug = createLaunchMode(DEBUG_MODE);
+    setSupportedLaunchModes(debug);
 
     String launchModeId = launchModeSetting.getLaunchModeId();
 
-    assertThat( launchModeId ).isEqualTo( DEBUG_MODE );
+    assertThat(launchModeId).isEqualTo(DEBUG_MODE);
   }
 
   @Test
   public void testSetLaunchMode() {
-    ILaunchMode debug = createLaunchMode( DEBUG_MODE );
-    ILaunchMode run = createLaunchMode( RUN_MODE );
-    setSupportedLaunchModes( debug, run );
+    ILaunchMode debug = createLaunchMode(DEBUG_MODE);
+    ILaunchMode run = createLaunchMode(RUN_MODE);
+    setSupportedLaunchModes(debug, run);
 
-    launchModeSetting.setLaunchModeId( RUN_MODE );
+    launchModeSetting.setLaunchModeId(RUN_MODE);
 
-    assertThat( launchModeSetting.getLaunchModeId() ).isEqualTo( RUN_MODE );
+    assertThat(launchModeSetting.getLaunchModeId()).isEqualTo(RUN_MODE);
   }
 
   @Test
   public void testGetUnknownLaunchMode() {
-    ILaunchMode debug = createLaunchMode( DEBUG_MODE );
-    setSupportedLaunchModes( debug );
+    ILaunchMode debug = createLaunchMode(DEBUG_MODE);
+    setSupportedLaunchModes(debug);
 
-    launchModeSetting.setLaunchModeId( RUN_MODE );
+    launchModeSetting.setLaunchModeId(RUN_MODE);
 
-    assertThat( launchModeSetting.getLaunchModeId() ).isEqualTo( DEBUG_MODE );
+    assertThat(launchModeSetting.getLaunchModeId()).isEqualTo(DEBUG_MODE);
   }
 
   @Before
   public void setUp() {
-    launchManager = mock( ILaunchManager.class );
-    dialogSettings = new DialogSettings( "section-name" );
-    launchModeSetting = new LaunchModeSetting( launchManager, dialogSettings );
+    launchManager = mock(ILaunchManager.class);
+    dialogSettings = new DialogSettings("section-name");
+    launchModeSetting = new LaunchModeSetting(launchManager, dialogSettings);
   }
 
-  private void setSupportedLaunchModes( ILaunchMode... launchModes ) {
-    when( launchManager.getLaunchModes() ).thenReturn( launchModes );
+  private void setSupportedLaunchModes(ILaunchMode... launchModes) {
+    when(launchManager.getLaunchModes()).thenReturn(launchModes);
   }
 }

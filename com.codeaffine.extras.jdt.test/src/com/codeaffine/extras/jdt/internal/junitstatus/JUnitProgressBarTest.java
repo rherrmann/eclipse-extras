@@ -12,10 +12,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
-import com.codeaffine.eclipse.swt.test.util.SWTIgnoreConditions.NonWindowsPlatform;
+import com.codeaffine.extras.test.util.DisplayHelper;
 import com.codeaffine.test.util.junit.ConditionalIgnoreRule;
 import com.codeaffine.test.util.junit.ConditionalIgnoreRule.ConditionalIgnore;
+import com.codeaffine.test.util.junit.ConditionalIgnoreRule.IgnoreCondition;
 
 
 public class JUnitProgressBarTest {
@@ -195,7 +195,7 @@ public class JUnitProgressBarTest {
   @Test
   public void testRedrawWithCustomValues() {
     progressBar.getParent().setVisible(true);
-    Color barColor = displayHelper.getSystemColor(SWT.COLOR_BLUE);
+    Color barColor = displayHelper.getDisplay().getSystemColor(SWT.COLOR_BLUE);
     progressBar.setValues("text", SWT.CENTER, barColor, 4, 5);
 
     Throwable throwable = catchThrowable(() -> progressBar.redraw());
@@ -206,6 +206,13 @@ public class JUnitProgressBarTest {
   private void setProgressBarWidth(int width) {
     Rectangle trim = progressBar.computeTrim(0, 0, width, 10);
     progressBar.setSize(trim.width + 2, 10);
+  }
+
+  static class NonWindowsPlatform implements IgnoreCondition {
+    @Override
+    public boolean isSatisfied() {
+      return !"win32".equals( SWT.getPlatform() );
+    }
   }
 
 }

@@ -1,14 +1,12 @@
 package com.codeaffine.extras.imageviewer.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import com.codeaffine.eclipse.swt.test.util.DisplayHelper;
+import com.codeaffine.extras.test.util.DisplayHelper;
 
 public class ImageViewerTest {
 

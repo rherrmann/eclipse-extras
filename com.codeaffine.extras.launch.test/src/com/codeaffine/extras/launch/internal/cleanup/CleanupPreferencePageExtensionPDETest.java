@@ -21,45 +21,43 @@ public class CleanupPreferencePageExtensionPDETest {
   public void testExtension() {
     Extension extension = readPreferencePageExtension();
 
-    ExtensionAssert.assertThat( extension )
-      .hasAttributeValue( "category", "org.eclipse.debug.ui.LaunchingPreferencePage" )
-      .hasAttributeValue( "class", CleanupPreferencePage.class.getName() )
-      .hasChildWithAttributeValue( "id", LAUNCHING_KEYWORD_ID )
-      .hasChildWithAttributeValue( "id", CONTEXT_LAUNCHING_KEYWORD_ID )
-      .hasNonEmptyAttributeValueFor( "name" )
-      .isInstantiable( CleanupPreferencePage.class );
+    ExtensionAssert.assertThat(extension).hasAttributeValue("category", "org.eclipse.debug.ui.LaunchingPreferencePage")
+        .hasAttributeValue("class", CleanupPreferencePage.class.getName())
+        .hasChildWithAttributeValue("id", LAUNCHING_KEYWORD_ID)
+        .hasChildWithAttributeValue("id", CONTEXT_LAUNCHING_KEYWORD_ID).hasNonEmptyAttributeValueFor("name")
+        .isInstantiable(CleanupPreferencePage.class);
   }
 
   @Test
   public void testNameEqulsTitle() {
     Extension extension = readPreferencePageExtension();
 
-    String name = extension.getAttribute( "name" );
+    String name = extension.getAttribute("name");
     String title = new CleanupPreferencePage().getTitle();
 
-    assertThat( name ).isEqualTo( title );
+    assertThat(name).isEqualTo(title);
   }
 
   @Test
   public void testLaunchingKeywordReferences() {
-    Extension extension = readExtension( "org.eclipse.ui.keywords", attribute( "id", LAUNCHING_KEYWORD_ID ) );
+    Extension extension = readExtension("org.eclipse.ui.keywords", attribute("id", LAUNCHING_KEYWORD_ID));
 
-    assertThat( extension ).isNotNull();
+    assertThat(extension).isNotNull();
   }
 
   @Test
   public void testContextLaunchingKeywordReferences() {
-    Extension extension = readExtension( "org.eclipse.ui.keywords", attribute( "id", CONTEXT_LAUNCHING_KEYWORD_ID ) );
+    Extension extension = readExtension("org.eclipse.ui.keywords", attribute("id", CONTEXT_LAUNCHING_KEYWORD_ID));
 
-    assertThat( extension ).isNotNull();
+    assertThat(extension).isNotNull();
   }
 
   private static Extension readPreferencePageExtension() {
-    return readExtension( "org.eclipse.ui.preferencePages", attribute( "id", ID ) );
+    return readExtension("org.eclipse.ui.preferencePages", attribute("id", ID));
   }
 
-  private static Extension readExtension( String extensionPoint, Predicate<Extension> predicate ) {
-    return new RegistryAdapter().readExtension( extensionPoint ).thatMatches( predicate ).process();
+  private static Extension readExtension(String extensionPoint, Predicate<Extension> predicate) {
+    return new RegistryAdapter().readExtension(extensionPoint).thatMatches(predicate).process();
   }
 
 }

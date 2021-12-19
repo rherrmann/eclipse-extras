@@ -22,23 +22,23 @@ public class LaunchModeActionComparatorTest {
 
   @Test
   public void testRunBeforeDebugBeforeAny() {
-    LaunchModeAction profile = addLaunchMode( ILaunchManager.PROFILE_MODE, "Profile" );
-    LaunchModeAction debug = addLaunchMode( ILaunchManager.DEBUG_MODE, "Debug" );
-    LaunchModeAction run = addLaunchMode( RUN_MODE, "Run" );
+    LaunchModeAction profile = addLaunchMode(ILaunchManager.PROFILE_MODE, "Profile");
+    LaunchModeAction debug = addLaunchMode(ILaunchManager.DEBUG_MODE, "Debug");
+    LaunchModeAction run = addLaunchMode(RUN_MODE, "Run");
 
-    Collections.sort( launchModes, comparator );
+    Collections.sort(launchModes, comparator);
 
-    assertThat( launchModes ).containsExactly( run, debug, profile );
+    assertThat(launchModes).containsExactly(run, debug, profile);
   }
 
   @Test
   public void testAlphabeticalOrder() {
-    LaunchModeAction foo = addLaunchMode( "foo", "Foo" );
-    LaunchModeAction bar = addLaunchMode( "bar", "Bar" );
+    LaunchModeAction foo = addLaunchMode("foo", "Foo");
+    LaunchModeAction bar = addLaunchMode("bar", "Bar");
 
-    Collections.sort( launchModes, comparator );
+    Collections.sort(launchModes, comparator);
 
-    assertThat( launchModes ).containsExactly( bar, foo );
+    assertThat(launchModes).containsExactly(bar, foo);
   }
 
   @Before
@@ -47,11 +47,11 @@ public class LaunchModeActionComparatorTest {
     comparator = new LaunchModeActionComparator();
   }
 
-  private LaunchModeAction addLaunchMode( String identifier, String label ) {
-    ILaunchMode launchMode = createLaunchMode( identifier, label );
-    LaunchModeAction launchModeAction = mock( LaunchModeAction.class );
-    when( launchModeAction.getLaunchMode() ).thenReturn( launchMode );
-    launchModes.add( launchModeAction );
+  private LaunchModeAction addLaunchMode(String identifier, String label) {
+    ILaunchMode launchMode = createLaunchMode(identifier, label);
+    LaunchModeAction launchModeAction = mock(LaunchModeAction.class);
+    when(launchModeAction.getLaunchMode()).thenReturn(launchMode);
+    launchModes.add(launchModeAction);
     return launchModeAction;
   }
 }

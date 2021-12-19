@@ -16,49 +16,49 @@ public class LaunchPreferencesTest {
   @Before
   public void setUp() {
     preferenceStore = new PreferenceStore();
-    launchPreferences = new LaunchPreferences( preferenceStore );
+    launchPreferences = new LaunchPreferences(preferenceStore);
   }
 
   @Test(expected = NullPointerException.class)
   public void testConstructorWithNullPreferenceStore() {
-    new LaunchPreferences( null );
+    new LaunchPreferences(null);
   }
 
   @Test
   public void testGetPreferenceStore() {
     IPreferenceStore preferenceStore = new LaunchPreferences().getPreferenceStore();
 
-    assertThat( preferenceStore ).isInstanceOf( ScopedPreferenceStore.class );
+    assertThat(preferenceStore).isInstanceOf(ScopedPreferenceStore.class);
   }
 
   @Test
   public void testSetCleanupGeneratedLaunchConfigs() {
-    launchPreferences.setCleanupGeneratedLaunchConfigs( true );
+    launchPreferences.setCleanupGeneratedLaunchConfigs(true);
 
-    assertThat( launchPreferences.isCleanupGeneratedLaunchConfigs() ).isTrue();
+    assertThat(launchPreferences.isCleanupGeneratedLaunchConfigs()).isTrue();
   }
 
   @Test
   public void testIsCleanupGeneratedLaunchConfigs() {
-    preferenceStore.setValue( LaunchPreferences.PREF_CLEANUP, true );
+    preferenceStore.setValue(LaunchPreferences.PREF_CLEANUP, true);
 
-    assertThat( launchPreferences.isCleanupGeneratedLaunchConfigs() ).isTrue();
+    assertThat(launchPreferences.isCleanupGeneratedLaunchConfigs()).isTrue();
   }
 
   @Test
   public void testSetCleanupGenerateLaunchConfigTypes() {
     String typeIds = "typeIds";
-    launchPreferences.setCleanupGenerateLaunchConfigTypes( typeIds );
+    launchPreferences.setCleanupGenerateLaunchConfigTypes(typeIds);
 
-    assertThat( launchPreferences.getCleanupGenerateLaunchConfigTypes() ).isEqualTo( typeIds );
+    assertThat(launchPreferences.getCleanupGenerateLaunchConfigTypes()).isEqualTo(typeIds);
   }
 
   @Test
   public void testGetCleanupGenerateLaunchConfigTypes() {
     String typeIds = "typeIds";
-    preferenceStore.setValue( LaunchPreferences.PREF_CLEANUP_TYPES, typeIds );
+    preferenceStore.setValue(LaunchPreferences.PREF_CLEANUP_TYPES, typeIds);
 
-    assertThat( launchPreferences.getCleanupGenerateLaunchConfigTypes() ).isEqualTo( typeIds );
+    assertThat(launchPreferences.getCleanupGenerateLaunchConfigTypes()).isEqualTo(typeIds);
   }
 
 }

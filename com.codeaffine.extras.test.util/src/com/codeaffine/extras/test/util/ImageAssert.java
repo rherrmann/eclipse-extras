@@ -26,11 +26,10 @@ public class ImageAssert extends AbstractAssert<ImageAssert, ImageInfo> {
     URL location = FileLocator.find(bundle, new Path(actual.imagePath), null);
     ImageDescriptor imageDescriptor = ImageDescriptor.createFromURL(location);
     Image image = imageDescriptor.createImage(false);
-    boolean result = image != null;
-    image.dispose();
-    if (!result) {
+    if (image == null) {
       failWithMessage("Image <%s> not found in plugin <%s>", actual.imagePath, actual.pluginId);
     }
+    image.dispose();
     return this;
   }
 }

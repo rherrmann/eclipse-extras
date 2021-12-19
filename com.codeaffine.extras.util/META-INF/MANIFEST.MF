@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Extras for the Eclipse Core IDE
+Bundle-SymbolicName: com.codeaffine.extras.util
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: codeaffine.com
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Require-Bundle: org.eclipse.swt;bundle-version="[3.8.0,4.0.0)"
+Automatic-Module-Name: com.codeaffine.extras.util
+Export-Package: com.codeaffine.extras.util.swt

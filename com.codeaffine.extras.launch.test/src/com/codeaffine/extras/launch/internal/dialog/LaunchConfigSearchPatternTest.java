@@ -18,78 +18,78 @@ public class LaunchConfigSearchPatternTest {
 
   @Test
   public void testSetPatternToEmptyString() {
-    searchPattern.setPattern( "" );
+    searchPattern.setPattern("");
 
-    assertThat( searchPattern.getPattern() ).isEmpty();
+    assertThat(searchPattern.getPattern()).isEmpty();
   }
 
   @Test
   public void testSetPatternToSpace() {
-    searchPattern.setPattern( " " );
+    searchPattern.setPattern(" ");
 
-    assertThat( searchPattern.getPattern() ).isEqualTo( "* *" );
+    assertThat(searchPattern.getPattern()).isEqualTo("* *");
   }
 
   @Test
   public void testSetPatternToTrailingSpace() {
-    searchPattern.setPattern( "pattern " );
+    searchPattern.setPattern("pattern ");
 
-    assertThat( searchPattern.getPattern() ).isEqualTo( "*pattern *" );
+    assertThat(searchPattern.getPattern()).isEqualTo("*pattern *");
   }
 
   @Test
   public void testSetPatternToNonEmptyString() {
-    searchPattern.setPattern( "pattern" );
+    searchPattern.setPattern("pattern");
 
-    assertThat( searchPattern.getPattern() ).isEqualTo( "*pattern*" );
+    assertThat(searchPattern.getPattern()).isEqualTo("*pattern*");
   }
 
   @Test
   public void testMatchEmptyPattern() {
-    searchPattern.setPattern( "" );
+    searchPattern.setPattern("");
 
-    assertThat( searchPattern.matches( "foo" ) ).isTrue();
+    assertThat(searchPattern.matches("foo")).isTrue();
   }
 
   @Test
   public void testMatchPrefixPattern() {
-    searchPattern.setPattern( "pref" );
+    searchPattern.setPattern("pref");
 
-    assertThat( searchPattern.matches( "prefix" ) ).isTrue();
+    assertThat(searchPattern.matches("prefix")).isTrue();
   }
 
   @Test
   public void testMatchSuffixPattern() {
-    searchPattern.setPattern( "fix" );
+    searchPattern.setPattern("fix");
 
-    assertThat( searchPattern.matches( "prefix" ) ).isTrue();
+    assertThat(searchPattern.matches("prefix")).isTrue();
   }
 
   @Test
   public void testMatchAsteriskWildcardPattern() {
-    searchPattern.setPattern( "f*o" );
+    searchPattern.setPattern("f*o");
 
-    assertThat( searchPattern.matches( "fooo" ) ).isTrue();
+    assertThat(searchPattern.matches("fooo")).isTrue();
   }
 
   @Test
   public void testMatchQuestionMarkWildcardPattern() {
-    searchPattern.setPattern( "f?o" );
+    searchPattern.setPattern("f?o");
 
-    assertThat( searchPattern.matches( "foo" ) ).isTrue();
+    assertThat(searchPattern.matches("foo")).isTrue();
   }
 
   @Test
   public void testMatchCamelCasePattern() {
-    searchPattern.setPattern( "CC" );
+    searchPattern.setPattern("CC");
 
-    assertThat( searchPattern.matches( "CamelCase" ) ).isTrue();
+    assertThat(searchPattern.matches("CamelCase")).isTrue();
   }
 
   @Test
   public void testMatchTrailingSpacePattern() {
-    searchPattern.setPattern( "two " );
+    searchPattern.setPattern("two ");
 
-    assertThat( searchPattern.matches( "two words" ) ).isTrue();
+    assertThat(searchPattern.matches("two words")).isTrue();
   }
 }

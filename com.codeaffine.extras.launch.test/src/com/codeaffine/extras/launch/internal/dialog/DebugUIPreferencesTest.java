@@ -17,36 +17,36 @@ public class DebugUIPreferencesTest {
     preferenceStore = new PreferenceStore();
   }
 
-  @Test(expected=NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void testConstructorWithNullArgument() {
-    new DebugUIPreferences( null );
+    new DebugUIPreferences(null);
   }
 
   @Test
   public void testGetPreferenceStore() {
-    DebugUIPreferences debugUIPreferences = new DebugUIPreferences( preferenceStore );
+    DebugUIPreferences debugUIPreferences = new DebugUIPreferences(preferenceStore);
 
     IPreferenceStore returnedPreferenceStore = debugUIPreferences.getPreferenceStore();
 
-    assertThat( returnedPreferenceStore ).isEqualTo( preferenceStore );
+    assertThat(returnedPreferenceStore).isEqualTo(preferenceStore);
   }
 
   @Test
   public void testSetAndGetTerminateBeforeRelaunch() {
-    DebugUIPreferences debugUIPreferences = new DebugUIPreferences( preferenceStore );
-    debugUIPreferences.setTerminateBeforeRelaunch( true );
+    DebugUIPreferences debugUIPreferences = new DebugUIPreferences(preferenceStore);
+    debugUIPreferences.setTerminateBeforeRelaunch(true);
 
     boolean terminateBeforeRelaunch = debugUIPreferences.isTerminateBeforeRelaunch();
 
-    assertThat( terminateBeforeRelaunch ).isTrue();
+    assertThat(terminateBeforeRelaunch).isTrue();
   }
 
   @Test
   public void testSetTerminateBeforeRelaunch() {
-    DebugUIPreferences debugUIPreferences = new DebugUIPreferences( preferenceStore );
+    DebugUIPreferences debugUIPreferences = new DebugUIPreferences(preferenceStore);
 
-    debugUIPreferences.setTerminateBeforeRelaunch( true );
+    debugUIPreferences.setTerminateBeforeRelaunch(true);
 
-    assertThat( preferenceStore.getBoolean( PREF_TERMINATE_AND_RELAUNCH ) ).isTrue();
+    assertThat(preferenceStore.getBoolean(PREF_TERMINATE_AND_RELAUNCH)).isTrue();
   }
 }

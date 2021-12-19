@@ -22,16 +22,16 @@ public class LaunchConfigTypeFilterPDETest {
 
   @Test
   public void testSelectForRegularType() {
-    boolean select = filter.select( null, null, launchConfigRule.getPublicTestLaunchConfigType() );
+    boolean select = filter.select(null, null, launchConfigRule.getPublicTestLaunchConfigType());
 
-    assertThat( select ).isTrue();
+    assertThat(select).isTrue();
   }
 
   @Test
   public void testSelectForPrivateType() {
-    boolean select = filter.select( null, null, launchConfigRule.getPrivateTestLaunchConfigType() );
+    boolean select = filter.select(null, null, launchConfigRule.getPrivateTestLaunchConfigType());
 
-    assertThat( select ).isFalse();
+    assertThat(select).isFalse();
   }
 
 }

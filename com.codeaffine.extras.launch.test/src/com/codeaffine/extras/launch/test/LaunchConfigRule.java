@@ -15,10 +15,10 @@ import org.junit.rules.ExternalResource;
 
 public class LaunchConfigRule extends ExternalResource {
 
-  private static final String PUBLIC_TEST_LAUNCH_CONFIG_TYPE
-    = "com.codeaffine.extras.launch.test.PublicTestLaunchConfigurationType";
-  private static final String PRIVATE_TEST_LAUNCH_CONFIG_TYPE
-    = "com.codeaffine.extras.launch.test.PrivateTestLaunchConfigurationType";
+  private static final String PUBLIC_TEST_LAUNCH_CONFIG_TYPE =
+      "com.codeaffine.extras.launch.test.PublicTestLaunchConfigurationType";
+  private static final String PRIVATE_TEST_LAUNCH_CONFIG_TYPE =
+      "com.codeaffine.extras.launch.test.PrivateTestLaunchConfigurationType";
 
   private final ILaunchManager launchManager;
 
@@ -38,64 +38,64 @@ public class LaunchConfigRule extends ExternalResource {
     try {
       terminateLaunches();
       deleteLaunchConfigs();
-    } catch( CoreException ce ) {
-      throw new RuntimeException( ce );
+    } catch (CoreException ce) {
+      throw new RuntimeException(ce);
     }
   }
 
   public ILaunchConfigurationWorkingCopy createPublicLaunchConfig() throws CoreException {
     ILaunchConfigurationWorkingCopy result = newPublicLaunchConfig();
-    result.setAttribute( ATTR_LAUNCH_IN_BACKGROUND, false );
+    result.setAttribute(ATTR_LAUNCH_IN_BACKGROUND, false);
     return result;
   }
 
   public ILaunchConfigurationWorkingCopy createPrivateLaunchConfig() throws CoreException {
     ILaunchConfigurationWorkingCopy result = newPrivateLaunchConfig();
-    result.setAttribute( ATTR_LAUNCH_IN_BACKGROUND, false );
+    result.setAttribute(ATTR_LAUNCH_IN_BACKGROUND, false);
     return result;
   }
 
   public ILaunchConfigurationType getPublicTestLaunchConfigType() {
-    return launchManager.getLaunchConfigurationType( PUBLIC_TEST_LAUNCH_CONFIG_TYPE );
+    return launchManager.getLaunchConfigurationType(PUBLIC_TEST_LAUNCH_CONFIG_TYPE);
   }
 
   public ILaunchConfigurationType getPrivateTestLaunchConfigType() {
-    return launchManager.getLaunchConfigurationType( PRIVATE_TEST_LAUNCH_CONFIG_TYPE );
+    return launchManager.getLaunchConfigurationType(PRIVATE_TEST_LAUNCH_CONFIG_TYPE);
   }
 
-  public String renameLaunchConfig( ILaunchConfiguration launchConfig ) throws CoreException {
+  public String renameLaunchConfig(ILaunchConfiguration launchConfig) throws CoreException {
     String newName = launchConfig.getName() + "-renamed";
-    if( launchManager.isExistingLaunchConfigurationName( newName ) ) {
-      newName = launchManager.generateLaunchConfigurationName( newName );
+    if (launchManager.isExistingLaunchConfigurationName(newName)) {
+      newName = launchManager.generateLaunchConfigurationName(newName);
     }
     ILaunchConfigurationWorkingCopy workingCopy = launchConfig.getWorkingCopy();
-    workingCopy.rename( newName );
+    workingCopy.rename(newName);
     workingCopy.doSave();
     return newName;
   }
 
   private ILaunchConfigurationWorkingCopy newPublicLaunchConfig() throws CoreException {
     ILaunchConfigurationType type = getPublicTestLaunchConfigType();
-    return type.newInstance( null, getUniqueLaunchConfigName() );
+    return type.newInstance(null, getUniqueLaunchConfigName());
   }
 
   private ILaunchConfigurationWorkingCopy newPrivateLaunchConfig() throws CoreException {
     ILaunchConfigurationType type = getPrivateTestLaunchConfigType();
-    return type.newInstance( null, getUniqueLaunchConfigName() );
+    return type.newInstance(null, getUniqueLaunchConfigName());
   }
 
   private String getUniqueLaunchConfigName() {
-    return launchManager.generateLaunchConfigurationName( "LC" );
+    return launchManager.generateLaunchConfigurationName("LC");
   }
 
   private void terminateLaunches() throws DebugException {
-    for( ILaunch launch : launchManager.getLaunches() ) {
+    for (ILaunch launch : launchManager.getLaunches()) {
       launch.terminate();
     }
   }
 
   private void deleteLaunchConfigs() throws CoreException {
-    for( ILaunchConfiguration launchConfiguration : launchManager.getLaunchConfigurations() ) {
+    for (ILaunchConfiguration launchConfiguration : launchManager.getLaunchConfigurations()) {
       launchConfiguration.delete();
     }
   }

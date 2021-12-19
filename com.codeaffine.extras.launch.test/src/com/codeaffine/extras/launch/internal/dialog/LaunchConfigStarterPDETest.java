@@ -25,53 +25,53 @@ public class LaunchConfigStarterPDETest {
 
   @Before
   public void setUp() throws CoreException {
-    preferences = new DebugUIPreferences( new PreferenceStore() );
+    preferences = new DebugUIPreferences(new PreferenceStore());
     launchManager = DebugPlugin.getDefault().getLaunchManager();
     launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
   }
 
-  @Test(expected=NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void testConstructorWithNullLaunchMode() {
-    new LaunchConfigStarter( preferences, null );
+    new LaunchConfigStarter(preferences, null);
   }
 
-  @Test(expected=NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void testConstructorWithNullPreferences() {
-    new LaunchConfigStarter( null, launchManager.getLaunchMode( RUN_MODE ) );
+    new LaunchConfigStarter(null, launchManager.getLaunchMode(RUN_MODE));
   }
 
   @Test
   public void testStart() {
-    startLaunchConfig( launchConfig );
+    startLaunchConfig(launchConfig);
 
-    assertThat( launchManager.getLaunches() ).hasSize( 1 );
-    assertThat( launchManager.getLaunches()[ 0 ].getLaunchConfiguration() ).isEqualTo( launchConfig );
+    assertThat(launchManager.getLaunches()).hasSize(1);
+    assertThat(launchManager.getLaunches()[0].getLaunchConfiguration()).isEqualTo(launchConfig);
   }
 
   @Test
   public void testStartWithDisabledTerminateAndRelaunch() {
-    preferences.setTerminateBeforeRelaunch( false );
-    startLaunchConfig( launchConfig );
+    preferences.setTerminateBeforeRelaunch(false);
+    startLaunchConfig(launchConfig);
 
-    startLaunchConfig( launchConfig );
+    startLaunchConfig(launchConfig);
 
-    assertThat( launchManager.getLaunches() ).hasSize( 2 );
-    assertThat( launchManager.getLaunches()[ 0 ].getLaunchConfiguration() ).isEqualTo( launchConfig );
-    assertThat( launchManager.getLaunches()[ 1 ].getLaunchConfiguration() ).isEqualTo( launchConfig );
+    assertThat(launchManager.getLaunches()).hasSize(2);
+    assertThat(launchManager.getLaunches()[0].getLaunchConfiguration()).isEqualTo(launchConfig);
+    assertThat(launchManager.getLaunches()[1].getLaunchConfiguration()).isEqualTo(launchConfig);
   }
 
   @Test
   public void testStartWithEnabledTerminateAndRelaunch() {
-    preferences.setTerminateBeforeRelaunch( true );
-    startLaunchConfig( launchConfig );
+    preferences.setTerminateBeforeRelaunch(true);
+    startLaunchConfig(launchConfig);
 
-    startLaunchConfig( launchConfig );
+    startLaunchConfig(launchConfig);
 
-    assertThat( launchManager.getLaunches() ).hasSize( 1 );
-    assertThat( launchManager.getLaunches()[ 0 ].getLaunchConfiguration() ).isEqualTo( launchConfig );
+    assertThat(launchManager.getLaunches()).hasSize(1);
+    assertThat(launchManager.getLaunches()[0].getLaunchConfiguration()).isEqualTo(launchConfig);
   }
 
-  private void startLaunchConfig( ILaunchConfiguration launchConfig ) {
-    new LaunchConfigStarter( preferences, launchManager.getLaunchMode( RUN_MODE ), launchConfig ).start();
+  private void startLaunchConfig(ILaunchConfiguration launchConfig) {
+    new LaunchConfigStarter(preferences, launchManager.getLaunchMode(RUN_MODE), launchConfig).start();
   }
 }

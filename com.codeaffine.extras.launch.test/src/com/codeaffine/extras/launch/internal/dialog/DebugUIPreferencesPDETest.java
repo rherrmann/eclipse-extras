@@ -14,7 +14,7 @@ public class DebugUIPreferencesPDETest {
 
     boolean terminateBeforeRelaunch = debugUIPreferences.isTerminateBeforeRelaunch();
 
-    assertThat( terminateBeforeRelaunch ).isFalse();
+    assertThat(terminateBeforeRelaunch).isFalse();
   }
 
   @Test
@@ -23,7 +23,7 @@ public class DebugUIPreferencesPDETest {
 
     IPreferenceStore preferenceStore = debugUIPreferences.getPreferenceStore();
 
-    assertThat( preferenceStore ).isInstanceOf( ScopedPreferenceStore.class );
+    assertThat(preferenceStore).isInstanceOf(ScopedPreferenceStore.class);
   }
 
 }

@@ -34,8 +34,8 @@ public class LaunchConfigCleanerPDETest {
 
   @Before
   public void setUp() {
-    launchPreferences = new LaunchPreferences( new PreferenceStore() );
-    launchConfigCleaner = new LaunchConfigCleaner( launchPreferences );
+    launchPreferences = new LaunchPreferences(new PreferenceStore());
+    launchConfigCleaner = new LaunchConfigCleaner(launchPreferences);
   }
 
   @After
@@ -45,154 +45,152 @@ public class LaunchConfigCleanerPDETest {
 
   @Test
   public void testCleanupAfterNextLaunch() throws CoreException {
-    prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
+    prepareLaunchPreferences(true, launchConfigRule.getPublicTestLaunchConfigType());
     launchConfigCleaner.install();
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
-    launch( launchConfig );
+    launch(launchConfig);
 
-    launch( launchConfigRule.createPublicLaunchConfig().doSave() );
+    launch(launchConfigRule.createPublicLaunchConfig().doSave());
 
-    assertThat( getLaunchConfigs() ).extracting( "name" ).doesNotContain( launchConfig.getName() );
+    assertThat(getLaunchConfigs()).extracting("name").doesNotContain(launchConfig.getName());
   }
 
   @Test
   public void testNoCleanupAfterLaunchingAgain() throws CoreException {
-    prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
+    prepareLaunchPreferences(true, launchConfigRule.getPublicTestLaunchConfigType());
     launchConfigCleaner.install();
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
-    launch( launchConfig );
+    launch(launchConfig);
 
-    launch( launchConfig );
+    launch(launchConfig);
 
-    assertThat( getLaunchConfigs() ).extracting( "name" ).contains( launchConfig.getName() );
+    assertThat(getLaunchConfigs()).extracting("name").contains(launchConfig.getName());
   }
 
   @Test
   public void testNoCleanupWhenLaunchConfigRenamed() throws CoreException {
-    prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
+    prepareLaunchPreferences(true, launchConfigRule.getPublicTestLaunchConfigType());
     launchConfigCleaner.install();
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
-    ILaunch launch = launchConfig.launch( RUN_MODE, null );
-    String newName = launchConfigRule.renameLaunchConfig( launchConfig );
+    ILaunch launch = launchConfig.launch(RUN_MODE, null);
+    String newName = launchConfigRule.renameLaunchConfig(launchConfig);
     launch.terminate();
 
-    assertThat( getLaunchConfigs() ).extracting( "name" ).contains( newName );
+    assertThat(getLaunchConfigs()).extracting("name").contains(newName);
   }
 
   @Test
   public void testNoCleanupWithImmediatelyStoredLaunchConfig() throws CoreException {
-    prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
+    prepareLaunchPreferences(true, launchConfigRule.getPublicTestLaunchConfigType());
     launchConfigCleaner.install();
     ILaunchConfiguration workingCopy = launchConfigRule.createPublicLaunchConfig().doSave();
-    ILaunchConfiguration launchConfig = storeLaunchConfigInWorkspace( workingCopy );
-    launch( launchConfig );
+    ILaunchConfiguration launchConfig = storeLaunchConfigInWorkspace(workingCopy);
+    launch(launchConfig);
 
-    launch( launchConfigRule.createPublicLaunchConfig().doSave() );
+    launch(launchConfigRule.createPublicLaunchConfig().doSave());
 
-    assertThat( launchConfig.getFile().exists() ).isTrue();
-    assertThat( getLaunchConfigs() ).extracting( "name" ).contains( launchConfig.getName() );
+    assertThat(launchConfig.getFile().exists()).isTrue();
+    assertThat(getLaunchConfigs()).extracting("name").contains(launchConfig.getName());
   }
 
   @Test
   public void testNoCleanupWithLaterStoredLaunchConfig() throws CoreException {
-    prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
+    prepareLaunchPreferences(true, launchConfigRule.getPublicTestLaunchConfigType());
     launchConfigCleaner.install();
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
-    launch( launchConfig );
-    launchConfig = storeLaunchConfigInWorkspace( launchConfig );
+    launch(launchConfig);
+    launchConfig = storeLaunchConfigInWorkspace(launchConfig);
 
-    launch( launchConfigRule.createPublicLaunchConfig().doSave() );
+    launch(launchConfigRule.createPublicLaunchConfig().doSave());
 
-    assertThat( launchConfig.getFile().exists() ).isTrue();
-    assertThat( getLaunchConfigs() ).extracting( "name" ).contains( launchConfig.getName() );
+    assertThat(launchConfig.getFile().exists()).isTrue();
+    assertThat(getLaunchConfigs()).extracting("name").contains(launchConfig.getName());
   }
 
-  private ILaunchConfiguration storeLaunchConfigInWorkspace( ILaunchConfiguration launchConfig )
-    throws CoreException
-  {
+  private ILaunchConfiguration storeLaunchConfigInWorkspace(ILaunchConfiguration launchConfig) throws CoreException {
     ILaunchConfigurationWorkingCopy workingCopy = launchConfig.getWorkingCopy();
-    workingCopy.setContainer( projectHelper.getProject() );
+    workingCopy.setContainer(projectHelper.getProject());
     return workingCopy.doSave();
   }
 
   @Test
   public void testNoCleanupIfDisabled() throws CoreException {
-    prepareLaunchPreferences( false, launchConfigRule.getPublicTestLaunchConfigType() );
+    prepareLaunchPreferences(false, launchConfigRule.getPublicTestLaunchConfigType());
     launchConfigCleaner.install();
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
-    launch( launchConfig );
+    launch(launchConfig);
 
-    assertThat( getLaunchConfigs() ).extracting( "name" ).contains( launchConfig.getName() );
+    assertThat(getLaunchConfigs()).extracting("name").contains(launchConfig.getName());
   }
 
   @Test
   public void testNoCleanupIfTypeNotSelected() throws CoreException {
-    prepareLaunchPreferences( true, null );
+    prepareLaunchPreferences(true, null);
     launchConfigCleaner.install();
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
-    launch( launchConfig );
+    launch(launchConfig);
 
-    assertThat( getLaunchConfigs() ).extracting( "name" ).contains( launchConfig.getName() );
+    assertThat(getLaunchConfigs()).extracting("name").contains(launchConfig.getName());
   }
 
   @Test
   public void testNoCleanupAfterUninstall() throws CoreException {
-    prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
+    prepareLaunchPreferences(true, launchConfigRule.getPublicTestLaunchConfigType());
     launchConfigCleaner.install();
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
     launchConfigCleaner.uninstall();
 
-    launch( launchConfig );
+    launch(launchConfig);
 
-    assertThat( getLaunchConfigs() ).extracting( "name" ).contains( launchConfig.getName() );
+    assertThat(getLaunchConfigs()).extracting("name").contains(launchConfig.getName());
   }
 
   @Test
   public void testNoCleanupWhenLaunchConfigDeleted() throws CoreException {
-    prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
+    prepareLaunchPreferences(true, launchConfigRule.getPublicTestLaunchConfigType());
     launchConfigCleaner.install();
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
 
-    ILaunch launch = launchConfig.launch( RUN_MODE, null );
+    ILaunch launch = launchConfig.launch(RUN_MODE, null);
     launchConfig.delete();
     launch.terminate();
 
-    assertThat( getLaunchConfigs() ).extracting( "name" ).doesNotContain( launchConfig.getName() );
+    assertThat(getLaunchConfigs()).extracting("name").doesNotContain(launchConfig.getName());
   }
 
   @Test
   public void testNoCleanupWhenLaunchConfigWasCreatedInDialog() throws CoreException {
-    prepareLaunchPreferences( true, launchConfigRule.getPublicTestLaunchConfigType() );
+    prepareLaunchPreferences(true, launchConfigRule.getPublicTestLaunchConfigType());
     launchConfigCleaner.install();
     ILaunchConfiguration launchConfig = createLaunchConfigInDialog();
 
-    launch( launchConfig );
+    launch(launchConfig);
 
-    assertThat( getLaunchConfigs() ).extracting( "name" ).contains( launchConfig.getName() );
+    assertThat(getLaunchConfigs()).extracting("name").contains(launchConfig.getName());
   }
 
-  private void prepareLaunchPreferences( boolean cleanupEnabled, ILaunchConfigurationType selectedType ) {
-    launchPreferences.setCleanupGeneratedLaunchConfigs( cleanupEnabled );
-    if( selectedType != null ) {
-      launchPreferences.setCleanupGenerateLaunchConfigTypes( selectedType.getIdentifier() );
+  private void prepareLaunchPreferences(boolean cleanupEnabled, ILaunchConfigurationType selectedType) {
+    launchPreferences.setCleanupGeneratedLaunchConfigs(cleanupEnabled);
+    if (selectedType != null) {
+      launchPreferences.setCleanupGenerateLaunchConfigTypes(selectedType.getIdentifier());
     } else {
-      launchPreferences.setCleanupGenerateLaunchConfigTypes( "" );
+      launchPreferences.setCleanupGenerateLaunchConfigTypes("");
     }
   }
 
   private ILaunchConfiguration createLaunchConfigInDialog() throws CoreException {
-    ILaunchConfigurationDialog dialog = mock( ILaunchConfigurationDialog.class );
-    LaunchConfigurationsDialog.setCurrentlyVisibleLaunchConfigurationDialog( dialog );
+    ILaunchConfigurationDialog dialog = mock(ILaunchConfigurationDialog.class);
+    LaunchConfigurationsDialog.setCurrentlyVisibleLaunchConfigurationDialog(dialog);
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
-    LaunchConfigurationsDialog.setCurrentlyVisibleLaunchConfigurationDialog( null );
+    LaunchConfigurationsDialog.setCurrentlyVisibleLaunchConfigurationDialog(null);
     return launchConfig;
   }
 
-  private static void launch( ILaunchConfiguration launchConfig ) throws CoreException {
-    ILaunch launch = launchConfig.launch( RUN_MODE, null );
+  private static void launch(ILaunchConfiguration launchConfig) throws CoreException {
+    ILaunch launch = launchConfig.launch(RUN_MODE, null);
     launch.terminate();
   }
 

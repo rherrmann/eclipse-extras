@@ -42,59 +42,59 @@ public class OpenLaunchDialogHanderPDETest {
   @Before
   public void setUp() {
     workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-    launchMode = DebugPlugin.getDefault().getLaunchManager().getLaunchMode( DEBUG_MODE );
-    handler = spy( new OpenLaunchDialogHander() );
+    launchMode = DebugPlugin.getDefault().getLaunchManager().getLaunchMode(DEBUG_MODE);
+    handler = spy(new OpenLaunchDialogHander());
   }
 
   @Test
   public void testExecuteSingleLaunchConfig() throws CoreException {
     ILaunchConfiguration launchConfig = launchConfigRule.createPublicLaunchConfig().doSave();
-    LaunchSelectionDialog dialog = mockLaunchSelectionDialog( launchConfig );
-    doReturn( dialog ).when( handler ).createDialog( any() );
+    LaunchSelectionDialog dialog = mockLaunchSelectionDialog(launchConfig);
+    doReturn(dialog).when(handler).createDialog(any());
 
     executeHandler();
 
     ILaunch[] launches = DebugPlugin.getDefault().getLaunchManager().getLaunches();
-    assertThat( launches ).extracting( "launchConfiguration" ).containsOnly( launchConfig );
-    assertThat( launches ).extracting( "launchMode" ).containsOnly( launchMode.getIdentifier() );
+    assertThat(launches).extracting("launchConfiguration").containsOnly(launchConfig);
+    assertThat(launches).extracting("launchMode").containsOnly(launchMode.getIdentifier());
   }
 
   @Test
   public void testExecuteMultipleLaunchConfigs() throws CoreException {
     ILaunchConfiguration launchConfig1 = launchConfigRule.createPublicLaunchConfig().doSave();
     ILaunchConfiguration launchConfig2 = launchConfigRule.createPublicLaunchConfig().doSave();
-    LaunchSelectionDialog dialog = mockLaunchSelectionDialog( launchConfig1, launchConfig2 );
-    doReturn( dialog ).when( handler ).createDialog( any() );
+    LaunchSelectionDialog dialog = mockLaunchSelectionDialog(launchConfig1, launchConfig2);
+    doReturn(dialog).when(handler).createDialog(any());
 
     executeHandler();
 
     ILaunch[] launches = DebugPlugin.getDefault().getLaunchManager().getLaunches();
-    assertThat( launches ).extracting( "launchConfiguration" ).containsOnly( launchConfig1, launchConfig2 );
-    assertThat( launches ).extracting( "launchMode" ).containsOnly( launchMode.getIdentifier() );
+    assertThat(launches).extracting("launchConfiguration").containsOnly(launchConfig1, launchConfig2);
+    assertThat(launches).extracting("launchMode").containsOnly(launchMode.getIdentifier());
   }
 
   private void executeHandler() {
     Command command = getOpenLaunchDialogCommand();
     IEvaluationContext evaluationContext = createEvaluationContext();
-    handler.execute( new ExecutionEvent( command, emptyMap(), null, evaluationContext ) );
+    handler.execute(new ExecutionEvent(command, emptyMap(), null, evaluationContext));
   }
 
-  private LaunchSelectionDialog mockLaunchSelectionDialog( ILaunchConfiguration... launchConfigs ) {
-    LaunchSelectionDialog dialog = mock( LaunchSelectionDialog.class );
-    when( dialog.open() ).thenReturn( Window.OK );
-    when( dialog.getSelectedLaunchConfigurations() ).thenReturn( launchConfigs );
-    when( dialog.getLaunchMode() ).thenReturn( launchMode );
+  private LaunchSelectionDialog mockLaunchSelectionDialog(ILaunchConfiguration... launchConfigs) {
+    LaunchSelectionDialog dialog = mock(LaunchSelectionDialog.class);
+    when(dialog.open()).thenReturn(Window.OK);
+    when(dialog.getSelectedLaunchConfigurations()).thenReturn(launchConfigs);
+    when(dialog.getLaunchMode()).thenReturn(launchMode);
     return dialog;
   }
 
   private IEvaluationContext createEvaluationContext() {
-    IEvaluationContext result = new EvaluationContext( null, new Object() );
-    result.addVariable( ACTIVE_WORKBENCH_WINDOW_NAME, workbenchWindow );
+    IEvaluationContext result = new EvaluationContext(null, new Object());
+    result.addVariable(ACTIVE_WORKBENCH_WINDOW_NAME, workbenchWindow);
     return result;
   }
 
   private Command getOpenLaunchDialogCommand() {
-    ICommandService commandService = ServiceHelper.getService( workbenchWindow, ICommandService.class );
-    return commandService.getCommand( OpenLaunchDialogHander.COMMAND_ID );
+    ICommandService commandService = ServiceHelper.getService(workbenchWindow, ICommandService.class);
+    return commandService.getCommand(OpenLaunchDialogHander.COMMAND_ID);
   }
 }
