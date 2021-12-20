@@ -8,6 +8,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: com.codeaffine.extras.ide;bundle-version="[1.0.0,2.0.0)",
  com.codeaffine.extras.jdt;bundle-version="[1.0.0,2.0.0)",
  com.codeaffine.extras.launch;bundle-version="[1.0.0,2.0.0)",
- org.junit;bundle-version="[4.11.0,5.0.0)",
+ org.junit;bundle-version="[4.13.0,5.0.0)",
  com.codeaffine.osgi.testsuite;bundle-version="[1.0.0,2.0.0)"
 Automatic-Module-Name: com.codeaffine.extras.test.all
