@@ -93,8 +93,7 @@ public class DeleteEditorFileHandler extends AbstractHandler {
   }
 
   private static void closeEditors(IWorkbenchWindow workbenchWindow, File file) {
-    IEditorReference[] editorReferences = workbenchWindow.getActivePage().getEditorReferences();
-    for (IEditorReference editorReference : editorReferences) {
+    for (IEditorReference editorReference : workbenchWindow.getActivePage().getEditorReferences()) {
       if (file.equals(getFile(editorReference))) {
         workbenchWindow.getActivePage().closeEditors(new IEditorReference[] {editorReference}, false);
       }

@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Extras for Zip Archives
+Bundle-SymbolicName: com.codeaffine.extras.archive;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: CodeAffine.com
+Eclipse-ExtensibleAPI: true
+Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.6.0,4.0.0)",
+ org.eclipse.core.resources;bundle-version="[3.6.0,4.0.0)",
+ org.eclipse.ui;bundle-version="[3.6.0,4.0.0)",
+ org.eclipse.ui.ide;bundle-version="[3.6.0,4.0.0)",
+ org.eclipse.ui.navigator;bundle-version="[3.5.0,4.0.0)",
+ org.eclipse.ui.navigator.resources;bundle-version="[3.4.0,4.0.0)"
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: com.codeaffine.extras.archive

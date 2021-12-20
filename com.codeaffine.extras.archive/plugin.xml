@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            describer="com.codeaffine.extras.archive.internal.contenttype.ZipContentDescriber"
+            id="com.codeaffine.extras.archive.contenttype.ZipContentType"
+            name="Zip Archive"
+            priority="normal">
+      </content-type>
+      <file-association
+            content-type="com.codeaffine.extras.archive.contenttype.ZipContentType"
+            file-extensions="zip,jar,war,ear">
+      </file-association>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <navigatorContent
+            activeByDefault="true"
+            contentProvider="com.codeaffine.extras.archive.internal.viewer.ArchiveContentProviderWrapper"
+            icon="$nl$/icons/obj16/archive_extension.png"
+            id="com.codeaffine.extras.archive.internal.ArchiveContent"
+            labelProvider="com.codeaffine.extras.archive.internal.viewer.ArchiveLabelProvider"
+            name="Archive Content"
+            priority="normal">
+        <triggerPoints>
+          <or>
+            <instanceof value="org.eclipse.core.resources.IFile" />
+            <instanceof
+                  value="com.codeaffine.extras.archive.internal.model.ArchiveEntry">
+            </instanceof>
+          </or>
+        </triggerPoints>
+        <possibleChildren>
+          <or>
+            <instanceof
+                  value="com.codeaffine.extras.archive.internal.model.ArchiveEntry">
+            </instanceof>
+          </or>
+        </possibleChildren>
+        <commonSorter
+              class="com.codeaffine.extras.archive.internal.viewer.ArchiveEntrySorter"
+              id="com.codeaffine.extras.archive.internal.ArchiveEntrySorter">
+        </commonSorter>
+        <actionProvider
+              class="com.codeaffine.extras.archive.internal.editor.OpenActionProvider"
+              id="com.codeaffine.extras.archive.internal.editor.ActionProvider"
+              overrides="org.eclipse.ui.navigator.resources.OpenActions"
+              priority="highest">
+        </actionProvider>
+        <actionProvider
+              class="com.codeaffine.extras.archive.internal.extract.ExtractEntryActionProvider"
+              id="com.codeaffine.extras.archive.internal.extract.ExtractActionProvider">
+        </actionProvider>
+      </navigatorContent>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerContentBinding viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+         <includes>
+            <contentExtension pattern="com.codeaffine.extras.archive.internal.ArchiveContent">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+      <dragAssistant
+            class="com.codeaffine.extras.archive.internal.editor.ArchiveDragAdapterAssistant"
+            viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+      </dragAssistant>
+   </extension>
+   <extension
+         point="org.eclipse.ui.elementFactories">
+      <factory
+            class="com.codeaffine.extras.archive.internal.editor.PersistableEditorInputFactory"
+            id="com.codeaffine.extras.archive.internal.editor.PersistableEditorInputFactory">
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="com.codeaffine.extras.archive.internal.extractObjectContribution"
+            objectClass="org.eclipse.core.resources.IResource">
+         <visibility>
+            <objectState
+                  name="contentTypeId"
+                  value="com.codeaffine.extras.archive.contenttype.ZipContentType">
+            </objectState>
+         </visibility>
+         <action
+               class="com.codeaffine.extras.archive.internal.extract.ExtractFileAction"
+               enablesFor="1"
+               icon="$nl$/icons/elcl16/extract_action.png"
+               id="com.codeaffine.extras.archive.internal.extract.ExtractFileAction"
+               label="E&amp;xtract..."
+               menubarPath="additions"
+               tooltip="Extract Archive Content">
+         </action>
+      </objectContribution>
+   </extension>
+</plugin>

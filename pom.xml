@@ -47,15 +47,18 @@
     <os-jvm-flags/>
   </properties>
   <modules>
-    <module>com.codeaffine.extras.jdt</module>
-    <module>com.codeaffine.extras.jdt.test</module>
-    <module>com.codeaffine.extras.jdt.feature</module>
+    <module>com.codeaffine.extras.archive</module>
+    <module>com.codeaffine.extras.archive.test</module>
+    <module>com.codeaffine.extras.archive.feature</module>
     <module>com.codeaffine.extras.ide</module>
     <module>com.codeaffine.extras.ide.test</module>
     <module>com.codeaffine.extras.ide.feature</module>
     <module>com.codeaffine.extras.imageviewer</module>
     <module>com.codeaffine.extras.imageviewer.test</module>
     <module>com.codeaffine.extras.imageviewer.feature</module>
+    <module>com.codeaffine.extras.jdt</module>
+    <module>com.codeaffine.extras.jdt.test</module>
+    <module>com.codeaffine.extras.jdt.feature</module>
     <module>com.codeaffine.extras.launch</module>
     <module>com.codeaffine.extras.launch.test</module>
     <module>com.codeaffine.extras.launch.feature</module>
