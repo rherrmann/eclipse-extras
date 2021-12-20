@@ -1,14 +1,11 @@
 package com.codeaffine.extras.ide.internal.openwith;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import org.eclipse.core.commands.IHandler;
 import org.junit.Test;
-
 import com.codeaffine.eclipse.core.runtime.Extension;
 import com.codeaffine.eclipse.core.runtime.Predicates;
 import com.codeaffine.eclipse.core.runtime.RegistryAdapter;
-import com.codeaffine.extras.ide.internal.openwith.OpenWithQuickMenuHandler;
 
 
 public class OpenWithQuickMenuCommandPDETest {

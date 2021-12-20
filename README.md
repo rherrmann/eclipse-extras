@@ -8,7 +8,9 @@
 [![Requirements](https://img.shields.io/badge/requirements-Eclipse%202021.06%20or%20later-2C2255.svg)](https://www.eclipse.org/downloads/)
 [![EPL licensed](https://img.shields.io/badge/license-EPL-blue.svg)](https://raw.githubusercontent.com/rherrmann/eclipse-extras/main/LICENSE)
 
-Extras for Eclipse is a collection of small extensions for the Eclipse IDE that include a launch dialog, a JUnit status bar, a launch configuration housekeeper, and little helpers to accomplish recurring tasks with keyboard shortcuts.
+Extras for Eclipse is a collection of small extensions for the Eclipse IDE that include a launch dialog,
+a zip archive viewer, a JUnit status bar, a launch configuration housekeeper, and little helpers to
+accomplish recurring tasks with keyboard shortcuts.
 
 Please visit the homepage for more information: https://rherrmann.github.io/eclipse-extras/
 
@@ -24,7 +26,7 @@ If you prefer, you can also install Extras for Eclipse from this software site:
 
 In the Eclipse main menu, click _Help > Install New Software…_, then enter the URL above and select _Extras for the Eclipse IDE_. Expand the item to select only certain features for installation.
 
-All features can be installed separately. Please note that a JRE 8 or later and Eclipse Luna (4.4) or later are required to run this software.
+All features can be installed separately.
 
 The software is released continuously, and the sources listed above always contain the latest stable release. See the [news page](https://rherrmann.github.io/eclipse-extras/news) for a summary of the most recent changes.
 
