@@ -20,6 +20,16 @@ $small-font-size: 12px;
   }
 }
 
+/* open-sans-regular - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+       url('../fonts/open-sans-v29-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/open-sans-v29-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -28,7 +38,7 @@ $small-font-size: 12px;
 html, body {
   height: 100%
 }
- 
+
 body, p, ul, ol {
   color: #1e1e1e;
   font-size: $regular-font-size;
@@ -156,7 +166,7 @@ footer a {
   clear: both;
 }
 
-kbd { 
+kbd {
   display:inline-block;
   padding: 3px 5px;
   font-size: 88%;
