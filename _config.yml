@@ -1,6 +1,6 @@
 # Build settings
 # Gems
-gems: 
+gems:
 
 # url is the full website URL
 # baseurl is the website's URL without the hostname
@@ -12,7 +12,7 @@ enforce_ssl: ""
 title: Extras for Eclipse
 
 # Short description of your site
-desc: Small Extensions for the Eclipse IDE 
+desc: Small Extensions for the Eclipse IDE
 
 # Default keywords (used if no keywords are specified on a page basis)
 keywords: Eclipse, IDE, Tools, JUnit
@@ -27,18 +27,15 @@ nav-links:
   News: "/eclipse-extras/news"
   Issues: "https://github.com/rherrmann/eclipse-extras/issues"
   Source: "https://github.com/rherrmann/eclipse-extras"
-  
+
 # Footer
 created-by: Rüdiger Herrmann
 creator-url: http://www.codeaffine.com/author/rherrmann/
 
-# Google Analytics Settings
-google_analytics_id: "UA-35034221-4"
-
 # Set these options as you need (For more information, check Jekyll's site)
 timezone: "Europe/Berlin"
 markdown: kramdown
-encoding: "utf-8"
+encoding: "UTF-8"
 safe: true
 lsi: false
 
@@ -64,4 +61,3 @@ exclude:
   - LICENSE
   - CNAME
   - .gitignore
-

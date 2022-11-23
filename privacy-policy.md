@@ -106,35 +106,9 @@ Users can find further detailed information about such purposes of processing an
 ## Detailed information on the processing of Personal Data
 Personal Data is collected for the following purposes and using the following services:
 
-### Analytics
-The services contained in this section enable the Owner to monitor and analyze web traffic and can be used to keep track of User behavior.
-
-##### Google Analytics with anonymized IP (Google Inc.)
-Google Analytics is a web analysis service provided by Google Inc. (“Google”). Google utilizes the Data collected to track and examine the use of this Website, to prepare reports on its activities and share them with other Google services.
-Google may use the Data collected to contextualize and personalize the ads of its own advertising network.
-This integration of Google Analytics anonymizes your IP address. It works by shortening Users' IP addresses within member states of the European Union or in other contracting states to the Agreement on the European Economic Area. Only in exceptional cases will the complete IP address be sent to a Google server and shortened within the US.
-
-Personal Data collected: Cookies and Usage Data.
-
-Place of processing: United States – <a href="https://support.google.com/analytics/answer/6004245">Privacy Policy</a>. Privacy Shield participant. [ga_optout].
-
 ### Displaying content from external platforms
 This type of service allows you to view content hosted on external platforms directly from the pages of this Website and interact with them.
 This type of service might still collect web traffic data for the pages where the service is installed, even when Users do not use it.
-
-##### Google Fonts (Google Inc.)
-Google Fonts is a typeface visualization service provided by Google Inc. that allows this Website to incorporate the content of this kind on its pages.
-
-Personal Data collected: Usage Data and various types of Data as specified in the privacy policy of the service.
-
-Place of processing: United States – <a href="https://www.google.it/intl/policies/privacy/">Privacy Policy</a>. Privacy Shield participant.
-
-##### GitHub button and social widgets (GitHub Inc.)
-The GitHub button and social widgets are services allowing interaction with the GitHub and Gist services provided by GitHub, Inc.
-
-Personal Data collected: Usage Data.
-
-Place of processing: United States – <a href="https://help.github.com/articles/github-privacy-policy">Privacy Policy</a>. Privacy Shield participant.
 
 ## The Rights of Users
 Users may exercise certain rights regarding their Data processed by the Owner.
