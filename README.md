@@ -16,7 +16,11 @@ Please visit the homepage for more information: https://rherrmann.github.io/ecli
 
 Extras for Eclipse is available from the [Eclipse Marketplace](https://marketplace.eclipse.org/content/extras-eclipse). Just drag the icon to your running Eclipse workspace:
 
-<a href="http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=2710118" class="drag" title="Drag to your running Eclipse workspace."><img class="img-responsive" src="https://marketplace.eclipse.org/sites/all/themes/solstice/public/images/marketplace/btn-install.png" alt="Drag to your running Eclipse workspace." /></a>
+<a href="https://marketplace.eclipse.org/content/extras-eclipse" 
+  title="Drag to your running Eclipse workspace (requires Eclipse Marketplace Client)">
+  <img src="https://marketplace.eclipse.org/modules/custom/eclipsefdn/eclipsefdn_marketplace/images/btn-install.svg" 
+    alt="Drag to your running Eclipse workspace (requires Eclipse Marketplace Client)">
+</a>
 
 If you prefer, you can also install Extras for Eclipse from this software site:
 
