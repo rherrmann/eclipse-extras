@@ -179,10 +179,10 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
 <span class="fc" id="L179">    }</span>
 
     private void drawBar() {
-<span class="fc bfc" id="L182" title="All 2 branches covered.">      if( barColor != null ) {</span>
-<span class="fc" id="L183">        gc.setAlpha( 200 );</span>
-<span class="fc" id="L184">        gc.setBackground( barColor );</span>
-<span class="fc" id="L185">        gc.fillRoundRectangle( 1, 1, barWidth, clientArea.height - 2 - 1, ARC_SIZE, ARC_SIZE );</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">      if( barColor != null ) {</span>
+<span class="nc" id="L183">        gc.setAlpha( 200 );</span>
+<span class="nc" id="L184">        gc.setBackground( barColor );</span>
+<span class="nc" id="L185">        gc.fillRoundRectangle( 1, 1, barWidth, clientArea.height - 2 - 1, ARC_SIZE, ARC_SIZE );</span>
       }
 <span class="fc" id="L187">    }</span>
 
@@ -194,29 +194,29 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
 <span class="fc" id="L194">      Color defaultForeground = getSystemColor( SWT.COLOR_WIDGET_FOREGROUND );</span>
 <span class="fc" id="L195">      drawText( textLocation, defaultForeground, null );</span>
 <span class="fc" id="L196">      Color barForeground = getBarForegroundColor();</span>
-<span class="fc bfc" id="L197" title="All 2 branches covered.">      if( !equals( defaultForeground, barForeground ) ) {</span>
-<span class="fc" id="L198">        Rectangle clipping = new Rectangle( rect.x, rect.y, barWidth, rect.height );</span>
-<span class="fc" id="L199">        drawText( textLocation, barForeground, clipping );</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">      if( !equals( defaultForeground, barForeground ) ) {</span>
+<span class="nc" id="L198">        Rectangle clipping = new Rectangle( rect.x, rect.y, barWidth, rect.height );</span>
+<span class="nc" id="L199">        drawText( textLocation, barForeground, clipping );</span>
       }
 <span class="fc" id="L201">    }</span>
 
     private void drawText( Point location, Color foreground, Rectangle clipping ) {
 <span class="fc" id="L204">      Rectangle previousClipping = gc.getClipping();</span>
-<span class="fc bfc" id="L205" title="All 2 branches covered.">      if( clipping != null ) {</span>
-<span class="fc" id="L206">        gc.setClipping( clipping );</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">      if( clipping != null ) {</span>
+<span class="nc" id="L206">        gc.setClipping( clipping );</span>
       }
 <span class="fc" id="L208">      gc.setForeground( foreground );</span>
 <span class="fc" id="L209">      gc.drawText( text, location.x, location.y, SWT.DRAW_TRANSPARENT );</span>
-<span class="fc bfc" id="L210" title="All 2 branches covered.">      if( clipping != null ) {</span>
-<span class="fc" id="L211">        gc.setClipping( previousClipping );</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">      if( clipping != null ) {</span>
+<span class="nc" id="L211">        gc.setClipping( previousClipping );</span>
       }
 <span class="fc" id="L213">    }</span>
 
     private Point getTextLocation( Rectangle clientArea ) {
 <span class="fc" id="L216">      Point textSize = gc.textExtent( text );</span>
 <span class="fc" id="L217">      int x = 3;</span>
-<span class="fc bfc" id="L218" title="All 2 branches covered.">      if( ( style &amp; SWT.CENTER ) != 0 ) {</span>
-<span class="fc" id="L219">        x = ( clientArea.width - textSize.x ) / 2;</span>
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">      if( ( style &amp; SWT.CENTER ) != 0 ) {</span>
+<span class="nc" id="L219">        x = ( clientArea.width - textSize.x ) / 2;</span>
       }
 <span class="fc" id="L221">      int y = ( clientArea.height - textSize.y ) / 2 + 1;</span>
 <span class="fc" id="L222">      return new Point( x, y );</span>
@@ -224,12 +224,12 @@ public class JUnitProgressBar extends Canvas implements TextAnimationPainter {
 
     private Color getBarForegroundColor() {
 <span class="fc" id="L226">      Color result = getSystemColor( SWT.COLOR_WIDGET_FOREGROUND );</span>
-<span class="fc bfc" id="L227" title="All 2 branches covered.">      if( barColor != null ) {</span>
-<span class="fc" id="L228">        int red = barColor.getRed();</span>
-<span class="fc" id="L229">        int green = barColor.getGreen();</span>
-<span class="fc" id="L230">        int blue = barColor.getBlue();</span>
-<span class="fc" id="L231">        double y = ( 299 * red + 587 * green + 114 * blue ) / 1000;</span>
-<span class="pc bpc" id="L232" title="1 of 2 branches missed.">        result = y &gt;= 128 ? getSystemColor( SWT.COLOR_BLACK ) : getSystemColor( SWT.COLOR_WHITE );</span>
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">      if( barColor != null ) {</span>
+<span class="nc" id="L228">        int red = barColor.getRed();</span>
+<span class="nc" id="L229">        int green = barColor.getGreen();</span>
+<span class="nc" id="L230">        int blue = barColor.getBlue();</span>
+<span class="nc" id="L231">        double y = ( 299 * red + 587 * green + 114 * blue ) / 1000;</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">        result = y &gt;= 128 ? getSystemColor( SWT.COLOR_BLACK ) : getSystemColor( SWT.COLOR_WHITE );</span>
       }
 <span class="fc" id="L234">      return result;</span>
     }
